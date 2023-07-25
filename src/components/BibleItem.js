@@ -2,7 +2,7 @@ import React from 'react';
 
 const BibleItem = ({ bible }) => {
   // Destructure the properties from the 'bible' prop
-  const { name, abbreviation, language, countries, description, audioBibles } = bible;
+  const { name, abbreviation, language, countries} = bible;
 
   // Render the Bible details
   return (
@@ -11,8 +11,7 @@ const BibleItem = ({ bible }) => {
       <p>Abbreviation: {abbreviation}</p>
       <p>Language: {language.name}</p>
       <p>Countries: {countries.map((country) => country.name).join(', ')}</p>
-      <p>Description: {description}</p>
-      {/* Render other Bible details as needed */}
+      {/* other Bible details */}
     </div>
   );
 };

@@ -11,3 +11,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* styles.css (for styling the grid layout) */
+
+.bible-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.bible-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+  min-width: 200px;
+  max-width: 300px;
+}
+
