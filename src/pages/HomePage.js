@@ -13,7 +13,13 @@ const HomePage = () => {
     useEffect(() => {
         const fetchBibles = async () => {
             try {
-                const response = await axios.get('https://api.scripture.api.bible/v1/bibles');
+                const apiKey = '5875acef5839ebced9e807466f8ee3ce';
+
+                const response = await axios.get('https://api.scripture.api.bible/v1/bibles', {
+                headers: {
+                    'api-key': '5875acef5839ebced9e807466f8ee3ce',
+                },
+            });
                 const sortedBibles = response.data.data.sort((a, b) =>
                 a.name.localeCompare(b.name)
                 );
