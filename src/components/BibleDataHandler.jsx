@@ -26,8 +26,7 @@ const BibleDataHandler = () => {
             fetchBibles ();
         }, []);
 
-
-
+        
 
   return (
     <div>
