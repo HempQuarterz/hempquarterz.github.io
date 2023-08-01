@@ -56,7 +56,7 @@ const VersePage = () => {
         <ul style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             {verses.map((verse) => (
               <li key={verse.id} className='grid'>
-              <a href={`/scripture/${bibleId}/${abbreviation}/${bookId}/${chapterId}/${verseId}`}>
+              <a href={`/scripture/${bibleId}/${abbreviation}/${bookId}/${chapterId}/${verse.id}`}>
                 {verse.reference}
                 </a>
               </li>

@@ -6,7 +6,8 @@ import { selectVerses, fetchVerse } from '../bibleSlice';
 const ScripturePage = () => {
   const dispatch = useDispatch();
   const verse = useSelector(selectVerses);
-  const { bibleId, verseId } = useParams();
+  const { bibleId, version, abbr, book, verseId } = useParams();
+ 
 
   useEffect(() => {
     console.log('Bible ID:', bibleId); // Use the renamed variable
@@ -16,6 +17,10 @@ const ScripturePage = () => {
       dispatch(fetchVerse({ bibleId, verseId }));
     }
   }, [dispatch, bibleId, verseId]);
+
+  const createMarkup = (htmlString) => {
+    return { __html: htmlString };
+  };
 
   return (
     <div>
@@ -34,8 +39,8 @@ const ScripturePage = () => {
         <span>Verse Content</span>
       </h4>
       <div className="content-container">
-        <p>{verse.content}</p>
-      </div>
+          {verse && verse.content && <div dangerouslySetInnerHTML={createMarkup(verse.content)} />}
+        </div>
     </main>
   </div>
   );

@@ -66,6 +66,7 @@ export const bibleSlice = createSlice({
   initialState: {
     verses: [],
     chapterText: null,
+    selectedVerse: null,
   },
   reducers: {
     setVerses: (state, action) => {
@@ -89,6 +90,7 @@ export const bibleSlice = createSlice({
 export const { setVerses, setChapterText } = bibleSlice.actions;
 
 export const selectVerses = (state) => state.bible.verses;
+export const selectSelectedVerse = (state) => state.bible.selectedVerse;
 export const selectChapterText = (state) => state.bible.chapterText;
 
 export default bibleSlice.reducer;
