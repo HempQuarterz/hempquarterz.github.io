@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ChapterPage = () => {
     const [chapterList, setChapterList] = useState([]);
     const [chapterContent, setChapterContent] = useState([]);
     const { version: bibleId, abbr: abbreviation, book: bookId } = useParams();
-  
+    const navigate = useNavigate();
   
     useEffect(() => {
         console.log('Bible:', bibleId);
@@ -64,7 +64,7 @@ const ChapterPage = () => {
         <div className="container">
           <h1>
             <a className="flex" href="/">
-              <span className="logo" title="American Bible Society"></span>
+              <span className="logo" title="HimQuarterz"></span>
               <span>HimQuarterz Bible App</span>
             </a>
           </h1>
@@ -94,6 +94,7 @@ const ChapterPage = () => {
           </ul>
         </div>
       </main>
+      <button className="back-button" onClick={() => navigate(-1)}>Back</button>
     </div>
   );
 };

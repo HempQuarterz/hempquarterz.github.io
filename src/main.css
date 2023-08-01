@@ -91,10 +91,10 @@ header .container {
 header .logo {
   text-indent: 99999px;
   overflow: hidden;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 3.75rem;
+  height: 3.75rem;
   background: #027CFF url("../img/logo.png") center no-repeat;
-  background-size: 22px auto;
+  background-size: 50px auto;
 }
 header h1 {
   text-align: right;
@@ -362,4 +362,20 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt, body.
 .list-container.numeric-list li a:hover {
   background: #31ACFF;
   color: #fff;
+}
+
+.back-button {
+  background-color: #31ACFF;
+  color: #ffffff;
+  padding: 20px;
+  font-size: 20px;
+  border-radius: 5px;
+  display: block;
+  margin: 50px auto 50px auto;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.back-button:hover {
+  background-color: #0d466c; 
 }

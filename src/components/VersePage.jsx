@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectVerses, selectChapterText, fetchChapterText, fetchVerses } from '../bibleSlice';
 
@@ -9,6 +9,7 @@ const VersePage = () => {
     const verses = useSelector(selectVerses);
     const chapterText = useSelector(selectChapterText);
     const { version: bibleId, abbr: abbreviation, book: bookId, chapter: chapterId, verse: verseId } = useParams();
+    const navigate = useNavigate();
 
   useEffect(() => {
     console.log('Version:', bibleId); 
@@ -34,7 +35,7 @@ const VersePage = () => {
         <div className="container">
           <h1>
             <a className="flex" href="/">
-              <span className="logo" title="American Bible Society"></span>
+              <span className="logo" title="HimQuarterz"></span>
               <span>HimQuarterz Bible App</span>
             </a>
           </h1>
@@ -67,6 +68,7 @@ const VersePage = () => {
       <div className="eb-container" id="chapter-text">
       {chapterText && <div dangerouslySetInnerHTML={createMarkup(chapterText.content)} />}
       </div>
+      <button className="back-button" onClick={() => navigate(-1)}>Back</button>
     </div>
   );
 };

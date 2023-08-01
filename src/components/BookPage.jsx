@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams, useHistory  } from 'react-router-dom';
+import { useLocation, useParams, useNavigate  } from 'react-router-dom';
 import axios from 'axios';
 
 const BookPage = () => {
@@ -7,6 +7,7 @@ const BookPage = () => {
   const location = useLocation();
   const bibleVersionID = new URLSearchParams(location.search).get('version');
   const abbreviation = new URLSearchParams(location.search).get('abbr');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -33,18 +34,13 @@ const BookPage = () => {
   }, [bibleVersionID]);
 
 
-  function searchButton() {
-    const searchInput = document.querySelector(`#search-input`);
-    window.location.href = `./search.html?&version=${bibleVersionID}&abbr=${abbreviation}&query=${searchInput.value}`;
-  }
-
   return (
     <div>
       <header>
         <div className="container">
           <h1>
             <a className="flex" href="/">
-              <span className="logo" title="American Bible Society">
+              <span className="logo" title="HimQuarterz">
             
               </span>
               <span>HimQuarterz Bible App</span>
@@ -76,6 +72,7 @@ const BookPage = () => {
           </ul>
         </div>
       </main>
+      <button className="back-button" onClick={() => navigate(-1)}>Back</button>
     </div>
   );
 };

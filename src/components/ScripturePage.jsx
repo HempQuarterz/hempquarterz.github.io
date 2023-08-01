@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectVerses, fetchVerse } from '../bibleSlice';
 
@@ -7,11 +7,12 @@ const ScripturePage = () => {
   const dispatch = useDispatch();
   const verse = useSelector(selectVerses);
   const { bibleId, version, abbr, book, verseId } = useParams();
+  const navigate = useNavigate();
  
 
   useEffect(() => {
-    console.log('Bible ID:', bibleId); // Use the renamed variable
-    console.log('Verse ID:', verseId); // Use the renamed variable
+    console.log('Bible ID:', bibleId); 
+    console.log('Verse ID:', verseId); 
 
     if (bibleId && verseId) {
       dispatch(fetchVerse({ bibleId, verseId }));
@@ -28,7 +29,7 @@ const ScripturePage = () => {
       <div className="container">
         <h1>
           <a className="flex" href="/">
-            <span className="logo" title="American Bible Society"></span>
+            <span className="logo" title="HimQuarterz"></span>
             <span>HimQuarterz Bible App</span>
           </a>
         </h1>
@@ -42,6 +43,7 @@ const ScripturePage = () => {
           {verse && verse.content && <div dangerouslySetInnerHTML={createMarkup(verse.content)} />}
         </div>
     </main>
+    <button className='back-button' onClick={() => navigate(-1)}>Back</button>
   </div>
   );
 };

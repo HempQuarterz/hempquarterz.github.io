@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import BookPage from './components/BookPage';
 import ChapterPage from './components/ChapterPage';
-import SearchPage from './components/SearchPage';
 import VersePage from './components/VersePage';
 import ScripturePage from './components/ScripturePage';
 import { store } from './store';
@@ -21,8 +20,7 @@ const App = () => {
         <Route path="/chapter/:version/:abbr/:book" element={<ChapterPage />} />
         <Route path="/verse/:version/:abbr/:book/:chapter" element={<VersePage />} />
         <Route path="/scripture/:bibleId/:version/:abbr/:book/:verseId" element={<ScripturePage />} />
-        <Route path="/search" element={<SearchPage />} />
-        {/* Add more routes for other pages */}
+        
   </Routes>  
   </Router>
   </Provider>
