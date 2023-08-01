@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toggleTheme } from '../themeSlice';
 
 const ChapterPage = () => {
+  const theme = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
+
+  const handleThemeChange = () => {
+    dispatch(toggleTheme());
+  }
+
     const [chapterList, setChapterList] = useState([]);
     const [chapterContent, setChapterContent] = useState([]);
     const { version: bibleId, abbr: abbreviation, book: bookId } = useParams();
@@ -59,7 +68,7 @@ const ChapterPage = () => {
 };
 
   return (
-    <div>
+    <div className={`list-container.section-list ${theme}`}>
       <header>
         <div className="container">
           <h1>
@@ -69,6 +78,7 @@ const ChapterPage = () => {
             </a>
           </h1>
         </div>
+        <button onClick={handleThemeChange} className="themeButton">Toggle Theme</button>
       </header>
       <div className="subheader">
         <div className="container flex">
@@ -83,10 +93,12 @@ const ChapterPage = () => {
           <span>Select a Chapter</span>
         </h4>
         <div className="list-container numeric-list">
-        <ul style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+        <ul style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap',
+        color: theme === 'dark' ? 'white' : 'black' }}>
             {chapterList.map((chapter) => (
               <li key={chapter.id}>
-                <a href={`/verse/${bibleId}/${abbreviation}/${bookId}/${chapter.id}`}>
+                <a href={`/verse/${bibleId}/${abbreviation}/${bookId}/${chapter.id}`}
+                style={{ color: theme === 'dark' ? 'white' : 'black' }}>
                   {chapter.number} - {chapter.reference}
                 </a>
               </li>

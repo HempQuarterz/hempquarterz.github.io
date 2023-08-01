@@ -379,3 +379,39 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt, body.
 .back-button:hover {
   background-color: #0d466c; 
 }
+
+
+.light {
+  background-color: white;
+  color: black;
+}
+
+.dark {
+  background-color: black;
+  color: #31ACFF;
+}
+
+.themeButton {
+  float: right;
+  background-color: #31ACFF;
+  color: #ffffff;
+  padding: 20px;
+  font-size: 20px;
+  border-radius: 5px;
+  display: block;
+  margin: 50px 20px 50px auto;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.themeButton:hover {
+  background-color: #0d466c; 
+}
+
+.light-theme .bible-chapter {
+  color: black; /* Sets the text color of bible-chapter elements within light-theme to black */
+}
+
+.dark-theme .bible-chapter {
+  color: white; /* Sets the text color of bible-chapter elements within dark-theme to white */
+}

@@ -2,10 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectVerses, selectChapterText, fetchChapterText, fetchVerses } from '../bibleSlice';
+import { toggleTheme } from '../themeSlice';
 
 
 const VersePage = () => {
+    const theme = useSelector((state) => state.theme);
     const dispatch = useDispatch();
+    const handleThemeChange = () => {
+      dispatch(toggleTheme());
+    }
     const verses = useSelector(selectVerses);
     const chapterText = useSelector(selectChapterText);
     const { version: bibleId, abbr: abbreviation, book: bookId, chapter: chapterId, verse: verseId } = useParams();
@@ -30,7 +35,7 @@ const VersePage = () => {
 
    
   return (
-    <div>
+    <div className={`content-container ${theme}`}>
      <header>
         <div className="container">
           <h1>
@@ -40,6 +45,7 @@ const VersePage = () => {
             </a>
           </h1>
         </div>
+        <button onClick={handleThemeChange} className="themeButton">Toggle Theme</button>
       </header>
       <div className="subheader">
         <div className="container flex">
@@ -53,11 +59,12 @@ const VersePage = () => {
         <h4 className="list-heading">
           <span>Select a Verse</span>
         </h4>
-        <div className="list-container numeric-list">
-        <ul style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+        <div className="list-container numeric-list" style={{ color: theme === 'dark' ? 'white' : 'black' }}>
+        <ul style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap',
+         color: theme === 'dark' ? 'white' : 'black' }}>
             {verses.map((verse) => (
               <li key={verse.id} className='grid'>
-              <a href={`/scripture/${bibleId}/${abbreviation}/${bookId}/${chapterId}/${verse.id}`}>
+              <a href={`/scripture/${bibleId}/${abbreviation}/${bookId}/${chapterId}/${verse.id}`} style={{ color: theme === 'dark' ? 'white' : 'black' }}>
                 {verse.reference}
                 </a>
               </li>
@@ -65,7 +72,7 @@ const VersePage = () => {
           </ul>
         </div>
       </main>
-      <div className="eb-container" id="chapter-text">
+      <div className="eb-container" id="chapter-text" style={{ color: theme === 'dark' ? 'white' : 'black' }}>
       {chapterText && <div dangerouslySetInnerHTML={createMarkup(chapterText.content)} />}
       </div>
       <button className="back-button" onClick={() => navigate(-1)}>Back</button>

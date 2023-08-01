@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../main.css';
+import { toggleTheme } from '../themeSlice';
 
 const HomePage = () => {
+  const theme = useSelector((state) => state.theme);
+  const dispatch = useDispatch();
+
+  const handleThemeChange = () => {
+    dispatch(toggleTheme());
+  }
+
   const [bibles, setBibles] = useState([]);
   const apiKey = '5875acef5839ebced9e807466f8ee3ce';
 
@@ -43,7 +52,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className='.list-container.section-list'>
+    <div className={`list-container.section-list ${theme}`}>
       <header>
         <div className="container">
           <h1>
@@ -55,6 +64,7 @@ const HomePage = () => {
             </a>
           </h1>
         </div>
+        <button onClick={handleThemeChange} className="themeButton">Toggle Theme</button>
       </header>
       <div className="subheader">
         <div className="container flex">
@@ -70,10 +80,11 @@ const HomePage = () => {
             <h4 className="list-heading">
               <span>{language}</span>
             </h4>
-            <ul style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "20px" }}>
+            <ul style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "20px", color: theme === 'dark' ? 'white' : 'black' }}>
               {versions.map((version) => (
                 <li key={version.id} className='.list-container.section-list'>
-                  <Link to={`/book?version=${version.id}&abbr=${version.abbreviation}`}>
+                  <Link to={`/book?version=${version.id}&abbr=${version.abbreviation}`}
+                  style={{ color: theme === 'dark' ? 'white' : 'black' }}>
                     <abbr className=".list-container.section-list" title={version.name}>
                       {version.abbreviation}
                     </abbr>

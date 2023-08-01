@@ -20,7 +20,6 @@ const App = () => {
         <Route path="/chapter/:version/:abbr/:book" element={<ChapterPage />} />
         <Route path="/verse/:version/:abbr/:book/:chapter" element={<VersePage />} />
         <Route path="/scripture/:bibleId/:version/:abbr/:book/:verseId" element={<ScripturePage />} />
-        
   </Routes>  
   </Router>
   </Provider>

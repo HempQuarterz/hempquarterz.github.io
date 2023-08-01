@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
 import { useLocation, useParams, useNavigate  } from 'react-router-dom';
 import axios from 'axios';
+import { toggleTheme } from '../themeSlice';
 
 const BookPage = () => {
+  const theme = useSelector((state) => state.theme);
   const [bookList, setBookList] = useState([]);
   const location = useLocation();
   const bibleVersionID = new URLSearchParams(location.search).get('version');
   const abbreviation = new URLSearchParams(location.search).get('abbr');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleThemeChange = () => {
+    dispatch(toggleTheme());
+  }
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -35,18 +43,18 @@ const BookPage = () => {
 
 
   return (
-    <div>
+    <div className={`list-container.section-list ${theme}`}>
       <header>
         <div className="container">
           <h1>
             <a className="flex" href="/">
               <span className="logo" title="HimQuarterz">
-            
               </span>
               <span>HimQuarterz Bible App</span>
             </a>
           </h1>
         </div>
+        <button onClick={handleThemeChange} className="themeButton">Toggle Theme</button>
       </header>
       <div className="subheader">
         <div className="container flex">
@@ -61,10 +69,11 @@ const BookPage = () => {
           <span>Select a Book</span>
         </h4>
         <div className="list-container">
-          <ul>
+        <ul style={{ color: theme === 'dark' ? 'white' : 'black' }}>
             {bookList.map((book) => (
               <li key={book.id}>
-                <a href={`/chapter/${bibleVersionID}/${abbreviation}/${book.id}`}>
+                <a href={`/chapter/${bibleVersionID}/${abbreviation}/${book.id}`}
+                style={{ color: theme === 'dark' ? 'white' : 'black' }}>
                   {book.name}
                 </a>
               </li>
