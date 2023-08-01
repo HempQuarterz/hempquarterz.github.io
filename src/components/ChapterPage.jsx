@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { toggleTheme } from '../themeSlice';
 
 const ChapterPage = () => {
@@ -13,7 +12,7 @@ const ChapterPage = () => {
   }
 
     const [chapterList, setChapterList] = useState([]);
-    const [chapterContent, setChapterContent] = useState([]);
+
     const { version: bibleId, abbr: abbreviation, book: bookId } = useParams();
     const navigate = useNavigate();
   
@@ -50,22 +49,22 @@ const ChapterPage = () => {
     }
   }, [bibleId, abbreviation, bookId]);
 
-  const handleChapterSelect = async (chapterId) => {
-    try {
-        const response = await fetch(
-            `https://api.scripture.api.bible/v1/bible/${bibleId}/chapters/${chapterId}`,
-        {
-            headers: { 
-                'api-key': `5875acef5839ebced9e807466f8ee3ce`,
-            },
-         }
-        );
+//   const handleChapterSelect = async (chapterId) => {
+//     try {
+//         const response = await fetch(
+//             `https://api.scripture.api.bible/v1/bible/${bibleId}/chapters/${chapterId}`,
+//         {
+//             headers: { 
+//                 'api-key': `5875acef5839ebced9e807466f8ee3ce`,
+//             },
+//          }
+//         );
 
-        setChapterContent(response.data);
-    } catch (error) {
-        console.error('Error fetching chapter content', error);
-    }
-};
+//         setChapterContent(response.data);
+//     } catch (error) {
+//         console.error('Error fetching chapter content', error);
+//     }
+// };
 
   return (
     <div className={`list-container.section-list ${theme}`}>

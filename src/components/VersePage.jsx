@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectVerses, selectChapterText, fetchChapterText, fetchVerses } from '../bibleSlice';
@@ -13,7 +13,7 @@ const VersePage = () => {
     }
     const verses = useSelector(selectVerses);
     const chapterText = useSelector(selectChapterText);
-    const { version: bibleId, abbr: abbreviation, book: bookId, chapter: chapterId, verse: verseId } = useParams();
+    const { version: bibleId, abbr: abbreviation, book: bookId, chapter: chapterId } = useParams();
     const navigate = useNavigate();
 
   useEffect(() => {

@@ -11,7 +11,7 @@ const ScripturePage = () => {
     dispatch(toggleTheme());
   }
   const verse = useSelector(selectVerses);
-  const { bibleId, version, abbr, book, verseId } = useParams();
+  const { bibleId, verseId } = useParams();
   const navigate = useNavigate();
  
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { useLocation, useParams, useNavigate  } from 'react-router-dom';
+import { useLocation, useNavigate  } from 'react-router-dom';
 import axios from 'axios';
 import { toggleTheme } from '../themeSlice';
 
