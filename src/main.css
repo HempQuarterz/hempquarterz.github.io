@@ -330,6 +330,7 @@ body.basic_index #select-prompt, body.basic_verse-selected #select-prompt, body.
 }
 .list-container.numeric-list ol {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;

@@ -34,7 +34,7 @@ const ScripturePage = () => {
         <span>Verse Content</span>
       </h4>
       <div className="content-container">
-        <p>{verse}</p>
+        <p>{verse.content}</p>
       </div>
     </main>
   </div>

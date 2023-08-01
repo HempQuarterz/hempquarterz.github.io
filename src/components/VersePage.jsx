@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectVerses, selectChapterText, fetchVerse, fetchChapterText, fetchVerses } from '../bibleSlice';
+import { selectVerses, selectChapterText, fetchChapterText, fetchVerses } from '../bibleSlice';
+
 
 const VersePage = () => {
     const dispatch = useDispatch();
@@ -21,6 +22,10 @@ const VersePage = () => {
         dispatch(fetchChapterText({ bibleId, bookId, chapterId }));
       }
     }, [dispatch, bibleId, bookId, chapterId, abbreviation]);
+
+    const createMarkup = (htmlString) => {
+      return { __html: htmlString };
+    };
 
    
   return (
@@ -48,10 +53,10 @@ const VersePage = () => {
           <span>Select a Verse</span>
         </h4>
         <div className="list-container numeric-list">
-          <ul>
+        <ul style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             {verses.map((verse) => (
-              <li key={verse.id}>
-              <a href={`/scripture/${bibleId}/${abbreviation}/${bookId}/${chapterId}/${verse.id}`}>
+              <li key={verse.id} className='grid'>
+              <a href={`/scripture/${bibleId}/${abbreviation}/${bookId}/${chapterId}/${verseId}`}>
                 {verse.reference}
                 </a>
               </li>
@@ -60,7 +65,7 @@ const VersePage = () => {
         </div>
       </main>
       <div className="eb-container" id="chapter-text">
-        {chapterText && chapterText.content}
+      {chapterText && <div dangerouslySetInnerHTML={createMarkup(chapterText.content)} />}
       </div>
     </div>
   );

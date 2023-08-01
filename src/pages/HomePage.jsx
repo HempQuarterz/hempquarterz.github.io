@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import '../main.css';
 
 const HomePage = () => {
   const [bibles, setBibles] = useState([]);
@@ -42,7 +43,7 @@ const HomePage = () => {
   };
 
   return (
-    <div>
+    <div className='.list-container.section-list'>
       <header>
         <div className="container">
           <h1>
@@ -63,23 +64,23 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <main className="container">
+      <main className=".list-container.section-list">
         {Object.entries(bibles).map(([language, versions]) => (
-          <div key={language}>
+          <div key={language} className='.list-container.section-list'>
             <h4 className="list-heading">
               <span>{language}</span>
             </h4>
-            <ul>
+            <ul style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "20px" }}>
               {versions.map((version) => (
-                <li key={version.id}>
+                <li key={version.id} className='.list-container.section-list'>
                   <Link to={`/book?version=${version.id}&abbr=${version.abbreviation}`}>
-                    <abbr className="bible-version-abbr" title={version.name}>
+                    <abbr className=".list-container.section-list" title={version.name}>
                       {version.abbreviation}
                     </abbr>
-                    <span>
-                      <span className="bible-version-name">{version.name}</span>
+                    <span className='.list-container.section-list'>
+                      <span className="list-container.bible-list">{version.name}</span>
                       {version.description && (
-                        <span className="bible-version-desc">{version.description}</span>
+                        <span className="list-container.bible-list">{version.description}</span>
                       )}
                     </span>
                   </Link>

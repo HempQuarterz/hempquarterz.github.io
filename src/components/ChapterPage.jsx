@@ -16,7 +16,7 @@ const ChapterPage = () => {
     const fetchChapters = async () => {
       try {
         const response = await fetch(
-          `https://api.scripture.api.bible/v1/bibles/0c2ff0a5c8b9069c-01/books/MRK/chapters`,
+          `https://api.scripture.api.bible/v1/bibles/${bibleId}/books/${bookId}/chapters`,
           {
             headers: {
               'api-key': `5875acef5839ebced9e807466f8ee3ce`, 
@@ -83,7 +83,7 @@ const ChapterPage = () => {
           <span>Select a Chapter</span>
         </h4>
         <div className="list-container numeric-list">
-          <ul>
+        <ul style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             {chapterList.map((chapter) => (
               <li key={chapter.id}>
                 <a href={`/verse/${bibleId}/${abbreviation}/${bookId}/${chapter.id}`}>
