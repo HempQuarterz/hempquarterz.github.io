@@ -12,7 +12,7 @@ const ChapterPage = () => {
   }
 
     const [chapterList, setChapterList] = useState([]);
-    const [setChapterContent] = useState([]);
+    const [chapterContent, setChapterContent] = useState([]);
     const { version: bibleId, abbr: abbreviation, book: bookId } = useParams();
     const { chapterId } = useParams();
     const navigate = useNavigate();
@@ -61,18 +61,22 @@ const ChapterPage = () => {
             },
           }
         );
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
     
-        setChapterContent(response.data);
+        const data = await response.json();
+        setChapterContent(data.data);
       } catch (error) {
         console.error('Error fetching chapter content', error);
       }
     };
   
-    
     if (bibleId && chapterId) {
       fetchChapterContent();
     }
-  }, [bibleId, chapterId]); 
+  }, [bibleId, chapterId, setChapterContent]); 
   
 
   return (
