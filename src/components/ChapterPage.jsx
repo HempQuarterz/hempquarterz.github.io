@@ -117,6 +117,9 @@ const ChapterPage = () => {
             ))}
           </ul>
         </div>
+        {chapterContent && chapterContent.map((verse, index) => (
+      <p key={index}>{verse}</p>
+        ))}
       </main>
       <button className="back-button" onClick={() => navigate(-1)}>Back</button>
     </div>
