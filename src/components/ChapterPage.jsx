@@ -68,11 +68,11 @@ const ChapterPage = () => {
       }
     };
   
-    // Call the fetch function if bibleId and chapterId are defined
+    
     if (bibleId && chapterId) {
       fetchChapterContent();
     }
-  }, [bibleId, chapterId]); // fetchChapterContent will be called whenever bibleId or chapterId changes
+  }, [bibleId, chapterId]); 
   
 
   return (
