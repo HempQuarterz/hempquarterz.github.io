@@ -12,8 +12,9 @@ const ChapterPage = () => {
   }
 
     const [chapterList, setChapterList] = useState([]);
-
+    const [setChapterContent] = useState([]);
     const { version: bibleId, abbr: abbreviation, book: bookId } = useParams();
+    const { chapterId } = useParams();
     const navigate = useNavigate();
   
     useEffect(() => {
@@ -49,22 +50,30 @@ const ChapterPage = () => {
     }
   }, [bibleId, abbreviation, bookId]);
 
-//   const handleChapterSelect = async (chapterId) => {
-//     try {
-//         const response = await fetch(
-//             `https://api.scripture.api.bible/v1/bible/${bibleId}/chapters/${chapterId}`,
-//         {
-//             headers: { 
-//                 'api-key': `5875acef5839ebced9e807466f8ee3ce`,
-//             },
-//          }
-//         );
-
-//         setChapterContent(response.data);
-//     } catch (error) {
-//         console.error('Error fetching chapter content', error);
-//     }
-// };
+  useEffect(() => {
+    const fetchChapterContent = async () => {
+      try {
+        const response = await fetch(
+          `https://api.scripture.api.bible/v1/bible/${bibleId}/chapters/${chapterId}`,
+          {
+            headers: { 
+              'api-key': `5875acef5839ebced9e807466f8ee3ce`,
+            },
+          }
+        );
+    
+        setChapterContent(response.data);
+      } catch (error) {
+        console.error('Error fetching chapter content', error);
+      }
+    };
+  
+    // Call the fetch function if bibleId and chapterId are defined
+    if (bibleId && chapterId) {
+      fetchChapterContent();
+    }
+  }, [bibleId, chapterId]); // fetchChapterContent will be called whenever bibleId or chapterId changes
+  
 
   return (
     <div className={`list-container.section-list ${theme}`}>
