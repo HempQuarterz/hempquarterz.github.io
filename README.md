@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# HimQuarterz Bible App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Bible reading app built with React, Redux, and the Scripture API. This app provides users with the ability to read various versions of the Bible, and offers features like choosing different chapters, and a light or dark theme.
 
-## Available Scripts
+## Technologies Used
 
-In the project directory, you can run:
+- **React:** A JavaScript library for building user interfaces.
+- **React Router:** A collection of navigational components for React apps.
+- **Redux:** A predictable state container for JavaScript apps.
+- **Axios:** Promise-based HTTP client for the browser and Node.js.
+- **Scripture API:** An API providing access to various versions of the Bible.
 
-### `npm start`
+## Approach Taken
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This app uses Redux for state management, with different slices of state for the theme, verses, chapters, and other relevant parts of the app. Routing is done using React Router, with parameters used to indicate the version, book, and chapter of the Bible currently being viewed.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The Scripture API is accessed using axios, with the data stored in Redux state and then displayed on the screen.
 
-### `npm test`
+## [Live Site](https://64c9e4ada3ecda60c8779e56--sweet-blancmange-a0c993.netlify.app/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Here is the link to the live site. Note that the site may not be accessible if the server is down or the link has changed.
 
-### `npm run build`
+## Usage Instructions
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To use this app, navigate to the live site, select a version of the Bible, then select a book, and finally select a chapter to read.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Unsolved Problems
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Currently, there are no unsolved problems in this project. However, future enhancements might include adding more interactive features, improving the UI/UX design, and integrating more versions of the Bible.
