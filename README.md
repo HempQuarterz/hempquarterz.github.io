@@ -1,6 +1,6 @@
 # HimQuarterz Bible App
 
-A Bible reading app built with React, Redux, and the Scripture API. This app provides users with the ability to read various versions of the Bible, and offers features like choosing different chapters, and a light or dark theme.
+A Bible reading app built with React, Redux, and the Scripture API. This app provides users with the ability to read various versions of the Bible in different languages. It offers features like choosing different chapters and verses with a light or dark theme.
 
 ## Technologies Used
 
