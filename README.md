@@ -6,13 +6,13 @@ A Bible reading app built with React, Redux, and the Scripture API. This app pro
 
 - **React:** A JavaScript library for building user interfaces.
 - **React Router:** A collection of navigational components for React apps.
-- **Redux:** A predictable state container for JavaScript apps.
+- **Redux Toolkit:** A predictable state container for JavaScript apps.
 - **Axios:** Promise-based HTTP client for the browser and Node.js.
 - **Scripture API:** An API providing access to various versions of the Bible.
 
 ## Approach Taken
 
-This app uses Redux for state management, with different slices of state for the theme, verses, chapters, and other relevant parts of the app. Routing is done using React Router, with parameters used to indicate the version, book, and chapter of the Bible currently being viewed.
+This app uses Redux Toolkit for state management, with different slices of state for the theme, verses, chapters, and other relevant parts of the app. Routing is done using React Router, with parameters used to indicate the version, book, and chapter of the Bible currently being viewed.
 
 The Scripture API is accessed using axios, with the data stored in Redux state and then displayed on the screen.
 
