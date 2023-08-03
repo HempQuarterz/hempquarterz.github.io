@@ -16,7 +16,7 @@ This app uses Redux Toolkit for state management, with different slices of state
 
 The Scripture API is accessed using axios, with the data stored in Redux state and then displayed on the screen.
 
-## [Live Site](https://64c9e4ada3ecda60c8779e56--sweet-blancmange-a0c993.netlify.app/)
+## [Live Site][https://himquarterz.com/]
 
 Here is the link to the live site. Note that the site may not be accessible if the server is down or the link has changed.
 
