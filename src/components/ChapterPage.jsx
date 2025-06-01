@@ -1,127 +1,146 @@
+// components/ChapterPage.jsx - Modern chapter selection with grid layout
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-import { toggleTheme } from '../themeSlice';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 
 const ChapterPage = () => {
-  const theme = useSelector((state) => state.theme);
-  const dispatch = useDispatch();
-
-  const handleThemeChange = () => {
-    dispatch(toggleTheme());
-  }
-
-    const [chapterList, setChapterList] = useState([]);
-    const [chapterContent, setChapterContent] = useState([]);
-    const { version: bibleId, abbr: abbreviation, book: bookId } = useParams();
-    const { chapterId } = useParams();
-    const navigate = useNavigate();
+  const [chapters, setChapters] = useState([]);
+  const [bookName, setBookName] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
-    useEffect(() => {
-        console.log('Bible:', bibleId);
-        console.log('Abbreviation:', abbreviation);
- 
+  const { version: bibleId, abbr: abbreviation, book: bookId } = useParams();
+  const navigate = useNavigate();
 
+  useEffect(() => {
     const fetchChapters = async () => {
+      if (!bibleId || !bookId) {
+        setError('Missing required parameters');
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch(
+        setLoading(true);
+        setError(null);
+        
+        const response = await axios.get(
           `https://api.scripture.api.bible/v1/bibles/${bibleId}/books/${bookId}/chapters`,
           {
             headers: {
-              'api-key': `5875acef5839ebced9e807466f8ee3ce`, 
-            },
-          }
-        );
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();  
-        console.log("response", data);
-
-        setChapterList(data.data);
-      } catch (error) {
-        console.error('Error fetching chapters', error);
-      }
-    };
-
-    if (bibleId && abbreviation && bookId) {
-      fetchChapters();
-    }
-  }, [bibleId, abbreviation, bookId]);
-
-  useEffect(() => {
-    const fetchChapterContent = async () => {
-      try {
-        const response = await fetch(
-          `https://api.scripture.api.bible/v1/bible/${bibleId}/chapters/${chapterId}`,
-          {
-            headers: { 
-              'api-key': `5875acef5839ebced9e807466f8ee3ce`,
+              'X-API-Key': '5875acef5839ebced9e807466f8ee3ce',
+              'accept': 'application/json',
             },
           }
         );
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+        const chapterData = response.data.data || [];
+        
+        // Filter out intro chapters (usually have 'intro' in the ID)
+        const regularChapters = chapterData.filter(
+          chapter => !chapter.id.includes('intro')
+        );
+
+        setChapters(regularChapters);
+        
+        // Extract book name from the first chapter reference
+        if (regularChapters.length > 0 && regularChapters[0].reference) {
+          const bookNameMatch = regularChapters[0].reference.match(/^([^0-9]+)/);
+          if (bookNameMatch) {
+            setBookName(bookNameMatch[1].trim());
+          }
         }
-    
-        const data = await response.json();
-        setChapterContent(data.data);
       } catch (error) {
-        console.error('Error fetching chapter content', error);
+        console.error('Error fetching chapters:', error);
+        setError('Failed to load chapters. Please try again.');
+      } finally {
+        setLoading(false);
       }
     };
-  
-    if (bibleId && chapterId) {
-      fetchChapterContent();
-    }
-  }, [bibleId, chapterId, setChapterContent]); 
-  
+
+    fetchChapters();
+  }, [bibleId, bookId]);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ textAlign: 'center', padding: '2rem' }}>
+        <h2 style={{ color: 'var(--error-color)', marginBottom: '1rem' }}>Error</h2>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>{error}</p>
+        <button className="btn btn-primary" onClick={() => navigate(-1)}>
+          Go Back
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className={`list-container.section-list ${theme}`}>
-      <header>
-        <div className="container">
-          <h1>
-            <a className="flex" href="/">
-              <span className="logo" title="HimQuarterz"></span>
-              <span>HimQuarterz Bible App</span>
-            </a>
-          </h1>
-        </div>
-        <button onClick={handleThemeChange} className="themeButton">Toggle Theme</button>
-      </header>
-      <div className="subheader">
-        <div className="container flex">
-          <div className="subheadings">
-            <h2>Viewing:</h2>
-            <h3>{bookId}</h3>
-          </div>
-        </div>
+    <div className="container" style={{ padding: '2rem' }}>
+      {/* Page Header */}
+      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        <h1 style={{ 
+          fontFamily: "'Playfair Display', serif", 
+          fontSize: '2rem',
+          marginBottom: '0.5rem'
+        }}>
+          {bookName || bookId} Chapters
+        </h1>
+        <p style={{ color: 'var(--text-secondary)' }}>
+          {abbreviation} Bible
+        </p>
       </div>
-      <main className="container">
-        <h4 className="list-heading">
-          <span>Select a Chapter</span>
-        </h4>
-        <div className="list-container numeric-list">
-        <ul style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap',
-        color: theme === 'dark' ? 'white' : 'black' }}>
-            {chapterList.map((chapter) => (
-              <li key={chapter.id}>
-                <a href={`/verse/${bibleId}/${abbreviation}/${bookId}/${chapter.id}`}
-                style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  {chapter.number} - {chapter.reference}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        {chapterContent && chapterContent.map((verse, index) => (
-      <p key={index}>{verse}</p>
+
+      {/* Chapters Grid */}
+      <div className="chapter-grid fade-in">
+        {chapters.map((chapter) => (
+          <Link
+            key={chapter.id}
+            to={`/verse/${bibleId}/${abbreviation}/${bookId}/${chapter.id}`}
+            className="chapter-card"
+          >
+            <div style={{ 
+              fontSize: '1.5rem', 
+              fontWeight: '600',
+              color: 'var(--primary-color)'
+            }}>
+              {chapter.number}
+            </div>
+          </Link>
         ))}
-      </main>
-      <button className="back-button" onClick={() => navigate(-1)}>Back</button>
+      </div>
+
+      {chapters.length === 0 && (
+        <div style={{ 
+          textAlign: 'center', 
+          color: 'var(--text-secondary)',
+          padding: '3rem'
+        }}>
+          No chapters found for this book.
+        </div>
+      )}
+
+      {/* Navigation */}
+      <div style={{ 
+        marginTop: '3rem', 
+        display: 'flex', 
+        justifyContent: 'center',
+        gap: '1rem'
+      }}>
+        <button 
+          className="btn btn-secondary" 
+          onClick={() => navigate(`/book?version=${bibleId}&abbr=${abbreviation}`)}
+        >
+          ← Back to Books
+        </button>
+      </div>
     </div>
   );
 };
