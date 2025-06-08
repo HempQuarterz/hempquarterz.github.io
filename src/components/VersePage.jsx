@@ -41,7 +41,7 @@ const VersePage = () => {
         chapterText,
         loading,
         error,
-        versesLength: verses ? verses.length : 0,
+        versesLength: verses.length,
         hasChapterText: !!chapterText
       });
     }, [verses, chapterText, loading, error]);

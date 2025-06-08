@@ -6,6 +6,7 @@
   REACT_APP_BIBLE_API_KEY = "5875acef5839ebced9e807466f8ee3ce"
   NODE_VERSION = "18"
   NODE_OPTIONS = "--max-old-space-size=4096"
+  CI = "false"
 
 [[redirects]]
   from = "/*"
