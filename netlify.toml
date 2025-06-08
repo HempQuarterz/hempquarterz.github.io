@@ -1,0 +1,13 @@
+[build]
+  command = "CI=false npm run build"
+  publish = "build"
+
+[build.environment]
+  REACT_APP_BIBLE_API_KEY = "5875acef5839ebced9e807466f8ee3ce"
+  NODE_VERSION = "18"
+  NODE_OPTIONS = "--max-old-space-size=4096"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

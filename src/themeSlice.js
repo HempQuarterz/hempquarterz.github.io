@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // Check for saved theme preference or default to 'light'
-const savedTheme = localStorage.getItem('theme') || 'light';
-document.documentElement.setAttribute('data-theme', savedTheme);
+const savedTheme = typeof window !== 'undefined' ? (localStorage.getItem('theme') || 'light') : 'light';
+if (typeof window !== 'undefined' && document.documentElement) {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+}
 
 const themeSlice = createSlice({
   name: 'theme',
