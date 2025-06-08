@@ -1,0 +1,486 @@
+@import './variables.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap');
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background-color var(--transition-base), color var(--transition-base);
+  min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Merriweather', serif;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: var(--space-md);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1.125rem; }
+
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+  h4 { font-size: 1.25rem; }
+}
+
+/* Links */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-secondary);
+}
+
+.btn-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: var(--radius-full);
+}
+
+/* Cards */
+.card {
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-lg);
+  transition: all var(--transition-base);
+  border: 1px solid var(--border-color);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* Header */
+.modern-header {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-dropdown);
+  transition: all var(--transition-base);
+}
+
+[data-theme="dark"] .modern-header {
+  background: rgba(17, 24, 39, 0.8);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) 0;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.logo {
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* Loading Skeleton */
+.skeleton {
+  background: linear-gradient(90deg, 
+    var(--bg-tertiary) 0%, 
+    var(--bg-secondary) 50%, 
+    var(--bg-tertiary) 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: var(--space-sm);
+}
+
+.skeleton-title {
+  height: 2rem;
+  width: 60%;
+  margin-bottom: var(--space-md);
+}
+
+/* Grid Layouts */
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.grid-cols-1 { grid-template-columns: repeat(1, 1fr); }
+.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 768px) {
+  .grid-cols-2,
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .grid-cols-3,
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Transitions */
+.fade-in {
+  animation: fadeIn var(--transition-slow) ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  position: relative;
+  width: 3rem;
+  height: 1.75rem;
+  background-color: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.theme-toggle-slider {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: var(--primary);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.875rem;
+}
+
+[data-theme="dark"] .theme-toggle-slider {
+  transform: translateX(1.25rem);
+}
+
+/* Bottom Navigation (Mobile) */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  padding: var(--space-sm);
+  display: none;
+  z-index: var(--z-dropdown);
+}
+
+@media (max-width: 768px) {
+  .bottom-nav {
+    display: block;
+  }
+  
+  main {
+    padding-bottom: 4rem;
+  }
+}
+
+.bottom-nav-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.nav-item:hover,
+.nav-item.active {
+  color: var(--primary);
+}
+
+/* Verse Card */
+.verse-card {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.verse-card::before {
+  content: '"';
+  position: absolute;
+  top: -2rem;
+  left: 1rem;
+  font-size: 8rem;
+  opacity: 0.1;
+  font-family: 'Merriweather', serif;
+}
+
+.verse-content {
+  font-family: 'Merriweather', serif;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  position: relative;
+  z-index: 1;
+}
+
+/* Verse Spacing - Each verse on its own line */
+.verse-content p {
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.verse-content .v {
+  display: inline-block;
+  margin-top: 0;
+}
+
+.verse-content .p {
+  margin-bottom: 1rem;
+  text-indent: 0;
+  display: block;
+}
+
+.verse-content .q {
+  margin: 0;
+  padding-left: 2rem;
+  font-style: italic;
+}
+
+.verse-content .s {
+  font-weight: 600;
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+  font-size: 1.25rem;
+}
+
+/* Verse Numbers - In square brackets */
+.verse-content sup.v {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  margin-left: 0;
+  vertical-align: baseline;
+  display: inline-block;
+}
+
+.verse-content sup.v::before {
+  content: '[';
+}
+
+.verse-content sup.v::after {
+  content: '] ';
+}
+
+/* Override sup default styling */
+.verse-content sup {
+  vertical-align: baseline;
+  font-size: 1rem;
+  top: 0;
+  position: relative;
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* Each verse starts on a new line */
+.verse-content > * {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Minimal paragraph breaks */
+.verse-content br {
+  display: block;
+  margin: 0;
+  content: "";
+}
+
+/* Each verse on its own line */
+.verse-content span[data-number] {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Add padding to the verse card for better readability */
+.verse-card .verse-content {
+  padding: 0 0.5rem;
+}
+
+/* Style verse text as block */
+.verse-content .verse-text {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Blank line between verse groups */
+.verse-content .verse-group-break {
+  display: block;
+  height: 1rem;
+  margin: 0;
+}
+
+/* No space between end of verse and next verse number */
+.verse-content sup.v:not(:first-child),
+.verse-content span.v:not(:first-child) {
+  margin-left: 0; /* No space before verse number */
+}
+
+/* Handle verse numbers that appear as spans */
+.verse-content span.v {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  margin-left: 0;
+  display: inline-block;
+}
+
+.verse-content span.v::before {
+  content: '[';
+}
+
+.verse-content span.v::after {
+  content: '] ';
+}
+
+/* Ensure all verse number elements have consistent spacing */
+.verse-content [class*="v-"],
+.verse-content .verse-number {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+  margin-left: 0;
+  display: inline-block;
+}
+
+.verse-content [class*="v-"]::before,
+.verse-content .verse-number::before {
+  content: '[';
+}
+
+.verse-content [class*="v-"]::after,
+.verse-content .verse-number::after {
+  content: '] ';
+}
+
+/* Spinner */
+.spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid var(--bg-tertiary);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -1,38 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import '../main.css';
-import { toggleTheme } from '../themeSlice';
+import '../styles/modern.css';
+import { API_CONFIG, getApiHeaders } from '../config/api';
+import ModernHeader from '../components/ModernHeader';
+import Loading from '../components/Loading';
 
 const HomePage = () => {
-  const theme = useSelector((state) => state.theme);
-  const dispatch = useDispatch();
-
-  const handleThemeChange = () => {
-    dispatch(toggleTheme());
-  }
-
   const [bibles, setBibles] = useState([]);
-  const apiKey = '5875acef5839ebced9e807466f8ee3ce';
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchBibles = async () => {
       try {
-        const response = await axios.get('https://api.scripture.api.bible/v1/bibles', {
-          headers: {
-            'api-key': apiKey,
-          },
+        setLoading(true);
+        const response = await axios.get(`${API_CONFIG.BASE_URL}/bibles`, {
+          headers: getApiHeaders(),
         });
         const sortedBibles = sortVersionsByLanguage(response.data.data);
         setBibles(sortedBibles);
       } catch (error) {
         console.error('Error fetching Bibles', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchBibles();
-  }, [apiKey]);
+  }, []);
 
   const sortVersionsByLanguage = (bibleVersionList) => {
     let sortedVersions = {};
@@ -51,55 +47,105 @@ const HomePage = () => {
     return sortedVersions;
   };
 
+  const filteredBibles = searchTerm
+    ? Object.entries(bibles).reduce((acc, [language, versions]) => {
+        const filtered = versions.filter(
+          (v) => 
+            v.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            v.abbreviation.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        if (filtered.length > 0) acc[language] = filtered;
+        return acc;
+      }, {})
+    : bibles;
+
   return (
-    <div className={`list-container.section-list ${theme}`}>
-      <header>
-        <div className="container">
-          <h1>
-            <a className="flex" href="/">
-              <span className="logo" title="American Bible Society">
-                
-              </span>
-              <span>HimQuarterz Bible App</span>
-            </a>
-          </h1>
+    <div className="fade-in">
+      <ModernHeader title="ForYah Bible" />
+      
+      <main className="container" style={{ paddingTop: '2rem' }}>
+        {/* Search Bar */}
+        <div style={{ marginBottom: '2rem' }}>
+          <input
+            type="text"
+            placeholder="Search for a Bible version..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.75rem 1rem',
+              fontSize: '1rem',
+              borderRadius: 'var(--radius-lg)',
+              border: '1px solid var(--border-color)',
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
+              transition: 'all var(--transition-fast)'
+            }}
+          />
         </div>
-        <button onClick={handleThemeChange} className="themeButton">Toggle Theme</button>
-      </header>
-      <div className="subheader">
-        <div className="container flex">
-          <div className="subheadings">
-            <h2>Select a:</h2>
-            <h3>Bible</h3>
-          </div>
+
+        {/* Welcome Card */}
+        <div className="card" style={{ marginBottom: '2rem', background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)', color: 'white' }}>
+          <h2 style={{ marginBottom: '0.5rem' }}>Welcome to ForYah Bible</h2>
+          <p style={{ opacity: 0.9 }}>Select a Bible version to start reading</p>
         </div>
-      </div>
-      <main className=".list-container.section-list">
-        {Object.entries(bibles).map(([language, versions]) => (
-          <div key={language} className='.list-container.section-list'>
-            <h4 className="list-heading">
-              <span>{language}</span>
-            </h4>
-            <ul style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "20px", color: theme === 'dark' ? 'white' : 'black' }}>
-              {versions.map((version) => (
-                <li key={version.id} className='.list-container.section-list'>
-                  <Link to={`/book?version=${version.id}&abbr=${version.abbreviation}`}
-                  style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                    <abbr className=".list-container.section-list" title={version.name}>
-                      {version.abbreviation}
-                    </abbr>
-                    <span className='.list-container.section-list'>
-                      <span className="list-container.bible-list">{version.name}</span>
+
+        {loading ? (
+          <Loading type="skeleton" />
+        ) : (
+          <div>
+            {Object.entries(filteredBibles).map(([language, versions]) => (
+              <div key={language} style={{ marginBottom: '2rem' }}>
+                <h3 style={{ 
+                  fontSize: '1.25rem', 
+                  marginBottom: '1rem',
+                  color: 'var(--text-secondary)'
+                }}>
+                  {language}
+                </h3>
+                <div className="grid grid-cols-2" style={{ gap: '1rem' }}>
+                  {versions.map((version) => (
+                    <Link 
+                      key={version.id}
+                      to={`/book?version=${version.id}&abbr=${version.abbreviation}`}
+                      className="card"
+                      style={{ 
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        cursor: 'pointer',
+                        display: 'block'
+                      }}
+                    >
+                      <h4 style={{ 
+                        fontSize: '1.125rem', 
+                        marginBottom: '0.5rem',
+                        color: 'var(--primary)'
+                      }}>
+                        {version.abbreviation}
+                      </h4>
+                      <p style={{ 
+                        fontSize: '0.875rem',
+                        color: 'var(--text-secondary)',
+                        marginBottom: '0.25rem'
+                      }}>
+                        {version.name}
+                      </p>
                       {version.description && (
-                        <span className="list-container.bible-list">{version.description}</span>
+                        <p style={{ 
+                          fontSize: '0.75rem',
+                          color: 'var(--text-tertiary)',
+                          lineHeight: '1.4'
+                        }}>
+                          {version.description}
+                        </p>
                       )}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </main>
     </div>
   );

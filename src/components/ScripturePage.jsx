@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectVerses, fetchVerse } from '../bibleSlice';
-import { toggleTheme } from '../themeSlice';
+import { selectSelectedVerse, selectLoading, selectError, fetchVerse } from '../bibleSlice';
+import ModernHeader from './ModernHeader';
+import Loading from './Loading';
+import '../styles/modern.css';
 
 const ScripturePage = () => {
-  const theme = useSelector((state) => state.theme);
   const dispatch = useDispatch();
-  const handleThemeChange = () => {
-    dispatch(toggleTheme());
-  }
-  const verse = useSelector(selectVerses);
-  const { bibleId, verseId } = useParams();
+  const verse = useSelector(selectSelectedVerse);
+  const loading = useSelector(selectLoading);
+  const error = useSelector(selectError);
+  const { bibleId, abbr, book, chapter, verseId } = useParams();
   const navigate = useNavigate();
  
 
@@ -29,28 +29,92 @@ const ScripturePage = () => {
   };
 
   return (
-    <div className={`content-container ${theme}`}>
-    <header>
-      <div className="container">
-        <h1>
-          <a className="flex" href="/">
-            <span className="logo" title="HimQuarterz"></span>
-            <span>HimQuarterz Bible App</span>
-          </a>
-        </h1>
-      </div>
-      <button onClick={handleThemeChange} className="themeButton">Toggle Theme</button>
-    </header>
-    <main className="container">
-      <h4 className="list-heading">
-        <span>Verse Content</span>
-      </h4>
-      <div className="content-container" style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-          {verse && verse.content && <div dangerouslySetInnerHTML={createMarkup(verse.content)} />}
-        </div>
-    </main>
-    <button className='back-button' onClick={() => navigate(-1)}>Back</button>
-  </div>
+    <div className="fade-in">
+      <ModernHeader title="Scripture" />
+      
+      <main className="container" style={{ paddingTop: '2rem' }}>
+        {loading ? (
+          <Loading type="verse" />
+        ) : error ? (
+          <div className="card" style={{ textAlign: 'center', padding: '2rem' }}>
+            <p style={{ color: 'var(--error)' }}>Error loading verse</p>
+            <button 
+              className="btn btn-primary" 
+              style={{ marginTop: '1rem' }}
+              onClick={() => dispatch(fetchVerse({ bibleId, verseId }))}
+            >
+              Retry
+            </button>
+          </div>
+        ) : verse && verse.content ? (
+          <div>
+            <div className="verse-card">
+              <h2 style={{ 
+                marginBottom: '1rem', 
+                fontSize: '1.5rem',
+                color: 'var(--primary)'
+              }}>
+                {verse.reference || verseId}
+              </h2>
+              <div 
+                className="verse-content"
+                dangerouslySetInnerHTML={createMarkup(verse.content)} 
+              />
+            </div>
+            
+            {/* Action Buttons */}
+            <div style={{ 
+              marginTop: '2rem',
+              display: 'flex',
+              gap: '1rem',
+              flexWrap: 'wrap'
+            }}>
+              <button className="btn btn-primary">
+                <span style={{ marginRight: '0.5rem' }}>⭐</span>
+                Save Verse
+              </button>
+              <button className="btn btn-secondary">
+                <span style={{ marginRight: '0.5rem' }}>📤</span>
+                Share
+              </button>
+              <button className="btn btn-secondary">
+                <span style={{ marginRight: '0.5rem' }}>📋</span>
+                Copy
+              </button>
+            </div>
+
+            {/* Navigation */}
+            <div style={{ 
+              marginTop: '3rem',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <button 
+                className="btn btn-secondary"
+                onClick={() => navigate(-1)}
+              >
+                ← Previous
+              </button>
+              <Link 
+                to={`/verse/${bibleId}/${abbr}/${book}/${chapter}`}
+                className="btn btn-secondary"
+                style={{ textDecoration: 'none' }}
+              >
+                View Chapter
+              </Link>
+              <button className="btn btn-secondary">
+                Next →
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="card" style={{ textAlign: 'center', padding: '2rem' }}>
+            <p>No verse content available</p>
+          </div>
+        )}
+      </main>
+    </div>
   );
 };
 

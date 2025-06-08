@@ -1,31 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
-import { useLocation, useNavigate  } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
-import { toggleTheme } from '../themeSlice';
+import { API_CONFIG, getApiHeaders } from '../config/api';
+import ModernHeader from './ModernHeader';
+import Loading from './Loading';
+import '../styles/modern.css';
 
 const BookPage = () => {
-  const theme = useSelector((state) => state.theme);
   const [bookList, setBookList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
   const location = useLocation();
   const bibleVersionID = new URLSearchParams(location.search).get('version');
   const abbreviation = new URLSearchParams(location.search).get('abbr');
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleThemeChange = () => {
-    dispatch(toggleTheme());
-  }
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
-          `https://api.scripture.api.bible/v1/bibles/${bibleVersionID}/books`,
+          `${API_CONFIG.BASE_URL}/bibles/${bibleVersionID}/books`,
           {
-            headers: {
-              'api-key': '5875acef5839ebced9e807466f8ee3ce',
-            },
+            headers: getApiHeaders(),
           }
         );
 
@@ -33,6 +29,8 @@ const BookPage = () => {
       } catch (error) {
         console.error('Error fetching books', error);
         setBookList([]);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -42,46 +40,110 @@ const BookPage = () => {
   }, [bibleVersionID]);
 
 
+  const filteredBooks = bookList.filter(book => 
+    book.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Group books by testament
+  const oldTestament = filteredBooks.filter(book => 
+    ['GEN', 'EXO', 'LEV', 'NUM', 'DEU', 'JOS', 'JDG', 'RUT', '1SA', '2SA', '1KI', '2KI', '1CH', '2CH', 'EZR', 'NEH', 'EST', 'JOB', 'PSA', 'PRO', 'ECC', 'SNG', 'ISA', 'JER', 'LAM', 'EZK', 'DAN', 'HOS', 'JOL', 'AMO', 'OBA', 'JON', 'MIC', 'NAM', 'HAB', 'ZEP', 'HAG', 'ZEC', 'MAL'].includes(book.id)
+  );
+  
+  const newTestament = filteredBooks.filter(book => 
+    ['MAT', 'MRK', 'LUK', 'JHN', 'ACT', 'ROM', '1CO', '2CO', 'GAL', 'EPH', 'PHP', 'COL', '1TH', '2TH', '1TI', '2TI', 'TIT', 'PHM', 'HEB', 'JAS', '1PE', '2PE', '1JN', '2JN', '3JN', 'JUD', 'REV'].includes(book.id)
+  );
+
   return (
-    <div className={`list-container.section-list ${theme}`}>
-      <header>
-        <div className="container">
-          <h1>
-            <a className="flex" href="/">
-              <span className="logo" title="HimQuarterz">
-              </span>
-              <span>HimQuarterz Bible App</span>
-            </a>
-          </h1>
+    <div className="fade-in">
+      <ModernHeader title={abbreviation} />
+      
+      <main className="container" style={{ paddingTop: '2rem' }}>
+        {/* Search Bar */}
+        <div style={{ marginBottom: '2rem' }}>
+          <input
+            type="text"
+            placeholder="Search for a book..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '0.75rem 1rem',
+              fontSize: '1rem',
+              borderRadius: 'var(--radius-lg)',
+              border: '1px solid var(--border-color)',
+              backgroundColor: 'var(--bg-secondary)',
+              color: 'var(--text-primary)',
+              transition: 'all var(--transition-fast)'
+            }}
+          />
         </div>
-        <button onClick={handleThemeChange} className="themeButton">Toggle Theme</button>
-      </header>
-      <div className="subheader">
-        <div className="container flex">
-          <div className="subheadings">
-            <h2>Viewing:</h2>
-            <h3>{abbreviation}</h3>
+
+        {loading ? (
+          <Loading type="skeleton" />
+        ) : (
+          <div>
+            {/* Old Testament */}
+            {oldTestament.length > 0 && (
+              <div style={{ marginBottom: '2rem' }}>
+                <h3 style={{ 
+                  fontSize: '1.25rem', 
+                  marginBottom: '1rem',
+                  color: 'var(--text-secondary)'
+                }}>
+                  Old Testament
+                </h3>
+                <div className="grid grid-cols-3" style={{ gap: '0.75rem' }}>
+                  {oldTestament.map((book) => (
+                    <Link
+                      key={book.id}
+                      to={`/chapter/${bibleVersionID}/${abbreviation}/${book.id}`}
+                      className="card"
+                      style={{ 
+                        textAlign: 'center',
+                        padding: '1rem',
+                        textDecoration: 'none',
+                        color: 'var(--text-primary)'
+                      }}
+                    >
+                      <p style={{ fontWeight: '500' }}>{book.name}</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* New Testament */}
+            {newTestament.length > 0 && (
+              <div>
+                <h3 style={{ 
+                  fontSize: '1.25rem', 
+                  marginBottom: '1rem',
+                  color: 'var(--text-secondary)'
+                }}>
+                  New Testament
+                </h3>
+                <div className="grid grid-cols-3" style={{ gap: '0.75rem' }}>
+                  {newTestament.map((book) => (
+                    <Link
+                      key={book.id}
+                      to={`/chapter/${bibleVersionID}/${abbreviation}/${book.id}`}
+                      className="card"
+                      style={{ 
+                        textAlign: 'center',
+                        padding: '1rem',
+                        textDecoration: 'none',
+                        color: 'var(--text-primary)'
+                      }}
+                    >
+                      <p style={{ fontWeight: '500' }}>{book.name}</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      </div>
-      <main className="container">
-        <h4 className="list-heading">
-          <span>Select a Book</span>
-        </h4>
-        <div className="list-container">
-        <ul style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-            {bookList.map((book) => (
-              <li key={book.id}>
-                <a href={`/chapter/${bibleVersionID}/${abbreviation}/${book.id}`}
-                style={{ color: theme === 'dark' ? 'white' : 'black' }}>
-                  {book.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        )}
       </main>
-      <button className="back-button" onClick={() => navigate(-1)}>Back</button>
     </div>
   );
 };
