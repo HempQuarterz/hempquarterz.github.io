@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectVerses, selectChapterText, selectLoading, selectError, fetchChapterText, fetchVerses } from '../bibleSlice';
@@ -9,7 +9,8 @@ import '../styles/modern.css';
 
 const VersePage = () => {
     const dispatch = useDispatch();
-    const verses = useSelector(selectVerses) || [];
+    const versesData = useSelector(selectVerses);
+    const verses = useMemo(() => versesData || [], [versesData]);
     const chapterText = useSelector(selectChapterText);
     const loading = useSelector(selectLoading);
     const error = useSelector(selectError);
@@ -57,7 +58,6 @@ const VersePage = () => {
         /<sup class="v">(\d+)<\/sup>/g,
         (match, verseNum) => {
           const num = parseInt(verseNum);
-          let extraClass = '';
           // Add line break after every 10th verse
           if (num % 10 === 0 && num !== 0) {
             return `<sup class="v" data-verse-num="${num}">${verseNum}</sup><br class="verse-group-break"/>`;
