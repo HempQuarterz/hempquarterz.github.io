@@ -4,6 +4,11 @@
  */
 
 import { supabase } from '../config/supabase';
+import {
+  restoreVerse,
+  restoreParallelVerse,
+  restoreChapter
+} from './restoration';
 
 /**
  * Get manuscript ID by code
@@ -296,6 +301,58 @@ export async function getBooks(manuscript) {
   }
 }
 
+/**
+ * Get verse with divine name restoration
+ * @param {string} manuscript - Manuscript code ('WLC' or 'WEB')
+ * @param {string} book - Book code
+ * @param {number} chapter - Chapter number
+ * @param {number} verse - Verse number
+ * @returns {Promise<Object>} Verse with restored divine names
+ */
+export async function getRestoredVerse(manuscript, book, chapter, verse) {
+  try {
+    const originalVerse = await getVerse(manuscript, book, chapter, verse);
+    return restoreVerse(originalVerse);
+  } catch (err) {
+    console.error('getRestoredVerse error:', err);
+    throw err;
+  }
+}
+
+/**
+ * Get parallel verse with divine name restoration
+ * @param {string} book - Book code
+ * @param {number} chapter - Chapter number
+ * @param {number} verse - Verse number
+ * @returns {Promise<Object>} Parallel verse with restored divine names
+ */
+export async function getRestoredParallelVerse(book, chapter, verse) {
+  try {
+    const parallelVerse = await getParallelVerse(book, chapter, verse);
+    return restoreParallelVerse(parallelVerse);
+  } catch (err) {
+    console.error('getRestoredParallelVerse error:', err);
+    throw err;
+  }
+}
+
+/**
+ * Get chapter with divine name restoration
+ * @param {string} manuscript - Manuscript code ('WLC' or 'WEB')
+ * @param {string} book - Book code
+ * @param {number} chapter - Chapter number
+ * @returns {Promise<Array>} Chapter verses with restored divine names
+ */
+export async function getRestoredChapter(manuscript, book, chapter) {
+  try {
+    const originalChapter = await getChapter(manuscript, book, chapter);
+    return restoreChapter(originalChapter);
+  } catch (err) {
+    console.error('getRestoredChapter error:', err);
+    throw err;
+  }
+}
+
 // Export all functions
 export default {
   getVerse,
@@ -307,5 +364,8 @@ export default {
   getYHWHVerses,
   getBookVerseCount,
   getBookChapterCount,
-  getBooks
+  getBooks,
+  getRestoredVerse,
+  getRestoredParallelVerse,
+  getRestoredChapter
 };
