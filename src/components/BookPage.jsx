@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import { API_CONFIG, getApiHeaders } from '../config/api';
+import { OLD_TESTAMENT_BOOKS, NEW_TESTAMENT_BOOKS } from '../constants/bibleData';
+import { logApiError } from '../utils/debug';
 import ModernHeader from './ModernHeader';
 import Loading from './Loading';
 import '../styles/modern.css';
@@ -9,26 +11,34 @@ import '../styles/modern.css';
 const BookPage = () => {
   const [bookList, setBookList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const location = useLocation();
   const bibleVersionID = new URLSearchParams(location.search).get('version');
   const abbreviation = new URLSearchParams(location.search).get('abbr');
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchBooks = async () => {
       try {
         setLoading(true);
+        setError(null);
         const response = await axios.get(
           `${API_CONFIG.BASE_URL}/bibles/${bibleVersionID}/books`,
           {
             headers: getApiHeaders(),
+            signal: abortController.signal
           }
         );
 
         setBookList(response.data.data);
-      } catch (error) {
-        console.error('Error fetching books', error);
-        setBookList([]);
+      } catch (err) {
+        if (err.name !== 'AbortError' && err.name !== 'CanceledError') {
+          logApiError(`/bibles/${bibleVersionID}/books`, err);
+          setError('Failed to load books. Please try again.');
+          setBookList([]);
+        }
       } finally {
         setLoading(false);
       }
@@ -37,20 +47,30 @@ const BookPage = () => {
     if (bibleVersionID) {
       fetchBooks();
     }
+
+    return () => {
+      abortController.abort();
+    };
   }, [bibleVersionID]);
 
 
-  const filteredBooks = bookList.filter(book => 
-    book.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // Memoize filtered books to avoid recalculation on every render
+  const filteredBooks = useMemo(() =>
+    bookList.filter(book =>
+      book.name.toLowerCase().includes(searchTerm.toLowerCase())
+    ),
+    [bookList, searchTerm]
   );
 
-  // Group books by testament
-  const oldTestament = filteredBooks.filter(book => 
-    ['GEN', 'EXO', 'LEV', 'NUM', 'DEU', 'JOS', 'JDG', 'RUT', '1SA', '2SA', '1KI', '2KI', '1CH', '2CH', 'EZR', 'NEH', 'EST', 'JOB', 'PSA', 'PRO', 'ECC', 'SNG', 'ISA', 'JER', 'LAM', 'EZK', 'DAN', 'HOS', 'JOL', 'AMO', 'OBA', 'JON', 'MIC', 'NAM', 'HAB', 'ZEP', 'HAG', 'ZEC', 'MAL'].includes(book.id)
+  // Group books by testament using constants
+  const oldTestament = useMemo(() =>
+    filteredBooks.filter(book => OLD_TESTAMENT_BOOKS.includes(book.id)),
+    [filteredBooks]
   );
-  
-  const newTestament = filteredBooks.filter(book => 
-    ['MAT', 'MRK', 'LUK', 'JHN', 'ACT', 'ROM', '1CO', '2CO', 'GAL', 'EPH', 'PHP', 'COL', '1TH', '2TH', '1TI', '2TI', 'TIT', 'PHM', 'HEB', 'JAS', '1PE', '2PE', '1JN', '2JN', '3JN', 'JUD', 'REV'].includes(book.id)
+
+  const newTestament = useMemo(() =>
+    filteredBooks.filter(book => NEW_TESTAMENT_BOOKS.includes(book.id)),
+    [filteredBooks]
   );
 
   return (
@@ -60,11 +80,16 @@ const BookPage = () => {
       <main className="container" style={{ paddingTop: '2rem' }}>
         {/* Search Bar */}
         <div style={{ marginBottom: '2rem' }}>
+          <label htmlFor="book-search" className="visually-hidden">
+            Search for a Bible book
+          </label>
           <input
-            type="text"
+            id="book-search"
+            type="search"
             placeholder="Search for a book..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Search for a Bible book"
             style={{
               width: '100%',
               padding: '0.75rem 1rem',
@@ -80,6 +105,24 @@ const BookPage = () => {
 
         {loading ? (
           <Loading type="skeleton" />
+        ) : error ? (
+          <div
+            className="card"
+            style={{
+              padding: '2rem',
+              textAlign: 'center',
+              backgroundColor: 'var(--error-bg, #fee)',
+              color: 'var(--error-text, #c33)'
+            }}
+          >
+            <p style={{ marginBottom: '1rem' }}>{error}</p>
+            <button
+              className="btn btn-primary"
+              onClick={() => window.location.reload()}
+            >
+              Try Again
+            </button>
+          </div>
         ) : (
           <div>
             {/* Old Testament */}
@@ -98,7 +141,8 @@ const BookPage = () => {
                       key={book.id}
                       to={`/chapter/${bibleVersionID}/${abbreviation}/${book.id}`}
                       className="card"
-                      style={{ 
+                      aria-label={`Open ${book.name}`}
+                      style={{
                         textAlign: 'center',
                         padding: '1rem',
                         textDecoration: 'none',
@@ -128,7 +172,8 @@ const BookPage = () => {
                       key={book.id}
                       to={`/chapter/${bibleVersionID}/${abbreviation}/${book.id}`}
                       className="card"
-                      style={{ 
+                      aria-label={`Open ${book.name}`}
+                      style={{
                         textAlign: 'center',
                         padding: '1rem',
                         textDecoration: 'none',

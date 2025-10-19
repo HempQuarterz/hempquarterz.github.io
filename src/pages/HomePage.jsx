@@ -1,37 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/modern.css';
 import { API_CONFIG, getApiHeaders } from '../config/api';
+import { logApiError } from '../utils/debug';
 import ModernHeader from '../components/ModernHeader';
 import Loading from '../components/Loading';
 
 const HomePage = () => {
   const [bibles, setBibles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchBibles = async () => {
       try {
         setLoading(true);
+        setError(null);
         const response = await axios.get(`${API_CONFIG.BASE_URL}/bibles`, {
           headers: getApiHeaders(),
+          signal: abortController.signal
         });
         const sortedBibles = sortVersionsByLanguage(response.data.data);
         setBibles(sortedBibles);
-      } catch (error) {
-        console.error('Error fetching Bibles', error);
+      } catch (err) {
+        if (err.name !== 'AbortError' && err.name !== 'CanceledError') {
+          logApiError('/bibles', err);
+          setError('Failed to load Bible versions. Please try again.');
+        }
       } finally {
         setLoading(false);
       }
     };
 
     fetchBibles();
+
+    return () => {
+      abortController.abort();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const sortVersionsByLanguage = (bibleVersionList) => {
-    let sortedVersions = {};
+  const sortVersionsByLanguage = useCallback((bibleVersionList) => {
+    const sortedVersions = {};
 
     for (const version of bibleVersionList) {
       if (!sortedVersions[version.language.name]) {
@@ -45,19 +59,22 @@ const HomePage = () => {
     }
 
     return sortedVersions;
-  };
+  }, []);
 
-  const filteredBibles = searchTerm
-    ? Object.entries(bibles).reduce((acc, [language, versions]) => {
-        const filtered = versions.filter(
-          (v) => 
-            v.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            v.abbreviation.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        if (filtered.length > 0) acc[language] = filtered;
-        return acc;
-      }, {})
-    : bibles;
+  const filteredBibles = useMemo(() =>
+    searchTerm
+      ? Object.entries(bibles).reduce((acc, [language, versions]) => {
+          const filtered = versions.filter(
+            (v) =>
+              v.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              v.abbreviation.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+          if (filtered.length > 0) acc[language] = filtered;
+          return acc;
+        }, {})
+      : bibles,
+    [bibles, searchTerm]
+  );
 
   return (
     <div className="fade-in">
@@ -66,11 +83,16 @@ const HomePage = () => {
       <main className="container" style={{ paddingTop: '2rem' }}>
         {/* Search Bar */}
         <div style={{ marginBottom: '2rem' }}>
+          <label htmlFor="version-search" className="visually-hidden">
+            Search for a Bible version
+          </label>
           <input
-            type="text"
+            id="version-search"
+            type="search"
             placeholder="Search for a Bible version..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Search for a Bible version"
             style={{
               width: '100%',
               padding: '0.75rem 1rem',
@@ -92,6 +114,24 @@ const HomePage = () => {
 
         {loading ? (
           <Loading type="skeleton" />
+        ) : error ? (
+          <div
+            className="card"
+            style={{
+              padding: '2rem',
+              textAlign: 'center',
+              backgroundColor: 'var(--error-bg, #fee)',
+              color: 'var(--error-text, #c33)'
+            }}
+          >
+            <p style={{ marginBottom: '1rem' }}>{error}</p>
+            <button
+              className="btn btn-primary"
+              onClick={() => window.location.reload()}
+            >
+              Try Again
+            </button>
+          </div>
         ) : (
           <div>
             {Object.entries(filteredBibles).map(([language, versions]) => (
@@ -105,11 +145,12 @@ const HomePage = () => {
                 </h3>
                 <div className="grid grid-cols-2" style={{ gap: '1rem' }}>
                   {versions.map((version) => (
-                    <Link 
+                    <Link
                       key={version.id}
                       to={`/book?version=${version.id}&abbr=${version.abbreviation}`}
                       className="card"
-                      style={{ 
+                      aria-label={`Select ${version.name} (${version.abbreviation})`}
+                      style={{
                         textDecoration: 'none',
                         color: 'inherit',
                         cursor: 'pointer',

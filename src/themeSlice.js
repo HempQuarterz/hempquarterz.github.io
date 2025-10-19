@@ -1,29 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 // Check for saved theme preference or default to 'light'
-const savedTheme = typeof window !== 'undefined' ? (localStorage.getItem('theme') || 'light') : 'light';
-if (typeof window !== 'undefined' && document.documentElement) {
-  document.documentElement.setAttribute('data-theme', savedTheme);
-}
+const getInitialTheme = () => {
+  if (typeof window !== 'undefined') {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    return savedTheme;
+  }
+  return 'light';
+};
 
 const themeSlice = createSlice({
   name: 'theme',
-  initialState: savedTheme,
+  initialState: getInitialTheme(),
   reducers: {
     toggleTheme: (state) => {
-      const newTheme = state === 'light' ? 'dark' : 'light';
-      localStorage.setItem('theme', newTheme);
-      document.documentElement.setAttribute('data-theme', newTheme);
-      return newTheme;
+      // Return new theme - side effects handled in middleware or components
+      return state === 'light' ? 'dark' : 'light';
     },
     setTheme: (state, action) => {
-      localStorage.setItem('theme', action.payload);
-      document.documentElement.setAttribute('data-theme', action.payload);
+      // Return new theme - side effects handled in middleware or components
       return action.payload;
     },
   },
 });
 
 export const { toggleTheme, setTheme } = themeSlice.actions;
+
+// Selector
+export const selectTheme = (state) => state.theme;
 
 export default themeSlice.reducer;

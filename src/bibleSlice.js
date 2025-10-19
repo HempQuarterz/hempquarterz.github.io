@@ -1,20 +1,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_CONFIG, getApiHeaders } from './config/api';
+import { logApiCall, logApiResponse, logApiError } from './utils/debug';
 
 export const fetchVerse = createAsyncThunk(
   'bible/fetchVerse',
   async ({ bibleId, verseId }) => {
-    console.log("Inside Function", verseId, bibleId)
-    const response = await axios.get(
-      `${API_CONFIG.BASE_URL}/bibles/${bibleId}/verses/${verseId}`,
-      {
-        headers: getApiHeaders(),
-      }
-    );
+    const url = `${API_CONFIG.BASE_URL}/bibles/${bibleId}/verses/${verseId}`;
+    logApiCall('GET', url, { bibleId, verseId });
 
-    if (response.data.meta && response.data.meta.fumsId) {
-      window._BAPI.t(response.data.meta.fumsId); // Send FUMS data
+    const response = await axios.get(url, {
+      headers: getApiHeaders(),
+    });
+
+    logApiResponse(url, response.data);
+
+    if (response.data.meta && response.data.meta.fumsId && window._BAPI) {
+      window._BAPI.t(response.data.meta.fumsId);
     }
 
     return response.data.data;
@@ -23,24 +25,23 @@ export const fetchVerse = createAsyncThunk(
 export const fetchVerses = createAsyncThunk(
   'bible/fetchVerses',
   async ({ bibleId, chapterId }) => {
-    console.log('fetchVerses - Fetching verses for:', { bibleId, chapterId });
     const url = `${API_CONFIG.BASE_URL}/bibles/${bibleId}/chapters/${chapterId}/verses`;
-    console.log('fetchVerses - API URL:', url);
-    
+    logApiCall('GET', url, { bibleId, chapterId });
+
     try {
       const response = await axios.get(url, {
         headers: getApiHeaders(),
       });
-      
-      console.log('fetchVerses - Response:', response.data);
+
+      logApiResponse(url, response.data);
 
       if (response.data.meta && response.data.meta.fumsId && window._BAPI) {
-        window._BAPI.t(response.data.meta.fumsId); // Send FUMS data
+        window._BAPI.t(response.data.meta.fumsId);
       }
 
       return response.data.data;
     } catch (error) {
-      console.error('fetchVerses - Error:', error.response || error);
+      logApiError(url, error);
       throw error;
     }
   }
@@ -49,24 +50,23 @@ export const fetchVerses = createAsyncThunk(
 export const fetchChapterText = createAsyncThunk(
   'bible/fetchChapterText',
   async ({ bibleId, bookId, chapterId }) => {
-    console.log('fetchChapterText - Fetching chapter text for:', { bibleId, bookId, chapterId });
     const url = `${API_CONFIG.BASE_URL}/bibles/${bibleId}/chapters/${chapterId}`;
-    console.log('fetchChapterText - API URL:', url);
-    
+    logApiCall('GET', url, { bibleId, bookId, chapterId });
+
     try {
       const response = await axios.get(url, {
         headers: getApiHeaders(),
       });
-      
-      console.log('fetchChapterText - Response:', response.data);
+
+      logApiResponse(url, response.data);
 
       if (response.data.meta && response.data.meta.fumsId && window._BAPI) {
-        window._BAPI.t(response.data.meta.fumsId); // Send FUMS data
+        window._BAPI.t(response.data.meta.fumsId);
       }
 
       return response.data.data;
     } catch (error) {
-      console.error('fetchChapterText - Error:', error.response || error);
+      logApiError(url, error);
       throw error;
     }
   }
