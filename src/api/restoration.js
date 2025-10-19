@@ -199,7 +199,15 @@ export async function restoreByPattern(text, language) {
  */
 export async function restoreVerse(verse) {
   try {
-    const language = verse.manuscript === 'WLC' ? 'hebrew' : 'english';
+    // Determine language based on manuscript
+    let language;
+    if (verse.manuscript === 'WLC') {
+      language = 'hebrew';
+    } else if (verse.manuscript === 'SBLGNT') {
+      language = 'greek';
+    } else {
+      language = 'english';
+    }
 
     // Use Strong's numbers if available (Hebrew only)
     if (verse.strong_numbers && verse.strong_numbers.length > 0) {
@@ -218,7 +226,7 @@ export async function restoreVerse(verse) {
       };
     }
 
-    // Fall back to pattern matching (English or Hebrew without Strong's)
+    // Fall back to pattern matching (English, Greek, or Hebrew without Strong's)
     const result = await restoreByPattern(verse.text, language);
 
     return {
