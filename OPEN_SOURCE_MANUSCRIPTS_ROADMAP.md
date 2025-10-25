@@ -150,43 +150,80 @@
 
 ---
 
-### Priority 3 (🟢 FULLY OPEN): StepBible / BibleHub Data APIs
-**Source:** #15 from list
-**Description:** Interlinear data for multiple Bible versions
+### Priority 3 (🟢 FULLY OPEN): StepBible Data (NOT BibleHub)
+**Source:** StepBible.org (Tyndale House, Cambridge)
+**Description:** Interlinear data, morphology, and cross-references
 **Status:** 🟢 Fully open - downloadable datasets
-**License:** CC BY-SA 4.0
-**URL:** https://www.stepbible.org/ / https://biblehub.com/
+**License:** CC BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+**URL:** https://www.stepbible.org/
 
-**Full Access Confirmed:**
+**CRITICAL LICENSE DISTINCTION:**
+| Platform | Maintainer | License | Status | All4Yah Use |
+|----------|------------|---------|--------|-------------|
+| **StepBible.org** | Tyndale House, Cambridge | CC BY-SA 4.0 | 🟢 Fully Open | ✅ Import all data |
+| **BibleHub.com** | BibleHub LLC | Proprietary | 🔴 Restricted | 🔗 Reference-only |
+
+**Why StepBible is Fully Open:**
+- ✅ CC BY-SA 4.0 grants: Share, adapt, redistribute, commercial use
 - ✅ Complete datasets available for download
-- ✅ Open licensing (CC BY-SA 4.0)
-- ✅ Redistribute with attribution allowed
+- ✅ Morphological tagging included
+- ✅ Interlinear alignment data
 - ✅ Use in AI/ML training permitted
 
-**What to Import:**
+**BibleHub Limitation:**
+- ❌ Proprietary aggregation of mixed-license Bibles
+- ❌ Terms of Service prohibit bulk downloading
+- ❌ No automated scraping allowed
+- ❌ Cannot use for dataset extraction or AI training
+- ✅ Can use for read-only reference links
+
+**Attribution Requirements (CC BY-SA 4.0):**
+```json
+{
+  "source": "StepBible",
+  "maintainer": "Tyndale House, Cambridge",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "attribution": "Source: StepBible, Tyndale House Cambridge — CC BY-SA 4.0",
+  "share_alike": true,
+  "all4yah_license": "CC BY-SA 4.0"
+}
+```
+
+**What to Import from StepBible:**
 - Interlinear alignment data (Hebrew-Greek-English)
 - Strong's concordance numbers
+- Morphological tagging
 - Cross-reference data
-- Lexicon entries (open source portion)
+- Lexicon entries (open portion)
 
 **Value:**
-- Rich interlinear data
+- Rich interlinear data (word-by-word alignment)
 - Strong's numbers already mapped
 - Cross-reference system
-- Multiple translation comparison
+- Morphological analysis for Hebrew and Greek
 
 **Estimated Data:**
 - Full Bible interlinear alignment
 - ~8,000 Strong's Hebrew entries
 - ~5,000 Strong's Greek entries
 - Extensive cross-reference database
+- Morphological tags for all words
 
 **Implementation:**
+- ✅ Download StepBible datasets from official source
 - ✅ Import Strong's numbers to existing verses
 - ✅ Create interlinear display view
 - ✅ Build cross-reference system
 - ✅ Enable Strong's number search
 - ✅ Host data directly in All4Yah database
+- ✅ Include CC BY-SA 4.0 attribution in database
+- ✅ Keep All4Yah corpus under CC BY-SA 4.0
+
+**BibleHub Usage (Reference-Only):**
+- 🔗 External links to BibleHub pages
+- 📖 Read-only reference for users
+- ❌ No data ingestion or redistribution
 
 **Timeline:** Phase 2, Month 3
 
@@ -299,18 +336,19 @@
 ### Fully Open Sources (Priorities 1-3) - READY FOR IMPORT
 | Priority | Source | License | Import Method | Timeline |
 |----------|--------|---------|---------------|----------|
-| 🥇 1 | OSHB Morphology | CC BY 4.0 | Direct import | Month 1 |
+| 🥇 1 | OSHB Morphology | CC BY 4.0 | GitHub clone | Month 1 |
 | 🥈 2 | Sefaria API | CC BY 4.0 | API download | Month 2 |
-| 🥉 3 | StepBible/BibleHub | CC BY-SA 4.0 | Dataset download | Month 3 |
+| 🥉 3 | **StepBible ONLY** | CC BY-SA 4.0 | Dataset download | Month 3 |
 
-### Partial Access Sources (Priorities 4-5) - REFERENCE ONLY
+### Reference-Only Sources (Priorities 4-6) - NO IMPORT
 | Priority | Source | Access Level | Implementation | Timeline |
 |----------|--------|--------------|----------------|----------|
 | 4 | Aleppo Codex | Viewable only | Cross-link | Month 4 |
 | 5 | Codex Vaticanus | License unclear | Investigate first | Month 5 |
+| 6 | **BibleHub** | Proprietary | External links only | Month 6 |
 
-**Total Fully Importable:** 3 sources
-**Total Reference-Only:** 2 sources
+**Total Fully Importable:** 3 sources (OSHB, Sefaria, StepBible)
+**Total Reference-Only:** 3 sources (Aleppo, Vaticanus, BibleHub)
 
 ---
 
@@ -346,18 +384,29 @@
 
 ---
 
-### Month 3: StepBible/BibleHub Import ✅ (FULLY OPEN)
+### Month 3: StepBible Import ✅ (FULLY OPEN - CC BY-SA 4.0)
 **Tasks:**
-1. Download Strong's concordance datasets
-2. Import interlinear alignment data
-3. Map Strong's numbers to existing verses
-4. Create concordance search system
-5. Build Strong's number lookup UI
+1. Download StepBible datasets from Tyndale House repository
+2. Parse and import Strong's concordance data (~13,000 entries)
+3. Import interlinear alignment data (Hebrew-Greek-English)
+4. Import morphological tagging for all words
+5. Map Strong's numbers to existing verses
+6. Create concordance search system
+7. Build Strong's number lookup UI
+8. Add CC BY-SA 4.0 attribution to database records
 
 **Expected Output:**
-- ~13,000 Strong's entries imported
-- Full interlinear alignment
+- ~13,000 Strong's entries imported (8,000 Hebrew + 5,000 Greek)
+- Full interlinear alignment for entire Bible
+- Morphological tags for all Hebrew and Greek words
 - Concordance search functional
+- Attribution: "Source: StepBible, Tyndale House Cambridge — CC BY-SA 4.0"
+- All4Yah corpus licensed under CC BY-SA 4.0 (ShareAlike requirement)
+
+**BibleHub Handling:**
+- Month 6: Create external link system for BibleHub (reference-only)
+- No data import, only deep-links to BibleHub pages
+- UI component for "View on BibleHub" links
 
 ---
 
@@ -391,6 +440,41 @@
 
 ---
 
+### Month 6: BibleHub Reference System 🔗 (REFERENCE ONLY - PROPRIETARY)
+**Status:** 🔴 Proprietary - No data import allowed
+
+**Tasks:**
+1. Create external link database schema
+2. Map verses to BibleHub URLs (deep-linking)
+3. Build "View on BibleHub" UI component
+4. Add disclaimer about proprietary content
+5. Test external links across all books
+
+**Expected Output:**
+- Deep-links to BibleHub pages for all verses
+- UI component showing "View this verse on BibleHub"
+- No hosted BibleHub data (reference only)
+- Clear disclaimer: "External content subject to BibleHub's terms"
+
+**What We CAN Do:**
+- 🔗 Link to BibleHub pages from All4Yah UI
+- 📖 Users can click to view on BibleHub directly
+- 📝 Store BibleHub URLs as metadata
+
+**What We CANNOT Do:**
+- ❌ Download or scrape BibleHub content
+- ❌ Redistribute BibleHub data
+- ❌ Use BibleHub for AI training
+- ❌ Automated bulk extraction
+
+**Legal Compliance:**
+- BibleHub Terms of Service prohibit bulk downloading
+- Mixed-license content (KJV=PD, NIV=©, etc.)
+- All4Yah respects proprietary rights
+- External links only (no data ingestion)
+
+---
+
 ## 📊 Complete Open Source Manuscript Inventory
 
 ### Current Database (Phase 1 Complete)
@@ -404,7 +488,7 @@
 - **~270,000+ verses/lines** (including morphology and cross-references)
 - **5 languages:** Hebrew, Aramaic, Greek, Latin, English
 - **Time span:** 2,500+ years (250 BCE - 2000 CE)
-- **2 reference-only sources** (Aleppo, Vaticanus - external links only)
+- **3 reference-only sources** (Aleppo, Vaticanus, BibleHub - external links only)
 
 ### Manuscript Timeline (Oldest to Newest)
 
@@ -460,6 +544,14 @@
 - **Peshitta (Syriac)** - Licensed digital copies (Peshitta Institute)
   - **Alternative:** Use Vulgate (Latin) and LXX (Greek) for OT coverage
 
+### Proprietary Digital Platforms
+- **BibleHub.com** - Proprietary aggregation of mixed-license Bibles
+  - **Status:** Terms of Service prohibit bulk downloading, scraping, and automated extraction
+  - **License:** Mixed (KJV=Public Domain, NIV=©Zondervan, etc.)
+  - **Restriction:** No dataset extraction, no AI training, no redistribution
+  - **Alternative:** Use StepBible (CC BY-SA 4.0) for interlinear/concordance data
+  - **All4Yah Use:** External links only (reference-only, no data import)
+
 ---
 
 ## 🎯 Success Metrics
@@ -471,14 +563,15 @@
 - ✅ "Authentic 10" milestone achieved
 
 ### Phase 2 (Revised Target - Fully Open Only)
-- 🎯 **3 fully open sources** imported (OSHB, Sefaria, StepBible)
-- 🎯 **2 reference-only sources** (Aleppo, Vaticanus - external links)
+- 🎯 **3 fully open sources** imported (OSHB, Sefaria, StepBible ONLY)
+- 🎯 **3 reference-only sources** (Aleppo, Vaticanus, BibleHub - external links)
 - 🎯 **~270,000 total verses/lines** (including morphology)
-- 🎯 Morphology data for all Hebrew texts
+- 🎯 Morphology data for all Hebrew and Greek texts
 - 🎯 Cross-reference system complete
 - 🎯 Interlinear display functional
-- 🎯 Strong's concordance integrated
-- 🎯 External link system for partial-access manuscripts
+- 🎯 Strong's concordance integrated (~13,000 entries)
+- 🎯 External link system for partial-access/proprietary sources
+- 🎯 **All4Yah corpus licensed CC BY-SA 4.0** (ShareAlike requirement from StepBible)
 
 ---
 
