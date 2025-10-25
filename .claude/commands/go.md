@@ -24,12 +24,12 @@ First, read the `README.md` and any relevant project documentation to understand
 For the requested task: $ARGUMENTS
 
 ### Process:
-1. **Analyze**: Use sequential thinking to break down the task
+1. **Analyze**: Break down the task into clear, actionable steps
 2. **Research**: Use Context7 for any third-party library documentation needed
-3. **Explore**: Use Serena to find relevant existing code patterns
+3. **Explore**: Use Grep/Glob or GitHub search to find relevant existing code patterns
 4. **Implement**: Make the necessary changes following project conventions
-5. **Test**: Use appropriate testing tools and Chrome DevTools if needed
-6. **Validate**: Ensure database schema and API consistency with Supabase tools
+5. **Test**: Use Playwright for visual testing and browser DevTools for debugging
+6. **Validate**: Ensure database schema and API consistency with Supabase MCP tools
 
 ### Implementation Guidelines:
 - Follow existing code patterns and conventions (React 18 with Hooks)
