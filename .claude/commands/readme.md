@@ -8,6 +8,20 @@ Slash commands are custom commands you can invoke in Claude Code using `/command
 
 ## Available Commands:
 
+### `/go`
+Orchestrated development workflow using MCP servers for complex tasks.
+
+**Usage:** Type `/go [task description]` in the chat
+
+**What it does:**
+- Reads project context and documentation
+- Strategically uses available MCP servers
+- Follows structured implementation process
+- Ensures quality assurance and testing
+- Maintains All4Yah project conventions
+
+**Example:** `/go add pagination to manuscript viewer`
+
 ### `/deploy`
 Deploy the application to Netlify with full verification steps.
 
