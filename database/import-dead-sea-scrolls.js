@@ -205,7 +205,7 @@ async function main() {
   const manuscriptId = await getManuscriptId();
 
   // Load JSON data
-  const jsonPath = path.join(__dirname, '../manuscripts/dead-sea-scrolls/dss-full.json');
+  const jsonPath = path.join(__dirname, '../manuscripts/dead-sea-scrolls/dss-cleaned-v2.json');
   console.log(`📖 Loading DSS data from ${jsonPath}...`);
 
   if (!fs.existsSync(jsonPath)) {
