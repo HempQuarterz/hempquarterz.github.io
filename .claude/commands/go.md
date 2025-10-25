@@ -11,6 +11,7 @@ Always use this structured approach for any development task:
 First, read the `README.md` and any relevant project documentation to understand the current state and architecture.
 
 ## 2. MCP Server Strategy
+- **Serena**: Use for semantic code retrieval, symbol-level edits, and understanding code patterns by intent
 - **Context7**: Use for up-to-date documentation on third-party libraries (React, Supabase, etc.)
 - **Supabase**: Use for database operations, schema management, and RLS policies
 - **GitHub**: Use for repository management, code search, and pull requests
@@ -26,8 +27,8 @@ For the requested task: $ARGUMENTS
 ### Process:
 1. **Analyze**: Break down the task into clear, actionable steps
 2. **Research**: Use Context7 for any third-party library documentation needed
-3. **Explore**: Use Grep/Glob or GitHub search to find relevant existing code patterns
-4. **Implement**: Make the necessary changes following project conventions
+3. **Explore**: Use Serena for semantic code search to find relevant patterns by intent, or Grep/Glob/GitHub for text-based search
+4. **Implement**: Make the necessary changes following project conventions, using Serena for symbol-level edits when appropriate
 5. **Test**: Use Playwright for visual testing and browser DevTools for debugging
 6. **Validate**: Ensure database schema and API consistency with Supabase MCP tools
 
