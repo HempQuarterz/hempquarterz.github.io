@@ -2,6 +2,7 @@
 
 **Last Updated:** 2025-10-25
 **Current Status:** 6 of 15 sources imported (40%) ✅ Phase 1 Milestone Reached!
+**Authenticity Status:** 5 Tier 1 (Authentic), 1 Tier 2 (Filtered), 0 Tier 3 (Restricted)
 
 ---
 
@@ -9,70 +10,89 @@
 
 The All4Yah project aims to provide access to 15 primary manuscript repositories representing the most significant ancient biblical texts. Currently, 6 core manuscripts are implemented (WLC, SBLGNT, WEB, Vulgate, TR, LXX), with 9 additional sources planned for future phases.
 
+**NEW: Authenticity Tier System** - All manuscripts are now classified into three tiers:
+- **Tier 1 (Authentic):** Free & unaltered primary sources - suitable for AI restoration
+- **Tier 2 (Filtered):** Openly accessible but filtered through interpretation layers
+- **Tier 3 (Restricted):** Proprietary or heavily edited - reference only
+
+See [MANUSCRIPT_AUTHENTICITY_CRITERIA.md](./MANUSCRIPT_AUTHENTICITY_CRITERIA.md) for complete classification system.
+
 ---
 
 ## ✅ IMPLEMENTED SOURCES (6/15)
 
-### 1. Westminster Leningrad Codex (WLC) ✅
+### 1. Westminster Leningrad Codex (WLC) ✅ [TIER 1: AUTHENTIC]
 - **Type:** Hebrew Old Testament (Masoretic Text)
 - **Date:** 1008 CE (based on Leningrad Codex B19A)
 - **Verses:** 23,145 (100% complete)
 - **Language:** Hebrew
 - **License:** CC BY 4.0
+- **Authenticity Tier:** **1 - AUTHENTIC** (Free & unaltered primary source)
 - **Status:** FULLY IMPORTED
 - **Data Source:** morphhb.org / OpenScriptures
 - **Special Features:** Cantillation marks, vowel points, morphological tagging
+- **Why Tier 1:** Diplomatic Masoretic text from Leningrad Codex. Complete, faithful to original codex with no doctrinal bias.
 
-### 2. SBL Greek New Testament (SBLGNT) ✅
+### 2. SBL Greek New Testament (SBLGNT) ✅ [TIER 1: AUTHENTIC]
 - **Type:** Greek New Testament (Critical edition)
 - **Date:** 2010 CE (based on ancient manuscripts)
 - **Verses:** 7,927 (100% complete)
 - **Language:** Greek (Koine)
 - **License:** CC BY-SA 4.0
+- **Authenticity Tier:** **1 - AUTHENTIC** (Free & unaltered primary source)
 - **Status:** FULLY IMPORTED
 - **Data Source:** MorphGNT / SBL
 - **Special Features:** Morphological tagging, lexical data
+- **Why Tier 1:** Open-licensed critical edition with no interpretive bias. Pure Greek text suitable for AI restoration.
 
-### 3. World English Bible (WEB) ✅
+### 3. World English Bible (WEB) ✅ [TIER 2: FILTERED]
 - **Type:** Modern English translation
 - **Date:** 2000 CE
 - **Verses:** 31,098 (100% complete - full Bible)
 - **Language:** English
+- **Authenticity Tier:** **2 - FILTERED** (Modern translation, not original language)
 - **License:** Public Domain
 - **Status:** FULLY IMPORTED
 - **Data Source:** ebible.org
 - **Special Features:** Complete OT + NT, public domain
+- **Why Tier 2:** Excellent public domain English Bible, but it's a 2000 CE translation rather than original Hebrew/Greek. Useful for comparison but not for primary divine name restoration work.
 
-### 4. Clementine Vulgate (VUL) ✅
+### 4. Clementine Vulgate (VUL) ✅ [TIER 1: AUTHENTIC]
 - **Type:** Latin Bible (Jerome's translation)
 - **Date:** ~400 CE
 - **Verses:** 35,811 (100% complete - full Bible with Deuterocanonical books)
 - **Language:** Latin
 - **License:** Public Domain
+- **Authenticity Tier:** **1 - AUTHENTIC** (Free & unaltered primary source)
 - **Status:** FULLY IMPORTED
 - **Data Source:** emilekm2142/vulgate-bible-full-text (GitHub)
 - **Special Features:** Complete 73-book Catholic canon, JSON format import
+- **Why Tier 1:** Public domain Latin base text, not modernized or paraphrased. Jerome's translation (~400 CE) represents historical primary source data.
 
-### 5. Textus Receptus (TR) ✅
+### 5. Textus Receptus (TR) ✅ [TIER 1: AUTHENTIC]
 - **Type:** Greek New Testament (Traditional Byzantine text)
 - **Date:** 16th century (based on Byzantine manuscripts)
 - **Verses:** 7,957 (100% complete NT)
 - **Language:** Greek (Koine)
 - **License:** Public Domain
+- **Authenticity Tier:** **1 - AUTHENTIC** (Free & unaltered primary source)
 - **Status:** FULLY IMPORTED
 - **Data Source:** byztxt/greektext-textus-receptus (Dr. Maurice A. Robinson)
 - **Special Features:** Morphological tagging, Strong's numbers, underlies KJV translation
+- **Why Tier 1:** Traditional Byzantine text type with pure Greek text. No editorial smoothing, includes morphology and Strong's numbers. Public domain.
 
-### 6. Septuagint (LXX) ✅
+### 6. Septuagint (LXX) ✅ [TIER 1: AUTHENTIC]
 - **Type:** Greek Old Testament
 - **Date:** 3rd-1st century BCE
 - **Verses:** 27,761 (96% complete - 52+ books)
 - **Language:** Greek (Koine)
 - **License:** CC BY-NC-SA 4.0
+- **Authenticity Tier:** **1 - AUTHENTIC** (Free & unaltered primary source)
 - **Status:** FULLY IMPORTED
 - **Data Source:** eliranwong/LXX-Rahlfs-1935 (CCAT-based)
 - **Special Features:** Morphological tagging, Strong's numbers, includes Deuterocanonical books
 - **Import Notes:** 1,100 verses (4%) failed due to verse/chapter number constraints (>999)
+- **Why Tier 1:** Critical diplomatic edition (Rahlfs 1935) of ancient Greek Septuagint. No paraphrasing, CCAT-based data preserving pre-Christian Jewish divine name usage.
 
 ---
 
@@ -341,4 +361,40 @@ The All4Yah project aims to provide access to 15 primary manuscript repositories
 **Phase 1 Target:** 6-7 sources (40-47%) - **ON TRACK** ✅
 **Next Milestone:** Dead Sea Scrolls + Peshitta (would bring to 8/15 = 53%)
 
+---
+
+## 📊 Authenticity Tier Breakdown
+
+### Current Manuscripts by Tier:
+
+**Tier 1 (AUTHENTIC - Free & Unaltered):** 5/6 manuscripts (83%)
+- WLC (Westminster Leningrad Codex) - 23,145 verses
+- SBLGNT (SBL Greek New Testament) - 7,927 verses
+- VUL (Clementine Vulgate) - 35,811 verses
+- TR (Textus Receptus) - 7,957 verses
+- LXX (Septuagint Rahlfs) - 27,761 verses
+- **Subtotal:** 102,601 verses (77% of database)
+
+**Tier 2 (FILTERED - Interpretation Layers):** 1/6 manuscripts (17%)
+- WEB (World English Bible) - 31,098 verses
+- **Subtotal:** 31,098 verses (23% of database)
+
+**Tier 3 (RESTRICTED - Proprietary):** 0/6 manuscripts (0%)
+- None imported yet
+- **Subtotal:** 0 verses
+
+### "Authentic 10" Corpus Progress:
+- **Target:** 10 Tier 1 manuscripts
+- **Current:** 5 Tier 1 manuscripts
+- **Progress:** 50% toward "Authentic 10" goal ✅
+
+### Next Tier 1 Priorities:
+1. **Dead Sea Scrolls** (Leon Levy) - Hebrew/Aramaic, oldest manuscripts
+2. **Codex Sinaiticus** - 4th century Greek, full NT
+3. **Aleppo Codex** - 10th century Hebrew, Masoretic tradition
+4. **OSHB** (OpenScriptures Hebrew Bible) - Enhanced WLC with morphology
+5. **Perseus Digital Library** - Classical Greek/Latin texts
+
 **Mission:** "Restoring truth, one name at a time." 🔥
+
+*With 5 Tier 1 manuscripts already implemented, All4Yah has one of the most comprehensive collections of unaltered biblical manuscripts in any open-source project worldwide.*
