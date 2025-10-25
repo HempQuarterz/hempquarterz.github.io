@@ -1,201 +1,358 @@
-#!/usr/bin/env node
-
 /**
  * Westminster Leningrad Codex (WLC) Import Script
- *
- * Imports the complete Hebrew Old Testament with Strong's numbers
- * and morphological data from the OXLOS WLC format.
- *
- * Format: Gen 1:1.1	7225	בְּ/רֵאשִׁ֖ית
- *         [Reference] [Strong#] [Hebrew Text]
+ * Imports Hebrew Old Testament into Supabase database
  *
  * Usage:
- *   node database/import-wlc.js              # Import all books
- *   node database/import-wlc.js --test       # Import Genesis 1 only
- *   node database/import-wlc.js --book GEN   # Import specific book
+ *   node database/import-wlc.js --test              # Import Genesis 1 only
+ *   node database/import-wlc.js --book Genesis      # Import specific book
+ *   node database/import-wlc.js --full              # Import all books
  */
 
+require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 
-// Supabase configuration
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://txeeaekwhkdilycefczq.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'sb_secret_ga_5t6BceIDCZzm5rJ8FlA_y1wxONOO';
+// Supabase connection
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+if (!supabaseUrl || !supabaseKey) {
+  console.error('❌ Missing Supabase credentials in .env file');
+  process.exit(1);
+}
 
-// Book name mappings
-const BOOK_CODES = {
-  'Gen': 'GEN', 'Exod': 'EXO', 'Lev': 'LEV', 'Num': 'NUM', 'Deut': 'DEU',
-  'Josh': 'JOS', 'Judg': 'JDG', 'Ruth': 'RUT', '1Sam': '1SA', '2Sam': '2SA',
-  '1Kgs': '1KI', '2Kgs': '2KI', '1Chr': '1CH', '2Chr': '2CH',
-  'Ezra': 'EZR', 'Neh': 'NEH', 'Esth': 'EST', 'Job': 'JOB',
-  'Ps': 'PSA', 'Prov': 'PRO', 'Eccl': 'ECC', 'Song': 'SNG',
-  'Isa': 'ISA', 'Jer': 'JER', 'Lam': 'LAM', 'Ezek': 'EZE', 'Dan': 'DAN',
-  'Hos': 'HOS', 'Joel': 'JOL', 'Amos': 'AMO', 'Obad': 'OBA', 'Jonah': 'JON',
-  'Mic': 'MIC', 'Nah': 'NAH', 'Hab': 'HAB', 'Zeph': 'ZEP', 'Hag': 'HAG',
-  'Zech': 'ZEC', 'Mal': 'MAL'
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Book name to abbreviation mapping (standard 3-letter codes)
+const BOOK_ABBREVIATIONS = {
+  'Genesis': 'GEN',
+  'Exodus': 'EXO',
+  'Leviticus': 'LEV',
+  'Numbers': 'NUM',
+  'Deuteronomy': 'DEU',
+  'Joshua': 'JOS',
+  'Judges': 'JDG',
+  'Ruth': 'RUT',
+  'I Samuel': '1SA',
+  'II Samuel': '2SA',
+  'I Kings': '1KI',
+  'II Kings': '2KI',
+  'I Chronicles': '1CH',
+  'II Chronicles': '2CH',
+  'Ezra': 'EZR',
+  'Nehemiah': 'NEH',
+  'Esther': 'EST',
+  'Job': 'JOB',
+  'Psalms': 'PSA',
+  'Proverbs': 'PRO',
+  'Ecclesiastes': 'ECC',
+  'Song of Solomon': 'SNG',
+  'Isaiah': 'ISA',
+  'Jeremiah': 'JER',
+  'Lamentations': 'LAM',
+  'Ezekiel': 'EZK',
+  'Daniel': 'DAN',
+  'Hosea': 'HOS',
+  'Joel': 'JOL',
+  'Amos': 'AMO',
+  'Obadiah': 'OBA',
+  'Jonah': 'JON',
+  'Micah': 'MIC',
+  'Nahum': 'NAM',
+  'Habakkuk': 'HAB',
+  'Zephaniah': 'ZEP',
+  'Haggai': 'HAG',
+  'Zechariah': 'ZEC',
+  'Malachi': 'MAL'
 };
 
-async function getWLCManuscriptId() {
-  const { data, error } = await supabase
+/**
+ * Load and parse the morphhb index.js file
+ */
+function loadWLCData() {
+  console.log('📖 Loading WLC data from morphhb...');
+
+  const wlcPath = path.join(__dirname, '../../manuscripts/hebrew/wlc/index.js');
+
+  if (!fs.existsSync(wlcPath)) {
+    console.error(`❌ WLC data not found at: ${wlcPath}`);
+    console.error('   Please run: git clone https://github.com/openscriptures/morphhb.git manuscripts/hebrew/wlc');
+    process.exit(1);
+  }
+
+  // Read and evaluate the JavaScript file
+  const fileContent = fs.readFileSync(wlcPath, 'utf-8');
+
+  // Extract the morphhb object (it's: var morphhb={...})
+  // Use brace-matching to find the exact JSON object
+  const startIndex = fileContent.indexOf('={') + 1; // Position of opening brace
+
+  let braceCount = 0;
+  let endIndex = startIndex;
+  let foundStart = false;
+
+  // Find the matching closing brace
+  for (let i = startIndex; i < fileContent.length; i++) {
+    const char = fileContent[i];
+
+    if (char === '{') {
+      braceCount++;
+      foundStart = true;
+    } else if (char === '}') {
+      braceCount--;
+
+      // When we return to 0, we've found the matching closing brace
+      if (foundStart && braceCount === 0) {
+        endIndex = i + 1; // Include the closing brace
+        break;
+      }
+    }
+  }
+
+  const jsonString = fileContent.substring(startIndex, endIndex);
+
+  // Parse the JSON
+  let morphhb;
+  try {
+    morphhb = JSON.parse(jsonString);
+  } catch (err) {
+    console.error('❌ Could not parse morphhb JSON:', err.message);
+    console.error(`   Extracted ${jsonString.length} characters`);
+    console.error(`   First 100 chars: ${jsonString.substring(0, 100)}`);
+    console.error(`   Last 100 chars: ${jsonString.substring(jsonString.length - 100)}`);
+    process.exit(1);
+  }
+
+  console.log(`✅ Loaded ${Object.keys(morphhb).length} books from WLC`);
+
+  return morphhb;
+}
+
+/**
+ * Insert or get the WLC manuscript record
+ */
+async function ensureManuscript() {
+  console.log('\n📚 Checking manuscript record...');
+
+  // Check if WLC manuscript exists
+  const { data: existing } = await supabase
     .from('manuscripts')
     .select('id')
     .eq('code', 'WLC')
     .single();
 
-  if (error) {
-    console.error('❌ Error finding WLC manuscript:', error.message);
-    throw error;
+  if (existing) {
+    console.log('✅ WLC manuscript record exists');
+    return existing.id;
   }
 
+  // Create manuscript record
+  const { data, error } = await supabase
+    .from('manuscripts')
+    .insert({
+      code: 'WLC',
+      name: 'Westminster Leningrad Codex',
+      language: 'hebrew',
+      description: 'Masoretic Text of the Hebrew Bible based on the Leningrad Codex (~1008 CE)',
+      source_url: 'https://github.com/openscriptures/morphhb',
+      license: 'CC BY 4.0',
+      date_range: '1000 CE'
+    })
+    .select('id')
+    .single();
+
+  if (error) {
+    console.error('❌ Failed to create manuscript record:', error);
+    process.exit(1);
+  }
+
+  console.log('✅ Created WLC manuscript record');
   return data.id;
 }
 
-async function parseWLCFile(filePath) {
-  console.log(`📖 Reading file: ${filePath}`);
+/**
+ * Parse a verse array into text and Strong's numbers
+ */
+function parseVerse(verseArray) {
+  const words = [];
+  const strongNumbers = [];
 
-  const content = await fs.readFile(filePath, 'utf-8');
-  const lines = content.split('\n').filter(line => line.trim());
+  for (const word of verseArray) {
+    // Each word is: [hebrew_text, strong_number, morphology]
+    const [hebrewText, strongNum] = word;
 
-  const verses = {};
+    words.push(hebrewText);
 
-  for (const line of lines) {
-    // Parse format: Gen 1:1.1	7225	בְּ/רֵאשִׁ֖ית
-    const match = line.match(/^(\w+)\s+(\d+):(\d+)\.(\d+)\t(\d+)\t(.+)$/);
-
-    if (!match) continue;
-
-    const [, rawBook, chapter, verse, wordNum, strongNum, hebrewText] = match;
-    const book = BOOK_CODES[rawBook] || rawBook.toUpperCase();
-    const verseKey = `${book}.${chapter}.${verse}`;
-
-    if (!verses[verseKey]) {
-      verses[verseKey] = {
-        book,
-        chapter: parseInt(chapter),
-        verse: parseInt(verse),
-        words: [],
-        strong_numbers: [],
-        text: ''
-      };
-    }
-
-    verses[verseKey].words.push({
-      word: hebrewText,
-      strong: strongNum,
-      position: parseInt(wordNum)
-    });
-
-    if (!verses[verseKey].strong_numbers.includes(strongNum)) {
-      verses[verseKey].strong_numbers.push(strongNum);
+    // Extract Strong's numbers (can be compound like "H3068" or "Hc/H1961")
+    const nums = strongNum.match(/H\d+/g);
+    if (nums) {
+      strongNumbers.push(...nums);
     }
   }
 
-  // Assemble verse text
-  Object.values(verses).forEach(verse => {
-    verse.text = verse.words.map(w => w.word).join(' ');
-    verse.morphology = verse.words;
-  });
-
-  return Object.values(verses);
+  return {
+    text: words.join(' '),
+    strongNumbers: [...new Set(strongNumbers)] // Remove duplicates
+  };
 }
 
-async function importVerses(manuscriptId, verses) {
-  console.log(`\n📥 Importing ${verses.length} verses...`);
+/**
+ * Import a single book
+ */
+async function importBook(manuscriptId, bookName, bookData) {
+  const bookCode = BOOK_ABBREVIATIONS[bookName];
 
-  const batchSize = 100;
-  let imported = 0;
+  if (!bookCode) {
+    console.warn(`⚠️  Unknown book: ${bookName} (skipping)`);
+    return { success: 0, failed: 0 };
+  }
 
-  for (let i = 0; i < verses.length; i += batchSize) {
-    const batch = verses.slice(i, i + batchSize);
+  console.log(`\n📖 Importing ${bookName} (${bookCode})...`);
 
-    const records = batch.map(v => ({
-      manuscript_id: manuscriptId,
-      book: v.book,
-      chapter: v.chapter,
-      verse: v.verse,
-      text: v.text,
-      strong_numbers: v.strong_numbers,
-      morphology: v.morphology
-    }));
+  let successCount = 0;
+  let failedCount = 0;
+  const verses = [];
+
+  // Iterate through chapters and verses
+  for (let chapterIndex = 0; chapterIndex < bookData.length; chapterIndex++) {
+    const chapter = bookData[chapterIndex];
+    const chapterNum = chapterIndex + 1;
+
+    for (let verseIndex = 0; verseIndex < chapter.length; verseIndex++) {
+      const verseData = chapter[verseIndex];
+      const verseNum = verseIndex + 1;
+
+      const { text, strongNumbers } = parseVerse(verseData);
+
+      verses.push({
+        manuscript_id: manuscriptId,
+        book: bookCode,
+        chapter: chapterNum,
+        verse: verseNum,
+        text: text,
+        strong_numbers: strongNumbers
+      });
+    }
+  }
+
+  // Batch insert verses (chunks of 100 for performance)
+  const BATCH_SIZE = 100;
+  for (let i = 0; i < verses.length; i += BATCH_SIZE) {
+    const batch = verses.slice(i, i + BATCH_SIZE);
 
     const { error } = await supabase
       .from('verses')
-      .upsert(records, {
-        onConflict: 'manuscript_id,book,chapter,verse',
-        ignoreDuplicates: false
-      });
+      .insert(batch);
 
     if (error) {
-      console.error(`❌ Error importing batch ${i / batchSize + 1}:`, error.message);
-      throw error;
+      console.error(`❌ Failed to insert batch starting at verse ${i}:`, error.message);
+      failedCount += batch.length;
+    } else {
+      successCount += batch.length;
+      process.stdout.write(`\r   Progress: ${successCount}/${verses.length} verses`);
     }
-
-    imported += batch.length;
-    process.stdout.write(`\r   Progress: ${imported}/${verses.length} verses`);
   }
 
-  console.log('\n✅ Import complete!\n');
+  console.log(`\n✅ Imported ${successCount} verses from ${bookName}`);
+
+  return { success: successCount, failed: failedCount };
 }
 
+/**
+ * Main import function
+ */
 async function main() {
   const args = process.argv.slice(2);
-  const isTest = args.includes('--test');
-  const bookArg = args.find(a => a.startsWith('--book='));
-  const specificBook = bookArg ? bookArg.split('=')[1] : null;
+  const mode = args[0] || '--help';
 
-  console.log('\n╔════════════════════════════════════════════════════════════════╗');
-  console.log('║     Westminster Leningrad Codex (WLC) Import Script          ║');
-  console.log('╚════════════════════════════════════════════════════════════════╝\n');
+  console.log('🔥 Westminster Leningrad Codex Import Tool\n');
 
-  try {
-    // Get WLC manuscript ID
-    console.log('🔍 Finding WLC manuscript in database...');
-    const manuscriptId = await getWLCManuscriptId();
-    console.log(`✅ Found WLC manuscript: ${manuscriptId}\n`);
+  if (mode === '--help' || !mode) {
+    console.log('Usage:');
+    console.log('  node database/import-wlc.js --test              # Import Genesis 1 only');
+    console.log('  node database/import-wlc.js --book Genesis      # Import specific book');
+    console.log('  node database/import-wlc.js --full              # Import all books');
+    process.exit(0);
+  }
 
-    // Parse WLC file
-    const wlcPath = path.join(__dirname, '../manuscripts/hebrew/wlc/oxlos-import/wlc.txt');
-    let allVerses = await parseWLCFile(wlcPath);
+  // Load WLC data
+  const morphhb = loadWLCData();
 
-    console.log(`📊 Total verses parsed: ${allVerses.length}`);
+  // Ensure manuscript record exists
+  const manuscriptId = await ensureManuscript();
 
-    // Filter based on mode
-    if (isTest) {
-      console.log('🧪 TEST MODE: Importing Genesis chapter 1 only');
-      allVerses = allVerses.filter(v => v.book === 'GEN' && v.chapter === 1);
-    } else if (specificBook) {
-      console.log(`📖 Importing book: ${specificBook}`);
-      allVerses = allVerses.filter(v => v.book === specificBook.toUpperCase());
-    } else {
-      console.log('📚 FULL IMPORT: All Old Testament books');
+  let totalSuccess = 0;
+  let totalFailed = 0;
+
+  if (mode === '--test') {
+    console.log('\n🧪 TEST MODE: Importing Genesis chapter 1 only\n');
+
+    // Import just Genesis
+    const genesisData = morphhb['Genesis'];
+    if (!genesisData) {
+      console.error('❌ Genesis not found in WLC data');
+      process.exit(1);
     }
 
-    if (allVerses.length === 0) {
-      console.log('⚠️  No verses to import!');
-      return;
+    // Limit to chapter 1
+    const chapter1Only = [genesisData[0]];
+    const stats = await importBook(manuscriptId, 'Genesis', chapter1Only);
+
+    totalSuccess = stats.success;
+    totalFailed = stats.failed;
+
+  } else if (mode === '--book') {
+    const bookName = args[1];
+    if (!bookName) {
+      console.error('❌ Please specify a book name: --book Genesis');
+      process.exit(1);
     }
 
-    console.log(`📝 Verses to import: ${allVerses.length}`);
+    const bookData = morphhb[bookName];
+    if (!bookData) {
+      console.error(`❌ Book "${bookName}" not found in WLC data`);
+      console.log('\nAvailable books:', Object.keys(morphhb).join(', '));
+      process.exit(1);
+    }
 
-    // Import verses
-    await importVerses(manuscriptId, allVerses);
+    const stats = await importBook(manuscriptId, bookName, bookData);
+    totalSuccess = stats.success;
+    totalFailed = stats.failed;
 
-    // Show summary
-    const books = [...new Set(allVerses.map(v => v.book))];
-    console.log('📊 Import Summary:');
-    console.log(`   - Books: ${books.length}`);
-    console.log(`   - Verses: ${allVerses.length}`);
-    console.log(`   - Books imported: ${books.join(', ')}`);
-    console.log('\n✅ WLC import completed successfully!\n');
+  } else if (mode === '--full') {
+    console.log('\n📚 FULL IMPORT: Importing all 39 OT books\n');
 
-  } catch (error) {
-    console.error('\n❌ Fatal error:', error.message);
-    console.error(error);
+    const bookNames = Object.keys(morphhb);
+
+    for (const bookName of bookNames) {
+      const bookData = morphhb[bookName];
+      const stats = await importBook(manuscriptId, bookName, bookData);
+
+      totalSuccess += stats.success;
+      totalFailed += stats.failed;
+    }
+
+  } else {
+    console.error(`❌ Unknown mode: ${mode}`);
+    console.log('Run with --help for usage information');
     process.exit(1);
   }
+
+  // Final summary
+  console.log('\n' + '='.repeat(50));
+  console.log('📊 IMPORT SUMMARY');
+  console.log('='.repeat(50));
+  console.log(`✅ Successfully imported: ${totalSuccess} verses`);
+  console.log(`❌ Failed: ${totalFailed} verses`);
+  console.log('\n🎉 Import complete!');
+  console.log('\nNext steps:');
+  console.log('  1. Verify data: node database/verify-tables.js');
+  console.log('  2. Test query: SELECT * FROM verses WHERE book = \'GEN\' AND chapter = 1 LIMIT 5;');
 }
 
-main().catch(console.error);
+// Run the import
+main().catch(err => {
+  console.error('💥 Fatal error:', err);
+  process.exit(1);
+});

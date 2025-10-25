@@ -1,0 +1,318 @@
+/**
+ * All4Yah Manuscript Styling
+ * Fonts and styles for Hebrew, Greek, and English biblical text display
+ */
+
+/* ============================================================================
+   FONTS: Hebrew and Greek
+   ============================================================================ */
+
+/* Hebrew Font - Ezra SIL (open source biblical Hebrew font) */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@400;700&display=swap');
+
+/* Greek Font - Noto Serif (supports polytonic Greek) */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* Biblical Serif for English */
+@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* ============================================================================
+   TEXT CLASSES
+   ============================================================================ */
+
+/* Hebrew Text - Right-to-Left */
+.hebrew-text {
+  font-family: 'Noto Serif Hebrew', 'Ezra SIL', 'Times New Roman', serif;
+  font-size: 1.5rem;
+  line-height: 2.2;
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: embed;
+  letter-spacing: 0.02em;
+}
+
+/* Greek Text - Left-to-Right */
+.greek-text {
+  font-family: 'Noto Serif', 'Palatino', 'Georgia', serif;
+  font-size: 1.3rem;
+  line-height: 2;
+  direction: ltr;
+  text-align: left;
+  letter-spacing: 0.01em;
+}
+
+/* English Text - Biblical Style */
+.english-text {
+  font-family: 'Cardo', 'Libre Baskerville', 'Georgia', serif;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  direction: ltr;
+  text-align: left;
+}
+
+/* ============================================================================
+   MANUSCRIPT VIEWER COMPONENTS
+   ============================================================================ */
+
+.manuscript-viewer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.manuscript-panel {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.manuscript-panel:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.manuscript-panel h3 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2E7D32;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 2px solid #2E7D32;
+  padding-bottom: 0.5rem;
+}
+
+.manuscript-panel .manuscript-meta {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+/* Parallel View Layout */
+.parallel-view {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .parallel-view {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .parallel-view {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============================================================================
+   RESTORATION FEATURES
+   ============================================================================ */
+
+.restored-name {
+  color: #D4AF37;
+  font-weight: 700;
+  position: relative;
+  cursor: help;
+}
+
+.restored-name::after {
+  content: '✦';
+  font-size: 0.6em;
+  vertical-align: super;
+  margin-left: 2px;
+  color: #D4AF37;
+}
+
+.restored-name:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+  border-radius: 3px;
+}
+
+/* Restoration Toggle */
+.restoration-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+}
+
+.restoration-toggle:hover {
+  background: linear-gradient(135deg, #388E3C 0%, #2E7D32 100%);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+  transform: translateY(-2px);
+}
+
+.restoration-toggle:active {
+  transform: translateY(0);
+}
+
+.restoration-toggle.active {
+  background: linear-gradient(135deg, #D4AF37 0%, #B8941F 100%);
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+.restoration-toggle.active:hover {
+  background: linear-gradient(135deg, #E5C158 0%, #D4AF37 100%);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+}
+
+/* ============================================================================
+   VERSE REFERENCE
+   ============================================================================ */
+
+.verse-reference {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #3B4252;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.verse-number {
+  display: inline-block;
+  background: #2E7D32;
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+/* ============================================================================
+   DARK MODE SUPPORT
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .manuscript-panel {
+    background: #2E3440;
+    border-color: #4C566A;
+    color: #ECEFF4;
+  }
+
+  .manuscript-panel h3 {
+    color: #88C0D0;
+    border-bottom-color: #88C0D0;
+  }
+
+  .manuscript-panel .manuscript-meta {
+    color: #D8DEE9;
+  }
+
+  .verse-reference {
+    color: #ECEFF4;
+  }
+
+  .verse-number {
+    background: #88C0D0;
+    color: #2E3440;
+  }
+}
+
+/* ============================================================================
+   LOADING & STATES
+   ============================================================================ */
+
+.manuscript-loading {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-style: italic;
+}
+
+.manuscript-error {
+  background: #FFEBEE;
+  color: #C62828;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #C62828;
+  margin: 1rem 0;
+}
+
+/* ============================================================================
+   STRONG'S NUMBERS (HOVER INFO)
+   ============================================================================ */
+
+.strongs-number {
+  font-size: 0.7em;
+  color: #666;
+  vertical-align: super;
+  cursor: help;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.strongs-number:hover {
+  opacity: 1;
+  color: #2E7D32;
+}
+
+/* ============================================================================
+   MANUSCRIPT HEADER
+   ============================================================================ */
+
+.manuscript-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.manuscript-header h1 {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 2.5rem;
+  color: #2E7D32;
+  margin-bottom: 0.5rem;
+}
+
+.manuscript-header p {
+  font-size: 1.1rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* ============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .hebrew-text {
+    font-size: 1.3rem;
+    line-height: 2;
+  }
+
+  .greek-text {
+    font-size: 1.2rem;
+  }
+
+  .english-text {
+    font-size: 1.1rem;
+  }
+
+  .manuscript-viewer {
+    padding: 1rem;
+  }
+
+  .manuscript-panel {
+    padding: 1.5rem;
+  }
+}

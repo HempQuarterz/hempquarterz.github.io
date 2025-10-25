@@ -1,100 +1,154 @@
-#!/usr/bin/env node
-
 /**
- * SBL Greek New Testament (SBLGNT) Import Script
- *
- * Imports the complete Greek New Testament with morphological data
- * from the MorphGNT format (SBL Greek New Testament with morphology).
- *
- * Format: 010101 N- ----NSF- Βίβλος Βίβλος βίβλος βίβλος
- *         [BCCCVV] [POS] [Parsing] [Word] [Normalized] [Lemma] [Lexeme]
- *
- * Usage:
- *   node database/import-sblgnt.js              # Import all books
- *   node database/import-sblgnt.js --test       # Import Matthew 1 only
- *   node database/import-sblgnt.js --book=61    # Import specific book by number
+ * SBLGNT (MorphGNT) Greek New Testament Import Script
+ * Imports Greek NT from morphgnt.org (SBL Greek New Testament with morphological tagging)
  */
 
-const { createClient } = require('@supabase/supabase-js');
-const fs = require('fs').promises;
+require('dotenv').config();
+const fs = require('fs');
 const path = require('path');
-const { readdir } = require('fs').promises;
+const { createClient } = require('@supabase/supabase-js');
 
-// Supabase configuration
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://txeeaekwhkdilycefczq.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'sb_secret_ga_5t6BceIDCZzm5rJ8FlA_y1wxONOO';
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+if (!supabaseUrl || !supabaseKey) {
+  console.error('❌ Missing Supabase credentials in .env file');
+  process.exit(1);
+}
 
-// Book number to code mapping (61-87)
-const BOOK_CODES = {
-  '61': 'MAT', '62': 'MRK', '63': 'LUK', '64': 'JHN', '65': 'ACT',
-  '66': 'ROM', '67': '1CO', '68': '2CO', '69': 'GAL', '70': 'EPH',
-  '71': 'PHP', '72': 'COL', '73': '1TH', '74': '2TH',
-  '75': '1TI', '76': '2TI', '77': 'TIT', '78': 'PHM',
-  '79': 'HEB', '80': 'JAS', '81': '1PE', '82': '2PE',
-  '83': '1JN', '84': '2JN', '85': '3JN', '86': 'JUD', '87': 'REV'
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Greek NT book mapping (MorphGNT uses numbers 61-87)
+const BOOK_MAP = {
+  61: 'MAT', // Matthew
+  62: 'MRK', // Mark
+  63: 'LUK', // Luke
+  64: 'JHN', // John
+  65: 'ACT', // Acts
+  66: 'ROM', // Romans
+  67: '1CO', // 1 Corinthians
+  68: '2CO', // 2 Corinthians
+  69: 'GAL', // Galatians
+  70: 'EPH', // Ephesians
+  71: 'PHP', // Philippians
+  72: 'COL', // Colossians
+  73: '1TH', // 1 Thessalonians
+  74: '2TH', // 2 Thessalonians
+  75: '1TI', // 1 Timothy
+  76: '2TI', // 2 Timothy
+  77: 'TIT', // Titus
+  78: 'PHM', // Philemon
+  79: 'HEB', // Hebrews
+  80: 'JAS', // James
+  81: '1PE', // 1 Peter
+  82: '2PE', // 2 Peter
+  83: '1JN', // 1 John
+  84: '2JN', // 2 John
+  85: '3JN', // 3 John
+  86: 'JUD', // Jude
+  87: 'REV'  // Revelation
 };
 
 const BOOK_NAMES = {
-  '61': 'Matthew', '62': 'Mark', '63': 'Luke', '64': 'John', '65': 'Acts',
-  '66': 'Romans', '67': '1 Corinthians', '68': '2 Corinthians', '69': 'Galatians',
-  '70': 'Ephesians', '71': 'Philippians', '72': 'Colossians',
-  '73': '1 Thessalonians', '74': '2 Thessalonians',
-  '75': '1 Timothy', '76': '2 Timothy', '77': 'Titus', '78': 'Philemon',
-  '79': 'Hebrews', '80': 'James', '81': '1 Peter', '82': '2 Peter',
-  '83': '1 John', '84': '2 John', '85': '3 John', '86': 'Jude', '87': 'Revelation'
+  61: 'Matthew',
+  62: 'Mark',
+  63: 'Luke',
+  64: 'John',
+  65: 'Acts',
+  66: 'Romans',
+  67: '1 Corinthians',
+  68: '2 Corinthians',
+  69: 'Galatians',
+  70: 'Ephesians',
+  71: 'Philippians',
+  72: 'Colossians',
+  73: '1 Thessalonians',
+  74: '2 Thessalonians',
+  75: '1 Timothy',
+  76: '2 Timothy',
+  77: 'Titus',
+  78: 'Philemon',
+  79: 'Hebrews',
+  80: 'James',
+  81: '1 Peter',
+  82: '2 Peter',
+  83: '1 John',
+  84: '2 John',
+  85: '3 John',
+  86: 'Jude',
+  87: 'Revelation'
 };
 
-async function getSBLGNTManuscriptId() {
-  const { data, error } = await supabase
-    .from('manuscripts')
-    .select('id')
-    .eq('code', 'SBLGNT')
-    .single();
+// File abbreviations used in MorphGNT filenames
+const FILE_ABBR = {
+  61: 'Mt',
+  62: 'Mk',
+  63: 'Lk',
+  64: 'Jn',
+  65: 'Ac',
+  66: 'Ro',
+  67: '1Co',
+  68: '2Co',
+  69: 'Ga',
+  70: 'Eph',
+  71: 'Php',
+  72: 'Col',
+  73: '1Th',
+  74: '2Th',
+  75: '1Ti',
+  76: '2Ti',
+  77: 'Tit',
+  78: 'Phm',
+  79: 'Heb',
+  80: 'Jas',
+  81: '1Pe',
+  82: '2Pe',
+  83: '1Jn',
+  84: '2Jn',
+  85: '3Jn',
+  86: 'Jud',
+  87: 'Re'
+};
 
-  if (error) {
-    console.error('❌ Error finding SBLGNT manuscript:', error.message);
-    throw error;
-  }
+/**
+ * Parse a MorphGNT file and extract verses
+ * Format: reference pos parsing word normalized lemma lexeme
+ */
+function parseMorphGNTFile(filePath, bookNum) {
+  const content = fs.readFileSync(filePath, 'utf-8');
+  const lines = content.split('\n');
 
-  return data.id;
-}
-
-async function parseMorphGNTFile(filePath, bookNum) {
-  console.log(`📖 Reading ${BOOK_NAMES[bookNum]}: ${path.basename(filePath)}`);
-
-  const content = await fs.readFile(filePath, 'utf-8');
-  const lines = content.split('\n').filter(line => line.trim());
-
-  const verses = {};
-  const expectedBookCode = BOOK_CODES[bookNum];
+  const versesMap = new Map(); // Key: "chapter:verse", Value: { words: [], morphology: [] }
 
   for (const line of lines) {
-    // Parse format: 010101 N- ----NSF- Βίβλος Βίβλος βίβλος βίβλος
+    if (!line.trim()) continue;
+
     const parts = line.split(/\s+/);
     if (parts.length < 7) continue;
 
-    const [ref, pos, parsing, word, normalized, lemma, lexeme] = parts;
+    const [reference, pos, parsing, word, normalized, lemma, lexeme] = parts;
 
-    // Parse reference: BCCCVV (Book, Chapter, Verse)
-    // Note: Book numbers in data are 01-27, but we use our filename-based mapping
-    const chapter = parseInt(ref.substring(2, 4), 10);
-    const verse = parseInt(ref.substring(4, 6), 10);
+    // Parse reference (BCCCVV format, but B is just 1 or 2 digit book indicator)
+    // For book 61 (Matthew), reference is like "010101" where 01=chapter, 01=verse
+    // Skip first 2 digits (book indicator within the file)
+    const refStr = reference.padStart(6, '0');
+    const chapter = parseInt(refStr.substring(2, 4), 10);
+    const verse = parseInt(refStr.substring(4, 6), 10);
 
-    const verseKey = `${expectedBookCode}.${chapter}.${verse}`;
+    const key = `${chapter}:${verse}`;
 
-    if (!verses[verseKey]) {
-      verses[verseKey] = {
-        book: expectedBookCode,
+    if (!versesMap.has(key)) {
+      versesMap.set(key, {
         chapter,
         verse,
         words: [],
-        text: ''
-      };
+        morphology: []
+      });
     }
 
-    verses[verseKey].words.push({
+    const verseData = versesMap.get(key);
+    verseData.words.push(word);
+    verseData.morphology.push({
       word,
       normalized,
       lemma,
@@ -104,45 +158,79 @@ async function parseMorphGNTFile(filePath, bookNum) {
     });
   }
 
-  // Assemble verse text from Greek words
-  Object.values(verses).forEach(verse => {
-    verse.text = verse.words.map(w => w.word).join(' ');
-    verse.morphology = verse.words;
+  // Convert map to array of verse objects
+  const verses = [];
+  const bookCode = BOOK_MAP[bookNum];
+
+  for (const [key, data] of versesMap) {
+    verses.push({
+      book: bookCode,
+      chapter: data.chapter,
+      verse: data.verse,
+      text: data.words.join(' '),
+      morphology: JSON.stringify(data.morphology)
+    });
+  }
+
+  // Sort by chapter and verse
+  verses.sort((a, b) => {
+    if (a.chapter !== b.chapter) return a.chapter - b.chapter;
+    return a.verse - b.verse;
   });
 
-  return Object.values(verses);
+  return verses;
 }
 
-async function getMorphGNTFiles() {
-  const morphgntDir = path.join(__dirname, '../manuscripts/greek_nt/morphgnt');
-  const files = await readdir(morphgntDir);
+/**
+ * Get or create SBLGNT manuscript record
+ */
+async function getOrCreateManuscript() {
+  console.log('📖 Getting/Creating SBLGNT manuscript record...');
 
-  return files
-    .filter(f => f.endsWith('-morphgnt.txt'))
-    .map(f => {
-      const bookNum = f.substring(0, 2);
-      return {
-        path: path.join(morphgntDir, f),
-        bookNum,
-        bookCode: BOOK_CODES[bookNum],
-        bookName: BOOK_NAMES[bookNum]
-      };
+  const { data: existing } = await supabase
+    .from('manuscripts')
+    .select('id')
+    .eq('code', 'SBLGNT')
+    .single();
+
+  if (existing) {
+    console.log('✓ SBLGNT manuscript already exists');
+    return existing.id;
+  }
+
+  const { data, error } = await supabase
+    .from('manuscripts')
+    .insert({
+      code: 'SBLGNT',
+      name: 'SBL Greek New Testament',
+      language: 'greek',
+      description: 'Society of Biblical Literature Greek New Testament with morphological tagging from MorphGNT project',
+      date_range: '2010 CE',
+      license: 'CC BY-SA 4.0',
+      source_url: 'https://github.com/morphgnt/sblgnt'
     })
-    .sort((a, b) => a.bookNum - b.bookNum);
+    .select('id')
+    .single();
+
+  if (error) {
+    throw new Error(`Failed to create manuscript: ${error.message}`);
+  }
+
+  console.log('✓ Created SBLGNT manuscript record');
+  return data.id;
 }
 
+/**
+ * Import verses in batches
+ */
 async function importVerses(manuscriptId, verses) {
-  if (verses.length === 0) return;
-
-  console.log(`\n📥 Importing ${verses.length} verses...`);
-
   const batchSize = 100;
   let imported = 0;
 
   for (let i = 0; i < verses.length; i += batchSize) {
     const batch = verses.slice(i, i + batchSize);
 
-    const records = batch.map(v => ({
+    const rows = batch.map(v => ({
       manuscript_id: manuscriptId,
       book: v.book,
       chapter: v.chapter,
@@ -153,92 +241,129 @@ async function importVerses(manuscriptId, verses) {
 
     const { error } = await supabase
       .from('verses')
-      .upsert(records, {
-        onConflict: 'manuscript_id,book,chapter,verse',
-        ignoreDuplicates: false
-      });
+      .insert(rows);
 
     if (error) {
-      console.error(`❌ Error importing batch ${i / batchSize + 1}:`, error.message);
-      throw error;
+      throw new Error(`Failed to insert batch: ${error.message}`);
     }
 
     imported += batch.length;
-    process.stdout.write(`\r   Progress: ${imported}/${verses.length} verses`);
+    process.stdout.write(`\r   Imported: ${imported}/${verses.length} verses`);
   }
 
-  console.log('\n✅ Import complete!\n');
+  console.log(''); // New line after progress
 }
 
+/**
+ * Import a single book
+ */
+async function importBook(manuscriptId, bookNum, bookName) {
+  console.log(`\n📖 Importing ${bookName} (${BOOK_MAP[bookNum]})...`);
+
+  const fileName = `${bookNum}-${FILE_ABBR[bookNum]}-morphgnt.txt`;
+  const filePath = path.join(
+    '/home/hempquarterz/projects/All4Yah/manuscripts/greek_nt/morphgnt',
+    fileName
+  );
+
+  if (!fs.existsSync(filePath)) {
+    console.error(`❌ File not found: ${filePath}`);
+    return 0;
+  }
+
+  const verses = parseMorphGNTFile(filePath, bookNum);
+  console.log(`   Found ${verses.length} verses`);
+
+  await importVerses(manuscriptId, verses);
+  console.log(`✓ ${bookName} imported successfully`);
+
+  return verses.length;
+}
+
+/**
+ * Main import function
+ */
 async function main() {
   const args = process.argv.slice(2);
-  const isTest = args.includes('--test');
-  const bookArg = args.find(a => a.startsWith('--book='));
-  const specificBook = bookArg ? bookArg.split('=')[1] : null;
+  const mode = args[0] || '--help';
 
-  console.log('\n╔════════════════════════════════════════════════════════════════╗');
-  console.log('║     SBL Greek New Testament (SBLGNT) Import Script            ║');
-  console.log('╚════════════════════════════════════════════════════════════════╝\n');
+  console.log('🔥 SBLGNT Greek New Testament Import\n');
+  console.log('='.repeat(70));
 
-  try {
-    // Get SBLGNT manuscript ID
-    console.log('🔍 Finding SBLGNT manuscript in database...');
-    const manuscriptId = await getSBLGNTManuscriptId();
-    console.log(`✅ Found SBLGNT manuscript: ${manuscriptId}\n`);
+  if (mode === '--help') {
+    console.log('\nUsage:');
+    console.log('  node database/import-sblgnt.js --test      # Import John 1 only');
+    console.log('  node database/import-sblgnt.js --book 64   # Import specific book (64 = John)');
+    console.log('  node database/import-sblgnt.js --full      # Import all 27 NT books');
+    console.log('\nAvailable books:');
+    for (const [num, name] of Object.entries(BOOK_NAMES)) {
+      console.log(`  ${num}: ${name} (${BOOK_MAP[num]})`);
+    }
+    return;
+  }
 
-    // Get all MorphGNT files
-    let files = await getMorphGNTFiles();
-    console.log(`📚 Found ${files.length} book files`);
+  const manuscriptId = await getOrCreateManuscript();
 
-    // Filter based on mode
-    if (isTest) {
-      console.log('🧪 TEST MODE: Importing Matthew chapter 1 only');
-      files = files.filter(f => f.bookNum === '61');
-    } else if (specificBook) {
-      console.log(`📖 Importing book: ${BOOK_NAMES[specificBook]}`);
-      files = files.filter(f => f.bookNum === specificBook);
-    } else {
-      console.log('📚 FULL IMPORT: All New Testament books');
+  if (mode === '--test') {
+    console.log('\n🧪 TEST MODE: Importing John 1 only\n');
+    await importBook(manuscriptId, 64, 'John');
+
+    // Verify import
+    const { count } = await supabase
+      .from('verses')
+      .select('*', { count: 'exact', head: true })
+      .eq('manuscript_id', manuscriptId)
+      .eq('book', 'JHN')
+      .eq('chapter', 1);
+
+    console.log(`\n✓ Verification: ${count} verses in John 1`);
+    console.log('\n🎉 Test import complete!');
+    console.log('Run with --full to import all 27 NT books');
+  }
+  else if (mode === '--book') {
+    const bookNum = parseInt(args[1], 10);
+    if (!BOOK_MAP[bookNum]) {
+      console.error(`❌ Invalid book number: ${bookNum}`);
+      console.log('Use --help to see available books');
+      process.exit(1);
     }
 
-    let allVerses = [];
+    await importBook(manuscriptId, bookNum, BOOK_NAMES[bookNum]);
+    console.log('\n✓ Import complete!');
+  }
+  else if (mode === '--full') {
+    console.log('\n📚 FULL IMPORT: All 27 New Testament books\n');
 
-    // Parse each book
-    for (const file of files) {
-      const verses = await parseMorphGNTFile(file.path, file.bookNum);
-      console.log(`   ✓ Parsed ${verses.length} verses from ${file.bookName}`);
+    let totalVerses = 0;
 
-      if (isTest) {
-        // Only Matthew 1 for test
-        allVerses = allVerses.concat(verses.filter(v => v.chapter === 1));
-      } else {
-        allVerses = allVerses.concat(verses);
-      }
+    for (const [bookNum, bookName] of Object.entries(BOOK_NAMES)) {
+      const count = await importBook(manuscriptId, parseInt(bookNum), bookName);
+      totalVerses += count;
     }
 
-    console.log(`\n📊 Total verses to import: ${allVerses.length}`);
+    console.log('\n' + '='.repeat(70));
+    console.log('📊 IMPORT SUMMARY');
+    console.log('='.repeat(70));
+    console.log(`Total verses imported: ${totalVerses}`);
 
-    if (allVerses.length === 0) {
-      console.log('⚠️  No verses to import!');
-      return;
-    }
+    // Verify total
+    const { count } = await supabase
+      .from('verses')
+      .select('*', { count: 'exact', head: true })
+      .eq('manuscript_id', manuscriptId);
 
-    // Import all verses
-    await importVerses(manuscriptId, allVerses);
-
-    // Show summary
-    const books = [...new Set(allVerses.map(v => v.book))];
-    console.log('📊 Import Summary:');
-    console.log(`   - Books: ${books.length}`);
-    console.log(`   - Verses: ${allVerses.length}`);
-    console.log(`   - Books imported: ${books.join(', ')}`);
-    console.log('\n✅ SBLGNT import completed successfully!\n');
-
-  } catch (error) {
-    console.error('\n❌ Fatal error:', error.message);
-    console.error(error);
+    console.log(`Database verification: ${count} verses`);
+    console.log('\n🎉 Full Greek New Testament import complete!');
+  }
+  else {
+    console.log('❌ Unknown mode. Use --help for usage information.');
     process.exit(1);
   }
 }
 
-main().catch(console.error);
+// Run import
+main().catch(err => {
+  console.error('\n💥 Import failed:', err.message);
+  console.error(err.stack);
+  process.exit(1);
+});
