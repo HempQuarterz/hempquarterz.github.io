@@ -1,0 +1,211 @@
+{
+  "timestamp": "2025-10-25T19:05:52.474Z",
+  "input_file": "/home/hempquarterz/projects/All4Yah/manuscripts/dead-sea-scrolls/dss-full.json",
+  "output_file": "/home/hempquarterz/projects/All4Yah/manuscripts/dead-sea-scrolls/dss-cleaned.json",
+  "statistics": {
+    "total_lines_input": 52769,
+    "total_lines_output": 52215,
+    "duplicates_removed": 554,
+    "invalid_verses_fixed": 64,
+    "invalid_chapters_fixed": 81,
+    "total_changes": 699
+  },
+  "examples": {
+    "duplicates": [
+      {
+        "key": "1QHa-11-2",
+        "firstIndex": 1688,
+        "duplicateIndex": 2344
+      },
+      {
+        "key": "1QHa-11-3",
+        "firstIndex": 1689,
+        "duplicateIndex": 2345
+      },
+      {
+        "key": "1QHa-11-4",
+        "firstIndex": 1690,
+        "duplicateIndex": 2346
+      },
+      {
+        "key": "1QHa-11-5",
+        "firstIndex": 1691,
+        "duplicateIndex": 2347
+      },
+      {
+        "key": "1QHa-303-1",
+        "firstIndex": 2329,
+        "duplicateIndex": 2355
+      },
+      {
+        "key": "1QHa-303-2",
+        "firstIndex": 2330,
+        "duplicateIndex": 2356
+      },
+      {
+        "key": "1QHa-303-3",
+        "firstIndex": 2331,
+        "duplicateIndex": 2357
+      },
+      {
+        "key": "1Q21-652-1",
+        "firstIndex": 3054,
+        "duplicateIndex": 3057
+      },
+      {
+        "key": "1Q21-907-1",
+        "firstIndex": 2995,
+        "duplicateIndex": 3069
+      },
+      {
+        "key": "1Q21-907-2",
+        "firstIndex": 2996,
+        "duplicateIndex": 3070
+      }
+    ],
+    "invalid_verses": [
+      {
+        "book": "2Q20",
+        "chapter": 507,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ε ו יפרו"
+      },
+      {
+        "book": "2Q24",
+        "chapter": 507,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ε ו אעל׳ני ל גוא קרית א ו משח"
+      },
+      {
+        "book": "4Q207",
+        "chapter": 507,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ε ו עוד הוית"
+      },
+      {
+        "book": "4Q249g",
+        "chapter": 24,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ו זה ה סרך ל כול עדת ישראל ב אחרית ה ימים"
+      },
+      {
+        "book": "4Q266",
+        "chapter": 429,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ε שפחת גבחת תחבה"
+      },
+      {
+        "book": "4Q274",
+        "chapter": 420,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ε אל"
+      },
+      {
+        "book": "4Q277",
+        "chapter": 470,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ε ו לקח ה כוהן"
+      },
+      {
+        "book": "4Q324d",
+        "chapter": 249,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ε חשבנות ה ימים ׃"
+      },
+      {
+        "book": "4Q325",
+        "chapter": 776,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ε  ] #  ב ε"
+      },
+      {
+        "book": "4Q403",
+        "chapter": 420,
+        "originalVerse": 0,
+        "fixedVerse": 1,
+        "text": "ε תהלת רומם ב לשון"
+      }
+    ],
+    "invalid_chapters": [
+      {
+        "book": "4Q261",
+        "originalChapter": 0,
+        "originalVerse": 1,
+        "fixedChapter": 1,
+        "text": "את ברית׳ו ו ל פקוד את כל חוק׳ו אשר צוה ל עשות"
+      },
+      {
+        "book": "4Q261",
+        "originalChapter": 0,
+        "originalVerse": 2,
+        "fixedChapter": 1,
+        "text": "ו על פי רוב ישראל ה מתנדבים ל שבת יחד ׃ ו ל כתב"
+      },
+      {
+        "book": "4Q261",
+        "originalChapter": 0,
+        "originalVerse": 3,
+        "fixedChapter": 1,
+        "text": "איש ל פני רע׳הו ב סרך ל פי שכל׳ו ו מעש׳ו ב תורה"
+      },
+      {
+        "book": "4Q261",
+        "originalChapter": 0,
+        "originalVerse": 4,
+        "fixedChapter": 1,
+        "text": "ל השמע ה קטן ל גדול ׃ ו ל היות פוקדים את רוח׳ם"
+      },
+      {
+        "book": "4Q261",
+        "originalChapter": 0,
+        "originalVerse": 5,
+        "fixedChapter": 1,
+        "text": "ו מעשי׳הם ב תורה שנה ב שנה ל העלות איש ל פי שכל׳ו"
+      },
+      {
+        "book": "4Q261",
+        "originalChapter": 0,
+        "originalVerse": 6,
+        "fixedChapter": 1,
+        "text": "ו ל אחר׳ו כ נעוית׳ו ε"
+      },
+      {
+        "book": "4Q261",
+        "originalChapter": 0,
+        "originalVerse": 7,
+        "fixedChapter": 1,
+        "text": "ε  ] #  #  # [  ε ׃"
+      },
+      {
+        "book": "4Q266",
+        "originalChapter": 0,
+        "originalVerse": 1,
+        "fixedChapter": 1,
+        "text": "פרוש ה משפטים ל משכיל ל בני אור ל הנזר מ דרכי רשעה"
+      },
+      {
+        "book": "4Q266",
+        "originalChapter": 0,
+        "originalVerse": 2,
+        "fixedChapter": 1,
+        "text": "ε עד תום ה מועד פקודה ב רוח עולה"
+      },
+      {
+        "book": "4Q266",
+        "originalChapter": 0,
+        "originalVerse": 3,
+        "fixedChapter": 1,
+        "text": "ε ישמיד אל את כול מעשי׳ה ל הבי כלה"
+      }
+    ]
+  }
+}
