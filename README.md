@@ -29,11 +29,11 @@ We restore the original divine names:
 ## ✨ Features (Phase 1 - Complete)
 
 ### Manuscript Viewer
-- ✅ **Parallel manuscript display** - Hebrew/Greek + English side-by-side
+- ✅ **Parallel manuscript display** - Hebrew/Greek/Latin + English side-by-side
 - ✅ **Divine name restoration toggle** - Switch between original and restored
-- ✅ **54,217 verses** - Complete Old and New Testament coverage
-- ✅ **3 manuscripts** - WLC (Hebrew), SBLGNT (Greek), WEB (English OT)
-- ✅ **8 divine name mappings** - Hebrew and Greek restorations
+- ✅ **158,356 verses** - Complete Old and New Testament coverage (9 manuscripts!)
+- ✅ **9 manuscripts** - WLC (Hebrew), LXX (Greek OT), 6 Greek NT texts, Vulgate (Latin), WEB (English)
+- ✅ **8 divine name mappings** - Hebrew, Greek, and English restorations
 - ✅ **Gold highlighting (✦)** - Visually distinct restored names
 - ✅ **Hover tooltips** - See original text on hover
 - ✅ **Responsive design** - Mobile-friendly 3-column grid
