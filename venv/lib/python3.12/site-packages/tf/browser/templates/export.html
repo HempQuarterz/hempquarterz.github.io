@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html> 
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>TF-export {{appName}}-{{jobName}}</title>
+		<meta name="application-name" content="TF Search Box"/>
+		<link rel="shortcut icon" href="/browser/static/favicon.ico">
+		<link rel="stylesheet" href="/browser/static/colors.css"/>
+		<link rel="stylesheet" href="/browser/static/base.css"/>
+		<link rel="stylesheet" href="/browser/static/display.css"/>
+		<link rel="stylesheet" href="/browser/static/highlight.css"/>
+    <link rel="stylesheet" href="/browser/static/fonts.css"/>
+		<link rel="stylesheet" href="/browser/static/export.css"/>
+	{{css|safe}}
+	</head>
+	<body>
+		<div class="header">
+			{{colophon|safe}}
+		</div>
+		<div class="prov">
+			{{provenance|safe}}
+		</div>
+		<div class="headerdesc">
+			<div class="titleline">{{title}}</div>
+			<div class="authorline">{{author}}</div>
+		</div>
+		<div class="description">
+			{{descriptionMd|safe}}
+		</div>
+		<hr/>
+		<div>
+			<pre class="sections">{{sections}}</pre>
+		</div>
+		<div id="sectionsTable" class="table">
+			{{sectionsTable|safe}}
+		</div>
+		<hr/>
+		<div>
+				<pre class="tuples">{{tuples}}</pre>
+		</div>
+		<div id="tuplesTable" class="table">
+			{{tuplesTable|safe}}
+		</div>
+		<hr/>
+		<div>
+				<pre class="query">{{query}}</pre>
+			{{setNames|safe}}
+		</div>
+		<div id="queryTable" class="table">
+			{{queryTable|safe}}
+		</div>
+		<hr/>
+		<div>
+			<p>
+				<a
+					target="_blank"
+					href="https://huc.knaw.nl"
+				>KNAW/Humanities Cluster</a>
+				<img
+					class="mainlogo"
+					src="/browser/static/huc.png"
+					align="right"
+				/>
+			</p>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,77 @@
+/* OVERALL */
+
+body {
+	padding: 40px;
+}
+
+/* PAGE (NO COLUMNS) */
+
+/* HEADER */
+
+div.headerdesc {
+	text-align: center;
+}
+
+div.titleline,.authorline {
+	text-align: center;
+}
+div.titleline {
+	font-size: x-large;
+	font-weight: bold;
+	padding: 40px;
+}
+div.authorline {
+	font-size: large;
+	font-style: italic;
+	padding: 20px;
+}
+
+/* INPUT PADS */
+
+pre.sections {
+	font-size: medium;
+	font-family: monospace;
+	width: calc(100% - 20px);
+	margin: 6px 6px;
+	background-color: var(--sections-back);
+}
+pre.tuples {
+	font-size: medium;
+	font-family: monospace;
+	width: calc(100% - 20px);
+	background-color: var(--tuples-back);
+}
+pre.query {
+	font-size: medium;
+	font-family: monospace;
+	width: calc(100% - 20px);
+	margin: 6px 6px;
+	background-color: var(--query-back);
+}
+
+/* METADATA PART */
+
+div.description {
+	font-size: medium;
+	font-family: sans-serif;
+}
+div.description a:link, div.description a:visited,
+div.prov a:link, div.prov a:visited {
+	color: var(--blue-haze-fore);
+	text-decoration: underline;
+}
+
+/* TABLES */
+
+details.dtrow[open] {
+	page-break-before: always;
+	break-before: always;
+}
+details.dtrow[open] {
+	page-break-after: always;
+	break-after: always;
+}
+details.dtrow[open]+details.dtrow[open] {
+	page-break-before: auto;
+	break-before: auto;
+}

@@ -1,0 +1,299 @@
+/* OVERALL */
+
+html {
+	width: 100vw;
+	height: 100vh;
+}
+
+body,td {
+	font-family: sans-serif;
+}
+a:link, a:visited {
+	text-decoration: None;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+:root {
+  --button-fg: #888888;
+  --button-bg: #ffffff;
+  --button-bd: #dddddd;
+  --button-active-fg: #000000;
+  --button-active-bg: #ffeedd;
+  --button-active-bd: #000000;
+  --button-disabled-fg: #dddddd;
+  --button-disabled-bg: #999999;
+  --button-disabled-bd: #999999;
+}
+
+div.page {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* COLUMNS */
+
+#col1 {
+	flex: 0 0 auto;
+	background-color: var(--gray-back);
+	height: 99vh;
+  width: 20vw;
+	overflow-y: auto;
+}
+#col2 {
+	flex: 1 0 auto;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	border-right: 1pt solid var(--fog-rim);
+	padding-left: 4px;
+	padding-right: 8px;
+	height: 99vh;
+  width: 20vw;
+	overflow: auto;
+  resize: horizontal;
+	-webkit-overflow-scrolling: touch;
+}
+#col3 {
+	flex: 10 2 50%;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	border-left: 1pt solid var(--fog-rim);
+	padding-left: 8px;
+	padding-right: 4px;
+	height: 99vh;
+	width: 49vh;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+/* RIGHT-COL: TABLES */
+
+#entitiesq {
+  flex: 0 0 auto;
+}
+
+#entities {
+  flex: 1 1 auto;
+  overflow: auto;
+}
+#qtextentshow {
+  border-radius: 0.2rem;
+  background-color: yellow;
+  padding: 0 0.3rem;
+}
+#qtextentshow.inactive {
+  background-color: #ffddbb;
+  font-style: italic;
+  font-size: small;
+}
+
+#lookupq,#lookupn {
+  display: none;
+}
+
+div.viewercontrol {
+  position: relative;
+  left: -2rem;
+  height: 1rem;
+  overflow: visible;
+}
+
+#bfind,#efind {
+  font-family: monospace;
+  font-size: large;
+  background-color: #aaddff;
+}
+input[st=minus],span[st=minus] {
+  border-color: #ffaaaa ! important;
+  background-color: #ffaaaa ! important;
+}
+input[st=plus],span[st=plus] {
+  border-color: #aaffaa ! important;
+  background-color: #aaffaa ! important;
+}
+button {
+  text-decoration: line-through;
+  border-radius: 0.3rem;
+  color: var(--button-fg);
+  background-color: var(--button-bg);
+  border: 0.1rem solid var(--button-bd);
+  font-size: small;
+  font-weight: medium;
+  margin: 0.1rem;
+  padding: 0.2rem;
+}
+button.alt {
+  text-decoration: none;
+}
+button.icon {
+  text-decoration: none;
+  background-color: inherit;
+  border: 0;
+}
+button.active,button.alt.active {
+  text-decoration: none;
+  color: var(--button-active-fg);
+  background-color: var(--button-active-bg);
+  border: 0.1rem solid var(--button-active-bd);
+}
+button.disabled {
+  color: var(--button-disabled-fg) ! important;
+  background-color: var(--button-disabled-bg) ! important;
+  border: 0.1rem solid var(--button-disabled-bd) ! important;
+}
+button.notapplicable {
+  border-style: dashed;
+}
+button.mono {
+  text-decoration: none;
+  color: var(--button-active-fg);
+  background-color: var(--button-active-bg);
+  border: 0.1rem solid var(--button-active-bd);
+}
+button.altv {
+  color: black;
+  background-color: white;
+  padding: 0;
+  border: 0;
+}
+button.special {
+  text-decoration: none;
+  font-size: large;
+  font-weight: bold;
+  border-width: 0.3rem;
+  padding: 0.1rem 0.8rem;
+  border-radius: 0.6rem;
+}
+button.special.add {
+  color: black;
+  border-color: #00ff00;
+  background-color: #aaffaa;
+}
+button.special.del {
+  color: black;
+  border-color: #ff0000;
+  background-color: #ffaaaa;
+}
+#delreport,#addreport {
+  margin: 0.1rem 0.5rem;
+}
+.report {
+  font-family: monospace;
+  color: #ffddbb;
+  background-color: #333333;
+}
+.feedback {
+  padding: 0.2rem 0.1rem;
+  margin: 0.1rem 0.3rem;
+  background-color: #ffddaa;
+  border-radius: 0.3rem;
+}
+span[te][st="x"]::after {
+  content: "❌";
+}
+span[te][st="v"]::after {
+  content: "✅";
+}
+#selectall {
+}
+#selectnone {
+}
+
+#decoratewidget {
+  display: none;
+}
+
+#appearancewidget,#filterwidget,
+#markwidget,#selectwidget,#modwidget {
+  border: 0.2rem solid #e8e8e8;
+  border-radius: 0.5rem;
+  background-color: #eeeeee;
+  padding: 0.5rem 0.2rem;
+  margin-bottom: 0.4rem;
+}
+#delwidget,#addwidget {
+  border-width: 0.2rem;
+  border-style: solid;
+  border-radius: 0.5rem;
+  background-color: #eaeaea;
+  padding: 0.5rem 0.2rem;
+}
+#delwidget {
+  border-color: #ff0000;
+}
+#addwidget {
+  border-color: #00ff00;
+}
+
+#selectwidget {
+  display: flex;
+	flex-flow: row nowrap;
+	justify-content: start;
+	align-items: flex-start;
+	width: 100%;
+}
+#selectsubwidget {
+  display: flex;
+	flex-flow: row nowrap;
+	justify-content: start;
+	align-items: flex-start;
+}
+.filtercomponent,#etextwidget,.featwidget {
+  border-radius: 0.5rem;
+  border: 0.2rem solid #dddddd;
+  padding: 0.5rem 0.5rem;
+  margin: 0 0.5rem;
+}
+.subtlefilter {
+}
+#delwidget,#addwidget {
+  margin: 0.5rem 0;
+}
+.assignwidget {
+  display: flex;
+	flex-flow: row wrap;
+	justify-content: start;
+	align-items: flex-end;
+	width: 100%;
+}
+#modifyhead {
+  display: flex;
+	flex-flow: row wrap;
+	justify-content: start;
+}
+.delfeat,.addfeat {
+  display: inline-flex;
+	flex-flow: column nowrap;
+	justify-content: start;
+  border-radius: 0.5rem;
+  border: 0.2rem solid #dddddd;
+  padding: 0.2rem; 0.2rem;
+}
+.feattitle {
+  display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+.modifyvalues {
+  display: inline-flex;
+	flex-flow: row wrap;
+  padding: 0;
+}
+.modval {
+  display: flex;
+	flex-flow: column nowrap;
+	justify-content: stretch;
+  align-items: center;
+  margin: 0 0.2rem;
+}

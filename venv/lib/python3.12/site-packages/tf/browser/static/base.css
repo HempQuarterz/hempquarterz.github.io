@@ -1,0 +1,195 @@
+/* OVERALL */
+
+body,td {
+	font-family: sans-serif;
+}
+a:link, a:visited {
+	text-decoration: None;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+/* HEADER */
+
+div.colophon {
+	display: flex;
+  font-size: small;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+div.header {
+  font-size: small;
+}
+img.hdlogo {
+	flex: 0 0 auto;
+	max-width: 5rem;
+	height: 4rem;
+}
+img.mainlogo {
+	max-width: 15rem;
+	height: 5rem;
+}
+div.hdlinks {
+	flex: 0 1 auto;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+	align-items: baseline;
+}
+div.hdlinks > a {
+	flex: 1 1 4rem;
+	background-color: var(--blue-haze-back);
+	border-radius: 8px;
+	border: 2px solid var(--grey-rim);
+	padding: 4px 4px;
+	margin: 4px 4px;
+	text-align: center;
+	text-decoration: none;
+}
+
+/* OUTPUTS */
+
+div.messages {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	width: 100%;
+  max-width: 45vw;
+}
+.eline {
+	font-size: medium;
+	color: var(--red-haze-fore);
+	background-color: var(--red-haze-back);
+}
+.tline {
+	font-size: large;
+	font-family: monospace;
+	color: var(-query-fore);
+	background-color: var(--query-back);
+	white-space: pre;
+}
+
+/* RIGHT-COL: TABLES */
+
+div.table {
+	width: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: stretch;
+}
+
+div.dtheadrow {
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+#sectionsTable div.dtheadrow {
+	background-color: var(--sections-back);
+}
+#tuplesTable div.dtheadrow {
+	background-color: var(--tuples-back);
+}
+#queryTable div.dtheadrow {
+	background-color: var(--query-back);
+}
+div.dtheadrow > span {
+	margin: 4px;
+	padding: 0 10px;
+	border-right: 4px solid var(--light-rim);
+}
+details.dtrow {
+	border: 2px solid var(--gray-rim);
+}
+details.dtrow > summary {
+	background-color: var(--grey-back);
+	margin: 4px 0;
+	padding: 4px;
+}
+details.dtrow > summary > span {
+	padding: 0 10px;
+	border-right: 4px solid var(--gray-rim);
+}
+
+div.pretty {
+	width: 100%;
+	margin: 4px 0 10px 0;
+	background-color: var(--haze-back);
+}
+
+a.rwh {
+	font-size: small !important;
+	background-color: var(--sections-back);
+}
+a.sq {
+	font-size: small !important;
+	background-color: var(--tuples-back);
+}
+a.nd {
+	font-size: small; !important
+	background-color: var(--tuples-back);
+}
+a.rwh:link,a.rwh:visited,
+a.sq:link,a.sq:visited,
+a.nd:link,a.nd:visited {
+	color: var(--gray-fore);
+} 
+
+/* JOBS */
+
+button.small.active, button.medium.active, a.medium.active, a.small.active {
+  color: var(--button-fore);
+  background-color: var(--button-back);
+}
+
+/* buttons and inputs for job control, import / export */
+
+#jobs {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+}
+
+
+#jobaction {
+  border-radius: 0.5rem;
+  background-color: var(--ctlinp-back);
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+button.medium, a.medium {
+  border-radius: 0.3rem;
+  color: var(--inactive-fore);
+  background-color: var(--inactive-back);
+  font-size: small;
+  font-weight: medium;
+  margin: 0.1rem;
+  padding: 0.2rem;
+  border: solid 0.1rem var(--button-back);
+}
+.cntinp {
+  font-family: monospace;
+  color: var(--ctlinp-fore);
+  background-color: var(--ctlinp-back);
+  font-size: large;
+  width: 7rem;
+}
+.selinp {
+  width: 18rem;
+  font-family: monospace;
+  color: var(--ctlinp-fore);
+  background-color: var(--ctlinp-back);
+  font-size: large;
+}
+
+#exportmeta {
+  border-radius: 0.5rem;
+  border: 0.2rem solid var(--export-border)
+}
