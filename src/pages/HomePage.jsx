@@ -112,6 +112,46 @@ const HomePage = () => {
           <p style={{ opacity: 0.9 }}>Select a Bible version to start reading</p>
         </div>
 
+        {/* All4Yah Manuscript Viewer - Feature Card */}
+        <Link
+          to="/manuscripts"
+          className="card"
+          style={{
+            marginBottom: '2rem',
+            background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)',
+            color: 'white',
+            textDecoration: 'none',
+            display: 'block',
+            border: '3px solid #D4AF37',
+            boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.boxShadow = '0 8px 20px rgba(212, 175, 55, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(212, 175, 55, 0.3)';
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
+            <span style={{ fontSize: '2.5rem' }}>✦</span>
+            <h2 style={{ margin: 0, fontSize: '1.5rem' }}>All4Yah Manuscript Viewer</h2>
+          </div>
+          <p style={{ marginBottom: '0.75rem', fontSize: '1.05rem', lineHeight: '1.6' }}>
+            View original Hebrew, Greek & English manuscripts side-by-side with <strong>divine name restoration</strong>
+          </p>
+          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', fontSize: '0.9rem', opacity: 0.95 }}>
+            <span>📜 Westminster Leningrad Codex (Hebrew)</span>
+            <span>📖 SBL Greek New Testament</span>
+            <span>✨ Restored Names: Yahuah, Yahusha, Elohim</span>
+          </div>
+          <div style={{ marginTop: '1rem', fontSize: '0.95rem', fontWeight: 'bold', textAlign: 'right' }}>
+            Explore Manuscripts →
+          </div>
+        </Link>
+
         {loading ? (
           <Loading type="skeleton" />
         ) : error ? (
