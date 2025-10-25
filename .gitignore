@@ -25,3 +25,7 @@ yarn-error.log*
 
 # Manuscript data files (large datasets)
 manuscripts/
+
+# MCP configuration scripts (contain sensitive credentials)
+scripts/activate-mcp.sh
+.env.mcp
