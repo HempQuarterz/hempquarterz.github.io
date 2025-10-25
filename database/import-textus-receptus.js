@@ -1,13 +1,15 @@
 /**
  * Textus Receptus Greek New Testament Import Script
- * Imports Greek NT from Textus Receptus (Scrivener 1894 edition)
- * Source: https://github.com/byztxt/byzantine-majority-text
- * License: Public Domain
+ * Imports the TR from .UTR format with Strong's numbers and morphology
  *
- * To use this script:
- * 1. Download TR data from the source repository
- * 2. Extract to ../../manuscripts/greek_nt/textus_receptus/
- * 3. Run: node database/import-textus-receptus.js [--test|--book NUM|--full]
+ * Source: byztxt/greektext-textus-receptus
+ * License: Public Domain
+ * Format: .UTR files with chapter:verse word strong# {morphology}
+ *
+ * Usage:
+ *   node database/import-textus-receptus.js --test    # Import Matthew 1 only
+ *   node database/import-textus-receptus.js --book MAT  # Import one book
+ *   node database/import-textus-receptus.js --full    # Import entire TR NT
  */
 
 require('dotenv').config();
@@ -16,7 +18,7 @@ const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
-const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
   console.error('❌ Missing Supabase credentials in .env file');
@@ -25,243 +27,378 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Greek NT book mapping
+// TR file abbreviations to standard book codes
 const BOOK_MAP = {
-  61: 'MAT', 62: 'MRK', 63: 'LUK', 64: 'JHN', 65: 'ACT', 66: 'ROM',
-  67: '1CO', 68: '2CO', 69: 'GAL', 70: 'EPH', 71: 'PHP', 72: 'COL',
-  73: '1TH', 74: '2TH', 75: '1TI', 76: '2TI', 77: 'TIT', 78: 'PHM',
-  79: 'HEB', 80: 'JAS', 81: '1PE', 82: '2PE', 83: '1JN', 84: '2JN',
-  85: '3JN', 86: 'JUD', 87: 'REV'
-};
-
-const BOOK_NAMES = {
-  61: 'Matthew', 62: 'Mark', 63: 'Luke', 64: 'John', 65: 'Acts', 66: 'Romans',
-  67: '1 Corinthians', 68: '2 Corinthians', 69: 'Galatians', 70: 'Ephesians',
-  71: 'Philippians', 72: 'Colossians', 73: '1 Thessalonians', 74: '2 Thessalonians',
-  75: '1 Timothy', 76: '2 Timothy', 77: 'Titus', 78: 'Philemon',
-  79: 'Hebrews', 80: 'James', 81: '1 Peter', 82: '2 Peter',
-  83: '1 John', 84: '2 John', 85: '3 John', 86: 'Jude', 87: 'Revelation'
+  'MT': 'MAT',      // Matthew
+  'MR': 'MRK',      // Mark
+  'LU': 'LUK',      // Luke
+  'JOH': 'JHN',     // John
+  'AC': 'ACT',      // Acts
+  'RO': 'ROM',      // Romans
+  '1CO': '1CO',     // 1 Corinthians
+  '2CO': '2CO',     // 2 Corinthians
+  'GA': 'GAL',      // Galatians
+  'EPH': 'EPH',     // Ephesians
+  'PHP': 'PHP',     // Philippians
+  'COL': 'COL',     // Colossians
+  '1TH': '1TH',     // 1 Thessalonians
+  '2TH': '2TH',     // 2 Thessalonians
+  '1TI': '1TI',     // 1 Timothy
+  '2TI': '2TI',     // 2 Timothy
+  'TIT': 'TIT',     // Titus
+  'PHM': 'PHM',     // Philemon
+  'HEB': 'HEB',     // Hebrews
+  'JAS': 'JAS',     // James
+  '1PE': '1PE',     // 1 Peter
+  '2PE': '2PE',     // 2 Peter
+  '1JO': '1JN',     // 1 John
+  '2JO': '2JN',     // 2 John
+  '3JO': '3JN',     // 3 John
+  'JUDE': 'JUD',    // Jude
+  'RE': 'REV'       // Revelation
 };
 
 /**
- * Create Textus Receptus manuscript record
+ * Get or create Textus Receptus manuscript entry
  */
-async function createManuscriptRecord() {
-  console.log('📖 Creating Textus Receptus manuscript record...');
+async function getManuscriptId() {
+  console.log('📚 Checking for Textus Receptus manuscript entry...');
 
-  const { data: existing } = await supabase
+  const { data: existing, error: fetchError } = await supabase
     .from('manuscripts')
     .select('id')
     .eq('code', 'TR')
     .single();
 
   if (existing) {
-    console.log('✅ Textus Receptus manuscript already exists:', existing.id);
+    console.log(`✅ Found existing TR manuscript (ID: ${existing.id})`);
     return existing.id;
   }
 
-  const { data, error } = await supabase
+  // Create new manuscript entry
+  const { data: newManuscript, error: insertError } = await supabase
     .from('manuscripts')
     .insert({
       code: 'TR',
-      name: 'Textus Receptus (Scrivener 1894)',
+      name: 'Textus Receptus',
       language: 'greek',
-      description: 'Traditional Greek New Testament text underlying the King James Version',
-      source_url: 'https://github.com/byztxt/byzantine-majority-text',
+      date_range: '16th century (based on Byzantine manuscripts)',
       license: 'Public Domain',
-      date_range: '1894 CE (compilation of earlier texts)'
+      description: 'Traditional Greek text underlying the KJV, with morphological parsing and Strong\'s numbers'
     })
-    .select()
+    .select('id')
     .single();
 
-  if (error) {
-    throw new Error(`Failed to create manuscript: ${error.message}`);
+  if (insertError) {
+    throw new Error(`Failed to create manuscript: ${insertError.message}`);
   }
 
-  console.log('✅ Created Textus Receptus manuscript:', data.id);
-  return data.id;
+  console.log(`✅ Created TR manuscript entry (ID: ${newManuscript.id})`);
+  return newManuscript.id;
 }
 
 /**
- * Parse TR verse line
- * Format varies by source, this handles common formats
+ * Parse Textus Receptus .UTR file
+ * Format: chapter:verse word strong# {morphology} word strong# {morphology}
+ * Note: Verses can span multiple lines (continuation lines start with space)
  */
-function parseTRLine(line, currentBook) {
-  // Skip empty lines and headers
-  if (!line || line.startsWith('#') || line.trim() === '') {
-    return null;
+function parseTextusReceptusFile(filePath, fileAbbr) {
+  console.log(`📖 Parsing ${fileAbbr}.UTR...`);
+
+  const bookCode = BOOK_MAP[fileAbbr];
+  if (!bookCode) {
+    console.log(`⚠️  Unknown book abbreviation: ${fileAbbr}`);
+    return [];
   }
 
-  // Try to parse reference and text
-  // Example formats:
-  // "Mat 1:1 Βίβλος γενέσεως..."
-  // "1:1 Βίβλος γενέσεως..." (book is in context)
-
-  let match = line.match(/^(\w+)\s+(\d+):(\d+)\s+(.+)$/);
-  if (match) {
-    const [, book, chapter, verse, text] = match;
-    return {
-      book: book.toUpperCase(),
-      chapter: parseInt(chapter),
-      verse: parseInt(verse),
-      text: text.trim()
-    };
-  }
-
-  // Try format without book name (using currentBook)
-  match = line.match(/^(\d+):(\d+)\s+(.+)$/);
-  if (match && currentBook) {
-    const [, chapter, verse, text] = match;
-    return {
-      book: currentBook,
-      chapter: parseInt(chapter),
-      verse: parseInt(verse),
-      text: text.trim()
-    };
-  }
-
-  return null;
-}
-
-/**
- * Import verses for a single book
- */
-async function importBook(manuscriptId, bookNumber) {
-  const bookCode = BOOK_MAP[bookNumber];
-  const bookName = BOOK_NAMES[bookNumber];
-
-  console.log(`\n📖 Importing ${bookName} (${bookCode})...`);
-
-  // Path to TR data - adjust based on actual file structure
-  const trDir = path.join(__dirname, '../../manuscripts/greek_nt/textus_receptus');
-  const bookFile = path.join(trDir, `${bookCode}.txt`);
-
-  if (!fs.existsSync(bookFile)) {
-    console.log(`⚠️  File not found, skipping: ${bookFile}`);
-    return 0;
-  }
-
-  const content = fs.readFileSync(bookFile, 'utf-8');
+  const content = fs.readFileSync(filePath, 'utf-8');
   const lines = content.split('\n');
 
-  const versesByChapter = {};
-  let currentChapter = 1;
+  const verses = [];
+  let currentVerse = null;
+  let currentContent = '';
 
-  // Parse all verses
-  for (const line of lines) {
-    const parsed = parseTRLine(line, bookCode);
+  for (let line of lines) {
+    line = line.trimEnd(); // Remove trailing whitespace including \r
+    if (!line.trim()) continue;
 
-    if (parsed) {
-      const { chapter, verse, text } = parsed;
+    // Check if this is a new verse (starts with chapter:verse)
+    const verseMatch = line.match(/^(\d+):(\d+)\s+(.+)/);
 
-      if (!versesByChapter[chapter]) {
-        versesByChapter[chapter] = {};
+    if (verseMatch) {
+      // Save previous verse if exists
+      if (currentVerse) {
+        const parsed = parseVerseContent(currentContent, bookCode, currentVerse.chapter, currentVerse.verse);
+        if (parsed) verses.push(parsed);
       }
 
-      versesByChapter[chapter][verse] = text;
-      currentChapter = chapter;
+      // Start new verse
+      currentVerse = {
+        chapter: parseInt(verseMatch[1], 10),
+        verse: parseInt(verseMatch[2], 10)
+      };
+      currentContent = verseMatch[3];
+    } else if (line.startsWith(' ') && currentVerse) {
+      // Continuation line - append to current verse
+      currentContent += ' ' + line.trim();
     }
   }
 
-  // Insert verses in batches
-  let totalVerses = 0;
-  let batch = [];
-
-  for (const [chapter, verses] of Object.entries(versesByChapter)) {
-    for (const [verse, text] of Object.entries(verses)) {
-      batch.push({
-        manuscript_id: manuscriptId,
-        book: bookCode,
-        chapter: parseInt(chapter),
-        verse: parseInt(verse),
-        text: text,
-        strong_numbers: null,
-        morphology: null
-      });
-
-      // Insert in batches of 100
-      if (batch.length >= 100) {
-        const { error } = await supabase
-          .from('verses')
-          .insert(batch);
-
-        if (error) {
-          console.error(`Error inserting batch:`, error.message);
-        } else {
-          totalVerses += batch.length;
-          process.stdout.write(`   Imported: ${totalVerses} verses\r`);
-        }
-
-        batch = [];
-      }
-    }
+  // Don't forget the last verse
+  if (currentVerse) {
+    const parsed = parseVerseContent(currentContent, bookCode, currentVerse.chapter, currentVerse.verse);
+    if (parsed) verses.push(parsed);
   }
 
-  // Insert remaining verses
-  if (batch.length > 0) {
-    const { error } = await supabase
-      .from('verses')
-      .insert(batch);
-
-    if (error) {
-      console.error(`Error inserting final batch:`, error.message);
-    } else {
-      totalVerses += batch.length;
-    }
-  }
-
-  console.log(`   ✅ Completed ${bookName}: ${totalVerses} verses`);
-  return totalVerses;
+  console.log(`   ✅ Extracted ${verses.length} verses from ${fileAbbr}`);
+  return verses;
 }
 
 /**
- * Main import function
+ * Parse the content of a single verse
+ * Format: word strong# [strong#...] {morphology} word strong# {morphology}
+ */
+function parseVerseContent(content, bookCode, chapter, verse) {
+  const tokens = content.trim().split(/\s+/);
+  let i = 0;
+  const words = [];
+  const morphology = [];
+
+  while (i < tokens.length) {
+    const word = tokens[i];
+
+    // Check if next token is a Strong's number (digits only)
+    if (i + 1 < tokens.length && /^\d+$/.test(tokens[i + 1])) {
+      let strongNum = tokens[i + 1];
+      i += 2; // Move past word and first strong number
+
+      // Some words have multiple Strong's numbers (e.g., "1080 5656")
+      // Skip additional numbers until we hit morphology tag or next word
+      while (i < tokens.length && /^\d+$/.test(tokens[i]) && !tokens[i].startsWith('{')) {
+        i++;
+      }
+
+      // Check if there's a morphology tag
+      let morphTag = '';
+      if (i < tokens.length && tokens[i].startsWith('{')) {
+        morphTag = tokens[i].replace(/[{}]/g, '');
+        i++;
+      }
+
+      words.push(word);
+      morphology.push({
+        word,
+        strong: 'G' + strongNum,
+        morph: morphTag
+      });
+    } else {
+      // Word without Strong's number (shouldn't happen often)
+      words.push(word);
+      i++;
+    }
+  }
+
+  return {
+    book: bookCode,
+    chapter,
+    verse,
+    text: words.join(' '),
+    morphology: morphology.length > 0 ? morphology : null
+  };
+}
+
+/**
+ * Import all TR books
+ */
+async function importTextusReceptus(manuscriptId, bookFilter = null, testMode = false) {
+  const parsedDir = path.join(__dirname, '../../manuscripts/textus-receptus/greektext-textus-receptus/parsed');
+  
+  if (!fs.existsSync(parsedDir)) {
+    throw new Error(`TR parsed directory not found: ${parsedDir}`);
+  }
+  
+  console.log(`📂 Reading TR files from ${parsedDir}...`);
+  
+  const allVerses = [];
+  const files = fs.readdirSync(parsedDir).filter(f => f.endsWith('.UTR'));
+  
+  console.log(`Found ${files.length} TR book files`);
+  
+  for (const file of files) {
+    const fileAbbr = file.replace('.UTR', '');
+
+    // In test mode, only process Matthew
+    if (testMode && fileAbbr !== 'MT') {
+      continue;
+    }
+
+    // Skip if filtering by book
+    if (bookFilter && BOOK_MAP[fileAbbr] !== bookFilter) {
+      continue;
+    }
+
+    const filePath = path.join(parsedDir, file);
+    const verses = parseTextusReceptusFile(filePath, fileAbbr);
+
+    if (testMode && fileAbbr === 'MT') {
+      // In test mode, only process Matthew chapter 1
+      const testVerses = verses.filter(v => v.chapter === 1);
+      console.log(`🧪 TEST MODE: Limiting to Matthew 1 (${testVerses.length} verses)`);
+      return testVerses;
+    }
+
+    allVerses.push(...verses);
+  }
+  
+  console.log(`\n📊 Total verses parsed: ${allVerses.length}`);
+  return allVerses;
+}
+
+/**
+ * Import verses to database
+ */
+async function importVerses(manuscriptId, verses) {
+  console.log(`\n📥 Importing ${verses.length} verses to database...`);
+
+  const BATCH_SIZE = 100;
+  let imported = 0;
+  let failed = 0;
+
+  for (let i = 0; i < verses.length; i += BATCH_SIZE) {
+    const batch = verses.slice(i, i + BATCH_SIZE);
+
+    // Add manuscript_id and convert morphology to JSON
+    const versesWithManuscript = batch.map(v => ({
+      ...v,
+      manuscript_id: manuscriptId,
+      morphology: v.morphology ? JSON.stringify(v.morphology) : null
+    }));
+
+    const { error } = await supabase
+      .from('verses')
+      .upsert(versesWithManuscript, {
+        onConflict: 'manuscript_id,book,chapter,verse'
+      });
+
+    if (error) {
+      console.error(`\n❌ Failed to import batch ${i}-${i + batch.length}:`, error.message);
+      failed += batch.length;
+    } else {
+      imported += batch.length;
+      process.stdout.write(`\r   Progress: ${imported}/${verses.length} verses (${Math.round(imported/verses.length*100)}%)`);
+    }
+  }
+
+  console.log(`\n\n✅ Import complete: ${imported} verses imported, ${failed} failed`);
+  return { imported, failed };
+}
+
+/**
+ * Verify import
+ */
+async function verifyImport(manuscriptId) {
+  console.log('\n🔍 Verifying import...');
+
+  const { count, error } = await supabase
+    .from('verses')
+    .select('*', { count: 'exact', head: true })
+    .eq('manuscript_id', manuscriptId);
+
+  if (error) {
+    console.error('❌ Verification failed:', error.message);
+    return;
+  }
+
+  console.log(`✅ Total TR verses in database: ${count}`);
+
+  // Sample some verses
+  const { data: samples, error: sampleError } = await supabase
+    .from('verses')
+    .select('book, chapter, verse, text')
+    .eq('manuscript_id', manuscriptId)
+    .in('book', ['MAT', 'JHN', 'ROM'])
+    .eq('chapter', 1)
+    .lte('verse', 3)
+    .order('book')
+    .order('chapter')
+    .order('verse');
+
+  if (!sampleError && samples) {
+    console.log('\n📋 Sample verses:');
+    samples.forEach(v => {
+      const displayText = v.text.length > 80 ? v.text.substring(0, 80) + '...' : v.text;
+      console.log(`${v.book} ${v.chapter}:${v.verse} - ${displayText}`);
+    });
+  }
+}
+
+/**
+ * Main execution
  */
 async function main() {
   const args = process.argv.slice(2);
   const testMode = args.includes('--test');
   const fullMode = args.includes('--full');
-  const bookArg = args.find(arg => arg.startsWith('--book'));
-  const bookNumber = bookArg ? parseInt(bookArg.split('=')[1]) : null;
+  const bookIndex = args.indexOf('--book');
+  const bookFilter = bookIndex !== -1 ? args[bookIndex + 1] : null;
 
-  console.log('🔥 Textus Receptus Import Script');
-  console.log('===================================\n');
+  console.log('📖 Textus Receptus Greek New Testament Import Tool');
+  console.log('='.repeat(70));
 
-  try {
-    // Create manuscript record
-    const manuscriptId = await createManuscriptRecord();
+  if (testMode) {
+    console.log('🧪 TEST MODE: Will import Matthew 1 only\n');
+  } else if (bookFilter) {
+    console.log(`📕 BOOK MODE: Will import ${bookFilter} only\n`);
+  } else if (fullMode) {
+    console.log('🌍 FULL MODE: Will import entire TR NT (~7,900 verses)\n');
+  } else {
+    console.log('ℹ️  Usage:');
+    console.log('  --test          Import Matthew 1 only');
+    console.log('  --book MAT      Import one book');
+    console.log('  --full          Import entire TR NT\n');
+    process.exit(0);
+  }
 
-    // Determine books to import
-    let booksToImport;
-    if (testMode) {
-      booksToImport = [64]; // John for testing
-    } else if (bookNumber) {
-      booksToImport = [bookNumber];
-    } else {
-      booksToImport = Object.keys(BOOK_MAP).map(Number);
-    }
+  // Get manuscript ID
+  const manuscriptId = await getManuscriptId();
 
-    let totalVerses = 0;
+  // Parse TR files
+  const verses = await importTextusReceptus(manuscriptId, bookFilter, testMode);
 
-    for (const bookNum of booksToImport) {
-      const count = await importBook(manuscriptId, bookNum);
-      totalVerses += count;
-    }
-
-    console.log('\n✅ Textus Receptus import completed successfully!');
-    console.log(`   Total verses: ${totalVerses}`);
-    console.log(`   Books: ${booksToImport.length}/27`);
-
-  } catch (error) {
-    console.error('\n❌ Import failed:', error.message);
-    console.error(error.stack);
+  if (verses.length === 0) {
+    console.log('\n⚠️  No verses found. Check book code or TR files.');
     process.exit(1);
+  }
+
+  // Import verses
+  const { imported, failed } = await importVerses(manuscriptId, verses);
+
+  // Verify
+  await verifyImport(manuscriptId);
+
+  // Summary
+  console.log('\n' + '='.repeat(70));
+  console.log('📊 IMPORT SUMMARY');
+  console.log('='.repeat(70));
+  console.log(`✅ Manuscript: Textus Receptus (Greek NT)`);
+  console.log(`✅ Total imported: ${imported} verses`);
+  console.log(`❌ Failed: ${failed} verses`);
+  console.log(`📚 Database now contains TR Greek text with morphology`);
+
+  if (testMode) {
+    console.log('\n⏭️  Next: Run with --full to import entire TR NT');
+  } else if (bookFilter) {
+    console.log('\n⏭️  Next: Run with --full to import all books');
+  } else {
+    console.log('\n🎉 TR import complete!');
+    console.log('⏭️  Next steps:');
+    console.log('1. Import LXX Septuagint (Greek OT)');
+    console.log('2. Import Dead Sea Scrolls (select texts)');
+    console.log('3. Update MANUSCRIPT_SOURCES_STATUS.md');
   }
 }
 
-// Run if called directly
-if (require.main === module) {
-  main();
-}
-
-module.exports = { importBook, createManuscriptRecord };
+main().catch(err => {
+  console.error('\n💥 Fatal error:', err);
+  process.exit(1);
+});
