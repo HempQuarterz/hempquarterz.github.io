@@ -384,19 +384,39 @@ function parseCodexSinaiticusXML(xmlPath, bookFilter = null, testMode = false) {
 async function importVerses(manuscriptId, verses) {
   console.log(`\n📥 Importing ${verses.length} verses to database...`);
 
+  // Filter out invalid verses (verse number must be > 0)
+  const validVerses = verses.filter(v => v.verse > 0);
+  const invalidCount = verses.length - validVerses.length;
+
+  if (invalidCount > 0) {
+    console.log(`⚠️  Filtered out ${invalidCount} verses with invalid verse numbers (≤ 0)`);
+  }
+
   const BATCH_SIZE = 100;
   let imported = 0;
   let failed = 0;
 
-  for (let i = 0; i < verses.length; i += BATCH_SIZE) {
-    const batch = verses.slice(i, i + BATCH_SIZE);
+  for (let i = 0; i < validVerses.length; i += BATCH_SIZE) {
+    const batch = validVerses.slice(i, i + BATCH_SIZE);
 
     // Add manuscript_id and convert morphology to JSON
-    const versesWithManuscript = batch.map(v => ({
+    let versesWithManuscript = batch.map(v => ({
       ...v,
       manuscript_id: manuscriptId,
       morphology: v.morphology ? JSON.stringify(v.morphology) : null
     }));
+
+    // Deduplicate within batch (keep last occurrence)
+    const seen = new Map();
+    versesWithManuscript = versesWithManuscript.filter(v => {
+      const key = `${v.book}-${v.chapter}-${v.verse}`;
+      if (seen.has(key)) {
+        console.log(`⚠️  Skipping duplicate within batch: ${v.book} ${v.chapter}:${v.verse}`);
+        return false;
+      }
+      seen.set(key, true);
+      return true;
+    });
 
     const { error } = await supabase
       .from('verses')
@@ -408,13 +428,13 @@ async function importVerses(manuscriptId, verses) {
       console.error(`\n❌ Failed to import batch ${i}-${i + batch.length}:`, error.message);
       failed += batch.length;
     } else {
-      imported += batch.length;
-      process.stdout.write(`\r   Progress: ${imported}/${verses.length} verses (${Math.round(imported/verses.length*100)}%)`);
+      imported += versesWithManuscript.length;
+      process.stdout.write(`\r   Progress: ${imported + failed}/${validVerses.length} verses (${Math.round((imported + failed)/validVerses.length*100)}%)`);
     }
   }
 
-  console.log(`\n\n✅ Import complete: ${imported} verses imported, ${failed} failed`);
-  return { imported, failed };
+  console.log(`\n\n✅ Import complete: ${imported} verses imported, ${failed} failed, ${invalidCount} invalid`);
+  return { imported, failed, invalid: invalidCount };
 }
 
 /**

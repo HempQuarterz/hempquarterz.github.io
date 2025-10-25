@@ -1,0 +1,988 @@
+📖 Dead Sea Scrolls Import Tool
+======================================================================
+🌍 FULL MODE: Will import all 52,769 lines
+
+✅ Found existing Dead Sea Scrolls manuscript (ID: 0abd49af-82a9-4a7f-b889-c14e525063ab)
+📖 Loading DSS data from /home/hempquarterz/projects/All4Yah/hempquarterz.github.io/manuscripts/dead-sea-scrolls/dss-full.json...
+📊 Total lines to import: 52769
+📊 Unique scrolls: 997
+
+📥 Importing 52769 lines to database...
+   Progress: 100/52769 lines (0%)   Progress: 200/52769 lines (0%)   Progress: 300/52769 lines (1%)   Progress: 400/52769 lines (1%)   Progress: 500/52769 lines (1%)   Progress: 600/52769 lines (1%)
+❌ Failed to import batch 600-700: value too long for type character varying(3)
+
+❌ Failed to import batch 700-800: value too long for type character varying(3)
+
+❌ Failed to import batch 800-900: value too long for type character varying(3)
+
+❌ Failed to import batch 900-1000: value too long for type character varying(3)
+
+❌ Failed to import batch 1000-1100: value too long for type character varying(3)
+   Progress: 700/52769 lines (1%)   Progress: 800/52769 lines (2%)   Progress: 900/52769 lines (2%)
+❌ Failed to import batch 1400-1500: value too long for type character varying(3)
+
+❌ Failed to import batch 1500-1600: value too long for type character varying(3)
+
+❌ Failed to import batch 1600-1700: value too long for type character varying(3)
+
+❌ Failed to import batch 1700-1800: value too long for type character varying(3)
+
+❌ Failed to import batch 1800-1900: value too long for type character varying(3)
+
+❌ Failed to import batch 1900-2000: value too long for type character varying(3)
+
+❌ Failed to import batch 2000-2100: value too long for type character varying(3)
+
+❌ Failed to import batch 2100-2200: value too long for type character varying(3)
+
+❌ Failed to import batch 2200-2300: value too long for type character varying(3)
+
+❌ Failed to import batch 2300-2400: value too long for type character varying(3)
+
+❌ Failed to import batch 2400-2500: value too long for type character varying(3)
+
+❌ Failed to import batch 2500-2600: value too long for type character varying(3)
+
+❌ Failed to import batch 2600-2700: value too long for type character varying(3)
+
+❌ Failed to import batch 2700-2800: value too long for type character varying(3)
+
+❌ Failed to import batch 2800-2900: value too long for type character varying(3)
+
+❌ Failed to import batch 2900-3000: value too long for type character varying(3)
+
+❌ Failed to import batch 3000-3100: value too long for type character varying(3)
+
+❌ Failed to import batch 3100-3200: value too long for type character varying(3)
+
+❌ Failed to import batch 3200-3300: value too long for type character varying(3)
+
+❌ Failed to import batch 3300-3400: value too long for type character varying(3)
+
+❌ Failed to import batch 3400-3500: value too long for type character varying(3)
+
+❌ Failed to import batch 3500-3600: value too long for type character varying(3)
+
+❌ Failed to import batch 3600-3700: value too long for type character varying(3)
+
+❌ Failed to import batch 3700-3800: value too long for type character varying(3)
+
+❌ Failed to import batch 3800-3900: value too long for type character varying(3)
+
+❌ Failed to import batch 3900-4000: value too long for type character varying(3)
+
+❌ Failed to import batch 4000-4100: value too long for type character varying(3)
+
+❌ Failed to import batch 4100-4200: value too long for type character varying(3)
+
+❌ Failed to import batch 4200-4300: value too long for type character varying(3)
+
+❌ Failed to import batch 4300-4400: value too long for type character varying(3)
+
+❌ Failed to import batch 4400-4500: value too long for type character varying(3)
+
+❌ Failed to import batch 4500-4600: value too long for type character varying(3)
+
+❌ Failed to import batch 4600-4700: value too long for type character varying(3)
+
+❌ Failed to import batch 4700-4800: value too long for type character varying(3)
+
+❌ Failed to import batch 4800-4900: value too long for type character varying(3)
+
+❌ Failed to import batch 4900-5000: value too long for type character varying(3)
+
+❌ Failed to import batch 5000-5100: value too long for type character varying(3)
+
+❌ Failed to import batch 5100-5200: value too long for type character varying(3)
+
+❌ Failed to import batch 5200-5300: value too long for type character varying(3)
+
+❌ Failed to import batch 5300-5400: value too long for type character varying(3)
+
+❌ Failed to import batch 5400-5500: value too long for type character varying(3)
+
+❌ Failed to import batch 5500-5600: value too long for type character varying(3)
+
+❌ Failed to import batch 5600-5700: value too long for type character varying(3)
+
+❌ Failed to import batch 5700-5800: value too long for type character varying(3)
+
+❌ Failed to import batch 5800-5900: value too long for type character varying(3)
+
+❌ Failed to import batch 5900-6000: value too long for type character varying(3)
+
+❌ Failed to import batch 6000-6100: value too long for type character varying(3)
+
+❌ Failed to import batch 6100-6200: value too long for type character varying(3)
+
+❌ Failed to import batch 6200-6300: value too long for type character varying(3)
+
+❌ Failed to import batch 6300-6400: value too long for type character varying(3)
+
+❌ Failed to import batch 6400-6500: value too long for type character varying(3)
+
+❌ Failed to import batch 6500-6600: value too long for type character varying(3)
+
+❌ Failed to import batch 6600-6700: value too long for type character varying(3)
+
+❌ Failed to import batch 6700-6800: value too long for type character varying(3)
+
+❌ Failed to import batch 6800-6900: value too long for type character varying(3)
+
+❌ Failed to import batch 6900-7000: value too long for type character varying(3)
+
+❌ Failed to import batch 7000-7100: value too long for type character varying(3)
+
+❌ Failed to import batch 7100-7200: value too long for type character varying(3)
+
+❌ Failed to import batch 7200-7300: value too long for type character varying(3)
+
+❌ Failed to import batch 7300-7400: value too long for type character varying(3)
+
+❌ Failed to import batch 7400-7500: value too long for type character varying(3)
+
+❌ Failed to import batch 7500-7600: value too long for type character varying(3)
+
+❌ Failed to import batch 7600-7700: value too long for type character varying(3)
+
+❌ Failed to import batch 7700-7800: value too long for type character varying(3)
+
+❌ Failed to import batch 7800-7900: value too long for type character varying(3)
+
+❌ Failed to import batch 7900-8000: value too long for type character varying(3)
+
+❌ Failed to import batch 8000-8100: value too long for type character varying(3)
+
+❌ Failed to import batch 8100-8200: value too long for type character varying(3)
+
+❌ Failed to import batch 8200-8300: value too long for type character varying(3)
+
+❌ Failed to import batch 8300-8400: value too long for type character varying(3)
+
+❌ Failed to import batch 8400-8500: value too long for type character varying(3)
+
+❌ Failed to import batch 8500-8600: value too long for type character varying(3)
+
+❌ Failed to import batch 8600-8700: value too long for type character varying(3)
+
+❌ Failed to import batch 8700-8800: value too long for type character varying(3)
+
+❌ Failed to import batch 8800-8900: value too long for type character varying(3)
+
+❌ Failed to import batch 8900-9000: value too long for type character varying(3)
+
+❌ Failed to import batch 9000-9100: value too long for type character varying(3)
+
+❌ Failed to import batch 9100-9200: value too long for type character varying(3)
+
+❌ Failed to import batch 9200-9300: value too long for type character varying(3)
+
+❌ Failed to import batch 9300-9400: value too long for type character varying(3)
+
+❌ Failed to import batch 9400-9500: value too long for type character varying(3)
+
+❌ Failed to import batch 9500-9600: value too long for type character varying(3)
+
+❌ Failed to import batch 9600-9700: value too long for type character varying(3)
+
+❌ Failed to import batch 9700-9800: value too long for type character varying(3)
+
+❌ Failed to import batch 9800-9900: value too long for type character varying(3)
+
+❌ Failed to import batch 9900-10000: value too long for type character varying(3)
+
+❌ Failed to import batch 10000-10100: value too long for type character varying(3)
+
+❌ Failed to import batch 10100-10200: value too long for type character varying(3)
+
+❌ Failed to import batch 10200-10300: value too long for type character varying(3)
+
+❌ Failed to import batch 10300-10400: value too long for type character varying(3)
+
+❌ Failed to import batch 10400-10500: value too long for type character varying(3)
+
+❌ Failed to import batch 10500-10600: value too long for type character varying(3)
+
+❌ Failed to import batch 10600-10700: value too long for type character varying(3)
+
+❌ Failed to import batch 10700-10800: value too long for type character varying(3)
+
+❌ Failed to import batch 10800-10900: value too long for type character varying(3)
+
+❌ Failed to import batch 10900-11000: value too long for type character varying(3)
+
+❌ Failed to import batch 11000-11100: value too long for type character varying(3)
+
+❌ Failed to import batch 11100-11200: value too long for type character varying(3)
+
+❌ Failed to import batch 11200-11300: value too long for type character varying(3)
+
+❌ Failed to import batch 11300-11400: value too long for type character varying(3)
+
+❌ Failed to import batch 11400-11500: value too long for type character varying(3)
+
+❌ Failed to import batch 11500-11600: value too long for type character varying(3)
+
+❌ Failed to import batch 11600-11700: value too long for type character varying(3)
+
+❌ Failed to import batch 11700-11800: value too long for type character varying(3)
+
+❌ Failed to import batch 11800-11900: value too long for type character varying(3)
+
+❌ Failed to import batch 11900-12000: value too long for type character varying(3)
+
+❌ Failed to import batch 12000-12100: value too long for type character varying(3)
+
+❌ Failed to import batch 12100-12200: value too long for type character varying(3)
+
+❌ Failed to import batch 12200-12300: value too long for type character varying(3)
+
+❌ Failed to import batch 12300-12400: value too long for type character varying(3)
+
+❌ Failed to import batch 12400-12500: value too long for type character varying(3)
+
+❌ Failed to import batch 12500-12600: value too long for type character varying(3)
+
+❌ Failed to import batch 12600-12700: value too long for type character varying(3)
+
+❌ Failed to import batch 12700-12800: value too long for type character varying(3)
+
+❌ Failed to import batch 12800-12900: value too long for type character varying(3)
+
+❌ Failed to import batch 12900-13000: value too long for type character varying(3)
+
+❌ Failed to import batch 13000-13100: value too long for type character varying(3)
+
+❌ Failed to import batch 13100-13200: value too long for type character varying(3)
+
+❌ Failed to import batch 13200-13300: value too long for type character varying(3)
+
+❌ Failed to import batch 13300-13400: value too long for type character varying(3)
+
+❌ Failed to import batch 13400-13500: value too long for type character varying(3)
+
+❌ Failed to import batch 13500-13600: value too long for type character varying(3)
+
+❌ Failed to import batch 13600-13700: value too long for type character varying(3)
+
+❌ Failed to import batch 13700-13800: value too long for type character varying(3)
+
+❌ Failed to import batch 13800-13900: value too long for type character varying(3)
+
+❌ Failed to import batch 13900-14000: value too long for type character varying(3)
+
+❌ Failed to import batch 14000-14100: value too long for type character varying(3)
+
+❌ Failed to import batch 14100-14200: value too long for type character varying(3)
+
+❌ Failed to import batch 14200-14300: value too long for type character varying(3)
+
+❌ Failed to import batch 14300-14400: value too long for type character varying(3)
+
+❌ Failed to import batch 14400-14500: value too long for type character varying(3)
+
+❌ Failed to import batch 14500-14600: value too long for type character varying(3)
+
+❌ Failed to import batch 14600-14700: value too long for type character varying(3)
+
+❌ Failed to import batch 14700-14800: value too long for type character varying(3)
+
+❌ Failed to import batch 14800-14900: value too long for type character varying(3)
+
+❌ Failed to import batch 14900-15000: value too long for type character varying(3)
+
+❌ Failed to import batch 15000-15100: value too long for type character varying(3)
+
+❌ Failed to import batch 15100-15200: value too long for type character varying(3)
+
+❌ Failed to import batch 15200-15300: value too long for type character varying(3)
+
+❌ Failed to import batch 15300-15400: value too long for type character varying(3)
+
+❌ Failed to import batch 15400-15500: value too long for type character varying(3)
+
+❌ Failed to import batch 15500-15600: value too long for type character varying(3)
+
+❌ Failed to import batch 15600-15700: value too long for type character varying(3)
+
+❌ Failed to import batch 15700-15800: value too long for type character varying(3)
+
+❌ Failed to import batch 15800-15900: value too long for type character varying(3)
+
+❌ Failed to import batch 15900-16000: value too long for type character varying(3)
+
+❌ Failed to import batch 16000-16100: value too long for type character varying(3)
+
+❌ Failed to import batch 16100-16200: value too long for type character varying(3)
+
+❌ Failed to import batch 16200-16300: value too long for type character varying(3)
+
+❌ Failed to import batch 16300-16400: value too long for type character varying(3)
+
+❌ Failed to import batch 16400-16500: value too long for type character varying(3)
+
+❌ Failed to import batch 16500-16600: value too long for type character varying(3)
+
+❌ Failed to import batch 16600-16700: value too long for type character varying(3)
+
+❌ Failed to import batch 16700-16800: value too long for type character varying(3)
+
+❌ Failed to import batch 16800-16900: value too long for type character varying(3)
+
+❌ Failed to import batch 16900-17000: value too long for type character varying(3)
+
+❌ Failed to import batch 17000-17100: value too long for type character varying(3)
+
+❌ Failed to import batch 17100-17200: value too long for type character varying(3)
+
+❌ Failed to import batch 17200-17300: value too long for type character varying(3)
+
+❌ Failed to import batch 17300-17400: value too long for type character varying(3)
+
+❌ Failed to import batch 17400-17500: value too long for type character varying(3)
+
+❌ Failed to import batch 17500-17600: value too long for type character varying(3)
+
+❌ Failed to import batch 17600-17700: value too long for type character varying(3)
+
+❌ Failed to import batch 17700-17800: value too long for type character varying(3)
+
+❌ Failed to import batch 17800-17900: value too long for type character varying(3)
+
+❌ Failed to import batch 17900-18000: value too long for type character varying(3)
+
+❌ Failed to import batch 18000-18100: value too long for type character varying(3)
+
+❌ Failed to import batch 18100-18200: value too long for type character varying(3)
+
+❌ Failed to import batch 18200-18300: value too long for type character varying(3)
+
+❌ Failed to import batch 18300-18400: value too long for type character varying(3)
+
+❌ Failed to import batch 18400-18500: value too long for type character varying(3)
+
+❌ Failed to import batch 18500-18600: value too long for type character varying(3)
+
+❌ Failed to import batch 18600-18700: value too long for type character varying(3)
+
+❌ Failed to import batch 18700-18800: value too long for type character varying(3)
+
+❌ Failed to import batch 18800-18900: value too long for type character varying(3)
+
+❌ Failed to import batch 18900-19000: value too long for type character varying(3)
+
+❌ Failed to import batch 19000-19100: value too long for type character varying(3)
+
+❌ Failed to import batch 19100-19200: value too long for type character varying(3)
+
+❌ Failed to import batch 19200-19300: value too long for type character varying(3)
+
+❌ Failed to import batch 19300-19400: value too long for type character varying(3)
+
+❌ Failed to import batch 19400-19500: value too long for type character varying(3)
+
+❌ Failed to import batch 19500-19600: value too long for type character varying(3)
+
+❌ Failed to import batch 19600-19700: value too long for type character varying(3)
+
+❌ Failed to import batch 19700-19800: value too long for type character varying(3)
+
+❌ Failed to import batch 19800-19900: value too long for type character varying(3)
+
+❌ Failed to import batch 19900-20000: value too long for type character varying(3)
+
+❌ Failed to import batch 20000-20100: value too long for type character varying(3)
+
+❌ Failed to import batch 20100-20200: value too long for type character varying(3)
+
+❌ Failed to import batch 20200-20300: value too long for type character varying(3)
+
+❌ Failed to import batch 20300-20400: value too long for type character varying(3)
+
+❌ Failed to import batch 20400-20500: value too long for type character varying(3)
+
+❌ Failed to import batch 20500-20600: value too long for type character varying(3)
+
+❌ Failed to import batch 20600-20700: value too long for type character varying(3)
+
+❌ Failed to import batch 20700-20800: value too long for type character varying(3)
+
+❌ Failed to import batch 20800-20900: value too long for type character varying(3)
+
+❌ Failed to import batch 20900-21000: value too long for type character varying(3)
+
+❌ Failed to import batch 21000-21100: value too long for type character varying(3)
+
+❌ Failed to import batch 21100-21200: value too long for type character varying(3)
+
+❌ Failed to import batch 21200-21300: value too long for type character varying(3)
+
+❌ Failed to import batch 21300-21400: value too long for type character varying(3)
+
+❌ Failed to import batch 21400-21500: value too long for type character varying(3)
+
+❌ Failed to import batch 21500-21600: value too long for type character varying(3)
+
+❌ Failed to import batch 21600-21700: value too long for type character varying(3)
+
+❌ Failed to import batch 21700-21800: value too long for type character varying(3)
+
+❌ Failed to import batch 21800-21900: value too long for type character varying(3)
+
+❌ Failed to import batch 21900-22000: value too long for type character varying(3)
+
+❌ Failed to import batch 22000-22100: value too long for type character varying(3)
+
+❌ Failed to import batch 22100-22200: value too long for type character varying(3)
+
+❌ Failed to import batch 22200-22300: value too long for type character varying(3)
+
+❌ Failed to import batch 22300-22400: value too long for type character varying(3)
+
+❌ Failed to import batch 22400-22500: value too long for type character varying(3)
+
+❌ Failed to import batch 22500-22600: value too long for type character varying(3)
+
+❌ Failed to import batch 22600-22700: value too long for type character varying(3)
+
+❌ Failed to import batch 22700-22800: value too long for type character varying(3)
+
+❌ Failed to import batch 22800-22900: value too long for type character varying(3)
+
+❌ Failed to import batch 22900-23000: value too long for type character varying(3)
+
+❌ Failed to import batch 23000-23100: value too long for type character varying(3)
+
+❌ Failed to import batch 23100-23200: value too long for type character varying(3)
+
+❌ Failed to import batch 23200-23300: value too long for type character varying(3)
+
+❌ Failed to import batch 23300-23400: value too long for type character varying(3)
+
+❌ Failed to import batch 23400-23500: value too long for type character varying(3)
+
+❌ Failed to import batch 23500-23600: value too long for type character varying(3)
+
+❌ Failed to import batch 23600-23700: value too long for type character varying(3)
+
+❌ Failed to import batch 23700-23800: value too long for type character varying(3)
+
+❌ Failed to import batch 23800-23900: value too long for type character varying(3)
+
+❌ Failed to import batch 23900-24000: value too long for type character varying(3)
+
+❌ Failed to import batch 24000-24100: value too long for type character varying(3)
+
+❌ Failed to import batch 24100-24200: value too long for type character varying(3)
+
+❌ Failed to import batch 24200-24300: value too long for type character varying(3)
+
+❌ Failed to import batch 24300-24400: value too long for type character varying(3)
+
+❌ Failed to import batch 24400-24500: value too long for type character varying(3)
+
+❌ Failed to import batch 24500-24600: value too long for type character varying(3)
+
+❌ Failed to import batch 24600-24700: value too long for type character varying(3)
+
+❌ Failed to import batch 24700-24800: value too long for type character varying(3)
+
+❌ Failed to import batch 24800-24900: value too long for type character varying(3)
+
+❌ Failed to import batch 24900-25000: value too long for type character varying(3)
+
+❌ Failed to import batch 25000-25100: value too long for type character varying(3)
+
+❌ Failed to import batch 25100-25200: value too long for type character varying(3)
+
+❌ Failed to import batch 25200-25300: value too long for type character varying(3)
+
+❌ Failed to import batch 25300-25400: value too long for type character varying(3)
+
+❌ Failed to import batch 25400-25500: value too long for type character varying(3)
+
+❌ Failed to import batch 25500-25600: value too long for type character varying(3)
+
+❌ Failed to import batch 25600-25700: value too long for type character varying(3)
+
+❌ Failed to import batch 25700-25800: value too long for type character varying(3)
+
+❌ Failed to import batch 25800-25900: value too long for type character varying(3)
+
+❌ Failed to import batch 25900-26000: value too long for type character varying(3)
+
+❌ Failed to import batch 26000-26100: value too long for type character varying(3)
+
+❌ Failed to import batch 26100-26200: value too long for type character varying(3)
+
+❌ Failed to import batch 26200-26300: value too long for type character varying(3)
+
+❌ Failed to import batch 26300-26400: value too long for type character varying(3)
+
+❌ Failed to import batch 26400-26500: value too long for type character varying(3)
+
+❌ Failed to import batch 26500-26600: value too long for type character varying(3)
+
+❌ Failed to import batch 26600-26700: value too long for type character varying(3)
+
+❌ Failed to import batch 26700-26800: value too long for type character varying(3)
+
+❌ Failed to import batch 26800-26900: value too long for type character varying(3)
+
+❌ Failed to import batch 26900-27000: value too long for type character varying(3)
+
+❌ Failed to import batch 27000-27100: value too long for type character varying(3)
+
+❌ Failed to import batch 27100-27200: value too long for type character varying(3)
+
+❌ Failed to import batch 27200-27300: value too long for type character varying(3)
+
+❌ Failed to import batch 27300-27400: value too long for type character varying(3)
+
+❌ Failed to import batch 27400-27500: value too long for type character varying(3)
+
+❌ Failed to import batch 27500-27600: value too long for type character varying(3)
+
+❌ Failed to import batch 27600-27700: value too long for type character varying(3)
+
+❌ Failed to import batch 27700-27800: value too long for type character varying(3)
+
+❌ Failed to import batch 27800-27900: value too long for type character varying(3)
+
+❌ Failed to import batch 27900-28000: value too long for type character varying(3)
+
+❌ Failed to import batch 28000-28100: value too long for type character varying(3)
+
+❌ Failed to import batch 28100-28200: value too long for type character varying(3)
+
+❌ Failed to import batch 28200-28300: value too long for type character varying(3)
+
+❌ Failed to import batch 28300-28400: value too long for type character varying(3)
+
+❌ Failed to import batch 28400-28500: value too long for type character varying(3)
+
+❌ Failed to import batch 28500-28600: value too long for type character varying(3)
+
+❌ Failed to import batch 28600-28700: value too long for type character varying(3)
+
+❌ Failed to import batch 28700-28800: value too long for type character varying(3)
+
+❌ Failed to import batch 28800-28900: value too long for type character varying(3)
+
+❌ Failed to import batch 28900-29000: value too long for type character varying(3)
+
+❌ Failed to import batch 29000-29100: value too long for type character varying(3)
+
+❌ Failed to import batch 29100-29200: value too long for type character varying(3)
+
+❌ Failed to import batch 29200-29300: value too long for type character varying(3)
+
+❌ Failed to import batch 29300-29400: value too long for type character varying(3)
+
+❌ Failed to import batch 29400-29500: value too long for type character varying(3)
+
+❌ Failed to import batch 29500-29600: value too long for type character varying(3)
+
+❌ Failed to import batch 29600-29700: value too long for type character varying(3)
+
+❌ Failed to import batch 29700-29800: value too long for type character varying(3)
+
+❌ Failed to import batch 29800-29900: value too long for type character varying(3)
+
+❌ Failed to import batch 29900-30000: value too long for type character varying(3)
+
+❌ Failed to import batch 30000-30100: value too long for type character varying(3)
+
+❌ Failed to import batch 30100-30200: value too long for type character varying(3)
+
+❌ Failed to import batch 30200-30300: value too long for type character varying(3)
+
+❌ Failed to import batch 30300-30400: value too long for type character varying(3)
+
+❌ Failed to import batch 30400-30500: value too long for type character varying(3)
+
+❌ Failed to import batch 30500-30600: value too long for type character varying(3)
+
+❌ Failed to import batch 30600-30700: value too long for type character varying(3)
+
+❌ Failed to import batch 30700-30800: value too long for type character varying(3)
+
+❌ Failed to import batch 30800-30900: value too long for type character varying(3)
+
+❌ Failed to import batch 30900-31000: value too long for type character varying(3)
+
+❌ Failed to import batch 31000-31100: value too long for type character varying(3)
+
+❌ Failed to import batch 31100-31200: value too long for type character varying(3)
+
+❌ Failed to import batch 31200-31300: value too long for type character varying(3)
+
+❌ Failed to import batch 31300-31400: value too long for type character varying(3)
+
+❌ Failed to import batch 31400-31500: value too long for type character varying(3)
+
+❌ Failed to import batch 31500-31600: value too long for type character varying(3)
+
+❌ Failed to import batch 31600-31700: value too long for type character varying(3)
+
+❌ Failed to import batch 31700-31800: value too long for type character varying(3)
+
+❌ Failed to import batch 31800-31900: value too long for type character varying(3)
+
+❌ Failed to import batch 31900-32000: value too long for type character varying(3)
+
+❌ Failed to import batch 32000-32100: value too long for type character varying(3)
+
+❌ Failed to import batch 32100-32200: value too long for type character varying(3)
+
+❌ Failed to import batch 32200-32300: value too long for type character varying(3)
+
+❌ Failed to import batch 32300-32400: value too long for type character varying(3)
+   Progress: 1000/52769 lines (2%)
+❌ Failed to import batch 32500-32600: value too long for type character varying(3)
+
+❌ Failed to import batch 32600-32700: value too long for type character varying(3)
+
+❌ Failed to import batch 32700-32800: value too long for type character varying(3)
+
+❌ Failed to import batch 32800-32900: value too long for type character varying(3)
+
+❌ Failed to import batch 32900-33000: value too long for type character varying(3)
+
+❌ Failed to import batch 33000-33100: value too long for type character varying(3)
+
+❌ Failed to import batch 33100-33200: value too long for type character varying(3)
+
+❌ Failed to import batch 33200-33300: value too long for type character varying(3)
+
+❌ Failed to import batch 33300-33400: value too long for type character varying(3)
+
+❌ Failed to import batch 33400-33500: value too long for type character varying(3)
+
+❌ Failed to import batch 33500-33600: value too long for type character varying(3)
+
+❌ Failed to import batch 33600-33700: value too long for type character varying(3)
+
+❌ Failed to import batch 33700-33800: value too long for type character varying(3)
+
+❌ Failed to import batch 33800-33900: value too long for type character varying(3)
+
+❌ Failed to import batch 33900-34000: value too long for type character varying(3)
+
+❌ Failed to import batch 34000-34100: value too long for type character varying(3)
+
+❌ Failed to import batch 34100-34200: value too long for type character varying(3)
+
+❌ Failed to import batch 34200-34300: value too long for type character varying(3)
+
+❌ Failed to import batch 34300-34400: value too long for type character varying(3)
+
+❌ Failed to import batch 34400-34500: value too long for type character varying(3)
+
+❌ Failed to import batch 34500-34600: value too long for type character varying(3)
+
+❌ Failed to import batch 34600-34700: value too long for type character varying(3)
+
+❌ Failed to import batch 34700-34800: value too long for type character varying(3)
+
+❌ Failed to import batch 34800-34900: value too long for type character varying(3)
+
+❌ Failed to import batch 34900-35000: value too long for type character varying(3)
+
+❌ Failed to import batch 35000-35100: value too long for type character varying(3)
+
+❌ Failed to import batch 35100-35200: value too long for type character varying(3)
+
+❌ Failed to import batch 35200-35300: value too long for type character varying(3)
+
+❌ Failed to import batch 35300-35400: value too long for type character varying(3)
+
+❌ Failed to import batch 35400-35500: value too long for type character varying(3)
+
+❌ Failed to import batch 35500-35600: value too long for type character varying(3)
+
+❌ Failed to import batch 35600-35700: value too long for type character varying(3)
+
+❌ Failed to import batch 35700-35800: value too long for type character varying(3)
+
+❌ Failed to import batch 35800-35900: value too long for type character varying(3)
+
+❌ Failed to import batch 35900-36000: value too long for type character varying(3)
+
+❌ Failed to import batch 36000-36100: value too long for type character varying(3)
+
+❌ Failed to import batch 36100-36200: value too long for type character varying(3)
+
+❌ Failed to import batch 36200-36300: value too long for type character varying(3)
+
+❌ Failed to import batch 36300-36400: value too long for type character varying(3)
+
+❌ Failed to import batch 36400-36500: value too long for type character varying(3)
+
+❌ Failed to import batch 36500-36600: value too long for type character varying(3)
+
+❌ Failed to import batch 36600-36700: value too long for type character varying(3)
+
+❌ Failed to import batch 36700-36800: value too long for type character varying(3)
+
+❌ Failed to import batch 36800-36900: value too long for type character varying(3)
+
+❌ Failed to import batch 36900-37000: value too long for type character varying(3)
+
+❌ Failed to import batch 37000-37100: value too long for type character varying(3)
+
+❌ Failed to import batch 37100-37200: value too long for type character varying(3)
+   Progress: 1100/52769 lines (2%)
+❌ Failed to import batch 37300-37400: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 37400-37500: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 1200/52769 lines (2%)
+❌ Failed to import batch 37600-37700: value too long for type character varying(3)
+
+❌ Failed to import batch 37700-37800: value too long for type character varying(3)
+
+❌ Failed to import batch 37800-37900: value too long for type character varying(3)
+
+❌ Failed to import batch 37900-38000: value too long for type character varying(3)
+
+❌ Failed to import batch 38000-38100: value too long for type character varying(3)
+
+❌ Failed to import batch 38100-38200: value too long for type character varying(3)
+
+❌ Failed to import batch 38200-38300: value too long for type character varying(3)
+
+❌ Failed to import batch 38300-38400: value too long for type character varying(3)
+
+❌ Failed to import batch 38400-38500: value too long for type character varying(3)
+
+❌ Failed to import batch 38500-38600: value too long for type character varying(3)
+
+❌ Failed to import batch 38600-38700: value too long for type character varying(3)
+
+❌ Failed to import batch 38700-38800: value too long for type character varying(3)
+
+❌ Failed to import batch 38800-38900: value too long for type character varying(3)
+
+❌ Failed to import batch 38900-39000: value too long for type character varying(3)
+
+❌ Failed to import batch 39000-39100: value too long for type character varying(3)
+
+❌ Failed to import batch 39100-39200: value too long for type character varying(3)
+
+❌ Failed to import batch 39200-39300: value too long for type character varying(3)
+
+❌ Failed to import batch 39300-39400: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 1300/52769 lines (2%)   Progress: 1400/52769 lines (3%)   Progress: 1500/52769 lines (3%)
+❌ Failed to import batch 39700-39800: value too long for type character varying(3)
+
+❌ Failed to import batch 39800-39900: value too long for type character varying(3)
+
+❌ Failed to import batch 39900-40000: value too long for type character varying(3)
+
+❌ Failed to import batch 40000-40100: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 40100-40200: value too long for type character varying(3)
+
+❌ Failed to import batch 40200-40300: value too long for type character varying(3)
+
+❌ Failed to import batch 40300-40400: value too long for type character varying(3)
+   Progress: 1600/52769 lines (3%)
+❌ Failed to import batch 40500-40600: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 1700/52769 lines (3%)
+❌ Failed to import batch 40700-40800: value too long for type character varying(3)
+
+❌ Failed to import batch 40800-40900: value too long for type character varying(3)
+
+❌ Failed to import batch 40900-41000: value too long for type character varying(3)
+
+❌ Failed to import batch 41000-41100: value too long for type character varying(3)
+
+❌ Failed to import batch 41100-41200: value too long for type character varying(3)
+
+❌ Failed to import batch 41200-41300: value too long for type character varying(3)
+
+❌ Failed to import batch 41300-41400: value too long for type character varying(3)
+
+❌ Failed to import batch 41400-41500: value too long for type character varying(3)
+
+❌ Failed to import batch 41500-41600: value too long for type character varying(3)
+
+❌ Failed to import batch 41600-41700: value too long for type character varying(3)
+
+❌ Failed to import batch 41700-41800: value too long for type character varying(3)
+
+❌ Failed to import batch 41800-41900: value too long for type character varying(3)
+
+❌ Failed to import batch 41900-42000: value too long for type character varying(3)
+
+❌ Failed to import batch 42000-42100: value too long for type character varying(3)
+
+❌ Failed to import batch 42100-42200: value too long for type character varying(3)
+
+❌ Failed to import batch 42200-42300: value too long for type character varying(3)
+
+❌ Failed to import batch 42300-42400: value too long for type character varying(3)
+
+❌ Failed to import batch 42400-42500: value too long for type character varying(3)
+
+❌ Failed to import batch 42500-42600: value too long for type character varying(3)
+
+❌ Failed to import batch 42600-42700: value too long for type character varying(3)
+
+❌ Failed to import batch 42700-42800: value too long for type character varying(3)
+
+❌ Failed to import batch 42800-42900: value too long for type character varying(3)
+
+❌ Failed to import batch 42900-43000: value too long for type character varying(3)
+
+❌ Failed to import batch 43000-43100: value too long for type character varying(3)
+
+❌ Failed to import batch 43100-43200: value too long for type character varying(3)
+
+❌ Failed to import batch 43200-43300: value too long for type character varying(3)
+
+❌ Failed to import batch 43300-43400: value too long for type character varying(3)
+
+❌ Failed to import batch 43400-43500: value too long for type character varying(3)
+
+❌ Failed to import batch 43500-43600: value too long for type character varying(3)
+
+❌ Failed to import batch 43600-43700: value too long for type character varying(3)
+
+❌ Failed to import batch 43700-43800: value too long for type character varying(3)
+
+❌ Failed to import batch 43800-43900: value too long for type character varying(3)
+
+❌ Failed to import batch 43900-44000: value too long for type character varying(3)
+
+❌ Failed to import batch 44000-44100: value too long for type character varying(3)
+
+❌ Failed to import batch 44100-44200: value too long for type character varying(3)
+
+❌ Failed to import batch 44200-44300: value too long for type character varying(3)
+
+❌ Failed to import batch 44300-44400: value too long for type character varying(3)
+
+❌ Failed to import batch 44400-44500: value too long for type character varying(3)
+
+❌ Failed to import batch 44500-44600: value too long for type character varying(3)
+
+❌ Failed to import batch 44600-44700: value too long for type character varying(3)
+
+❌ Failed to import batch 44700-44800: value too long for type character varying(3)
+
+❌ Failed to import batch 44800-44900: value too long for type character varying(3)
+
+❌ Failed to import batch 44900-45000: value too long for type character varying(3)
+
+❌ Failed to import batch 45000-45100: value too long for type character varying(3)
+
+❌ Failed to import batch 45100-45200: value too long for type character varying(3)
+
+❌ Failed to import batch 45200-45300: value too long for type character varying(3)
+
+❌ Failed to import batch 45300-45400: value too long for type character varying(3)
+
+❌ Failed to import batch 45400-45500: value too long for type character varying(3)
+
+❌ Failed to import batch 45500-45600: value too long for type character varying(3)
+
+❌ Failed to import batch 45600-45700: value too long for type character varying(3)
+
+❌ Failed to import batch 45700-45800: value too long for type character varying(3)
+
+❌ Failed to import batch 45800-45900: value too long for type character varying(3)
+
+❌ Failed to import batch 45900-46000: value too long for type character varying(3)
+
+❌ Failed to import batch 46000-46100: value too long for type character varying(3)
+
+❌ Failed to import batch 46100-46200: value too long for type character varying(3)
+
+❌ Failed to import batch 46200-46300: value too long for type character varying(3)
+
+❌ Failed to import batch 46300-46400: value too long for type character varying(3)
+
+❌ Failed to import batch 46400-46500: value too long for type character varying(3)
+
+❌ Failed to import batch 46500-46600: value too long for type character varying(3)
+
+❌ Failed to import batch 46600-46700: value too long for type character varying(3)
+
+❌ Failed to import batch 46700-46800: value too long for type character varying(3)
+
+❌ Failed to import batch 46800-46900: value too long for type character varying(3)
+
+❌ Failed to import batch 46900-47000: value too long for type character varying(3)
+
+❌ Failed to import batch 47000-47100: value too long for type character varying(3)
+
+❌ Failed to import batch 47100-47200: value too long for type character varying(3)
+
+❌ Failed to import batch 47200-47300: value too long for type character varying(3)
+
+❌ Failed to import batch 47300-47400: value too long for type character varying(3)
+
+❌ Failed to import batch 47400-47500: value too long for type character varying(3)
+
+❌ Failed to import batch 47500-47600: value too long for type character varying(3)
+
+❌ Failed to import batch 47600-47700: value too long for type character varying(3)
+
+❌ Failed to import batch 47700-47800: value too long for type character varying(3)
+
+❌ Failed to import batch 47800-47900: value too long for type character varying(3)
+
+❌ Failed to import batch 47900-48000: value too long for type character varying(3)
+
+❌ Failed to import batch 48000-48100: value too long for type character varying(3)
+
+❌ Failed to import batch 48100-48200: value too long for type character varying(3)
+
+❌ Failed to import batch 48200-48300: value too long for type character varying(3)
+
+❌ Failed to import batch 48300-48400: value too long for type character varying(3)
+
+❌ Failed to import batch 48400-48500: value too long for type character varying(3)
+
+❌ Failed to import batch 48500-48600: value too long for type character varying(3)
+
+❌ Failed to import batch 48600-48700: value too long for type character varying(3)
+
+❌ Failed to import batch 48700-48800: value too long for type character varying(3)
+
+❌ Failed to import batch 48800-48900: value too long for type character varying(3)
+
+❌ Failed to import batch 48900-49000: value too long for type character varying(3)
+
+❌ Failed to import batch 49000-49100: value too long for type character varying(3)
+
+❌ Failed to import batch 49100-49200: value too long for type character varying(3)
+
+❌ Failed to import batch 49200-49300: value too long for type character varying(3)
+
+❌ Failed to import batch 49300-49400: value too long for type character varying(3)
+
+❌ Failed to import batch 49400-49500: value too long for type character varying(3)
+
+❌ Failed to import batch 49500-49600: value too long for type character varying(3)
+
+❌ Failed to import batch 49600-49700: value too long for type character varying(3)
+
+❌ Failed to import batch 49700-49800: value too long for type character varying(3)
+
+❌ Failed to import batch 49800-49900: value too long for type character varying(3)
+
+❌ Failed to import batch 49900-50000: value too long for type character varying(3)
+
+❌ Failed to import batch 50000-50100: value too long for type character varying(3)
+
+❌ Failed to import batch 50100-50200: value too long for type character varying(3)
+   Progress: 1800/52769 lines (3%)
+❌ Failed to import batch 50300-50400: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 1900/52769 lines (4%)
+❌ Failed to import batch 50500-50600: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 2000/52769 lines (4%)
+❌ Failed to import batch 50700-50800: value too long for type character varying(3)
+
+❌ Failed to import batch 50800-50900: value too long for type character varying(3)

@@ -1,0 +1,253 @@
+📖 Dead Sea Scrolls Import Tool
+======================================================================
+🌍 FULL MODE: Will import all 52,769 lines
+
+✅ Found existing Dead Sea Scrolls manuscript (ID: 0abd49af-82a9-4a7f-b889-c14e525063ab)
+📖 Loading DSS data from /home/hempquarterz/projects/All4Yah/hempquarterz.github.io/manuscripts/dead-sea-scrolls/dss-full.json...
+📊 Total lines to import: 52769
+📊 Unique scrolls: 997
+
+📥 Importing 52769 lines to database...
+   Progress: 100/52769 lines (0%)   Progress: 200/52769 lines (0%)   Progress: 300/52769 lines (1%)   Progress: 400/52769 lines (1%)   Progress: 500/52769 lines (1%)   Progress: 600/52769 lines (1%)   Progress: 700/52769 lines (1%)   Progress: 800/52769 lines (2%)   Progress: 900/52769 lines (2%)   Progress: 1000/52769 lines (2%)   Progress: 1100/52769 lines (2%)   Progress: 1200/52769 lines (2%)   Progress: 1300/52769 lines (2%)   Progress: 1400/52769 lines (3%)   Progress: 1500/52769 lines (3%)   Progress: 1600/52769 lines (3%)   Progress: 1700/52769 lines (3%)   Progress: 1800/52769 lines (3%)   Progress: 1900/52769 lines (4%)   Progress: 2000/52769 lines (4%)   Progress: 2100/52769 lines (4%)   Progress: 2200/52769 lines (4%)   Progress: 2300/52769 lines (4%)
+❌ Failed to import batch 2300-2400: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 2400/52769 lines (5%)   Progress: 2500/52769 lines (5%)   Progress: 2600/52769 lines (5%)   Progress: 2700/52769 lines (5%)   Progress: 2800/52769 lines (5%)   Progress: 2900/52769 lines (5%)
+❌ Failed to import batch 3000-3100: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 3100-3200: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 3000/52769 lines (6%)   Progress: 3100/52769 lines (6%)   Progress: 3200/52769 lines (6%)   Progress: 3300/52769 lines (6%)   Progress: 3400/52769 lines (6%)   Progress: 3500/52769 lines (7%)
+❌ Failed to import batch 3800-3900: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 3900-4000: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 3600/52769 lines (7%)   Progress: 3700/52769 lines (7%)   Progress: 3800/52769 lines (7%)   Progress: 3900/52769 lines (7%)   Progress: 4000/52769 lines (8%)   Progress: 4100/52769 lines (8%)   Progress: 4200/52769 lines (8%)   Progress: 4300/52769 lines (8%)   Progress: 4400/52769 lines (8%)   Progress: 4500/52769 lines (9%)   Progress: 4600/52769 lines (9%)
+❌ Failed to import batch 5100-5200: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 4700/52769 lines (9%)   Progress: 4800/52769 lines (9%)   Progress: 4900/52769 lines (9%)   Progress: 5000/52769 lines (9%)   Progress: 5100/52769 lines (10%)   Progress: 5200/52769 lines (10%)
+❌ Failed to import batch 5800-5900: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 5300/52769 lines (10%)   Progress: 5400/52769 lines (10%)   Progress: 5500/52769 lines (10%)   Progress: 5600/52769 lines (11%)   Progress: 5700/52769 lines (11%)
+❌ Failed to import batch 6400-6500: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 5800/52769 lines (11%)   Progress: 5900/52769 lines (11%)   Progress: 6000/52769 lines (11%)   Progress: 6100/52769 lines (12%)   Progress: 6200/52769 lines (12%)   Progress: 6300/52769 lines (12%)
+❌ Failed to import batch 7100-7200: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 6400/52769 lines (12%)   Progress: 6500/52769 lines (12%)   Progress: 6600/52769 lines (13%)   Progress: 6700/52769 lines (13%)   Progress: 6800/52769 lines (13%)   Progress: 6900/52769 lines (13%)   Progress: 7000/52769 lines (13%)   Progress: 7100/52769 lines (13%)   Progress: 7200/52769 lines (14%)   Progress: 7300/52769 lines (14%)   Progress: 7400/52769 lines (14%)   Progress: 7500/52769 lines (14%)   Progress: 7600/52769 lines (14%)   Progress: 7700/52769 lines (15%)   Progress: 7800/52769 lines (15%)
+❌ Failed to import batch 8700-8800: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 8800-8900: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 7900/52769 lines (15%)
+❌ Failed to import batch 9000-9100: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 8000/52769 lines (15%)   Progress: 8100/52769 lines (15%)   Progress: 8200/52769 lines (16%)   Progress: 8300/52769 lines (16%)   Progress: 8400/52769 lines (16%)   Progress: 8500/52769 lines (16%)   Progress: 8600/52769 lines (16%)   Progress: 8700/52769 lines (16%)
+❌ Failed to import batch 9900-10000: new row for relation "verses" violates check constraint "verses_chapter_check"
+   Progress: 8800/52769 lines (17%)
+❌ Failed to import batch 10100-10200: new row for relation "verses" violates check constraint "verses_chapter_check"
+   Progress: 8900/52769 lines (17%)
+❌ Failed to import batch 10300-10400: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 9000/52769 lines (17%)   Progress: 9100/52769 lines (17%)
+❌ Failed to import batch 10600-10700: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 9200/52769 lines (17%)   Progress: 9300/52769 lines (18%)   Progress: 9400/52769 lines (18%)   Progress: 9500/52769 lines (18%)   Progress: 9600/52769 lines (18%)   Progress: 9700/52769 lines (18%)
+❌ Failed to import batch 11300-11400: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 11400-11500: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 9800/52769 lines (19%)   Progress: 9900/52769 lines (19%)   Progress: 10000/52769 lines (19%)   Progress: 10100/52769 lines (19%)   Progress: 10200/52769 lines (19%)   Progress: 10300/52769 lines (20%)   Progress: 10400/52769 lines (20%)
+❌ Failed to import batch 12200-12300: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 10500/52769 lines (20%)   Progress: 10600/52769 lines (20%)   Progress: 10700/52769 lines (20%)
+❌ Failed to import batch 12600-12700: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 10800/52769 lines (20%)   Progress: 10900/52769 lines (21%)   Progress: 11000/52769 lines (21%)   Progress: 11100/52769 lines (21%)
+❌ Failed to import batch 13100-13200: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 11200/52769 lines (21%)   Progress: 11300/52769 lines (21%)   Progress: 11400/52769 lines (22%)   Progress: 11500/52769 lines (22%)   Progress: 11600/52769 lines (22%)
+❌ Failed to import batch 13700-13800: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 13800-13900: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 11700/52769 lines (22%)   Progress: 11800/52769 lines (22%)
+❌ Failed to import batch 14100-14200: new row for relation "verses" violates check constraint "verses_chapter_check"
+   Progress: 11900/52769 lines (23%)   Progress: 12000/52769 lines (23%)   Progress: 12100/52769 lines (23%)   Progress: 12200/52769 lines (23%)   Progress: 12300/52769 lines (23%)   Progress: 12400/52769 lines (23%)   Progress: 12500/52769 lines (24%)
+❌ Failed to import batch 14900-15000: new row for relation "verses" violates check constraint "verses_chapter_check"
+
+❌ Failed to import batch 15000-15100: new row for relation "verses" violates check constraint "verses_chapter_check"
+
+❌ Failed to import batch 15100-15200: new row for relation "verses" violates check constraint "verses_chapter_check"
+
+❌ Failed to import batch 15200-15300: new row for relation "verses" violates check constraint "verses_chapter_check"
+
+❌ Failed to import batch 15300-15400: new row for relation "verses" violates check constraint "verses_chapter_check"
+   Progress: 12600/52769 lines (24%)   Progress: 12700/52769 lines (24%)   Progress: 12800/52769 lines (24%)   Progress: 12900/52769 lines (24%)   Progress: 13000/52769 lines (25%)   Progress: 13100/52769 lines (25%)
+❌ Failed to import batch 16000-16100: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 13200/52769 lines (25%)   Progress: 13300/52769 lines (25%)   Progress: 13400/52769 lines (25%)
+❌ Failed to import batch 16400-16500: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 13500/52769 lines (26%)   Progress: 13600/52769 lines (26%)   Progress: 13700/52769 lines (26%)
+❌ Failed to import batch 16800-16900: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 13800/52769 lines (26%)   Progress: 13900/52769 lines (26%)   Progress: 14000/52769 lines (27%)   Progress: 14100/52769 lines (27%)   Progress: 14200/52769 lines (27%)   Progress: 14300/52769 lines (27%)
+❌ Failed to import batch 17500-17600: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 14400/52769 lines (27%)   Progress: 14500/52769 lines (27%)   Progress: 14600/52769 lines (28%)   Progress: 14700/52769 lines (28%)   Progress: 14800/52769 lines (28%)   Progress: 14900/52769 lines (28%)   Progress: 15000/52769 lines (28%)
+❌ Failed to import batch 18300-18400: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 15100/52769 lines (29%)   Progress: 15200/52769 lines (29%)   Progress: 15300/52769 lines (29%)
+❌ Failed to import batch 18700-18800: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 18800-18900: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 18900-19000: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 15400/52769 lines (29%)
+❌ Failed to import batch 19100-19200: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 15500/52769 lines (29%)   Progress: 15600/52769 lines (30%)   Progress: 15700/52769 lines (30%)   Progress: 15800/52769 lines (30%)   Progress: 15900/52769 lines (30%)   Progress: 16000/52769 lines (30%)   Progress: 16100/52769 lines (31%)   Progress: 16200/52769 lines (31%)
+❌ Failed to import batch 20000-20100: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 16300/52769 lines (31%)   Progress: 16400/52769 lines (31%)   Progress: 16500/52769 lines (31%)   Progress: 16600/52769 lines (31%)   Progress: 16700/52769 lines (32%)   Progress: 16800/52769 lines (32%)   Progress: 16900/52769 lines (32%)   Progress: 17000/52769 lines (32%)   Progress: 17100/52769 lines (32%)   Progress: 17200/52769 lines (33%)   Progress: 17300/52769 lines (33%)   Progress: 17400/52769 lines (33%)   Progress: 17500/52769 lines (33%)
+❌ Failed to import batch 21400-21500: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 21500-21600: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 17600/52769 lines (33%)   Progress: 17700/52769 lines (34%)   Progress: 17800/52769 lines (34%)   Progress: 17900/52769 lines (34%)   Progress: 18000/52769 lines (34%)   Progress: 18100/52769 lines (34%)   Progress: 18200/52769 lines (34%)   Progress: 18300/52769 lines (35%)   Progress: 18400/52769 lines (35%)   Progress: 18500/52769 lines (35%)   Progress: 18600/52769 lines (35%)   Progress: 18700/52769 lines (35%)   Progress: 18800/52769 lines (36%)   Progress: 18900/52769 lines (36%)   Progress: 19000/52769 lines (36%)   Progress: 19100/52769 lines (36%)
+❌ Failed to import batch 23200-23300: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 23300-23400: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 23400-23500: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 19200/52769 lines (36%)
+❌ Failed to import batch 23600-23700: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 19300/52769 lines (37%)   Progress: 19400/52769 lines (37%)
+❌ Failed to import batch 23900-24000: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 24000-24100: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 19500/52769 lines (37%)   Progress: 19600/52769 lines (37%)
+❌ Failed to import batch 24300-24400: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 19700/52769 lines (37%)   Progress: 19800/52769 lines (38%)   Progress: 19900/52769 lines (38%)
+❌ Failed to import batch 24700-24800: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 24800-24900: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 20000/52769 lines (38%)   Progress: 20100/52769 lines (38%)   Progress: 20200/52769 lines (38%)   Progress: 20300/52769 lines (38%)   Progress: 20400/52769 lines (39%)
+❌ Failed to import batch 25400-25500: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 25500-25600: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 20500/52769 lines (39%)
+❌ Failed to import batch 25700-25800: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 20600/52769 lines (39%)   Progress: 20700/52769 lines (39%)
+❌ Failed to import batch 26000-26100: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 26100-26200: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 20800/52769 lines (39%)   Progress: 20900/52769 lines (40%)   Progress: 21000/52769 lines (40%)   Progress: 21100/52769 lines (40%)   Progress: 21200/52769 lines (40%)   Progress: 21300/52769 lines (40%)
+❌ Failed to import batch 26800-26900: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 26900-27000: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 21400/52769 lines (41%)   Progress: 21500/52769 lines (41%)   Progress: 21600/52769 lines (41%)   Progress: 21700/52769 lines (41%)   Progress: 21800/52769 lines (41%)   Progress: 21900/52769 lines (42%)
+❌ Failed to import batch 27600-27700: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 22000/52769 lines (42%)   Progress: 22100/52769 lines (42%)   Progress: 22200/52769 lines (42%)   Progress: 22300/52769 lines (42%)
+❌ Failed to import batch 28100-28200: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 28200-28300: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 22400/52769 lines (42%)
+❌ Failed to import batch 28400-28500: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 28500-28600: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 28600-28700: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 22500/52769 lines (43%)   Progress: 22600/52769 lines (43%)   Progress: 22700/52769 lines (43%)
+❌ Failed to import batch 29000-29100: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 22800/52769 lines (43%)   Progress: 22900/52769 lines (43%)
+❌ Failed to import batch 29300-29400: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 23000/52769 lines (44%)   Progress: 23100/52769 lines (44%)
+❌ Failed to import batch 29600-29700: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 29700-29800: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 29800-29900: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 23200/52769 lines (44%)   Progress: 23300/52769 lines (44%)
+❌ Failed to import batch 30100-30200: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 23400/52769 lines (44%)   Progress: 23500/52769 lines (45%)   Progress: 23600/52769 lines (45%)   Progress: 23700/52769 lines (45%)   Progress: 23800/52769 lines (45%)   Progress: 23900/52769 lines (45%)   Progress: 24000/52769 lines (45%)   Progress: 24100/52769 lines (46%)
+❌ Failed to import batch 31000-31100: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 24200/52769 lines (46%)
+❌ Failed to import batch 31200-31300: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 24300/52769 lines (46%)   Progress: 24400/52769 lines (46%)   Progress: 24500/52769 lines (46%)
+❌ Failed to import batch 31600-31700: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 24600/52769 lines (47%)   Progress: 24700/52769 lines (47%)   Progress: 24800/52769 lines (47%)   Progress: 24900/52769 lines (47%)   Progress: 25000/52769 lines (47%)   Progress: 25100/52769 lines (48%)   Progress: 25200/52769 lines (48%)   Progress: 25300/52769 lines (48%)   Progress: 25400/52769 lines (48%)
+❌ Failed to import batch 32600-32700: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 32700-32800: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 25500/52769 lines (48%)   Progress: 25600/52769 lines (49%)   Progress: 25700/52769 lines (49%)   Progress: 25800/52769 lines (49%)   Progress: 25900/52769 lines (49%)   Progress: 26000/52769 lines (49%)   Progress: 26100/52769 lines (49%)   Progress: 26200/52769 lines (50%)   Progress: 26300/52769 lines (50%)   Progress: 26400/52769 lines (50%)   Progress: 26500/52769 lines (50%)   Progress: 26600/52769 lines (50%)   Progress: 26700/52769 lines (51%)   Progress: 26800/52769 lines (51%)   Progress: 26900/52769 lines (51%)
+❌ Failed to import batch 34300-34400: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 27000/52769 lines (51%)   Progress: 27100/52769 lines (51%)   Progress: 27200/52769 lines (52%)
+❌ Failed to import batch 34700-34800: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 34800-34900: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 34900-35000: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 27300/52769 lines (52%)
+❌ Failed to import batch 35100-35200: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 27400/52769 lines (52%)
+❌ Failed to import batch 35300-35400: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 27500/52769 lines (52%)
+❌ Failed to import batch 35500-35600: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 27600/52769 lines (52%)   Progress: 27700/52769 lines (52%)   Progress: 27800/52769 lines (53%)   Progress: 27900/52769 lines (53%)   Progress: 28000/52769 lines (53%)   Progress: 28100/52769 lines (53%)   Progress: 28200/52769 lines (53%)
+❌ Failed to import batch 36300-36400: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 28300/52769 lines (54%)   Progress: 28400/52769 lines (54%)
+❌ Failed to import batch 36600-36700: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 28500/52769 lines (54%)   Progress: 28600/52769 lines (54%)   Progress: 28700/52769 lines (54%)   Progress: 28800/52769 lines (55%)   Progress: 28900/52769 lines (55%)   Progress: 29000/52769 lines (55%)
+❌ Failed to import batch 37300-37400: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 37400-37500: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 29100/52769 lines (55%)   Progress: 29200/52769 lines (55%)   Progress: 29300/52769 lines (56%)   Progress: 29400/52769 lines (56%)   Progress: 29500/52769 lines (56%)   Progress: 29600/52769 lines (56%)   Progress: 29700/52769 lines (56%)   Progress: 29800/52769 lines (56%)   Progress: 29900/52769 lines (57%)   Progress: 30000/52769 lines (57%)   Progress: 30100/52769 lines (57%)   Progress: 30200/52769 lines (57%)   Progress: 30300/52769 lines (57%)
+❌ Failed to import batch 38800-38900: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 30400/52769 lines (58%)   Progress: 30500/52769 lines (58%)   Progress: 30600/52769 lines (58%)   Progress: 30700/52769 lines (58%)
+❌ Failed to import batch 39300-39400: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 30800/52769 lines (58%)   Progress: 30900/52769 lines (59%)   Progress: 31000/52769 lines (59%)   Progress: 31100/52769 lines (59%)   Progress: 31200/52769 lines (59%)
+❌ Failed to import batch 39900-40000: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 40000-40100: new row for relation "verses" violates check constraint "verses_verse_check"
+
+❌ Failed to import batch 40100-40200: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 31300/52769 lines (59%)   Progress: 31400/52769 lines (60%)   Progress: 31500/52769 lines (60%)
+❌ Failed to import batch 40500-40600: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 31600/52769 lines (60%)   Progress: 31700/52769 lines (60%)   Progress: 31800/52769 lines (60%)   Progress: 31900/52769 lines (60%)   Progress: 32000/52769 lines (61%)
+❌ Failed to import batch 41100-41200: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 32100/52769 lines (61%)   Progress: 32200/52769 lines (61%)
+❌ Failed to import batch 41400-41500: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 32300/52769 lines (61%)   Progress: 32400/52769 lines (61%)   Progress: 32500/52769 lines (62%)   Progress: 32600/52769 lines (62%)   Progress: 32700/52769 lines (62%)   Progress: 32800/52769 lines (62%)   Progress: 32900/52769 lines (62%)   Progress: 33000/52769 lines (63%)   Progress: 33100/52769 lines (63%)   Progress: 33200/52769 lines (63%)   Progress: 33300/52769 lines (63%)   Progress: 33400/52769 lines (63%)
+❌ Failed to import batch 42700-42800: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 33500/52769 lines (63%)   Progress: 33600/52769 lines (64%)   Progress: 33700/52769 lines (64%)
+❌ Failed to import batch 43100-43200: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 33800/52769 lines (64%)
+❌ Failed to import batch 43300-43400: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 33900/52769 lines (64%)   Progress: 34000/52769 lines (64%)   Progress: 34100/52769 lines (65%)   Progress: 34200/52769 lines (65%)   Progress: 34300/52769 lines (65%)   Progress: 34400/52769 lines (65%)   Progress: 34500/52769 lines (65%)   Progress: 34600/52769 lines (66%)   Progress: 34700/52769 lines (66%)   Progress: 34800/52769 lines (66%)
+❌ Failed to import batch 44400-44500: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 44500-44600: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 34900/52769 lines (66%)   Progress: 35000/52769 lines (66%)   Progress: 35100/52769 lines (67%)
+❌ Failed to import batch 44900-45000: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 35200/52769 lines (67%)   Progress: 35300/52769 lines (67%)   Progress: 35400/52769 lines (67%)   Progress: 35500/52769 lines (67%)   Progress: 35600/52769 lines (67%)
+❌ Failed to import batch 45500-45600: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 35700/52769 lines (68%)   Progress: 35800/52769 lines (68%)   Progress: 35900/52769 lines (68%)   Progress: 36000/52769 lines (68%)   Progress: 36100/52769 lines (68%)
+❌ Failed to import batch 46100-46200: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 36200/52769 lines (69%)   Progress: 36300/52769 lines (69%)   Progress: 36400/52769 lines (69%)   Progress: 36500/52769 lines (69%)   Progress: 36600/52769 lines (69%)   Progress: 36700/52769 lines (70%)   Progress: 36800/52769 lines (70%)   Progress: 36900/52769 lines (70%)
+❌ Failed to import batch 47000-47100: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 37000/52769 lines (70%)   Progress: 37100/52769 lines (70%)   Progress: 37200/52769 lines (70%)   Progress: 37300/52769 lines (71%)   Progress: 37400/52769 lines (71%)   Progress: 37500/52769 lines (71%)   Progress: 37600/52769 lines (71%)   Progress: 37700/52769 lines (71%)   Progress: 37800/52769 lines (72%)
+❌ Failed to import batch 48000-48100: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 37900/52769 lines (72%)   Progress: 38000/52769 lines (72%)   Progress: 38100/52769 lines (72%)   Progress: 38200/52769 lines (72%)   Progress: 38300/52769 lines (73%)   Progress: 38400/52769 lines (73%)   Progress: 38500/52769 lines (73%)   Progress: 38600/52769 lines (73%)   Progress: 38700/52769 lines (73%)   Progress: 38800/52769 lines (74%)   Progress: 38900/52769 lines (74%)   Progress: 39000/52769 lines (74%)   Progress: 39100/52769 lines (74%)   Progress: 39200/52769 lines (74%)   Progress: 39300/52769 lines (74%)   Progress: 39400/52769 lines (75%)   Progress: 39500/52769 lines (75%)   Progress: 39600/52769 lines (75%)   Progress: 39700/52769 lines (75%)   Progress: 39800/52769 lines (75%)   Progress: 39900/52769 lines (76%)   Progress: 40000/52769 lines (76%)
+❌ Failed to import batch 50300-50400: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 40100/52769 lines (76%)
+❌ Failed to import batch 50500-50600: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 40200/52769 lines (76%)   Progress: 40300/52769 lines (76%)
+❌ Failed to import batch 50800-50900: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 40400/52769 lines (77%)   Progress: 40500/52769 lines (77%)   Progress: 40600/52769 lines (77%)   Progress: 40700/52769 lines (77%)   Progress: 40800/52769 lines (77%)   Progress: 40900/52769 lines (78%)   Progress: 41000/52769 lines (78%)   Progress: 41100/52769 lines (78%)   Progress: 41200/52769 lines (78%)   Progress: 41300/52769 lines (78%)   Progress: 41400/52769 lines (78%)   Progress: 41500/52769 lines (79%)   Progress: 41600/52769 lines (79%)   Progress: 41700/52769 lines (79%)   Progress: 41800/52769 lines (79%)   Progress: 41900/52769 lines (79%)   Progress: 42000/52769 lines (80%)   Progress: 42100/52769 lines (80%)   Progress: 42169/52769 lines (80%)
+✅ Import complete: 42169 lines imported, 10600 failed
+
+🔍 Verifying import...
+✅ Total Dead Sea Scrolls lines in database: 41947
+✅ Number of unique scrolls: 11
+
+📋 Sample lines:
+   4Q113 Frag435:Ln12 - די אנתה פלח ל׳ה ב תדיר א הוא ישיזבנ׳ך ׃ ו היתית אבן חדה
+   4Q113 Frag435:Ln13 - ו שומת ב פם גב א ו חתם מלכ א ב עזקת׳ה ו ב עזקת רברבנו׳הי די
+   4Q113 Frag435:Ln14 - לא תשנה צבו ב דניאל ׃
+   4Q113 Frag435:Ln15 - ׳׳׳ ב אדין אזל מלכ א ל היכל א ו בת טות ו דחון לא הנעל קדמו׳ה...
+   4Q113 Frag435:Ln16 - ו שנת׳ה נדת עלו׳הי ׃ ב אדין מלכ א ב שפרפר א ב נגה א ו ב אתבה...
+======================================================================
+📊 IMPORT SUMMARY
+======================================================================
+✅ Manuscript: Dead Sea Scrolls (~100 BCE - 100 CE)
+✅ Authenticity Tier: 1 (AUTHENTIC)
+✅ Total imported: 42169 lines
+❌ Failed: 10600 lines
+📚 Database now contains Dead Sea Scrolls
+
+🎉 Dead Sea Scrolls import complete!
+📈 "Authentic 10" Corpus Progress: 10/10 manuscripts (100%)
+🏆 MILESTONE ACHIEVED: All 10 Tier-1 authentic manuscripts imported!
+
+⏭️  Next steps:
+1. Run get-full-inventory.js to see complete database statistics
+2. Update MANUSCRIPT_SOURCES_STATUS.md with DSS details
+3. Update DATABASE_INVENTORY_REPORT.md
+4. Test divine name restoration with DSS texts

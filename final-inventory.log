@@ -1,0 +1,49 @@
+
+======================================================================
+📊 ALL4YAH COMPLETE DATABASE INVENTORY
+======================================================================
+
+📚 MANUSCRIPTS:
+
+BYZMT    | Byzantine Majority Text (Robinson-Pierpont 2018) |   6911 | greek   | Tier N/A
+DSS      | Dead Sea Scrolls                                 |  41947 | hebrew  | Tier N/A
+LXX      | Septuagint (Rahlfs 1935)                         |  27947 | greek   | Tier N/A
+N1904    | Nestle 1904 Greek New Testament                  |   7943 | greek   | Tier N/A
+SBLGNT   | SBL Greek New Testament                          |   7927 | greek   | Tier N/A
+SIN      | Codex Sinaiticus                                 |   9657 | greek   | Tier N/A
+TR       | Textus Receptus                                  |   7957 | greek   | Tier N/A
+VUL      | Clementine Vulgate                               |  35811 | latin   | Tier N/A
+WEB      | World English Bible                              |  31098 | english | Tier N/A
+WLC      | Westminster Leningrad Codex                      |  23145 | hebrew  | Tier N/A
+
+Total: 10 manuscripts, 200,343 verses
+
+======================================================================
+✦ DIVINE NAME RESTORATION MAPPINGS:
+
+God          → Elohim       | english  | H430
+Jesus        → Yahusha      | english  | G2424
+LORD         → Yahuah       | english  | H3068
+θεὸς         → Elohim       | greek    | G2316
+Ἰησοῦς       → Yahusha      | greek    | G2424
+κύριος       → Yahuah       | greek    | G2962
+יהוה         → Yahuah       | hebrew   | H3068
+יהושע        → Yahusha      | hebrew   | H3091
+
+Total mappings: 8
+
+======================================================================
+📜 THEOPHORIC NAMES (DOSSIER DATA):
+
+✅ theophoric_names table exists with null entries
+
+======================================================================
+📋 OTHER DATA TABLES:
+
+✅ strongs_lexicon: null entries
+✅ dossier: null entries
+
+======================================================================
+✅ Inventory complete!
+======================================================================
+

@@ -1,11 +1,13 @@
 /**
  * World English Bible (WEB) Import Script
- * Imports English Old Testament into Supabase database
+ * Imports complete English Bible (Old Testament + New Testament) into Supabase database
  *
  * Usage:
  *   node database/import-web.js --test              # Import Genesis 1 only
  *   node database/import-web.js --book Genesis      # Import specific book
- *   node database/import-web.js --full              # Import all books
+ *   node database/import-web.js --testament OT      # Import Old Testament only
+ *   node database/import-web.js --testament NT      # Import New Testament only
+ *   node database/import-web.js --full              # Import entire Bible (OT + NT)
  */
 
 require('dotenv').config();
@@ -15,11 +17,18 @@ const path = require('path');
 
 // Supabase connection
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
-const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+// Use service role key for imports (bypasses RLS), fallback to anon key
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.REACT_APP_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
   console.error('❌ Missing Supabase credentials in .env file');
   process.exit(1);
+}
+
+if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  console.log('🔑 Using service role key for import (bypasses RLS)');
+} else {
+  console.log('⚠️  Using anon key - RLS policies must allow inserts');
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -64,7 +73,35 @@ const BOOK_MAPPING = {
   '037': 'ZEP',
   '038': 'HAG',
   '039': 'ZEC',
-  '040': 'MAL'
+  '040': 'MAL',
+  // New Testament books (070-096)
+  '070': 'MAT',
+  '071': 'MRK',
+  '072': 'LUK',
+  '073': 'JHN',
+  '074': 'ACT',
+  '075': 'ROM',
+  '076': '1CO',
+  '077': '2CO',
+  '078': 'GAL',
+  '079': 'EPH',
+  '080': 'PHP',
+  '081': 'COL',
+  '082': '1TH',
+  '083': '2TH',
+  '084': '1TI',
+  '085': '2TI',
+  '086': 'TIT',
+  '087': 'PHM',
+  '088': 'HEB',
+  '089': 'JAS',
+  '090': '1PE',
+  '091': '2PE',
+  '092': '1JN',
+  '093': '2JN',
+  '094': '3JN',
+  '095': 'JUD',
+  '096': 'REV'
 };
 
 const BOOK_NAMES = {
@@ -106,7 +143,35 @@ const BOOK_NAMES = {
   'ZEP': 'Zephaniah',
   'HAG': 'Haggai',
   'ZEC': 'Zechariah',
-  'MAL': 'Malachi'
+  'MAL': 'Malachi',
+  // New Testament book names
+  'MAT': 'Matthew',
+  'MRK': 'Mark',
+  'LUK': 'Luke',
+  'JHN': 'John',
+  'ACT': 'Acts',
+  'ROM': 'Romans',
+  '1CO': '1 Corinthians',
+  '2CO': '2 Corinthians',
+  'GAL': 'Galatians',
+  'EPH': 'Ephesians',
+  'PHP': 'Philippians',
+  'COL': 'Colossians',
+  '1TH': '1 Thessalonians',
+  '2TH': '2 Thessalonians',
+  '1TI': '1 Timothy',
+  '2TI': '2 Timothy',
+  'TIT': 'Titus',
+  'PHM': 'Philemon',
+  'HEB': 'Hebrews',
+  'JAS': 'James',
+  '1PE': '1 Peter',
+  '2PE': '2 Peter',
+  '1JN': '1 John',
+  '2JN': '2 John',
+  '3JN': '3 John',
+  'JUD': 'Jude',
+  'REV': 'Revelation'
 };
 
 /**
@@ -260,7 +325,9 @@ async function main() {
     console.log('Usage:');
     console.log('  node database/import-web.js --test              # Import Genesis 1 only');
     console.log('  node database/import-web.js --book Genesis      # Import specific book');
-    console.log('  node database/import-web.js --full              # Import all books');
+    console.log('  node database/import-web.js --testament OT      # Import Old Testament (39 books)');
+    console.log('  node database/import-web.js --testament NT      # Import New Testament (27 books)');
+    console.log('  node database/import-web.js --full              # Import entire Bible (66 books)');
     process.exit(0);
   }
 
@@ -328,12 +395,40 @@ async function main() {
     totalSuccess = stats.success;
     totalFailed = stats.failed;
 
-  } else if (mode === '--full') {
-    console.log('\n📚 FULL IMPORT: Importing all 39 OT books\n');
+  } else if (mode === '--testament') {
+    const testament = args[1];
+    if (!testament || !['OT', 'NT'].includes(testament.toUpperCase())) {
+      console.error('❌ Please specify testament: --testament OT or --testament NT');
+      process.exit(1);
+    }
 
-    for (const bookCode of Object.keys(BOOK_NAMES)) {
+    const isOT = testament.toUpperCase() === 'OT';
+    const testamentName = isOT ? 'Old Testament' : 'New Testament';
+    const bookCodes = isOT
+      ? ['GEN', 'EXO', 'LEV', 'NUM', 'DEU', 'JOS', 'JDG', 'RUT', '1SA', '2SA', '1KI', '2KI',
+         '1CH', '2CH', 'EZR', 'NEH', 'EST', 'JOB', 'PSA', 'PRO', 'ECC', 'SNG', 'ISA', 'JER',
+         'LAM', 'EZK', 'DAN', 'HOS', 'JOL', 'AMO', 'OBA', 'JON', 'MIC', 'NAM', 'HAB', 'ZEP',
+         'HAG', 'ZEC', 'MAL']
+      : ['MAT', 'MRK', 'LUK', 'JHN', 'ACT', 'ROM', '1CO', '2CO', 'GAL', 'EPH', 'PHP', 'COL',
+         '1TH', '2TH', '1TI', '2TI', 'TIT', 'PHM', 'HEB', 'JAS', '1PE', '2PE', '1JN', '2JN',
+         '3JN', 'JUD', 'REV'];
+
+    console.log(`\n📖 TESTAMENT IMPORT: Importing ${testamentName} (${bookCodes.length} books)\n`);
+
+    for (const bookCode of bookCodes) {
       const stats = await importBook(manuscriptId, bookCode, webDataPath);
+      totalSuccess += stats.success;
+      totalFailed += stats.failed;
+    }
 
+  } else if (mode === '--full') {
+    console.log('\n📚 FULL BIBLE IMPORT: Importing all 66 books (OT + NT)\n');
+
+    const allBooks = Object.keys(BOOK_NAMES);
+    console.log(`   Total books: ${allBooks.length} (39 OT + 27 NT)\n`);
+
+    for (const bookCode of allBooks) {
+      const stats = await importBook(manuscriptId, bookCode, webDataPath);
       totalSuccess += stats.success;
       totalFailed += stats.failed;
     }

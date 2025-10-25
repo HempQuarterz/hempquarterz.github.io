@@ -283,7 +283,9 @@ async function importVerses(manuscriptId, verses) {
 
     const { error } = await supabase
       .from('verses')
-      .insert(versesWithManuscript);
+      .upsert(versesWithManuscript, {
+        onConflict: 'manuscript_id,book,chapter,verse'
+      });
 
     if (error) {
       console.error(`\n❌ Failed to import batch ${i}-${i + batch.length}: ${error.message}`);

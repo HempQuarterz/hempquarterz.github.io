@@ -1,0 +1,34 @@
+#!/bin/bash
+# All4Yah MCP Activation Script
+# Switches Supabase MCP to All4Yah database
+#
+# SETUP: Copy this file to activate-mcp.sh and fill in your credentials
+# cp scripts/activate-mcp.sh.template scripts/activate-mcp.sh
+
+echo "🔄 Switching to All4Yah Supabase MCP configuration..."
+
+# Create symlink to All4Yah config
+ln -sf ~/.config/supabase-mcp-all4yah/.env ~/.config/supabase-mcp/.env
+
+# Export environment variables for current session
+export SUPABASE_PROJECT_REF=txeeaekwhkdilycefczq
+export SUPABASE_DB_PASSWORD='YOUR_DB_PASSWORD_HERE'
+export SUPABASE_REGION=us-east-1
+export SUPABASE_ACCESS_TOKEN='YOUR_ACCESS_TOKEN_HERE'
+export SUPABASE_SERVICE_ROLE_KEY='YOUR_SERVICE_ROLE_KEY_HERE'
+
+echo ""
+echo "✅ Activated All4Yah Supabase MCP configuration"
+echo ""
+echo "📊 Project Details:"
+echo "   - Name: All4Yah"
+echo "   - Purpose: Biblical manuscripts & divine name restoration"
+echo "   - Database ID: txeeaekwhkdilycefczq"
+echo "   - Manuscripts: 10 (WLC, WEB, SBLGNT, LXX, SIN, N1904, BYZMT, TR, VUL, DSS)"
+echo "   - Total Verses: ~200,343"
+echo ""
+echo "⚠️  IMPORTANT: Restart VS Code/Claude Code for MCP changes to take effect"
+echo ""
+echo "🧪 Test connection:"
+echo "   node database/get-full-inventory.js"
+echo ""
