@@ -112,7 +112,9 @@ async function getManuscriptId() {
       language: 'greek',
       date_range: '3rd-1st century BCE',
       license: 'CC BY-NC-SA 4.0',
-      description: 'Greek Old Testament (Septuagint) with morphological tagging and Strong\'s numbers'
+      description: 'Greek Old Testament (Septuagint) with morphological tagging and Strong\'s numbers',
+      authenticity_tier: 1,
+      tier_notes: 'Critical diplomatic edition (Rahlfs 1935) of ancient Greek Septuagint. No paraphrasing, CCAT-based data. Preserves pre-Christian Jewish divine name usage. Tier 1: AUTHENTIC - suitable for AI restoration work.'
     })
     .select('id')
     .single();
