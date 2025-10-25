@@ -1,0 +1,69 @@
+📖 Nestle 1904 Greek New Testament Import Tool
+======================================================================
+🌍 FULL MODE: Will import entire New Testament
+
+✅ Found existing Nestle 1904 manuscript (ID: da7672c4-2368-4db7-af7f-bc19e6f9e8d4)
+📖 Found 29 book files to import
+   Processing MAT (01-matthew.xml)...
+   Processing MRK (02-mark.xml)...
+   Processing LUK (03-luke.xml)...
+   Processing JHN (04-john.xml)...
+   Processing ACT (05-acts.xml)...
+   Processing ROM (06-romans.xml)...
+   Processing 1CO (07-1corinthians.xml)...
+   Processing 2CO (08-2corinthians.xml)...
+   Processing GAL (09-galatians.xml)...
+   Processing EPH (10-ephesians.xml)...
+   Processing PHP (11-philippians.xml)...
+   Processing COL (12-colossians.xml)...
+   Processing 1TH (13-1thessalonians.xml)...
+   Processing 2TH (14-2thessalonians.xml)...
+   Processing 1TI (15-1timothy.xml)...
+   Processing 2TI (16-2timothy.xml)...
+   Processing TIT (17-titus.xml)...
+   Processing PHM (18-philemon.xml)...
+   Processing HEB (19-hebrews.xml)...
+   Processing JAS (20-james.xml)...
+   Processing 1PE (21-1peter.xml)...
+   Processing 2PE (22-2peter.xml)...
+   Processing 1JN (23-1john.xml)...
+   Processing 2JN (24-2john.xml)...
+   Processing 3JN (25-3john.xml)...
+   Processing JUD (26-jude.xml)...
+   Processing REV (27-revelation.xml)...
+   ⚠️  Unknown book: commonformat
+   ⚠️  Unknown book: nestle1904lowfat
+
+📊 Total verses extracted: 7943
+
+📥 Importing 7943 verses to database...
+
+❌ Failed to import batch 0-50: duplicate key value violates unique constraint "verses_manuscript_id_book_chapter_verse_key"
+   Progress: 50/7943 verses (1%)   Progress: 100/7943 verses (1%)   Progress: 150/7943 verses (2%)   Progress: 200/7943 verses (3%)   Progress: 250/7943 verses (3%)   Progress: 300/7943 verses (4%)   Progress: 350/7943 verses (4%)   Progress: 400/7943 verses (5%)   Progress: 450/7943 verses (6%)   Progress: 500/7943 verses (6%)   Progress: 550/7943 verses (7%)   Progress: 600/7943 verses (8%)   Progress: 650/7943 verses (8%)   Progress: 700/7943 verses (9%)   Progress: 750/7943 verses (9%)   Progress: 800/7943 verses (10%)   Progress: 850/7943 verses (11%)   Progress: 900/7943 verses (11%)   Progress: 950/7943 verses (12%)   Progress: 1000/7943 verses (13%)   Progress: 1050/7943 verses (13%)   Progress: 1100/7943 verses (14%)   Progress: 1150/7943 verses (14%)   Progress: 1200/7943 verses (15%)   Progress: 1250/7943 verses (16%)   Progress: 1300/7943 verses (16%)   Progress: 1350/7943 verses (17%)   Progress: 1400/7943 verses (18%)   Progress: 1450/7943 verses (18%)   Progress: 1500/7943 verses (19%)   Progress: 1550/7943 verses (20%)   Progress: 1600/7943 verses (20%)   Progress: 1650/7943 verses (21%)   Progress: 1700/7943 verses (21%)   Progress: 1750/7943 verses (22%)   Progress: 1800/7943 verses (23%)   Progress: 1850/7943 verses (23%)   Progress: 1900/7943 verses (24%)   Progress: 1950/7943 verses (25%)   Progress: 2000/7943 verses (25%)   Progress: 2050/7943 verses (26%)   Progress: 2100/7943 verses (26%)   Progress: 2150/7943 verses (27%)   Progress: 2200/7943 verses (28%)   Progress: 2250/7943 verses (28%)   Progress: 2300/7943 verses (29%)   Progress: 2350/7943 verses (30%)   Progress: 2400/7943 verses (30%)   Progress: 2450/7943 verses (31%)   Progress: 2500/7943 verses (31%)   Progress: 2550/7943 verses (32%)   Progress: 2600/7943 verses (33%)   Progress: 2650/7943 verses (33%)   Progress: 2700/7943 verses (34%)   Progress: 2750/7943 verses (35%)   Progress: 2800/7943 verses (35%)   Progress: 2850/7943 verses (36%)   Progress: 2900/7943 verses (37%)   Progress: 2950/7943 verses (37%)   Progress: 3000/7943 verses (38%)   Progress: 3050/7943 verses (38%)   Progress: 3100/7943 verses (39%)   Progress: 3150/7943 verses (40%)   Progress: 3200/7943 verses (40%)   Progress: 3250/7943 verses (41%)   Progress: 3300/7943 verses (42%)   Progress: 3350/7943 verses (42%)   Progress: 3400/7943 verses (43%)   Progress: 3450/7943 verses (43%)   Progress: 3500/7943 verses (44%)   Progress: 3550/7943 verses (45%)   Progress: 3600/7943 verses (45%)   Progress: 3650/7943 verses (46%)   Progress: 3700/7943 verses (47%)   Progress: 3750/7943 verses (47%)   Progress: 3800/7943 verses (48%)   Progress: 3850/7943 verses (48%)   Progress: 3900/7943 verses (49%)   Progress: 3950/7943 verses (50%)   Progress: 4000/7943 verses (50%)   Progress: 4050/7943 verses (51%)   Progress: 4100/7943 verses (52%)   Progress: 4150/7943 verses (52%)   Progress: 4200/7943 verses (53%)   Progress: 4250/7943 verses (54%)   Progress: 4300/7943 verses (54%)   Progress: 4350/7943 verses (55%)   Progress: 4400/7943 verses (55%)   Progress: 4450/7943 verses (56%)   Progress: 4500/7943 verses (57%)   Progress: 4550/7943 verses (57%)   Progress: 4600/7943 verses (58%)   Progress: 4650/7943 verses (59%)   Progress: 4700/7943 verses (59%)   Progress: 4750/7943 verses (60%)   Progress: 4800/7943 verses (60%)   Progress: 4850/7943 verses (61%)   Progress: 4900/7943 verses (62%)   Progress: 4950/7943 verses (62%)   Progress: 5000/7943 verses (63%)   Progress: 5050/7943 verses (64%)   Progress: 5100/7943 verses (64%)   Progress: 5150/7943 verses (65%)   Progress: 5200/7943 verses (65%)   Progress: 5250/7943 verses (66%)   Progress: 5300/7943 verses (67%)   Progress: 5350/7943 verses (67%)   Progress: 5400/7943 verses (68%)   Progress: 5450/7943 verses (69%)   Progress: 5500/7943 verses (69%)   Progress: 5550/7943 verses (70%)   Progress: 5600/7943 verses (71%)   Progress: 5650/7943 verses (71%)   Progress: 5700/7943 verses (72%)   Progress: 5750/7943 verses (72%)   Progress: 5800/7943 verses (73%)   Progress: 5850/7943 verses (74%)   Progress: 5900/7943 verses (74%)   Progress: 5950/7943 verses (75%)   Progress: 6000/7943 verses (76%)   Progress: 6050/7943 verses (76%)   Progress: 6100/7943 verses (77%)   Progress: 6150/7943 verses (77%)   Progress: 6200/7943 verses (78%)   Progress: 6250/7943 verses (79%)   Progress: 6300/7943 verses (79%)   Progress: 6350/7943 verses (80%)   Progress: 6400/7943 verses (81%)   Progress: 6450/7943 verses (81%)   Progress: 6500/7943 verses (82%)   Progress: 6550/7943 verses (82%)   Progress: 6600/7943 verses (83%)   Progress: 6650/7943 verses (84%)   Progress: 6700/7943 verses (84%)   Progress: 6750/7943 verses (85%)   Progress: 6800/7943 verses (86%)   Progress: 6850/7943 verses (86%)   Progress: 6900/7943 verses (87%)   Progress: 6950/7943 verses (87%)   Progress: 7000/7943 verses (88%)   Progress: 7050/7943 verses (89%)   Progress: 7100/7943 verses (89%)   Progress: 7150/7943 verses (90%)   Progress: 7200/7943 verses (91%)   Progress: 7250/7943 verses (91%)   Progress: 7300/7943 verses (92%)   Progress: 7350/7943 verses (93%)   Progress: 7400/7943 verses (93%)   Progress: 7450/7943 verses (94%)   Progress: 7500/7943 verses (94%)   Progress: 7550/7943 verses (95%)   Progress: 7600/7943 verses (96%)   Progress: 7650/7943 verses (96%)   Progress: 7700/7943 verses (97%)   Progress: 7750/7943 verses (98%)   Progress: 7800/7943 verses (98%)   Progress: 7850/7943 verses (99%)   Progress: 7893/7943 verses (99%)
+✅ Import complete: 7893 verses imported, 50 failed
+
+🔍 Verifying import...
+✅ Total Nestle 1904 verses in database: 7903
+
+📋 Sample verses:
+   MAT 1:4 - Ἀρὰμ ἐγέννησεν τὸν Ἀμιναδάβ Ἀμιναδὰβ ἐγέννησεν τὸν Ναασσών Ν...
+   MAT 1:1 - Βίβλος γενέσεως Ἰησοῦ Χριστοῦ υἱοῦ Δαυεὶδ υἱοῦ Ἀβραάμ...
+   MAT 1:2 - Ἀβραὰμ ἐγέννησεν τὸν Ἰσαάκ Ἰσαὰκ ἐγέννησεν τὸν Ἰακώβ Ἰακὼβ ἐ...
+   MAT 1:3 - Ἰούδας ἐγέννησεν τὸν Φαρὲς τὸν Ζαρὰ καὶ ἐκ τῆς Θάμαρ Φαρὲς ἐ...
+   MRK 14:59 - καὶ οὐδὲ οὕτως ἴση ἦν ἡ μαρτυρία αὐτῶν...
+======================================================================
+📊 IMPORT SUMMARY
+======================================================================
+✅ Manuscript: Nestle 1904 Greek New Testament
+✅ Authenticity Tier: 1 (AUTHENTIC)
+✅ Total imported: 7893 verses
+❌ Failed: 50 verses
+📚 Database now contains Nestle 1904
+
+🎉 Nestle 1904 import complete!
+
+📈 "Authentic 10" Corpus Progress: 8/10 manuscripts (80%)
+⏭️  Next steps:
+1. Import Dead Sea Scrolls (select OT texts)
+2. Import Aleppo Codex (if transcription available)
+3. Update MANUSCRIPT_SOURCES_STATUS.md

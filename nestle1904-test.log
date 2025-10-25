@@ -1,0 +1,40 @@
+📖 Nestle 1904 Greek New Testament Import Tool
+======================================================================
+🌍 TEST MODE: Will import Matthew 1:1-10 only
+
+📚 Creating Nestle 1904 manuscript entry...
+✅ Created Nestle 1904 manuscript (ID: da7672c4-2368-4db7-af7f-bc19e6f9e8d4)
+📖 Found 29 book files to import
+   Processing MAT (01-matthew.xml)...
+
+📊 Total verses extracted: 10
+
+📥 Importing 10 verses to database...
+   Progress: 10/10 verses (100%)
+✅ Import complete: 10 verses imported, 0 failed
+
+🔍 Verifying import...
+✅ Total Nestle 1904 verses in database: 10
+
+📋 Sample verses:
+   MAT 1:4 - Ἀρὰμ ἐγέννησεν τὸν Ἀμιναδάβ Ἀμιναδὰβ ἐγέννησεν τὸν Ναασσών Ν...
+   MAT 1:1 - Βίβλος γενέσεως Ἰησοῦ Χριστοῦ υἱοῦ Δαυεὶδ υἱοῦ Ἀβραάμ...
+   MAT 1:2 - Ἀβραὰμ ἐγέννησεν τὸν Ἰσαάκ Ἰσαὰκ ἐγέννησεν τὸν Ἰακώβ Ἰακὼβ ἐ...
+   MAT 1:3 - Ἰούδας ἐγέννησεν τὸν Φαρὲς τὸν Ζαρὰ καὶ ἐκ τῆς Θάμαρ Φαρὲς ἐ...
+   MAT 1:5 - Σαλμὼν ἐγέννησεν τὸν Βόες ἐκ τῆς Ῥαχάβ Βόες ἐγέννησεν τὸν Ἰω...
+======================================================================
+📊 IMPORT SUMMARY
+======================================================================
+✅ Manuscript: Nestle 1904 Greek New Testament
+✅ Authenticity Tier: 1 (AUTHENTIC)
+✅ Total imported: 10 verses
+❌ Failed: 0 verses
+📚 Database now contains Nestle 1904
+
+🎉 Nestle 1904 import complete!
+
+📈 "Authentic 10" Corpus Progress: 8/10 manuscripts (80%)
+⏭️  Next steps:
+1. Import Dead Sea Scrolls (select OT texts)
+2. Import Aleppo Codex (if transcription available)
+3. Update MANUSCRIPT_SOURCES_STATUS.md
