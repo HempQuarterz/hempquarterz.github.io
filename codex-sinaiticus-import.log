@@ -1,0 +1,71 @@
+📖 Codex Sinaiticus (4th Century Greek Bible) Import Tool
+======================================================================
+🌍 FULL MODE: Will import entire Codex Sinaiticus
+
+📚 Checking for Codex Sinaiticus manuscript entry...
+✅ Found existing Codex Sinaiticus manuscript (ID: 7f68437f-f766-4138-aa2d-62c5f42c8993)
+📖 Reading Codex Sinaiticus XML from /home/hempquarterz/projects/All4Yah/manuscripts/codex-sinaiticus/codex-sinaiticus/sinaiticus_full_v195.xml...
+   (This may take a moment - 52MB file)...
+   Processing GEN (Γένεϲιϲ)...
+   Processing NUM (Ἀριθμοί)...
+   Processing DEU (Δευτερονόμιον)...
+   Processing EST (Ἐϲθήρ)...
+   Processing JDT (Ἰουδίθ)...
+   Processing ISA (Ἠϲαΐαϲ)...
+   Processing JOL (Ἰωήλ)...
+   Processing OBA (Ὀβδιού)...
+   Processing NAM (Ναούμ)...
+   Processing HAB (Ἀμβακούμ)...
+   Processing PSA (Ψαλμοί)...
+   Processing PRO (Παροιμίαι)...
+   Processing JOB (Ἰώβ)...
+   Processing MRK (Κατὰ Μάρκον)...
+   Processing LUK (Κατὰ Λουκᾶν)...
+   Processing JHN (Κατὰ Ἰωάννην)...
+   Processing JAS (Ἰακώβου)...
+   Processing JUD (Ἰούδα)...
+
+📊 Total verses extracted: 9749
+
+📥 Importing 9749 verses to database...
+   Progress: 100/9749 verses (1%)   Progress: 200/9749 verses (2%)   Progress: 300/9749 verses (3%)
+❌ Failed to import batch 300-400: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 400-500: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 500-600: ON CONFLICT DO UPDATE command cannot affect row a second time
+
+❌ Failed to import batch 600-700: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 400/9749 verses (4%)   Progress: 500/9749 verses (5%)   Progress: 600/9749 verses (6%)   Progress: 700/9749 verses (7%)   Progress: 800/9749 verses (8%)   Progress: 900/9749 verses (9%)   Progress: 1000/9749 verses (10%)   Progress: 1100/9749 verses (11%)   Progress: 1200/9749 verses (12%)   Progress: 1300/9749 verses (13%)   Progress: 1400/9749 verses (14%)   Progress: 1500/9749 verses (15%)   Progress: 1600/9749 verses (16%)   Progress: 1700/9749 verses (17%)   Progress: 1800/9749 verses (18%)   Progress: 1900/9749 verses (19%)   Progress: 2000/9749 verses (21%)   Progress: 2100/9749 verses (22%)   Progress: 2200/9749 verses (23%)   Progress: 2300/9749 verses (24%)   Progress: 2400/9749 verses (25%)   Progress: 2500/9749 verses (26%)   Progress: 2600/9749 verses (27%)   Progress: 2700/9749 verses (28%)   Progress: 2800/9749 verses (29%)   Progress: 2900/9749 verses (30%)   Progress: 3000/9749 verses (31%)   Progress: 3100/9749 verses (32%)   Progress: 3200/9749 verses (33%)   Progress: 3300/9749 verses (34%)   Progress: 3400/9749 verses (35%)   Progress: 3500/9749 verses (36%)   Progress: 3600/9749 verses (37%)   Progress: 3700/9749 verses (38%)   Progress: 3800/9749 verses (39%)   Progress: 3900/9749 verses (40%)   Progress: 4000/9749 verses (41%)   Progress: 4100/9749 verses (42%)   Progress: 4200/9749 verses (43%)   Progress: 4300/9749 verses (44%)   Progress: 4400/9749 verses (45%)
+❌ Failed to import batch 4800-4900: ON CONFLICT DO UPDATE command cannot affect row a second time
+   Progress: 4500/9749 verses (46%)   Progress: 4600/9749 verses (47%)   Progress: 4700/9749 verses (48%)   Progress: 4800/9749 verses (49%)   Progress: 4900/9749 verses (50%)   Progress: 5000/9749 verses (51%)   Progress: 5100/9749 verses (52%)   Progress: 5200/9749 verses (53%)   Progress: 5300/9749 verses (54%)   Progress: 5400/9749 verses (55%)   Progress: 5500/9749 verses (56%)   Progress: 5600/9749 verses (57%)   Progress: 5700/9749 verses (58%)   Progress: 5800/9749 verses (59%)   Progress: 5900/9749 verses (61%)   Progress: 6000/9749 verses (62%)   Progress: 6100/9749 verses (63%)   Progress: 6200/9749 verses (64%)   Progress: 6300/9749 verses (65%)   Progress: 6400/9749 verses (66%)
+❌ Failed to import batch 6900-7000: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 6500/9749 verses (67%)   Progress: 6600/9749 verses (68%)   Progress: 6700/9749 verses (69%)   Progress: 6800/9749 verses (70%)   Progress: 6900/9749 verses (71%)
+❌ Failed to import batch 7500-7600: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 7000/9749 verses (72%)   Progress: 7100/9749 verses (73%)   Progress: 7200/9749 verses (74%)   Progress: 7300/9749 verses (75%)   Progress: 7400/9749 verses (76%)   Progress: 7500/9749 verses (77%)   Progress: 7600/9749 verses (78%)   Progress: 7700/9749 verses (79%)   Progress: 7800/9749 verses (80%)   Progress: 7900/9749 verses (81%)   Progress: 8000/9749 verses (82%)
+❌ Failed to import batch 8700-8800: new row for relation "verses" violates check constraint "verses_verse_check"
+   Progress: 8100/9749 verses (83%)   Progress: 8200/9749 verses (84%)   Progress: 8300/9749 verses (85%)   Progress: 8400/9749 verses (86%)   Progress: 8500/9749 verses (87%)   Progress: 8600/9749 verses (88%)   Progress: 8700/9749 verses (89%)   Progress: 8800/9749 verses (90%)   Progress: 8900/9749 verses (91%)   Progress: 8949/9749 verses (92%)
+
+✅ Import complete: 8949 verses imported, 800 failed
+
+🔍 Verifying import...
+✅ Total Codex Sinaiticus verses in database: 8949
+
+📋 Sample verses:
+
+======================================================================
+📊 IMPORT SUMMARY
+======================================================================
+✅ Manuscript: Codex Sinaiticus (4th century Greek Bible)
+✅ Authenticity Tier: 1 (AUTHENTIC)
+✅ Total imported: 8949 verses
+❌ Failed: 800 verses
+📚 Database now contains Codex Sinaiticus with morphology
+
+🎉 Codex Sinaiticus import complete!
+
+📈 "Authentic 10" Corpus Progress: 6/10 manuscripts (60%)
+⏭️  Next steps:
+1. Import Dead Sea Scrolls (select texts)
+2. Import Aleppo Codex
+3. Update MANUSCRIPT_SOURCES_STATUS.md
