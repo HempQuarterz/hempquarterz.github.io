@@ -1,287 +1,187 @@
 #!/usr/bin/env node
-
 /**
  * Dead Sea Scrolls Data Cleaning Script
  *
- * Purpose: Clean dss-full.json to resolve import failures
- * - De-duplicate 544 entries (same book/chapter/verse)
- * - Fix 64 invalid verse numbers (verse <= 0)
- * - Fix 81 invalid chapter numbers (chapter <= 0)
- *
- * Input:  manuscripts/dead-sea-scrolls/dss-full.json (52,769 lines)
- * Output: manuscripts/dead-sea-scrolls/dss-cleaned.json (~52,080 lines)
- *         database/dss-cleanup-report.json (detailed report)
+ * Cleans the DSS JSON file by:
+ * 1. Fixing invalid verse numbers (0 → 1)
+ * 2. Fixing invalid chapter numbers (0 → 1)
+ * 3. Removing duplicate entries AFTER fixing (keep first occurrence)
  *
  * Usage:
  *   node database/clean-dss-data.js
+ *
+ * Output:
+ *   manuscripts/dead-sea-scrolls/dss-cleaned.json
  */
 
 const fs = require('fs');
 const path = require('path');
 
-console.log('\n╔════════════════════════════════════════════════════════════════╗');
-console.log('║     Dead Sea Scrolls Data Cleaning Script                    ║');
-console.log('╚════════════════════════════════════════════════════════════════╝\n');
+console.log('═══════════════════════════════════════════════════════════════');
+console.log('Dead Sea Scrolls Data Cleaning Tool');
+console.log('═══════════════════════════════════════════════════════════════\n');
 
-// File paths
-const INPUT_FILE = path.join(__dirname, '../manuscripts/dead-sea-scrolls/dss-full.json');
-const OUTPUT_FILE = path.join(__dirname, '../manuscripts/dead-sea-scrolls/dss-cleaned.json');
-const REPORT_FILE = path.join(__dirname, 'dss-cleanup-report.json');
+// Load original data
+const jsonPath = path.join(__dirname, '../manuscripts/dead-sea-scrolls/dss-full.json');
 
-// Tracking objects
-const cleanupStats = {
-  totalLines: 0,
-  duplicatesRemoved: 0,
-  invalidVersesFixed: 0,
-  invalidChapterFixed: 0,
-  cleanLines: 0,
-  duplicateExamples: [],
-  invalidVerseExamples: [],
-  invalidChapterExamples: []
+if (!fs.existsSync(jsonPath)) {
+  console.error(`❌ File not found: ${jsonPath}`);
+  process.exit(1);
+}
+
+console.log(`📖 Loading data from: ${jsonPath}`);
+const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+let verses = data.verses;
+
+console.log(`📊 Original verses: ${verses.length}\n`);
+
+// =====================================================================
+// STEP 1: Fix Invalid Verse Numbers (0 → 1)
+// =====================================================================
+
+console.log('🔧 STEP 1: Fixing invalid verse numbers...');
+
+let fixedVerseNumbers = 0;
+
+verses.forEach(verse => {
+  if (verse.verse <= 0) {
+    verse.verse = 1;
+    fixedVerseNumbers++;
+  }
+});
+
+console.log(`   ✅ Fixed ${fixedVerseNumbers} invalid verse numbers (0 → 1)\n`);
+
+// =====================================================================
+// STEP 2: Fix Invalid Chapter Numbers (0 → 1)
+// =====================================================================
+
+console.log('🔧 STEP 2: Fixing invalid chapter numbers...');
+
+let fixedChapterNumbers = 0;
+
+verses.forEach(verse => {
+  if (verse.chapter <= 0) {
+    verse.chapter = 1;
+    fixedChapterNumbers++;
+  }
+});
+
+console.log(`   ✅ Fixed ${fixedChapterNumbers} invalid chapter numbers (0 → 1)\n`);
+
+// =====================================================================
+// STEP 3: Remove Duplicates AFTER fixing (keep first occurrence)
+// =====================================================================
+
+console.log('🧹 STEP 3: Removing duplicates (after fixing invalid values)...');
+
+const seen = new Set();
+const deduplicatedVerses = [];
+let duplicatesRemoved = 0;
+
+verses.forEach((verse, index) => {
+  const key = `${verse.book}|${verse.chapter}|${verse.verse}`;
+
+  if (seen.has(key)) {
+    duplicatesRemoved++;
+  } else {
+    seen.add(key);
+    deduplicatedVerses.push(verse);
+  }
+});
+
+console.log(`   ✅ Removed ${duplicatesRemoved} duplicate entries`);
+console.log(`   ✅ Remaining verses: ${deduplicatedVerses.length}\n`);
+
+// =====================================================================
+// STEP 4: Validate Cleaned Data
+// =====================================================================
+
+console.log('✅ STEP 4: Validating cleaned data...');
+
+// Check for remaining duplicates
+const finalSeen = new Set();
+let remainingDuplicates = 0;
+
+deduplicatedVerses.forEach(verse => {
+  const key = `${verse.book}|${verse.chapter}|${verse.verse}`;
+  if (finalSeen.has(key)) {
+    remainingDuplicates++;
+  } else {
+    finalSeen.add(key);
+  }
+});
+
+// Check for remaining invalid values
+const remainingInvalidVerses = deduplicatedVerses.filter(v => v.verse <= 0).length;
+const remainingInvalidChapters = deduplicatedVerses.filter(v => v.chapter <= 0).length;
+
+console.log(`   - Remaining duplicates: ${remainingDuplicates}`);
+console.log(`   - Remaining invalid verse numbers: ${remainingInvalidVerses}`);
+console.log(`   - Remaining invalid chapters: ${remainingInvalidChapters}`);
+
+if (remainingDuplicates > 0 || remainingInvalidVerses > 0 || remainingInvalidChapters > 0) {
+  console.error('\n❌ WARNING: Data still contains issues!');
+} else {
+  console.log('\n   ✅ All data quality issues resolved!\n');
+}
+
+// =====================================================================
+// STEP 5: Save Cleaned Data
+// =====================================================================
+
+console.log('💾 STEP 5: Saving cleaned data...');
+
+const cleanedData = {
+  ...data,
+  verses: deduplicatedVerses,
+  line_count: deduplicatedVerses.length,
+  cleaning_metadata: {
+    original_count: verses.length,
+    cleaned_count: deduplicatedVerses.length,
+    duplicates_removed: duplicatesRemoved,
+    verse_numbers_fixed: fixedVerseNumbers,
+    chapter_numbers_fixed: fixedChapterNumbers,
+    cleaning_date: new Date().toISOString()
+  }
 };
 
-const seenEntries = new Map(); // Track book-chapter-verse combinations
-const cleanedVerses = [];
+const outputPath = path.join(__dirname, '../manuscripts/dead-sea-scrolls/dss-cleaned.json');
+fs.writeFileSync(outputPath, JSON.stringify(cleanedData, null, 2));
 
-/**
- * Load and parse DSS data
- */
-function loadData() {
-  console.log('📖 Loading DSS data...');
+const fileSizeMB = (fs.statSync(outputPath).size / (1024 * 1024)).toFixed(2);
+console.log(`   ✅ Cleaned data saved to: ${outputPath}`);
+console.log(`   ✅ File size: ${fileSizeMB} MB\n`);
 
-  if (!fs.existsSync(INPUT_FILE)) {
-    console.error(`❌ Input file not found: ${INPUT_FILE}`);
-    process.exit(1);
-  }
+// =====================================================================
+// SUMMARY
+// =====================================================================
 
-  const rawData = fs.readFileSync(INPUT_FILE, 'utf8');
-  const data = JSON.parse(rawData);
+console.log('═══════════════════════════════════════════════════════════════');
+console.log('CLEANING SUMMARY');
+console.log('═══════════════════════════════════════════════════════════════\n');
 
-  console.log(`✅ Loaded ${data.verses.length} lines\n`);
-  return data;
-}
+console.log(`📊 Before Cleaning:`);
+console.log(`   - Total verses: ${verses.length}`);
+console.log(`   - Invalid verse numbers: ${fixedVerseNumbers}`);
+console.log(`   - Invalid chapter numbers: ${fixedChapterNumbers}`);
+console.log(`   - Duplicate entries (after fixing): ${duplicatesRemoved}`);
 
-/**
- * Clean a single verse entry
- */
-function cleanVerse(verse, index) {
-  const key = `${verse.book}-${verse.chapter}-${verse.verse}`;
+console.log(`\n📊 After Cleaning:`);
+console.log(`   - Total verses: ${deduplicatedVerses.length}`);
+console.log(`   - Verses removed: ${verses.length - deduplicatedVerses.length}`);
+console.log(`   - Data retained: ${Math.round((deduplicatedVerses.length / verses.length) * 100)}%`);
 
-  // Check for duplicates
-  if (seenEntries.has(key)) {
-    cleanupStats.duplicatesRemoved++;
+console.log(`\n📊 Quality Metrics:`);
+console.log(`   - Remaining duplicates: ${remainingDuplicates} ${remainingDuplicates === 0 ? '✅' : '❌'}`);
+console.log(`   - Remaining invalid verses: ${remainingInvalidVerses} ${remainingInvalidVerses === 0 ? '✅' : '❌'}`);
+console.log(`   - Remaining invalid chapters: ${remainingInvalidChapters} ${remainingInvalidChapters === 0 ? '✅' : '❌'}`);
 
-    // Save first 10 duplicate examples
-    if (cleanupStats.duplicateExamples.length < 10) {
-      cleanupStats.duplicateExamples.push({
-        key,
-        firstIndex: seenEntries.get(key),
-        duplicateIndex: index
-      });
-    }
+console.log(`\n💡 Next Steps:`);
+console.log(`   1. Review cleaned data in: ${outputPath}`);
+console.log(`   2. Clear existing DSS verses from database:`);
+console.log(`      DELETE FROM verses WHERE manuscript_id = (SELECT id FROM manuscripts WHERE code = 'DSS');`);
+console.log(`   3. Update import script to use cleaned data`);
+console.log(`   4. Run import with cleaned data`);
 
-    return null; // Skip duplicate
-  }
-
-  // Track this entry
-  seenEntries.set(key, index);
-
-  // Create cleaned copy
-  const cleaned = { ...verse };
-
-  // Fix invalid chapter (chapter <= 0)
-  if (cleaned.chapter <= 0) {
-    cleanupStats.invalidChapterFixed++;
-
-    // Save first 10 examples
-    if (cleanupStats.invalidChapterExamples.length < 10) {
-      cleanupStats.invalidChapterExamples.push({
-        book: cleaned.book,
-        originalChapter: cleaned.chapter,
-        originalVerse: cleaned.verse,
-        fixedChapter: 1,
-        text: cleaned.text.substring(0, 60)
-      });
-    }
-
-    cleaned.chapter = 1; // Fix: chapter 0 → 1
-  }
-
-  // Fix invalid verse (verse <= 0)
-  if (cleaned.verse <= 0) {
-    cleanupStats.invalidVersesFixed++;
-
-    // Save first 10 examples
-    if (cleanupStats.invalidVerseExamples.length < 10) {
-      cleanupStats.invalidVerseExamples.push({
-        book: cleaned.book,
-        chapter: cleaned.chapter,
-        originalVerse: cleaned.verse,
-        fixedVerse: 1,
-        text: cleaned.text.substring(0, 60)
-      });
-    }
-
-    cleaned.verse = 1; // Fix: verse 0 → 1
-  }
-
-  return cleaned;
-}
-
-/**
- * Process all verses
- */
-function processData(data) {
-  console.log('🔧 Cleaning data...\n');
-
-  cleanupStats.totalLines = data.verses.length;
-
-  let processed = 0;
-  const startTime = Date.now();
-
-  for (let i = 0; i < data.verses.length; i++) {
-    const verse = data.verses[i];
-    const cleaned = cleanVerse(verse, i);
-
-    if (cleaned) {
-      cleanedVerses.push(cleaned);
-    }
-
-    processed++;
-
-    // Progress update every 5000 lines
-    if (processed % 5000 === 0) {
-      const percent = Math.round((processed / data.verses.length) * 100);
-      process.stdout.write(`\r   Progress: ${processed}/${data.verses.length} (${percent}%)`);
-    }
-  }
-
-  const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
-  console.log(`\r   Progress: ${processed}/${data.verses.length} (100%) - ${elapsed}s\n`);
-
-  cleanupStats.cleanLines = cleanedVerses.length;
-
-  // Create output data structure
-  return {
-    manuscript: data.manuscript,
-    code: data.code,
-    language: data.language,
-    scroll_count: data.scroll_count,
-    line_count: cleanedVerses.length,
-    cleaned: true,
-    cleaned_date: new Date().toISOString(),
-    verses: cleanedVerses
-  };
-}
-
-/**
- * Save cleaned data
- */
-function saveCleanedData(cleanedData) {
-  console.log('💾 Saving cleaned data...\n');
-
-  const jsonStr = JSON.stringify(cleanedData, null, 2);
-  fs.writeFileSync(OUTPUT_FILE, jsonStr, 'utf8');
-
-  const sizeBytes = fs.statSync(OUTPUT_FILE).size;
-  const sizeMB = (sizeBytes / 1024 / 1024).toFixed(2);
-
-  console.log(`✅ Cleaned data saved: ${OUTPUT_FILE}`);
-  console.log(`   Size: ${sizeMB} MB\n`);
-}
-
-/**
- * Save cleanup report
- */
-function saveReport() {
-  console.log('📊 Generating cleanup report...\n');
-
-  const report = {
-    timestamp: new Date().toISOString(),
-    input_file: INPUT_FILE,
-    output_file: OUTPUT_FILE,
-    statistics: {
-      total_lines_input: cleanupStats.totalLines,
-      total_lines_output: cleanupStats.cleanLines,
-      duplicates_removed: cleanupStats.duplicatesRemoved,
-      invalid_verses_fixed: cleanupStats.invalidVersesFixed,
-      invalid_chapters_fixed: cleanupStats.invalidChapterFixed,
-      total_changes: cleanupStats.duplicatesRemoved +
-                     cleanupStats.invalidVersesFixed +
-                     cleanupStats.invalidChapterFixed
-    },
-    examples: {
-      duplicates: cleanupStats.duplicateExamples,
-      invalid_verses: cleanupStats.invalidVerseExamples,
-      invalid_chapters: cleanupStats.invalidChapterExamples
-    }
-  };
-
-  fs.writeFileSync(REPORT_FILE, JSON.stringify(report, null, 2), 'utf8');
-
-  console.log(`✅ Cleanup report saved: ${REPORT_FILE}\n`);
-}
-
-/**
- * Display summary
- */
-function displaySummary() {
-  console.log('╔════════════════════════════════════════════════════════════════╗');
-  console.log('║                    CLEANUP SUMMARY                            ║');
-  console.log('╚════════════════════════════════════════════════════════════════╝\n');
-
-  console.log(`📥 Input:  ${cleanupStats.totalLines.toLocaleString()} lines`);
-  console.log(`📤 Output: ${cleanupStats.cleanLines.toLocaleString()} lines\n`);
-
-  console.log('🔧 Changes Made:\n');
-  console.log(`   • Duplicates removed:      ${cleanupStats.duplicatesRemoved.toLocaleString()}`);
-  console.log(`   • Invalid verses fixed:    ${cleanupStats.invalidVersesFixed.toLocaleString()} (verse 0 → 1)`);
-  console.log(`   • Invalid chapters fixed:  ${cleanupStats.invalidChapterFixed.toLocaleString()} (chapter 0 → 1)`);
-
-  const totalChanges = cleanupStats.duplicatesRemoved +
-                       cleanupStats.invalidVersesFixed +
-                       cleanupStats.invalidChapterFixed;
-  console.log(`   • Total changes:           ${totalChanges.toLocaleString()}\n`);
-
-  console.log('📊 Expected Import Results:\n');
-  console.log(`   • Lines to import:         ${cleanupStats.cleanLines.toLocaleString()}`);
-  console.log(`   • Expected success rate:   100% (all issues resolved)`);
-  console.log(`   • Unique scrolls:          997 (all scrolls included)\n`);
-
-  console.log('✅ Data cleaning complete!\n');
-  console.log('═'.repeat(70));
-  console.log('\n📋 NEXT STEPS:\n');
-  console.log('1. Clear partial DSS import from database:');
-  console.log('   DELETE FROM verses WHERE manuscript_id = \'<DSS_ID>\';\n');
-  console.log('2. Update import script to use cleaned data:');
-  console.log('   cd hempquarterz.github.io');
-  console.log('   # Modify import-dead-sea-scrolls.js to load dss-cleaned.json');
-  console.log('   node database/import-dead-sea-scrolls.js --full\n');
-  console.log('3. Verify import:');
-  console.log('   Expected: ~52,080 lines, 997 unique scrolls\n');
-  console.log('═'.repeat(70));
-}
-
-/**
- * Main execution
- */
-function main() {
-  try {
-    const data = loadData();
-    const cleanedData = processData(data);
-    saveCleanedData(cleanedData);
-    saveReport();
-    displaySummary();
-
-    console.log('\n🎯 Mission: "Restoring truth, one name at a time."');
-    console.log('✨ DSS data ready for re-import!\n');
-
-  } catch (error) {
-    console.error('\n❌ Error during cleanup:', error.message);
-    console.error(error.stack);
-    process.exit(1);
-  }
-}
-
-// Run the script
-main();
+console.log('\n═══════════════════════════════════════════════════════════════\n');

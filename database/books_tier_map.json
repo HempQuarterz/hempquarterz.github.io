@@ -1,0 +1,443 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2025-01-25",
+    "description": "Canonical tier mapping for All4Yah biblical texts",
+    "tiers": {
+      "1": "Canonical Core - Universally recognized Scripture",
+      "2": "Deuterocanonical / Second Temple - Historically authentic, DSS/LXX attestation",
+      "3": "Early Christian Apocrypha - Historical witnesses (1st-4th c.)",
+      "4": "Ethiopian Heritage - Cultural/liturgical texts (medieval)",
+      "5": "Modern / Unverified - Excluded from All4Yah"
+    }
+  },
+  "books": [
+    {
+      "code": "GEN",
+      "name": "Genesis",
+      "testament": "OT",
+      "tier": 1,
+      "status": "canonical",
+      "era": "Torah (1450-1400 BCE trad.)",
+      "language_origin": "Hebrew",
+      "provenance_confidence": 1.0,
+      "manuscript_sources": ["WLC", "DSS (4QGen)", "LXX"],
+      "divine_name_occurrences": 165,
+      "notes": "Foundation of Torah. Contains first occurrences of יהוה (YHWH/Yahuah)."
+    },
+    {
+      "code": "EXO",
+      "name": "Exodus",
+      "testament": "OT",
+      "tier": 1,
+      "status": "canonical",
+      "era": "Torah (1450-1400 BCE trad.)",
+      "language_origin": "Hebrew",
+      "provenance_confidence": 1.0,
+      "manuscript_sources": ["WLC", "DSS", "LXX"],
+      "divine_name_occurrences": 398,
+      "notes": "Revelation of the divine Name (Exodus 3:14-15)."
+    },
+    {
+      "code": "MAT",
+      "name": "Matthew",
+      "testament": "NT",
+      "tier": 1,
+      "status": "canonical",
+      "era": "First Century CE (50-90 CE)",
+      "language_origin": "Greek",
+      "provenance_confidence": 1.0,
+      "manuscript_sources": ["SBLGNT", "P45", "Codex Sinaiticus", "Codex Vaticanus"],
+      "divine_name_restorations": ["Ἰησοῦς → Yahusha", "κύριος → Yahuah (OT quotes)"],
+      "notes": "Most quoted OT book in NT. Heavy κύριος usage in Septuagint quotes."
+    },
+    {
+      "code": "TOB",
+      "name": "Tobit",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (225-175 BCE)",
+      "language_origin": "Hebrew/Aramaic (lost)",
+      "language_extant": "Greek (LXX), Aramaic (DSS fragments)",
+      "provenance_confidence": 0.92,
+      "manuscript_sources": [
+        "Codex Sinaiticus (Greek, 4th c.)",
+        "Codex Alexandrinus (Greek, 5th c.)",
+        "4Q196-200 (Aramaic, DSS 1st c. BCE)"
+      ],
+      "included_in_canons": ["Catholic", "Orthodox", "Ethiopian"],
+      "notes": "Aramaic DSS fragments confirm earlier Hebrew/Aramaic original. Widely accepted deuterocanonical work."
+    },
+    {
+      "code": "JDT",
+      "name": "Judith",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (150-100 BCE est.)",
+      "language_origin": "Hebrew (lost)",
+      "language_extant": "Greek (LXX)",
+      "provenance_confidence": 0.88,
+      "manuscript_sources": [
+        "Codex Vaticanus (Greek, 4th c.)",
+        "Codex Alexandrinus (Greek, 5th c.)"
+      ],
+      "included_in_canons": ["Catholic", "Orthodox", "Ethiopian"],
+      "notes": "Greek translation of lost Hebrew original. No DSS fragments found."
+    },
+    {
+      "code": "ESG",
+      "name": "Additions to Esther (Greek)",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (2nd-1st c. BCE)",
+      "language_origin": "Greek additions to Hebrew Esther",
+      "provenance_confidence": 0.85,
+      "manuscript_sources": ["LXX manuscripts"],
+      "included_in_canons": ["Catholic", "Orthodox"],
+      "notes": "Six additions to canonical Esther, adding 107 verses with divine name references absent in Hebrew."
+    },
+    {
+      "code": "WIS",
+      "name": "Wisdom of Solomon",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (late 1st c. BCE - early 1st c. CE)",
+      "language_origin": "Greek (composed in Greek)",
+      "provenance_confidence": 0.90,
+      "manuscript_sources": [
+        "Codex Sinaiticus (4th c.)",
+        "Codex Vaticanus (4th c.)",
+        "Codex Alexandrinus (5th c.)"
+      ],
+      "included_in_canons": ["Catholic", "Orthodox", "Ethiopian"],
+      "notes": "Wisdom literature. Composed in Greek by Alexandrian Jew. High theological content."
+    },
+    {
+      "code": "SIR",
+      "name": "Sirach (Ecclesiasticus)",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (c. 180 BCE Hebrew, c. 132 BCE Greek trans.)",
+      "language_origin": "Hebrew",
+      "language_extant": "Greek (LXX), Hebrew (fragmentary)",
+      "provenance_confidence": 0.95,
+      "manuscript_sources": [
+        "Hebrew: Cairo Genizah fragments (2/3 of book)",
+        "Hebrew: Masada scroll (Sir 39-44)",
+        "Hebrew: DSS 2Q18, 11Q5 (Psalm 151 + Sirach 51)",
+        "Greek: Codex Sinaiticus, Vaticanus"
+      ],
+      "included_in_canons": ["Catholic", "Orthodox", "Ethiopian"],
+      "notes": "Extensive Hebrew fragments recovered. Wisdom literature by Jesus ben Sira. Prologue describes translation by grandson."
+    },
+    {
+      "code": "BAR",
+      "name": "Baruch",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (2nd-1st c. BCE)",
+      "language_origin": "Hebrew (probable, lost)",
+      "language_extant": "Greek (LXX)",
+      "provenance_confidence": 0.82,
+      "manuscript_sources": [
+        "Codex Vaticanus (4th c.)",
+        "Codex Alexandrinus (5th c.)"
+      ],
+      "included_in_canons": ["Catholic", "Orthodox", "Ethiopian"],
+      "notes": "Attributed to Baruch, scribe of Jeremiah. Includes Letter of Jeremiah (ch. 6 in Catholic canon)."
+    },
+    {
+      "code": "LJE",
+      "name": "Letter of Jeremiah",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (c. 300 BCE)",
+      "language_origin": "Hebrew (probable)",
+      "language_extant": "Greek (LXX)",
+      "provenance_confidence": 0.80,
+      "manuscript_sources": [
+        "Greek 7Q2 (DSS, c. 100 BCE) - oldest manuscript",
+        "LXX manuscripts"
+      ],
+      "included_in_canons": ["Catholic (as Baruch 6)", "Orthodox", "Ethiopian"],
+      "notes": "Warning against idolatry. Oldest DSS Greek manuscript (7Q2) confirms early date."
+    },
+    {
+      "code": "S3Y",
+      "name": "Prayer of Azariah and Song of the Three",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (2nd c. BCE)",
+      "language_origin": "Hebrew/Aramaic (probable)",
+      "language_extant": "Greek (LXX)",
+      "provenance_confidence": 0.85,
+      "manuscript_sources": ["LXX Daniel manuscripts"],
+      "included_in_canons": ["Catholic", "Orthodox", "Ethiopian"],
+      "notes": "Addition to Daniel 3 (between verses 23-24). Liturgical prayer and hymn."
+    },
+    {
+      "code": "SUS",
+      "name": "Susanna",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (2nd c. BCE)",
+      "language_origin": "Hebrew (probable)",
+      "language_extant": "Greek (LXX, two versions: Theodotion, Old Greek)",
+      "provenance_confidence": 0.83,
+      "manuscript_sources": ["LXX Daniel manuscripts"],
+      "included_in_canons": ["Catholic (Daniel 13)", "Orthodox", "Ethiopian"],
+      "notes": "Story of Daniel's wisdom. Two Greek versions exist with textual variants."
+    },
+    {
+      "code": "BEL",
+      "name": "Bel and the Dragon",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (2nd c. BCE)",
+      "language_origin": "Hebrew (probable)",
+      "language_extant": "Greek (LXX)",
+      "provenance_confidence": 0.83,
+      "manuscript_sources": ["LXX Daniel manuscripts"],
+      "included_in_canons": ["Catholic (Daniel 14)", "Orthodox", "Ethiopian"],
+      "notes": "Daniel exposes idolatry. Critique of Babylonian worship practices."
+    },
+    {
+      "code": "1MA",
+      "name": "1 Maccabees",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (c. 100 BCE)",
+      "language_origin": "Hebrew (lost)",
+      "language_extant": "Greek (LXX)",
+      "provenance_confidence": 0.93,
+      "manuscript_sources": [
+        "Codex Sinaiticus (4th c.)",
+        "Codex Alexandrinus (5th c.)"
+      ],
+      "included_in_canons": ["Catholic", "Orthodox", "Ethiopian"],
+      "notes": "Historical account of Maccabean revolt (167-134 BCE). Reliable historical source."
+    },
+    {
+      "code": "2MA",
+      "name": "2 Maccabees",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (c. 124 BCE)",
+      "language_origin": "Greek (epitome of Jason of Cyrene's 5-volume work)",
+      "provenance_confidence": 0.88,
+      "manuscript_sources": [
+        "Codex Sinaiticus (4th c.)",
+        "Codex Alexandrinus (5th c.)"
+      ],
+      "included_in_canons": ["Catholic", "Orthodox", "Ethiopian"],
+      "notes": "Parallel account to 1 Macc covering 180-161 BCE. More theological than 1 Macc."
+    },
+    {
+      "code": "3MA",
+      "name": "3 Maccabees",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (1st c. BCE - 1st c. CE)",
+      "language_origin": "Greek",
+      "provenance_confidence": 0.75,
+      "manuscript_sources": [
+        "Codex Sinaiticus (4th c.)",
+        "Codex Alexandrinus (5th c.)"
+      ],
+      "included_in_canons": ["Orthodox", "Ethiopian"],
+      "notes": "Not about Maccabees but earlier persecution under Ptolemy IV (217 BCE). Canonical in Eastern churches only."
+    },
+    {
+      "code": "4MA",
+      "name": "4 Maccabees",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (1st c. CE)",
+      "language_origin": "Greek",
+      "provenance_confidence": 0.70,
+      "manuscript_sources": [
+        "Codex Sinaiticus (4th c.)",
+        "Codex Alexandrinus (5th c.)"
+      ],
+      "included_in_canons": ["Orthodox (appendix)", "Georgian Orthodox"],
+      "notes": "Philosophical work on reason over passion. Uses Maccabean martyrs as examples. Appendix in Greek/Georgian Orthodox."
+    },
+    {
+      "code": "PS2",
+      "name": "Psalm 151",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (2nd c. BCE or earlier)",
+      "language_origin": "Hebrew",
+      "language_extant": "Greek (LXX), Hebrew (DSS 11Q5)",
+      "provenance_confidence": 0.94,
+      "manuscript_sources": [
+        "Hebrew: DSS 11Q5 (Psalms Scroll, 1st c. BCE)",
+        "Greek: LXX manuscripts",
+        "Syriac Peshitta"
+      ],
+      "included_in_canons": ["Orthodox", "Ethiopian"],
+      "notes": "David's psalm after defeating Goliath. Hebrew DSS manuscript (11Q5) confirms antiquity."
+    },
+    {
+      "code": "MAN",
+      "name": "Prayer of Manasseh",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (2nd-1st c. BCE)",
+      "language_origin": "Hebrew (probable)",
+      "language_extant": "Greek",
+      "provenance_confidence": 0.77,
+      "manuscript_sources": ["Didascalia Apostolorum (3rd c.)", "LXX appendix manuscripts"],
+      "included_in_canons": ["Orthodox (appendix)", "Ethiopian"],
+      "notes": "Penitential prayer attributed to King Manasseh (2 Chr 33:18-19). Brief 15-verse psalm."
+    },
+    {
+      "code": "1ES",
+      "name": "1 Esdras (3 Ezra)",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Second Temple (2nd c. BCE)",
+      "language_origin": "Hebrew (probable)",
+      "language_extant": "Greek (LXX)",
+      "provenance_confidence": 0.82,
+      "manuscript_sources": [
+        "Codex Vaticanus (4th c.)",
+        "Codex Alexandrinus (5th c.)"
+      ],
+      "included_in_canons": ["Orthodox (appendix)"],
+      "notes": "Variant account of 2 Chronicles 35-36, Ezra, Nehemiah 7-8. Includes Story of the Three Youths."
+    },
+    {
+      "code": "2ES",
+      "name": "2 Esdras (4 Ezra, Ezra Apocalypse)",
+      "testament": "Deuterocanon",
+      "tier": 2,
+      "status": "deuterocanonical",
+      "era": "Late Second Temple / Early Christian (c. 100 CE)",
+      "language_origin": "Hebrew (probable)",
+      "language_extant": "Latin, Syriac, Ethiopic, Arabic, Armenian, Georgian",
+      "provenance_confidence": 0.75,
+      "manuscript_sources": [
+        "Latin Vulgate appendix",
+        "Syriac, Ethiopic, Arabic translations"
+      ],
+      "included_in_canons": ["Orthodox (appendix)", "Ethiopian"],
+      "notes": "Jewish apocalyptic work (ch. 3-14). Christian additions (ch. 1-2, 15-16). Quoted by early church fathers."
+    },
+    {
+      "code": "ENO",
+      "name": "1 Enoch (Ethiopic Enoch)",
+      "testament": "Pseudepigrapha / Ethiopian Canon",
+      "tier": 2,
+      "status": "deuterocanonical-ethiopian",
+      "era": "Second Temple (3rd c. BCE - 1st c. CE, composite)",
+      "language_origin": "Aramaic/Hebrew",
+      "language_extant": "Ge'ez (complete), Aramaic (DSS fragments), Greek (fragments)",
+      "provenance_confidence": 0.89,
+      "manuscript_sources": [
+        "Aramaic: DSS 4Q201-212, 1Q19-20 (Book of Giants)",
+        "Greek: fragments (1st-4th c. CE)",
+        "Ge'ez: complete (4th-6th c. translation)"
+      ],
+      "included_in_canons": ["Ethiopian Orthodox"],
+      "quoted_in_nt": "Jude 1:14-15",
+      "notes": "Quoted in NT (Jude 14-15). Aramaic DSS fragments confirm antiquity. Central to Ethiopian canon. Five sections: Book of Watchers, Parables, Astronomical, Dream Visions, Epistle."
+    },
+    {
+      "code": "JUB",
+      "name": "Jubilees",
+      "testament": "Pseudepigrapha / Ethiopian Canon",
+      "tier": 2,
+      "status": "deuterocanonical-ethiopian",
+      "era": "Second Temple (2nd c. BCE)",
+      "language_origin": "Hebrew",
+      "language_extant": "Ge'ez (complete), Hebrew (DSS fragments), Latin (fragments)",
+      "provenance_confidence": 0.87,
+      "manuscript_sources": [
+        "Hebrew: DSS 1Q17-18, 2Q19-20, 3Q5, 4Q216-228, 11Q12 (15 manuscripts)",
+        "Ge'ez: complete (4th-6th c. translation)",
+        "Latin: fragments"
+      ],
+      "included_in_canons": ["Ethiopian Orthodox"],
+      "notes": "Retelling of Genesis and Exodus 1-12 with calendar emphasis. 15 Hebrew DSS manuscripts confirm importance at Qumran. 364-day solar calendar vs 354-day lunar."
+    },
+    {
+      "code": "MEQ",
+      "name": "Meqabyan (Ethiopian Maccabees)",
+      "testament": "Ethiopian Canon",
+      "tier": 2,
+      "status": "deuterocanonical-ethiopian",
+      "era": "Unknown (possibly 4th-6th c. CE in Ge'ez)",
+      "language_origin": "Ge'ez (unique to Ethiopia)",
+      "provenance_confidence": 0.60,
+      "manuscript_sources": ["Ethiopian Orthodox manuscripts"],
+      "included_in_canons": ["Ethiopian Orthodox"],
+      "notes": "NOT the same as 1-4 Maccabees. Unique to Ethiopian tradition. Three books of wisdom teaching attributed to 'Meqabyan' (unknown figure). Limited scholarly analysis."
+    },
+    {
+      "code": "TGO",
+      "name": "Gospel of Thomas",
+      "testament": "Apocrypha",
+      "tier": 3,
+      "status": "apocryphal-historical-witness",
+      "era": "Early Christian (mid-2nd c. CE, sayings possibly 1st c.)",
+      "language_origin": "Greek (probable)",
+      "language_extant": "Coptic (Nag Hammadi), Greek (Oxyrhynchus fragments)",
+      "provenance_confidence": 0.74,
+      "manuscript_sources": [
+        "Coptic: Nag Hammadi Codex II,2 (c. 340 CE)",
+        "Greek: POxy 1, 654, 655 (fragments, 3rd c.)"
+      ],
+      "included_in_canons": [],
+      "notes": "114 sayings of Yahusha. 50% parallel canonical Gospels. Gnostic elements. Valuable for early Yahusha traditions and sayings source research."
+    },
+    {
+      "code": "GMA",
+      "name": "Gospel of Mary (Magdalene)",
+      "testament": "Apocrypha",
+      "tier": 3,
+      "status": "apocryphal-historical-witness",
+      "era": "Early Christian (2nd c. CE)",
+      "language_origin": "Greek",
+      "language_extant": "Coptic (fragmentary), Greek (fragments)",
+      "provenance_confidence": 0.68,
+      "manuscript_sources": [
+        "Coptic: Berlin Gnostic Codex 8502 (5th c.)",
+        "Greek: POxy 3525, PRyl 463 (3rd c.)"
+      ],
+      "included_in_canons": [],
+      "notes": "Dialogue between risen Yahusha and disciples, featuring Mary Magdalene. Fragmentary (10 pages missing). Gnostic themes."
+    },
+    {
+      "code": "KNG",
+      "name": "Kebra Nagast (Glory of Kings)",
+      "testament": "Ethiopian Heritage",
+      "tier": 4,
+      "status": "cultural-heritage",
+      "era": "Medieval (14th c. Ge'ez compilation, earlier Arabic sources)",
+      "language_origin": "Ge'ez (from Arabic)",
+      "provenance_confidence": 0.45,
+      "manuscript_sources": ["Ethiopian manuscripts (14th c. onward)"],
+      "included_in_canons": [],
+      "notes": "National epic of Ethiopia. Queen of Sheba, Menelik I, Ark of the Covenant to Ethiopia. Legendary/devotional, not ancient Scripture."
+    }
+  ]
+}
