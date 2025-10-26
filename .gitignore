@@ -2,14 +2,18 @@
 
 # dependencies
 /node_modules
+frontend/node_modules
+backend/node_modules
 /.pnp
 .pnp.js
 
 # testing
 /coverage
+frontend/coverage
 
 # production
 /build
+frontend/build
 
 # misc
 .DS_Store
@@ -39,6 +43,3 @@ database/*-test.sql
 database/*-batch*.sql
 database/*-genesis*.sql
 database/lxx-import.sql
-
-# Embedded git repository (separate project)
-hempquarterz.github.io/
