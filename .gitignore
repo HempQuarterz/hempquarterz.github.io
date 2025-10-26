@@ -29,3 +29,16 @@ manuscripts/
 # MCP configuration scripts (contain sensitive credentials)
 scripts/activate-mcp.sh
 .env.mcp
+
+# Database import logs (generated during import processes)
+database/*.log
+
+# Generated SQL files (large, temporary import files)
+database/*-full.sql
+database/*-test.sql
+database/*-batch*.sql
+database/*-genesis*.sql
+database/lxx-import.sql
+
+# Embedded git repository (separate project)
+hempquarterz.github.io/
