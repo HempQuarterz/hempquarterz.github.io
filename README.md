@@ -31,8 +31,8 @@ We restore the original divine names:
 ### Manuscript Viewer
 - ✅ **Parallel manuscript display** - Hebrew/Greek/Latin + English side-by-side
 - ✅ **Divine name restoration toggle** - Switch between original and restored
-- ✅ **158,356 verses** - Complete Old and New Testament coverage (9 manuscripts!)
-- ✅ **9 manuscripts** - WLC (Hebrew), LXX (Greek OT), 6 Greek NT texts, Vulgate (Latin), WEB (English)
+- ✅ **218,207 verses** - Complete coverage across 11 manuscripts (Hebrew, Greek, Latin, Aramaic, English)
+- ✅ **11 manuscripts** - WLC, SBLGNT, WEB, LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS
 - ✅ **8 divine name mappings** - Hebrew, Greek, and English restorations
 - ✅ **Gold highlighting (✦)** - Visually distinct restored names
 - ✅ **Hover tooltips** - See original text on hover
@@ -57,10 +57,29 @@ We restore the original divine names:
 **Provider:** Supabase (PostgreSQL)
 
 **Statistics:**
-- **Total Verses:** 54,217
-- **Manuscripts:** 3 active (WLC, SBLGNT, WEB)
-- **Languages:** Hebrew, Greek, English
+- **Total Verses:** 218,207
+- **Manuscripts:** 11 (WLC, SBLGNT, WEB, LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS)
+- **Languages:** Hebrew, Greek, Latin, Aramaic, English
+- **Strong's Lexicon:** 19,027 entries (Hebrew H1-H8674 + Greek G1-G5624)
+- **Cross-References:** 344,369 entries
+- **Canonical Books:** 27 (Tier 1-4 classification)
 - **Name Mappings:** 8 restorations
+
+**Manuscripts Breakdown:**
+
+| Code | Name | Language | Testament | Verses | Date/Era |
+|------|------|----------|-----------|--------|----------|
+| **WLC** | Westminster Leningrad Codex | Hebrew | OT | 24,661 | 1008 CE |
+| **SBLGNT** | SBL Greek New Testament | Greek | NT | 7,927 | Critical Text |
+| **WEB** | World English Bible | English | OT+NT | 31,402 | Modern |
+| **LXX** | Septuagint | Greek | OT | 27,947 | 3rd-1st c. BCE |
+| **DSS** | Dead Sea Scrolls | Hebrew | OT | 52,153 | 3rd c. BCE - 1st c. CE |
+| **VUL** | Vulgate | Latin | OT+NT | 35,811 | 4th c. CE |
+| **SIN** | Codex Sinaiticus | Greek | NT | 9,657 | 4th c. CE |
+| **TR** | Textus Receptus | Greek | NT | 7,957 | 16th c. |
+| **BYZMT** | Byzantine Majority Text | Greek | NT | 6,911 | Medieval |
+| **N1904** | Nestle 1904 | Greek | NT | 7,943 | 1904 |
+| **ONKELOS** | Targum Onkelos | Aramaic | Torah | 5,839 | 1st-2nd c. CE |
 
 **Security:**
 - Row Level Security (RLS) enabled
@@ -275,13 +294,15 @@ Set these environment variables in Netlify dashboard:
 - ✅ React UI with ManuscriptViewer component
 - ✅ Production deployment (Netlify)
 
-### Phase 2 (Months 4-6)
-- [ ] Import additional manuscripts (LXX, TR)
+### Phase 2 (Partially Complete)
+- ✅ Import additional manuscripts (LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS)
+- ✅ Strong's Concordance integration (19,027 entries)
+- ✅ Cross-reference system (344,369 entries)
+- ✅ Canonical tier classification (5-tier system)
 - [ ] AI translation engine (GPT-4/Claude)
 - [ ] Morphological analysis UI
 - [ ] Interlinear word-by-word display
 - [ ] Advanced search with Strong's numbers
-- [ ] Cross-reference system
 
 ### Phase 3 (Months 7-9)
 - [ ] Manuscript provenance timeline
