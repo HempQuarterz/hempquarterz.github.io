@@ -1,0 +1,133 @@
+/**
+ * Canonical Badge Styles
+ * Color-coded tier badges for biblical canon classification
+ */
+
+.canonical-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  transition: all 0.2s ease;
+  cursor: default;
+  user-select: none;
+}
+
+.canonical-badge.compact {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  gap: 0.25rem;
+}
+
+.badge-emoji {
+  font-size: 1em;
+  line-height: 1;
+}
+
+.badge-label {
+  letter-spacing: 0.01em;
+}
+
+/* Tier 1: Canonical (Blue) - Protestant 66-book canon */
+.canonical-badge.tier-1 {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: 1px solid #1e40af;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.canonical-badge.tier-1:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Tier 2: Deuterocanonical (Green) - Catholic/Orthodox additional books */
+.canonical-badge.tier-2 {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: 1px solid #047857;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+}
+
+.canonical-badge.tier-2:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Tier 3: Apocrypha (Yellow) - Historical witness texts */
+.canonical-badge.tier-3 {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  border: 1px solid #b45309;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+.canonical-badge.tier-3:hover {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Tier 4: Ethiopian Heritage (Orange) - Ethiopian Orthodox unique texts */
+.canonical-badge.tier-4 {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #ffffff;
+  border: 1px solid #c2410c;
+  box-shadow: 0 2px 4px rgba(249, 115, 22, 0.2);
+}
+
+.canonical-badge.tier-4:hover {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .canonical-badge.tier-1 {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-color: #2563eb;
+  }
+
+  .canonical-badge.tier-2 {
+    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+    border-color: #0d9488;
+  }
+
+  .canonical-badge.tier-3 {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    border-color: #f59e0b;
+  }
+
+  .canonical-badge.tier-4 {
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+    border-color: #f97316;
+  }
+}
+
+/* Accessibility: Focus states for keyboard navigation */
+.canonical-badge:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .canonical-badge {
+    background: none !important;
+    border: 1px solid #000;
+    color: #000 !important;
+    box-shadow: none !important;
+  }
+
+  .canonical-badge::after {
+    content: ' (Tier ' attr(data-tier) ')';
+    font-weight: normal;
+  }
+}

@@ -1,0 +1,417 @@
+/**
+ * Provenance Info Panel Styles
+ * Displays manuscript provenance and scholarly confidence information
+ */
+
+.provenance-panel {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  max-width: 700px;
+}
+
+.provenance-panel.compact {
+  padding: 1rem;
+}
+
+/* Header */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.header-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.panel-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.title-icon {
+  font-size: 1.75rem;
+}
+
+.book-code {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.expand-btn {
+  padding: 0.5rem;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.expand-btn:hover {
+  background: #e5e7eb;
+}
+
+/* Confidence Score Section */
+.confidence-section {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 0.625rem;
+}
+
+.confidence-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.confidence-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.confidence-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.confidence-tag {
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Confidence Colors */
+.confidence-value.very-high,
+.confidence-bar.very-high {
+  color: #059669;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.confidence-value.high,
+.confidence-bar.high {
+  color: #0d9488;
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+}
+
+.confidence-value.moderate,
+.confidence-bar.moderate {
+  color: #2563eb;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.confidence-value.fair,
+.confidence-bar.fair {
+  color: #d97706;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.confidence-value.low,
+.confidence-bar.low {
+  color: #dc2626;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+/* Confidence Bar */
+.confidence-bar-container {
+  width: 100%;
+  height: 0.75rem;
+  background: #e5e7eb;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.confidence-bar {
+  height: 100%;
+  transition: width 0.5s ease;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.confidence-description {
+  font-size: 0.8125rem;
+  color: #6b7280;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Info Sections */
+.info-section {
+  margin-bottom: 1.25rem;
+}
+
+.info-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.section-title::before {
+  content: '▪';
+  color: #10b981;
+  font-size: 1.25rem;
+}
+
+/* Canon Tags */
+.canon-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.canon-tag {
+  padding: 0.375rem 0.75rem;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.info-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.info-value {
+  font-size: 0.9375rem;
+  color: #111827;
+  font-weight: 500;
+}
+
+/* Source List */
+.source-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.source-item {
+  padding: 0.75rem 1rem;
+  background: #f9fafb;
+  border-left: 3px solid #10b981;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.source-item::before {
+  content: '📄';
+  margin-right: 0.5rem;
+}
+
+/* NT Quotes */
+.nt-quotes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.nt-quote {
+  padding: 0.375rem 0.75rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+  border: 1px solid #fbbf24;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Notes */
+.notes-text {
+  font-size: 0.9375rem;
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: #fef3c7;
+  border-left: 3px solid #f59e0b;
+  border-radius: 0.375rem;
+}
+
+/* Compact Mode */
+.provenance-panel.compact .panel-title {
+  font-size: 1.25rem;
+}
+
+.provenance-panel.compact .title-icon {
+  font-size: 1.5rem;
+}
+
+.provenance-panel.compact .confidence-section {
+  padding: 1rem;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .provenance-panel {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .panel-title,
+  .section-title,
+  .info-value {
+    color: #f9fafb;
+  }
+
+  .book-code,
+  .confidence-label,
+  .info-label {
+    color: #9ca3af;
+  }
+
+  .expand-btn {
+    background: #374151;
+    border-color: #4b5563;
+    color: #e5e7eb;
+  }
+
+  .expand-btn:hover {
+    background: #4b5563;
+  }
+
+  .confidence-section {
+    background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+    border-color: #374151;
+  }
+
+  .confidence-bar-container {
+    background: #374151;
+  }
+
+  .confidence-description,
+  .source-item,
+  .notes-text {
+    color: #9ca3af;
+  }
+
+  .source-item {
+    background: #111827;
+    border-left-color: #10b981;
+  }
+
+  .canon-tag {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+    color: #bfdbfe;
+    border-color: #3b82f6;
+  }
+
+  .nt-quote {
+    background: linear-gradient(135deg, #78350f 0%, #92400e 100%);
+    color: #fde68a;
+    border-color: #f59e0b;
+  }
+
+  .notes-text {
+    background: #78350f;
+    border-left-color: #f59e0b;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+  .provenance-panel {
+    padding: 1rem;
+  }
+
+  .panel-title {
+    font-size: 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .confidence-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .confidence-value {
+    font-size: 1.125rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .provenance-panel {
+    border: 1px solid #000;
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+
+  .expand-btn {
+    display: none;
+  }
+
+  .confidence-section {
+    background: none;
+    border: 1px solid #000;
+  }
+
+  .confidence-bar {
+    background: #000 !important;
+  }
+}
