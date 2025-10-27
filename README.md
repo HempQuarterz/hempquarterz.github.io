@@ -57,12 +57,13 @@ We restore the original divine names:
 **Provider:** Supabase (PostgreSQL)
 
 **Statistics:**
-- **Total Verses:** 218,207
+- **Total Verses:** 218,208
 - **Manuscripts:** 11 (WLC, SBLGNT, WEB, LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS)
 - **Languages:** Hebrew, Greek, Latin, Aramaic, English
 - **Strong's Lexicon:** 19,027 entries (Hebrew H1-H8674 + Greek G1-G5624)
 - **Cross-References:** 344,369 entries
-- **Canonical Books:** 27 (Tier 1-4 classification)
+- **Canonical Books:** 90 (Tier 1-4 classification: 66 Canonical + 21 Deuterocanonical + 2 Apocrypha + 1 Ethiopian)
+- **Tier 2 Verses:** 5,032 deuterocanonical verses (LXX: Tobit, Judith, Wisdom, Sirach, Baruch, Maccabees, etc.)
 - **Name Mappings:** 8 restorations
 
 **Manuscripts Breakdown:**
