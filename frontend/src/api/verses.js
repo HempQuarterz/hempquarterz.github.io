@@ -276,6 +276,60 @@ export async function getBookChapterCount(manuscript, book) {
 }
 
 /**
+ * Get available chapters for a book
+ * @param {string} book - Book code (e.g., 'GEN', 'PSA')
+ * @returns {Promise<Array<number>>} Array of chapter numbers available
+ */
+export async function getBookChapters(book) {
+  try {
+    const { data, error } = await supabase
+      .from('verses')
+      .select('chapter')
+      .eq('book', book)
+      .order('chapter');
+
+    if (error) {
+      throw new Error(`Failed to get chapters for ${book}: ${error.message}`);
+    }
+
+    // Get unique chapters and sort
+    const chapters = [...new Set(data.map(v => v.chapter))].sort((a, b) => a - b);
+    return chapters;
+  } catch (err) {
+    console.error('getBookChapters error:', err);
+    throw err;
+  }
+}
+
+/**
+ * Get available verses for a chapter
+ * @param {string} book - Book code (e.g., 'GEN', 'PSA')
+ * @param {number} chapter - Chapter number
+ * @returns {Promise<Array<number>>} Array of verse numbers available
+ */
+export async function getChapterVerses(book, chapter) {
+  try {
+    const { data, error } = await supabase
+      .from('verses')
+      .select('verse')
+      .eq('book', book)
+      .eq('chapter', chapter)
+      .order('verse');
+
+    if (error) {
+      throw new Error(`Failed to get verses for ${book} ${chapter}: ${error.message}`);
+    }
+
+    // Get unique verses and sort
+    const verses = [...new Set(data.map(v => v.verse))].sort((a, b) => a - b);
+    return verses;
+  } catch (err) {
+    console.error('getChapterVerses error:', err);
+    throw err;
+  }
+}
+
+/**
  * Get all available books
  * @param {string} manuscript - Manuscript code ('WLC' or 'WEB')
  * @returns {Promise<Array>} Array of book codes
@@ -364,6 +418,8 @@ export default {
   getYHWHVerses,
   getBookVerseCount,
   getBookChapterCount,
+  getBookChapters,
+  getChapterVerses,
   getBooks,
   getRestoredVerse,
   getRestoredParallelVerse,
