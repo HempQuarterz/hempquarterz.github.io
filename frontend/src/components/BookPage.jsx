@@ -4,12 +4,18 @@ import axios from 'axios';
 import { API_CONFIG, getApiHeaders } from '../config/api';
 import { OLD_TESTAMENT_BOOKS, NEW_TESTAMENT_BOOKS } from '../constants/bibleData';
 import { logApiError } from '../utils/debug';
+import { getCanonicalBooks, getTierCounts } from '../api/canonicalBooks';
 import ModernHeader from './ModernHeader';
 import Loading from './Loading';
+import CanonicalBadge from './CanonicalBadge';
+import CanonicalFilterPanel from './CanonicalFilterPanel';
 import '../styles/modern.css';
 
 const BookPage = () => {
   const [bookList, setBookList] = useState([]);
+  const [canonicalBooks, setCanonicalBooks] = useState([]);
+  const [tierCounts, setTierCounts] = useState({ 1: 66, 2: 21, 3: 2, 4: 1 });
+  const [selectedTiers, setSelectedTiers] = useState([1, 2]); // Default: Canonical + Deuterocanonical
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,20 +30,29 @@ const BookPage = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await axios.get(
-          `${API_CONFIG.BASE_URL}/bibles/${bibleVersionID}/books`,
-          {
-            headers: getApiHeaders(),
-            signal: abortController.signal
-          }
-        );
 
-        setBookList(response.data.data);
+        // Fetch both Scripture API books and canonical book metadata in parallel
+        const [scriptureResponse, canonicalBooksData, tierCountsData] = await Promise.all([
+          axios.get(
+            `${API_CONFIG.BASE_URL}/bibles/${bibleVersionID}/books`,
+            {
+              headers: getApiHeaders(),
+              signal: abortController.signal
+            }
+          ),
+          getCanonicalBooks({ tiers: selectedTiers }),
+          getTierCounts()
+        ]);
+
+        setBookList(scriptureResponse.data.data);
+        setCanonicalBooks(canonicalBooksData);
+        setTierCounts(tierCountsData);
       } catch (err) {
         if (err.name !== 'AbortError' && err.name !== 'CanceledError') {
           logApiError(`/bibles/${bibleVersionID}/books`, err);
           setError('Failed to load books. Please try again.');
           setBookList([]);
+          setCanonicalBooks([]);
         }
       } finally {
         setLoading(false);
@@ -51,15 +66,30 @@ const BookPage = () => {
     return () => {
       abortController.abort();
     };
-  }, [bibleVersionID]);
+  }, [bibleVersionID, selectedTiers]);
 
+
+  // Merge canonical book metadata with Scripture API books
+  const booksWithMetadata = useMemo(() => {
+    return bookList.map(book => {
+      // Find matching canonical book by book code (map Scripture API IDs to canonical codes)
+      const canonicalBook = canonicalBooks.find(cb => cb.book_code === book.id);
+      return {
+        ...book,
+        canonical_tier: canonicalBook?.canonical_tier,
+        provenance_confidence: canonicalBook?.provenance_confidence,
+        testament: canonicalBook?.testament
+      };
+    });
+  }, [bookList, canonicalBooks]);
 
   // Memoize filtered books to avoid recalculation on every render
   const filteredBooks = useMemo(() =>
-    bookList.filter(book =>
-      book.name.toLowerCase().includes(searchTerm.toLowerCase())
+    booksWithMetadata.filter(book =>
+      book.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (selectedTiers.length === 0 || selectedTiers.includes(book.canonical_tier))
     ),
-    [bookList, searchTerm]
+    [booksWithMetadata, searchTerm, selectedTiers]
   );
 
   // Group books by testament using constants
@@ -76,8 +106,19 @@ const BookPage = () => {
   return (
     <div className="fade-in">
       <ModernHeader title={abbreviation} />
-      
+
       <main className="container" style={{ paddingTop: '2rem' }}>
+        {/* Canonical Tier Filter */}
+        <div style={{ marginBottom: '1.5rem' }}>
+          <CanonicalFilterPanel
+            selectedTiers={selectedTiers}
+            onTiersChange={setSelectedTiers}
+            showCounts={true}
+            tierCounts={tierCounts}
+            compact={false}
+          />
+        </div>
+
         {/* Search Bar */}
         <div style={{ marginBottom: '2rem' }}>
           <label htmlFor="book-search" className="visually-hidden">
@@ -146,10 +187,23 @@ const BookPage = () => {
                         textAlign: 'center',
                         padding: '1rem',
                         textDecoration: 'none',
-                        color: 'var(--text-primary)'
+                        color: 'var(--text-primary)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                        alignItems: 'center'
                       }}
                     >
-                      <p style={{ fontWeight: '500' }}>{book.name}</p>
+                      <p style={{ fontWeight: '500', margin: 0 }}>{book.name}</p>
+                      {book.canonical_tier && (
+                        <CanonicalBadge
+                          tier={book.canonical_tier}
+                          showEmoji={true}
+                          showLabel={false}
+                          showTooltip={true}
+                          compact={true}
+                        />
+                      )}
                     </Link>
                   ))}
                 </div>
@@ -177,10 +231,23 @@ const BookPage = () => {
                         textAlign: 'center',
                         padding: '1rem',
                         textDecoration: 'none',
-                        color: 'var(--text-primary)'
+                        color: 'var(--text-primary)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                        alignItems: 'center'
                       }}
                     >
-                      <p style={{ fontWeight: '500' }}>{book.name}</p>
+                      <p style={{ fontWeight: '500', margin: 0 }}>{book.name}</p>
+                      {book.canonical_tier && (
+                        <CanonicalBadge
+                          tier={book.canonical_tier}
+                          showEmoji={true}
+                          showLabel={false}
+                          showTooltip={true}
+                          compact={true}
+                        />
+                      )}
                     </Link>
                   ))}
                 </div>
