@@ -22,36 +22,36 @@ const ManuscriptViewer = ({ book, chapter, verse }) => {
         setLoading(true);
         setError(null);
 
-        // Determine which manuscripts to load based on testament
-        const isOldTestament = !['MAT', 'MRK', 'LUK', 'JHN', 'ACT', 'ROM', '1CO', '2CO', 'GAL', 'EPH', 'PHP', 'COL', '1TH', '2TH', '1TI', '2TI', 'TIT', 'PHM', 'HEB', 'JAS', '1PE', '2PE', '1JN', '2JN', '3JN', 'JUD', 'REV'].includes(book);
+        // Define all manuscripts to try loading
+        const allManuscripts = [
+          // Hebrew OT
+          { code: 'WLC', name: 'Westminster Leningrad Codex', lang: 'hebrew' },
+          { code: 'DSS', name: 'Dead Sea Scrolls', lang: 'hebrew' },
 
-        const manuscriptPromises = [];
+          // Greek (LXX for OT, NT manuscripts for NT)
+          { code: 'LXX', name: 'Septuagint (LXX)', lang: 'greek' },
+          { code: 'SBLGNT', name: 'SBL Greek New Testament', lang: 'greek' },
+          { code: 'BYZMT', name: 'Byzantine Majority Text', lang: 'greek' },
+          { code: 'TR', name: 'Textus Receptus', lang: 'greek' },
+          { code: 'N1904', name: 'Nestle 1904', lang: 'greek' },
+          { code: 'SIN', name: 'Codex Sinaiticus', lang: 'greek' },
 
-        if (isOldTestament) {
-          // Old Testament: WLC (Hebrew) + WEB (English)
-          manuscriptPromises.push(
-            getVerse('WLC', book, chapter, verse)
-              .then(v => ({ ...v, name: 'Westminster Leningrad Codex', lang: 'hebrew' }))
-              .catch(() => null)
-          );
-          manuscriptPromises.push(
-            getVerse('WEB', book, chapter, verse)
-              .then(v => ({ ...v, name: 'World English Bible', lang: 'english' }))
-              .catch(() => null)
-          );
-        } else {
-          // New Testament: SBLGNT (Greek) + WEB (English)
-          manuscriptPromises.push(
-            getVerse('SBLGNT', book, chapter, verse)
-              .then(v => ({ ...v, name: 'SBL Greek New Testament', lang: 'greek' }))
-              .catch(() => null)
-          );
-          manuscriptPromises.push(
-            getVerse('WEB', book, chapter, verse)
-              .then(v => ({ ...v, name: 'World English Bible', lang: 'english' }))
-              .catch(() => null)
-          );
-        }
+          // Aramaic
+          { code: 'ONKELOS', name: 'Targum Onkelos', lang: 'aramaic' },
+
+          // Latin
+          { code: 'VUL', name: 'Vulgate', lang: 'latin' },
+
+          // English
+          { code: 'WEB', name: 'World English Bible', lang: 'english' }
+        ];
+
+        // Try to load from all manuscripts
+        const manuscriptPromises = allManuscripts.map(ms =>
+          getVerse(ms.code, book, chapter, verse)
+            .then(v => v ? { ...v, name: ms.name, lang: ms.lang } : null)
+            .catch(() => null)
+        );
 
         const results = await Promise.all(manuscriptPromises);
 
@@ -87,6 +87,10 @@ const ManuscriptViewer = ({ book, chapter, verse }) => {
         return 'hebrew-text';
       case 'greek':
         return 'greek-text';
+      case 'aramaic':
+        return 'hebrew-text'; // Aramaic uses same RTL styling as Hebrew
+      case 'latin':
+        return 'english-text'; // Latin uses same LTR styling as English
       case 'english':
       default:
         return 'english-text';
@@ -132,7 +136,14 @@ const ManuscriptViewer = ({ book, chapter, verse }) => {
     return (
       <div className="manuscript-viewer">
         <div className="manuscript-error">
-          No manuscripts found for {book} {chapter}:{verse}
+          <h3>No manuscripts available for {book} {chapter}:{verse}</h3>
+          <p style={{ marginTop: '1rem', fontSize: '0.95rem', color: '#666' }}>
+            This verse may be from a deuterocanonical book that is not yet included in the WLC, SBLGNT, or WEB manuscripts.
+            Deuterocanonical books are available in the Septuagint (LXX) and Vulgate (VUL) manuscripts.
+          </p>
+          <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', fontStyle: 'italic', color: '#888' }}>
+            We're working on expanding manuscript coverage. Please try selecting a different book.
+          </p>
         </div>
       </div>
     );
@@ -171,7 +182,7 @@ const ManuscriptViewer = ({ book, chapter, verse }) => {
           <div key={index} className="manuscript-panel">
             <h3>{ms.name}</h3>
             <div className="manuscript-meta">
-              {ms.manuscript} • {ms.lang === 'hebrew' ? 'Hebrew' : ms.lang === 'greek' ? 'Greek' : 'English'}
+              {ms.manuscript} • {ms.lang === 'hebrew' ? 'Hebrew' : ms.lang === 'greek' ? 'Greek' : ms.lang === 'aramaic' ? 'Aramaic' : ms.lang === 'latin' ? 'Latin' : 'English'}
             </div>
             <div
               className={getLanguageClass(ms.lang)}
@@ -198,6 +209,30 @@ const ManuscriptViewer = ({ book, chapter, verse }) => {
           </div>
         ))}
       </div>
+
+      {/* Deuterocanonical Notice */}
+      {['1ES', '1MA', '2ES', '2MA', '3MA', '4MA', 'BAR', 'BEL', 'ESG', 'JDT', 'LJE', 'MAN', 'PS2', 'S3Y', 'SIR', 'SUS', 'TOB', 'WIS', 'MEQ', 'ENO', 'JUB'].includes(book) && (
+        <div style={{
+          marginTop: '2rem',
+          padding: '1.5rem',
+          background: '#fff3cd',
+          border: '1px solid #ffc107',
+          borderRadius: '8px',
+          color: '#856404'
+        }}>
+          <h4 style={{ margin: '0 0 0.75rem 0', color: '#856404', fontSize: '1rem' }}>
+            📖 Deuterocanonical Book Notice
+          </h4>
+          <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', lineHeight: '1.6' }}>
+            <strong>{book}</strong> is a deuterocanonical book that is not included in the Protestant canon.
+            English translations of deuterocanonical books are not currently available in our database.
+          </p>
+          <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: '1.6' }}>
+            <strong>Available manuscripts:</strong> Septuagint (LXX) in Greek and Vulgate (VUL) in Latin.
+            We are working to add English translations such as the Revised Standard Version with Apocrypha (RSVCE) or Douay-Rheims in future updates.
+          </p>
+        </div>
+      )}
 
       {/* Info Footer */}
       <div style={{ textAlign: 'center', marginTop: '3rem', padding: '2rem', borderTop: '2px solid #e0e0e0' }}>
