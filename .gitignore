@@ -4,6 +4,7 @@
 /node_modules
 frontend/node_modules
 backend/node_modules
+database/node_modules
 /.pnp
 .pnp.js
 
@@ -43,3 +44,8 @@ database/*-test.sql
 database/*-batch*.sql
 database/*-genesis*.sql
 database/lxx-import.sql
+
+# Playwright MCP screenshots (temporary test artifacts)
+.playwright-mcp/*.png
+.playwright-mcp/*.jpg
+.playwright-mcp/*.jpeg
