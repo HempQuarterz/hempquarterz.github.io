@@ -9,6 +9,7 @@ import ManuscriptViewer from '../components/ManuscriptViewer';
 import ModernHeader from '../components/ModernHeader';
 import CompactNavigation from '../components/CompactNavigation';
 import ParallelPassageViewer from '../components/ParallelPassageViewer';
+import NetworkGraphViewer from '../components/NetworkGraphViewer';
 import '../styles/manuscripts.css';
 
 const ManuscriptsPage = () => {
@@ -56,6 +57,15 @@ const ManuscriptsPage = () => {
           chapter={selectedVerse.chapter}
           verse={selectedVerse.verse}
           onNavigate={handleVerseChange}
+        />
+
+        {/* Network Graph Viewer - Tier 5 */}
+        <NetworkGraphViewer
+          book={selectedVerse.book}
+          chapter={selectedVerse.chapter}
+          verse={selectedVerse.verse}
+          onNavigate={handleVerseChange}
+          maxDepth={2}
         />
 
         {/* Information Section */}

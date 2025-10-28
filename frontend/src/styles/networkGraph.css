@@ -1,0 +1,359 @@
+/**
+ * Network Graph Styling - Tier 5
+ * Styles for interactive cross-reference network visualization
+ */
+
+/* ============================================================================
+   CONTAINER & LAYOUT
+   ============================================================================ */
+
+.network-graph-container {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.network-header {
+  padding: 1rem;
+  background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
+  color: #fff;
+  border-bottom: 2px solid #1565C0;
+}
+
+.network-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.network-header p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* ============================================================================
+   REACT FLOW CANVAS
+   ============================================================================ */
+
+.network-canvas {
+  width: 100%;
+  height: 600px;
+  background: #f9f9f9;
+  position: relative;
+}
+
+/* Override React Flow default styles */
+.react-flow {
+  background: #fafafa;
+}
+
+.react-flow__background {
+  background-color: #fafafa;
+}
+
+.react-flow__controls {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__controls-button {
+  background: white;
+  border-bottom: 1px solid #ddd;
+  transition: background 0.2s;
+}
+
+.react-flow__controls-button:hover {
+  background: #f5f5f5;
+}
+
+.react-flow__minimap {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================================
+   VERSE NODE STYLING
+   ============================================================================ */
+
+.verse-node {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 2px solid #1976D2;
+  background: white;
+  min-width: 100px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.verse-node:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.verse-node.selected {
+  border-color: #D4AF37;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  border-width: 3px;
+}
+
+/* Root node (current verse) */
+.verse-node.root-node {
+  border-color: #2E7D32;
+  border-width: 3px;
+  background: linear-gradient(135deg, #f1f8f4 0%, #ffffff 100%);
+  min-width: 120px;
+}
+
+.verse-node.root-node:hover {
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.2);
+}
+
+/* Depth-based styling */
+.verse-node.depth-1 {
+  border-color: #1976D2;
+}
+
+.verse-node.depth-2 {
+  border-color: #42A5F5;
+  opacity: 0.95;
+}
+
+.verse-node.depth-3 {
+  border-color: #90CAF9;
+  opacity: 0.9;
+}
+
+/* Node content */
+.verse-node-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  user-select: none;
+}
+
+.root-indicator {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.verse-reference {
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.verse-location {
+  font-size: 11px;
+  color: #666;
+  font-weight: 500;
+}
+
+.root-label {
+  margin-top: 4px;
+  padding: 2px 8px;
+  background: #2E7D32;
+  color: white;
+  font-size: 9px;
+  font-weight: 600;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================================================
+   LEGEND
+   ============================================================================ */
+
+.network-legend {
+  padding: 1rem;
+  background: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+.network-legend h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.legend-color {
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================================================
+   LOADING & ERROR STATES
+   ============================================================================ */
+
+.network-loading,
+.network-error,
+.network-empty {
+  padding: 3rem;
+  text-align: center;
+  color: #666;
+}
+
+.network-error {
+  color: #c62828;
+  background: #ffebee;
+  border-left: 4px solid #c62828;
+}
+
+.network-empty {
+  font-style: italic;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .network-canvas {
+    height: 400px;
+  }
+
+  .verse-node {
+    padding: 10px 12px;
+    min-width: 80px;
+  }
+
+  .verse-reference {
+    font-size: 11px;
+  }
+
+  .verse-location {
+    font-size: 10px;
+  }
+
+  .legend-items {
+    gap: 0.75rem;
+  }
+
+  .legend-item {
+    font-size: 0.8rem;
+  }
+}
+
+/* ============================================================================
+   DARK MODE SUPPORT
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .network-graph-container {
+    background: #2E3440;
+  }
+
+  .network-canvas,
+  .react-flow,
+  .react-flow__background {
+    background: #3B4252;
+  }
+
+  .verse-node {
+    background: #2E3440;
+    border-color: #88C0D0;
+    color: #ECEFF4;
+  }
+
+  .verse-node.root-node {
+    background: linear-gradient(135deg, #2E3440 0%, #3B4252 100%);
+    border-color: #A3BE8C;
+  }
+
+  .verse-reference {
+    color: #ECEFF4;
+  }
+
+  .verse-location {
+    color: #D8DEE9;
+  }
+
+  .network-legend {
+    background: #3B4252;
+    border-top-color: #4C566A;
+  }
+
+  .network-legend h4 {
+    color: #ECEFF4;
+  }
+
+  .legend-item {
+    color: #D8DEE9;
+  }
+
+  .react-flow__controls,
+  .react-flow__minimap {
+    background: #2E3440;
+    border-color: #4C566A;
+  }
+
+  .react-flow__controls-button {
+    background: #2E3440;
+    border-bottom-color: #4C566A;
+    color: #ECEFF4;
+  }
+
+  .react-flow__controls-button:hover {
+    background: #3B4252;
+  }
+}
+
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.verse-node {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Pulse animation for root node */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
+  }
+  50% {
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+  }
+}
+
+.verse-node.root-node {
+  animation: fadeIn 0.3s ease, pulse 2s ease-in-out infinite;
+}
