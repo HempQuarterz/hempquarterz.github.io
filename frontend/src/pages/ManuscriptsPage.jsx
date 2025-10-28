@@ -45,6 +45,7 @@ const ManuscriptsPage = () => {
             book={selectedVerse.book}
             chapter={selectedVerse.chapter}
             verse={selectedVerse.verse}
+            onVerseChange={handleVerseChange}
           />
         </div>
 

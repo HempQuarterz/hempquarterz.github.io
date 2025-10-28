@@ -8,9 +8,10 @@ import React, { useState, useEffect } from 'react';
 import { getVerse } from '../api/verses';
 import { restoreVerse } from '../api/restoration';
 import Loading from './Loading';
+import CrossReferencePanel from './CrossReferencePanel';
 import '../styles/manuscripts.css';
 
-const ManuscriptViewer = ({ book, chapter, verse }) => {
+const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
   const [manuscripts, setManuscripts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -231,6 +232,14 @@ const ManuscriptViewer = ({ book, chapter, verse }) => {
           </div>
         ))}
       </div>
+
+      {/* Cross-References Panel */}
+      <CrossReferencePanel
+        book={book}
+        chapter={chapter}
+        verse={verse}
+        onReferenceClick={onVerseChange}
+      />
 
       {/* Deuterocanonical Notice */}
       {['1ES', '1MA', '2ES', '2MA', '3MA', '4MA', 'BAR', 'BEL', 'ESG', 'JDT', 'LJE', 'MAN', 'PS2', 'S3Y', 'SIR', 'SUS', 'TOB', 'WIS', 'MEQ', 'ENO', 'JUB'].includes(book) && (
