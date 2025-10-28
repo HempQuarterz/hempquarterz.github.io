@@ -224,12 +224,11 @@ const ManuscriptViewer = ({ book, chapter, verse }) => {
             📖 Deuterocanonical Book Notice
           </h4>
           <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', lineHeight: '1.6' }}>
-            <strong>{book}</strong> is a deuterocanonical book that is not included in the Protestant canon.
-            English translations of deuterocanonical books are not currently available in our database.
+            <strong>{book}</strong> is a deuterocanonical book recognized by Catholic and Orthodox traditions but not included in the Protestant 66-book canon.
           </p>
           <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: '1.6' }}>
-            <strong>Available manuscripts:</strong> Septuagint (LXX) in Greek and Vulgate (VUL) in Latin.
-            We are working to add English translations such as the Revised Standard Version with Apocrypha (RSVCE) or Douay-Rheims in future updates.
+            <strong>Available manuscripts:</strong> World English Bible (WEB) in English, Septuagint (LXX) in Greek, and Vulgate (VUL) in Latin.
+            All deuterocanonical books are now available with parallel manuscript views.
           </p>
         </div>
       )}
