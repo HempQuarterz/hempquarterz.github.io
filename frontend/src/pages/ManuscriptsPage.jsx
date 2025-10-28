@@ -11,6 +11,8 @@ import CompactNavigation from '../components/CompactNavigation';
 import ParallelPassageViewer from '../components/ParallelPassageViewer';
 import NetworkGraphViewer from '../components/NetworkGraphViewer';
 import ThematicDiscoveryPanel from '../components/ThematicDiscoveryPanel';
+import TimelineViewer from '../components/TimelineViewer';
+import AudioPlayer from '../components/AudioPlayer';
 import { getVerse } from '../api/verses';
 import '../styles/manuscripts.css';
 
@@ -97,6 +99,21 @@ const ManuscriptsPage = () => {
           verse={selectedVerse.verse}
           currentVerseText={currentVerseText}
           onNavigate={handleVerseChange}
+        />
+
+        {/* Timeline Viewer - Tier 7 */}
+        <TimelineViewer
+          book={selectedVerse.book}
+          chapter={selectedVerse.chapter}
+          verse={selectedVerse.verse}
+          onNavigate={handleVerseChange}
+        />
+
+        {/* Audio Player - Tier 8 */}
+        <AudioPlayer
+          verseText={currentVerseText}
+          verseReference={`${selectedVerse.book} ${selectedVerse.chapter}:${selectedVerse.verse}`}
+          manuscript="WEB"
         />
 
         {/* Information Section */}
