@@ -177,13 +177,124 @@ export function getCategoryColor(category) {
   return categoryColors[category] || categoryColors.other;
 }
 
+/**
+ * Detect parallel passages (synoptic gospels, Kings/Chronicles, etc.)
+ * @param {string} book - Book code
+ * @param {number} chapter - Chapter number
+ * @param {number} verse - Verse number
+ * @returns {Promise<Array>} Array of parallel passage objects
+ */
+export async function getParallelPassages(book, chapter, verse) {
+  try {
+    // Get all cross-references for this verse
+    const references = await getCrossReferences(book, chapter, verse);
+
+    // Get reverse references (verses that point to this one)
+    const reverseRefs = await getReferencingVerses(book, chapter, verse);
+
+    // Detect parallel passages based on bidirectional references
+    const parallelPassages = [];
+
+    // Check for bidirectional references (mutual cross-references = likely parallels)
+    for (const ref of references) {
+      const isBidirectional = reverseRefs.some(rev =>
+        rev.source_book === ref.target_book &&
+        rev.source_chapter === ref.target_chapter &&
+        rev.source_verse === ref.target_verse
+      );
+
+      if (isBidirectional) {
+        parallelPassages.push({
+          ...ref,
+          parallelType: 'bidirectional',
+          similarity: 0.9 // High confidence for mutual references
+        });
+      }
+    }
+
+    // Detect synoptic gospel parallels (Matthew, Mark, Luke)
+    const synopticBooks = ['MAT', 'MRK', 'LUK'];
+    if (synopticBooks.includes(book)) {
+      const synopticRefs = references.filter(ref =>
+        synopticBooks.includes(ref.target_book) && ref.target_book !== book
+      );
+
+      synopticRefs.forEach(ref => {
+        if (!parallelPassages.find(p =>
+          p.target_book === ref.target_book &&
+          p.target_chapter === ref.target_chapter &&
+          p.target_verse === ref.target_verse
+        )) {
+          parallelPassages.push({
+            ...ref,
+            parallelType: 'synoptic',
+            similarity: 0.85
+          });
+        }
+      });
+    }
+
+    // Detect Kings/Chronicles parallels
+    const kingsChroniclesMap = {
+      '1KI': '1CH',
+      '2KI': '2CH',
+      '1CH': '1KI',
+      '2CH': '2KI'
+    };
+
+    const parallelBook = kingsChroniclesMap[book];
+    if (parallelBook) {
+      const kcRefs = references.filter(ref => ref.target_book === parallelBook);
+      kcRefs.forEach(ref => {
+        if (!parallelPassages.find(p =>
+          p.target_book === ref.target_book &&
+          p.target_chapter === ref.target_chapter &&
+          p.target_verse === ref.target_verse
+        )) {
+          parallelPassages.push({
+            ...ref,
+            parallelType: 'kingsChronicles',
+            similarity: 0.95
+          });
+        }
+      });
+    }
+
+    // Sort by similarity (highest first)
+    parallelPassages.sort((a, b) => b.similarity - a.similarity);
+
+    return parallelPassages;
+  } catch (err) {
+    console.error('getParallelPassages error:', err);
+    throw err;
+  }
+}
+
+/**
+ * Get parallel type display name
+ * @param {string} type - Parallel type code
+ * @returns {string} Human-readable parallel type name
+ */
+export function getParallelTypeDisplayName(type) {
+  const typeNames = {
+    bidirectional: 'Mutual Reference',
+    synoptic: 'Synoptic Gospel',
+    kingsChronicles: 'Kings/Chronicles Parallel',
+    other: 'Related Passage'
+  };
+
+  return typeNames[type] || typeNames.other;
+}
+
 // Export all functions
 export default {
   getCrossReferences,
   getCrossReferencesByCategory,
   getCrossReferenceCount,
   getReferencingVerses,
+  getParallelPassages,
   formatCrossReference,
   getCategoryDisplayName,
-  getCategoryColor
+  getCategoryColor,
+  getParallelTypeDisplayName
 };

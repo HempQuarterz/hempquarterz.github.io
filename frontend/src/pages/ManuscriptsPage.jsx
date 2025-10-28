@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import ManuscriptViewer from '../components/ManuscriptViewer';
 import ModernHeader from '../components/ModernHeader';
 import CompactNavigation from '../components/CompactNavigation';
+import ParallelPassageViewer from '../components/ParallelPassageViewer';
 import '../styles/manuscripts.css';
 
 const ManuscriptsPage = () => {
@@ -48,6 +49,14 @@ const ManuscriptsPage = () => {
             onVerseChange={handleVerseChange}
           />
         </div>
+
+        {/* Parallel Passage Viewer */}
+        <ParallelPassageViewer
+          book={selectedVerse.book}
+          chapter={selectedVerse.chapter}
+          verse={selectedVerse.verse}
+          onNavigate={handleVerseChange}
+        />
 
         {/* Information Section */}
         <div style={{
