@@ -93,6 +93,29 @@ export async function getParallelVerse(book, chapter, verse) {
 }
 
 /**
+ * Get all verses in a chapter (alias for getChapter for compatibility)
+ * @param {string} book - Book code (e.g., 'GEN', 'PSA')
+ * @param {number} chapter - Chapter number
+ * @param {string} manuscript - Optional manuscript code (defaults to 'WEB')
+ * @returns {Promise<Array>} Array of verse objects with restored text
+ */
+export async function getVerses(book, chapter, manuscript = 'WEB') {
+  try {
+    const verses = await getChapter(manuscript, book, chapter);
+
+    // Add restored_text and manuscript_code for compatibility
+    return verses.map(v => ({
+      ...v,
+      restored_text: v.text, // Will be enhanced with restoration later
+      manuscript_code: manuscript,
+    }));
+  } catch (err) {
+    console.error('getVerses error:', err);
+    throw err;
+  }
+}
+
+/**
  * Get all verses in a chapter
  * @param {string} manuscript - Manuscript code ('WLC' or 'WEB')
  * @param {string} book - Book code (e.g., 'GEN', 'PSA')
@@ -415,6 +438,7 @@ export async function getRestoredChapter(manuscript, book, chapter) {
 // Export all functions
 export default {
   getVerse,
+  getVerses,
   getParallelVerse,
   getChapter,
   getParallelChapter,

@@ -3,13 +3,15 @@
  * Showcases the All4Yah manuscript viewing capabilities
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ManuscriptViewer from '../components/ManuscriptViewer';
 import ModernHeader from '../components/ModernHeader';
 import CompactNavigation from '../components/CompactNavigation';
 import ParallelPassageViewer from '../components/ParallelPassageViewer';
 import NetworkGraphViewer from '../components/NetworkGraphViewer';
+import ThematicDiscoveryPanel from '../components/ThematicDiscoveryPanel';
+import { getVerse } from '../api/verses';
 import '../styles/manuscripts.css';
 
 const ManuscriptsPage = () => {
@@ -22,10 +24,30 @@ const ManuscriptsPage = () => {
     verse: verse ? parseInt(verse) : 1
   });
 
+  // State for current verse text (for thematic discovery)
+  const [currentVerseText, setCurrentVerseText] = useState('');
+
   // Unified verse change handler for CompactNavigation
   const handleVerseChange = (newVerse) => {
     setSelectedVerse(newVerse);
   };
+
+  // Load current verse text for thematic discovery
+  useEffect(() => {
+    async function loadCurrentVerse() {
+      try {
+        // Load English verse for thematic analysis
+        const verseData = await getVerse('WEB', selectedVerse.book, selectedVerse.chapter, selectedVerse.verse);
+        if (verseData && verseData.text) {
+          setCurrentVerseText(verseData.text);
+        }
+      } catch (err) {
+        console.error('Failed to load current verse text:', err);
+      }
+    }
+
+    loadCurrentVerse();
+  }, [selectedVerse.book, selectedVerse.chapter, selectedVerse.verse]);
 
   return (
     <div className="fade-in">
@@ -66,6 +88,15 @@ const ManuscriptsPage = () => {
           verse={selectedVerse.verse}
           onNavigate={handleVerseChange}
           maxDepth={2}
+        />
+
+        {/* Thematic Discovery Panel - Tier 6 */}
+        <ThematicDiscoveryPanel
+          book={selectedVerse.book}
+          chapter={selectedVerse.chapter}
+          verse={selectedVerse.verse}
+          currentVerseText={currentVerseText}
+          onNavigate={handleVerseChange}
         />
 
         {/* Information Section */}

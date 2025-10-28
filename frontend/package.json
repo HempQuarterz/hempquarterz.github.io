@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@huggingface/transformers": "^3.7.6",
     "@reduxjs/toolkit": "^1.9.5",
     "@supabase/supabase-js": "^2.75.1",
     "@testing-library/jest-dom": "^5.17.0",

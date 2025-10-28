@@ -1,0 +1,522 @@
+/**
+ * Thematic Discovery Styling - Tier 6
+ * Styles for AI-powered semantic similarity search
+ */
+
+/* ============================================================================
+   CONTAINER & LAYOUT
+   ============================================================================ */
+
+.thematic-discovery-container {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+
+.discovery-header {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #7B1FA2 0%, #9C27B0 100%);
+  color: #fff;
+  border-bottom: 2px solid #6A1B9A;
+}
+
+.discovery-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.discovery-header p {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* ============================================================================
+   LOADING & ERROR STATES
+   ============================================================================ */
+
+.discovery-loading {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 1rem;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #9C27B0;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #f3f3f3;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7B1FA2 0%, #9C27B0 100%);
+  transition: width 0.3s ease;
+}
+
+.discovery-error {
+  padding: 1.5rem;
+  background: #ffebee;
+  color: #c62828;
+  border-left: 4px solid #c62828;
+  margin: 1rem;
+}
+
+.no-results {
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+/* ============================================================================
+   THEMATIC TAGS
+   ============================================================================ */
+
+.thematic-tags-section {
+  padding: 1rem 1.5rem;
+  background: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.thematic-tags-section h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.thematic-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.thematic-tag {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background: linear-gradient(135deg, #7B1FA2 0%, #9C27B0 100%);
+  color: white;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  box-shadow: 0 2px 4px rgba(123, 31, 162, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.thematic-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(123, 31, 162, 0.3);
+}
+
+/* ============================================================================
+   SEARCH CONTROLS
+   ============================================================================ */
+
+.discovery-controls {
+  padding: 1.5rem;
+  background: #fafafa;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.control-group input[type="range"] {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #e0e0e0;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #9C27B0;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.control-group input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #9C27B0;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+.control-group select {
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.control-group select:hover {
+  border-color: #9C27B0;
+}
+
+.control-group select:focus {
+  outline: none;
+  border-color: #9C27B0;
+  box-shadow: 0 0 0 2px rgba(156, 39, 176, 0.1);
+}
+
+.discover-button {
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(135deg, #7B1FA2 0%, #9C27B0 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(123, 31, 162, 0.2);
+}
+
+.discover-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(123, 31, 162, 0.3);
+}
+
+.discover-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.discover-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================================================
+   SIMILAR VERSES RESULTS
+   ============================================================================ */
+
+.similar-verses-section {
+  padding: 1.5rem;
+}
+
+.similar-verses-section h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.similar-verses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.similar-verse-card {
+  padding: 1rem;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.similar-verse-card:hover {
+  border-color: #9C27B0;
+  box-shadow: 0 4px 12px rgba(156, 39, 176, 0.15);
+  transform: translateY(-2px);
+}
+
+.verse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.verse-reference {
+  font-size: 0.95rem;
+  color: #333;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.similarity-score {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  background: rgba(156, 39, 176, 0.1);
+  border-radius: 12px;
+}
+
+.similarity-stars {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+}
+
+.verse-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0.75rem 0;
+}
+
+.verse-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.manuscript-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #666;
+  font-weight: 600;
+}
+
+.click-hint {
+  font-size: 0.8rem;
+  color: #9C27B0;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.similar-verse-card:hover .click-hint {
+  opacity: 1;
+}
+
+/* ============================================================================
+   FOOTER INFO
+   ============================================================================ */
+
+.discovery-footer {
+  padding: 1rem 1.5rem;
+  background: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+.discovery-footer p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+.discovery-footer strong {
+  color: #7B1FA2;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .discovery-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .discovery-header p {
+    font-size: 0.85rem;
+  }
+
+  .discovery-controls {
+    padding: 1rem;
+  }
+
+  .control-group label {
+    font-size: 0.85rem;
+  }
+
+  .discover-button {
+    font-size: 0.9rem;
+    padding: 0.7rem 1.2rem;
+  }
+
+  .similar-verses-section {
+    padding: 1rem;
+  }
+
+  .similar-verse-card {
+    padding: 0.75rem;
+  }
+
+  .verse-text {
+    font-size: 0.9rem;
+  }
+
+  .thematic-tags-section {
+    padding: 0.75rem 1rem;
+  }
+
+  .thematic-tag {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
+
+/* ============================================================================
+   DARK MODE SUPPORT
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .thematic-discovery-container {
+    background: #2E3440;
+  }
+
+  .discovery-header {
+    background: linear-gradient(135deg, #6A1B9A 0%, #7B1FA2 100%);
+  }
+
+  .thematic-tags-section {
+    background: #3B4252;
+    border-bottom-color: #4C566A;
+  }
+
+  .thematic-tags-section h4 {
+    color: #ECEFF4;
+  }
+
+  .discovery-controls {
+    background: #3B4252;
+    border-bottom-color: #4C566A;
+  }
+
+  .control-group label {
+    color: #ECEFF4;
+  }
+
+  .control-group select {
+    background: #2E3440;
+    color: #ECEFF4;
+    border-color: #4C566A;
+  }
+
+  .similar-verses-section {
+    background: #2E3440;
+  }
+
+  .similar-verses-section h4 {
+    color: #ECEFF4;
+  }
+
+  .similar-verse-card {
+    background: #3B4252;
+    border-color: #4C566A;
+    color: #ECEFF4;
+  }
+
+  .similar-verse-card:hover {
+    border-color: #9C27B0;
+  }
+
+  .verse-reference {
+    color: #ECEFF4;
+  }
+
+  .verse-text {
+    color: #D8DEE9;
+  }
+
+  .verse-footer {
+    border-top-color: #4C566A;
+  }
+
+  .manuscript-badge {
+    background: #2E3440;
+    border-color: #4C566A;
+    color: #D8DEE9;
+  }
+
+  .discovery-footer {
+    background: #3B4252;
+    border-top-color: #4C566A;
+  }
+
+  .discovery-footer p {
+    color: #D8DEE9;
+  }
+
+  .discovery-footer strong {
+    color: #B39DDB;
+  }
+
+  .discovery-loading,
+  .no-results {
+    color: #D8DEE9;
+  }
+}
+
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.similar-verse-card {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Stagger animation for verse cards */
+.similar-verse-card:nth-child(1) { animation-delay: 0.05s; }
+.similar-verse-card:nth-child(2) { animation-delay: 0.1s; }
+.similar-verse-card:nth-child(3) { animation-delay: 0.15s; }
+.similar-verse-card:nth-child(4) { animation-delay: 0.2s; }
+.similar-verse-card:nth-child(5) { animation-delay: 0.25s; }
