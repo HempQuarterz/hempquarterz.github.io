@@ -7,7 +7,7 @@
 import React, { useState, useEffect } from 'react';
 import { getVerse } from '../api/verses';
 import { restoreVerse } from '../api/restoration';
-import { getCrossReferences, getCrossReferenceCount } from '../api/crossReferences';
+import { getCrossReferences, getCrossReferenceCount, getOTQuotations, highlightQuotations } from '../api/crossReferences';
 import Loading from './Loading';
 import CrossReferencePanel from './CrossReferencePanel';
 import CrossReferenceBadge from './CrossReferenceBadge';
@@ -21,6 +21,7 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
   const [crossReferences, setCrossReferences] = useState([]);
   const [crossRefCount, setCrossRefCount] = useState(0);
   const [showCrossRefPanel, setShowCrossRefPanel] = useState(true);
+  const [quotations, setQuotations] = useState([]);
 
   useEffect(() => {
     async function loadVerses() {
@@ -102,6 +103,31 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
     loadCrossReferences();
   }, [book, chapter, verse]);
 
+  // Load OT quotations for NT verses
+  useEffect(() => {
+    async function loadQuotations() {
+      if (!book || !chapter || !verse) return;
+
+      try {
+        // Get the English (WEB) verse text for quotation detection
+        const webManuscript = manuscripts.find(ms => ms.manuscript === 'WEB');
+        if (!webManuscript) {
+          return;
+        }
+
+        const quots = await getOTQuotations(book, chapter, verse, webManuscript.text);
+        setQuotations(quots);
+      } catch (err) {
+        console.error('Failed to load quotations:', err);
+        setQuotations([]);
+      }
+    }
+
+    if (manuscripts.length > 0) {
+      loadQuotations();
+    }
+  }, [book, chapter, verse, manuscripts]);
+
   const handleToggleRestoration = () => {
     setShowRestored(!showRestored);
   };
@@ -122,19 +148,25 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
     }
   };
 
-  const highlightRestoredNames = (text, restorations) => {
-    if (!restorations || restorations.length === 0) {
-      return text;
+  const highlightRestoredNames = (text, restorations, manuscriptCode) => {
+    let highlightedText = text;
+
+    // Apply quotation highlighting ONLY to WEB (English) manuscript
+    // (quotations are detected from WEB text with English quotes)
+    if (quotations && quotations.length > 0 && manuscriptCode === 'WEB') {
+      highlightedText = highlightQuotations(highlightedText, quotations);
     }
 
-    let highlightedText = text;
-    restorations.forEach(restoration => {
-      const pattern = new RegExp(restoration.restored, 'g');
-      highlightedText = highlightedText.replace(
-        pattern,
-        `<span class="restored-name" title="Restored from: ${restoration.original}">${restoration.restored}</span>`
-      );
-    });
+    // Then apply divine name restoration highlights
+    if (restorations && restorations.length > 0) {
+      restorations.forEach(restoration => {
+        const pattern = new RegExp(restoration.restored, 'g');
+        highlightedText = highlightedText.replace(
+          pattern,
+          `<span class="restored-name" title="Restored from: ${restoration.original}">${restoration.restored}</span>`
+        );
+      });
+    }
 
     return highlightedText;
   };
@@ -237,8 +269,8 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
                 style={{ flex: 1 }}
                 dangerouslySetInnerHTML={{
                   __html: showRestored && ms.restorations
-                    ? highlightRestoredNames(ms.text, ms.restorations)
-                    : ms.text
+                    ? highlightRestoredNames(ms.text, ms.restorations, ms.manuscript)
+                    : highlightQuotations(ms.text, ms.manuscript === 'WEB' ? quotations : [])
                 }}
               />
               <CrossReferenceBadge

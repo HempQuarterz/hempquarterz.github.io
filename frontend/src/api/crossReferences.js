@@ -286,6 +286,154 @@ export function getParallelTypeDisplayName(type) {
   return typeNames[type] || typeNames.other;
 }
 
+/**
+ * Detect OT quotations in NT verses
+ * @param {string} book - Book code (should be NT book)
+ * @param {number} chapter - Chapter number
+ * @param {number} verse - Verse number
+ * @param {string} verseText - The verse text to analyze
+ * @returns {Promise<Array>} Array of quotation objects with OT references
+ */
+export async function getOTQuotations(book, chapter, verse, verseText) {
+  try {
+    // Check if this is a New Testament book
+    const ntBooks = ['MAT', 'MRK', 'LUK', 'JHN', 'ACT', 'ROM', 'CO1', 'CO2',
+                     'GAL', 'EPH', 'PHP', 'COL', 'TH1', 'TH2', 'TI1', 'TI2',
+                     'TIT', 'PHM', 'HEB', 'JAM', 'PE1', 'PE2', 'JO1', 'JO2',
+                     'JO3', 'JDE', 'REV'];
+
+    if (!ntBooks.includes(book)) {
+      return []; // Not a NT book, no OT quotations
+    }
+
+    // Get all cross-references to OT books
+    const references = await getCrossReferences(book, chapter, verse);
+
+    const otBooks = ['GEN', 'EXO', 'LEV', 'NUM', 'DEU', 'JOS', 'JDG', 'RUT',
+                     'SA1', 'SA2', 'KI1', 'KI2', 'CH1', 'CH2', 'EZR', 'NEH',
+                     'EST', 'JOB', 'PSA', 'PRO', 'ECC', 'SNG', 'ISA', 'JER',
+                     'LAM', 'EZK', 'DAN', 'HOS', 'JOL', 'AMO', 'OBA', 'JON',
+                     'MIC', 'NAH', 'HAB', 'ZEP', 'HAG', 'ZEC', 'MAL'];
+
+    const otReferences = references.filter(ref => otBooks.includes(ref.target_book));
+
+    if (otReferences.length === 0) {
+      return []; // No OT references
+    }
+
+    // Detect quotation markers in the text
+    const quotationMarkers = [
+      'It is written',
+      'it is written',
+      'As it is written',
+      'as it is written',
+      'For it is written',
+      'for it is written',
+      'Scripture says',
+      'scripture says',
+      'The Scripture says',
+      'the prophets',
+      'the prophet said',
+      'prophet said'
+    ];
+
+    const hasQuotationMarker = quotationMarkers.some(marker =>
+      verseText.includes(marker)
+    );
+
+    // Extract quoted text (text within quotes, including curly quotes)
+    const quotedTextRegex = /[\u201C\u201D\u2018\u2019"'](.{10,}?)[\u201C\u201D\u2018\u2019"']/g;
+    const quotedTexts = [];
+    let match;
+    while ((match = quotedTextRegex.exec(verseText)) !== null) {
+      quotedTexts.push(match[1]);
+    }
+
+    // Build quotation objects
+    const quotations = [];
+
+    for (const ref of otReferences) {
+      const quotation = {
+        ...ref,
+        isQuotation: hasQuotationMarker,
+        quotedTexts: quotedTexts,
+        confidence: hasQuotationMarker ? 0.9 : 0.5
+      };
+
+      quotations.push(quotation);
+    }
+
+    // Sort by confidence (quotations first)
+    quotations.sort((a, b) => b.confidence - a.confidence);
+
+    return quotations;
+  } catch (err) {
+    console.error('getOTQuotations error:', err);
+    throw err;
+  }
+}
+
+/**
+ * Extract the quoted portion from a verse
+ * @param {string} verseText - The full verse text
+ * @returns {Array<string>} Array of quoted text segments
+ */
+export function extractQuotedText(verseText) {
+  const quotedTexts = [];
+
+  // Match text within double quotes or single quotes (including curly quotes)
+  // Curly quotes: " (U+201C) " (U+201D) ' (U+2018) ' (U+2019)
+  // Straight quotes: " (U+0022) ' (U+0027)
+  // Use Unicode escape sequences for reliable matching
+  const quotedTextRegex = /[\u201C\u201D\u2018\u2019"'](.{10,}?)[\u201C\u201D\u2018\u2019"']/g;
+  let match;
+
+  while ((match = quotedTextRegex.exec(verseText)) !== null) {
+    quotedTexts.push(match[1]);
+  }
+
+  return quotedTexts;
+}
+
+/**
+ * Highlight quotations in verse text
+ * @param {string} verseText - The verse text
+ * @param {Array} quotations - Array of quotation objects
+ * @returns {string} HTML string with highlighted quotations
+ */
+export function highlightQuotations(verseText, quotations) {
+  if (!quotations || quotations.length === 0) {
+    return verseText;
+  }
+
+  let highlightedText = verseText;
+
+  // Extract all quoted text segments
+  const quotedTexts = extractQuotedText(verseText);
+
+  if (quotedTexts.length === 0) {
+    return verseText;
+  }
+
+  // Highlight each quoted segment
+  quotedTexts.forEach(quotedText => {
+    const escapedQuote = quotedText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Match both straight and curly quotes using Unicode escapes
+    const pattern = new RegExp(`([\u201C\u201D\u2018\u2019"'])${escapedQuote}([\u201C\u201D\u2018\u2019"'])`, 'g');
+
+    // Find the corresponding OT reference
+    const mainRef = quotations[0]; // Use the first (highest confidence) reference
+    const refText = formatCrossReference(mainRef);
+
+    highlightedText = highlightedText.replace(
+      pattern,
+      `$1<span class="ot-quotation" title="Quoted from ${refText}">${quotedText}</span>$2`
+    );
+  });
+
+  return highlightedText;
+}
+
 // Export all functions
 export default {
   getCrossReferences,
@@ -293,6 +441,9 @@ export default {
   getCrossReferenceCount,
   getReferencingVerses,
   getParallelPassages,
+  getOTQuotations,
+  extractQuotedText,
+  highlightQuotations,
   formatCrossReference,
   getCategoryDisplayName,
   getCategoryColor,

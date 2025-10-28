@@ -316,3 +316,57 @@
     padding: 1.5rem;
   }
 }
+
+/* ============================================================================
+   QUOTATION HIGHLIGHTING (TIER 4)
+   ============================================================================ */
+
+/* OT Quotation Highlighting - Beige/Tan Background */
+.ot-quotation {
+  background: linear-gradient(135deg, #FFF9E6 0%, #FFFBF0 100%);
+  padding: 0.15rem 0.3rem;
+  border-radius: 3px;
+  border-left: 3px solid #D4AF37;
+  box-shadow: 0 1px 3px rgba(212, 175, 55, 0.1);
+  font-style: italic;
+  position: relative;
+  cursor: help;
+  transition: all 0.2s ease;
+}
+
+.ot-quotation:hover {
+  background: linear-gradient(135deg, #FFF4CC 0%, #FFF9E6 100%);
+  box-shadow: 0 2px 6px rgba(212, 175, 55, 0.2);
+  border-left-width: 4px;
+}
+
+.ot-quotation::before {
+  content: '📖';
+  font-size: 0.7em;
+  margin-right: 0.2rem;
+  opacity: 0.6;
+}
+
+/* Quotation marker styling (e.g., "It is written") */
+.quotation-marker {
+  color: #8B7355;
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+/* Dark mode support for quotations */
+@media (prefers-color-scheme: dark) {
+  .ot-quotation {
+    background: linear-gradient(135deg, #3E3420 0%, #4A3F28 100%);
+    border-left-color: #D4AF37;
+    color: #F5DEB3;
+  }
+
+  .ot-quotation:hover {
+    background: linear-gradient(135deg, #4A3F28 0%, #564B32 100%);
+  }
+
+  .quotation-marker {
+    color: #D4AF37;
+  }
+}
