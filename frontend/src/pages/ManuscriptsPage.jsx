@@ -7,9 +7,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ManuscriptViewer from '../components/ManuscriptViewer';
 import ModernHeader from '../components/ModernHeader';
-import BookSelector from '../components/BookSelector';
-import ChapterSelector from '../components/ChapterSelector';
-import VerseSelector from '../components/VerseSelector';
+import CompactNavigation from '../components/CompactNavigation';
 import '../styles/manuscripts.css';
 
 const ManuscriptsPage = () => {
@@ -22,28 +20,9 @@ const ManuscriptsPage = () => {
     verse: verse ? parseInt(verse) : 1
   });
 
-  // Navigation handlers
-  const handleBookSelect = (bookCode) => {
-    setSelectedVerse({
-      book: bookCode,
-      chapter: 1,
-      verse: 1
-    });
-  };
-
-  const handleChapterSelect = (chapterNum) => {
-    setSelectedVerse({
-      ...selectedVerse,
-      chapter: chapterNum,
-      verse: 1
-    });
-  };
-
-  const handleVerseSelect = (verseNum) => {
-    setSelectedVerse({
-      ...selectedVerse,
-      verse: verseNum
-    });
+  // Unified verse change handler for CompactNavigation
+  const handleVerseChange = (newVerse) => {
+    setSelectedVerse(newVerse);
   };
 
   return (
@@ -54,48 +33,20 @@ const ManuscriptsPage = () => {
       />
 
       <main className="container" style={{ paddingTop: '2rem', maxWidth: '1600px' }}>
-        {/* Navigation Section */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '2fr 1fr 1fr',
-          gap: '1.5rem',
-          marginBottom: '2rem'
-        }}>
-          {/* Book Selector */}
-          <div className="card" style={{ padding: '1.5rem' }}>
-            <BookSelector
-              selectedBook={selectedVerse.book}
-              onBookSelect={handleBookSelect}
-              selectedTiers={[1, 2]}
-            />
-          </div>
-
-          {/* Chapter Selector */}
-          <div className="card" style={{ padding: '1.5rem' }}>
-            <ChapterSelector
-              book={selectedVerse.book}
-              selectedChapter={selectedVerse.chapter}
-              onChapterSelect={handleChapterSelect}
-            />
-          </div>
-
-          {/* Verse Selector */}
-          <div className="card" style={{ padding: '1.5rem' }}>
-            <VerseSelector
-              book={selectedVerse.book}
-              chapter={selectedVerse.chapter}
-              selectedVerse={selectedVerse.verse}
-              onVerseSelect={handleVerseSelect}
-            />
-          </div>
-        </div>
-
-        {/* Manuscript Viewer */}
-        <ManuscriptViewer
-          book={selectedVerse.book}
-          chapter={selectedVerse.chapter}
-          verse={selectedVerse.verse}
+        {/* Compact Navigation */}
+        <CompactNavigation
+          selectedVerse={selectedVerse}
+          onVerseChange={handleVerseChange}
         />
+
+        {/* Manuscript Viewer - Now at the top! */}
+        <div style={{ marginTop: '2rem' }}>
+          <ManuscriptViewer
+            book={selectedVerse.book}
+            chapter={selectedVerse.chapter}
+            verse={selectedVerse.verse}
+          />
+        </div>
 
         {/* Information Section */}
         <div style={{

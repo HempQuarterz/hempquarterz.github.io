@@ -46,10 +46,15 @@ export async function getVerse(manuscript, book, chapter, verse) {
       .eq('book', book)
       .eq('chapter', chapter)
       .eq('verse', verse)
-      .single();
+      .maybeSingle();
 
     if (error) {
       throw new Error(`Failed to get verse: ${error.message}`);
+    }
+
+    // Return null if verse doesn't exist for this manuscript
+    if (!data) {
+      return null;
     }
 
     return {
