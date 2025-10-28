@@ -31,7 +31,7 @@ We restore the original divine names:
 ### Manuscript Viewer
 - ✅ **Parallel manuscript display** - Hebrew/Greek/Latin + English side-by-side
 - ✅ **Divine name restoration toggle** - Switch between original and restored
-- ✅ **218,207 verses** - Complete coverage across 11 manuscripts (Hebrew, Greek, Latin, Aramaic, English)
+- ✅ **224,886 verses** - Complete coverage across 11 manuscripts (Hebrew, Greek, Latin, Aramaic, English)
 - ✅ **11 manuscripts** - WLC, SBLGNT, WEB, LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS
 - ✅ **8 divine name mappings** - Hebrew, Greek, and English restorations
 - ✅ **Gold highlighting (✦)** - Visually distinct restored names
@@ -57,14 +57,14 @@ We restore the original divine names:
 **Provider:** Supabase (PostgreSQL)
 
 **Statistics:**
-- **Total Verses:** 218,208
+- **Total Verses:** 224,886 verses across all manuscripts
 - **Manuscripts:** 11 (WLC, SBLGNT, WEB, LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS)
 - **Languages:** Hebrew, Greek, Latin, Aramaic, English
 - **Strong's Lexicon:** 19,027 entries (Hebrew H1-H8674 + Greek G1-G5624)
-- **Cross-References:** 344,369 entries
+- **Cross-References:** 343,869 parallel passages and quotations
 - **Canonical Books:** 90 (Tier 1-4 classification: 66 Canonical + 21 Deuterocanonical + 2 Apocrypha + 1 Ethiopian)
-- **Tier 2 Verses:** 5,032 deuterocanonical verses (LXX: Tobit, Judith, Wisdom, Sirach, Baruch, Maccabees, etc.)
-- **Name Mappings:** 8 restorations
+- **English Coverage:** 38,080 verses (31,402 canonical + 6,678 deuterocanonical)
+- **Name Mappings:** 8 divine name restorations
 
 **Manuscripts Breakdown:**
 
@@ -72,7 +72,7 @@ We restore the original divine names:
 |------|------|----------|-----------|--------|----------|
 | **WLC** | Westminster Leningrad Codex | Hebrew | OT | 24,661 | 1008 CE |
 | **SBLGNT** | SBL Greek New Testament | Greek | NT | 7,927 | Critical Text |
-| **WEB** | World English Bible | English | OT+NT | 31,402 | Modern |
+| **WEB** | World English Bible | English | OT+NT+Deut | 38,080 | Modern |
 | **LXX** | Septuagint | Greek | OT | 27,947 | 3rd-1st c. BCE |
 | **DSS** | Dead Sea Scrolls | Hebrew | OT | 52,153 | 3rd c. BCE - 1st c. CE |
 | **VUL** | Vulgate | Latin | OT+NT | 35,811 | 4th c. CE |
@@ -81,6 +81,13 @@ We restore the original divine names:
 | **BYZMT** | Byzantine Majority Text | Greek | NT | 6,911 | Medieval |
 | **N1904** | Nestle 1904 | Greek | NT | 7,943 | 1904 |
 | **ONKELOS** | Targum Onkelos | Aramaic | Torah | 5,839 | 1st-2nd c. CE |
+
+**Cross-Reference System:**
+- **343,869 cross-references** linking related passages
+- Enables parallel passage navigation
+- Tracks quotations, allusions, and thematic connections
+- Source: Comprehensive biblical cross-reference database
+- Powers "Related Verses" and "Parallel Passages" features
 
 **Security:**
 - Row Level Security (RLS) enabled
