@@ -31,9 +31,9 @@ export async function getCanonicalBooks(options = {}) {
     // Order by specified field
     query = query.order(orderBy, { ascending: true });
 
-    // Secondary sort by book name for books in same tier
-    if (orderBy !== 'book_name') {
-      query = query.order('book_name', { ascending: true });
+    // Secondary sort by biblical order (order_number) for books in same tier
+    if (orderBy !== 'order_number') {
+      query = query.order('order_number', { ascending: true });
     }
 
     const { data, error } = await query;
@@ -114,7 +114,7 @@ export async function getBooksByTestament(testament, tiers = null) {
       .select('*')
       .eq('testament', testament)
       .order('canonical_tier', { ascending: true })
-      .order('book_name', { ascending: true });
+      .order('order_number', { ascending: true });
 
     // Filter by tiers if specified
     if (tiers && tiers.length > 0) {
@@ -171,7 +171,7 @@ export async function searchCanonicalBooks(searchTerm, tiers = null) {
       .select('*')
       .ilike('book_name', `%${searchTerm}%`)
       .order('canonical_tier', { ascending: true })
-      .order('book_name', { ascending: true });
+      .order('order_number', { ascending: true });
 
     // Filter by tiers if specified
     if (tiers && tiers.length > 0) {
