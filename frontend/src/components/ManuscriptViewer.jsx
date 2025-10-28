@@ -133,16 +133,38 @@ const ManuscriptViewer = ({ book, chapter, verse }) => {
   }
 
   if (manuscripts.length === 0) {
+    // Ethiopian Orthodox books that aren't imported yet
+    const ethiopianBooks = ['ENO', 'JUB', 'MEQ'];
+    const isEthiopian = ethiopianBooks.includes(book);
+
     return (
       <div className="manuscript-viewer">
         <div className="manuscript-error">
           <h3>No manuscripts available for {book} {chapter}:{verse}</h3>
-          <p style={{ marginTop: '1rem', fontSize: '0.95rem', color: '#666' }}>
-            This verse may be from a deuterocanonical book that is not yet included in the WLC, SBLGNT, or WEB manuscripts.
-            Deuterocanonical books are available in the Septuagint (LXX) and Vulgate (VUL) manuscripts.
-          </p>
-          <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', fontStyle: 'italic', color: '#888' }}>
-            We're working on expanding manuscript coverage. Please try selecting a different book.
+          {isEthiopian ? (
+            <>
+              <p style={{ marginTop: '1rem', fontSize: '0.95rem', color: '#666' }}>
+                <strong>{book === 'ENO' ? '1 Enoch (Ethiopic Enoch)' : book === 'JUB' ? 'Jubilees' : 'Meqabyan (Ethiopian Maccabees)'}</strong> is an <strong>Ethiopian Orthodox</strong> book that is not yet available in our manuscript database.
+              </p>
+              <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: '#666' }}>
+                Ethiopian Orthodox books are currently being prepared for import. These books are unique to the Ethiopian canon and require specialized manuscript sources.
+              </p>
+              <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', fontStyle: 'italic', color: '#888' }}>
+                <strong>Currently available:</strong> All 66 Protestant canon books + 18 deuterocanonical books (Tobit, Judith, Wisdom, Sirach, Baruch, 1-4 Maccabees, 1-2 Esdras, Additions to Esther/Daniel, Prayer of Manasseh, Psalm 151)
+              </p>
+            </>
+          ) : (
+            <>
+              <p style={{ marginTop: '1rem', fontSize: '0.95rem', color: '#666' }}>
+                This verse may be from a book that is not yet included in all manuscripts.
+              </p>
+              <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: '#666' }}>
+                Most deuterocanonical books are available in World English Bible (WEB), with additional support in Septuagint (LXX) and Vulgate (VUL) being added.
+              </p>
+            </>
+          )}
+          <p style={{ marginTop: '1rem', fontSize: '0.9rem', fontStyle: 'italic', color: '#888' }}>
+            Please try selecting a different book from the dropdown menu.
           </p>
         </div>
       </div>
