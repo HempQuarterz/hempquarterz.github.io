@@ -1,232 +1,224 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import '../styles/modern.css';
-import { API_CONFIG, getApiHeaders } from '../config/api';
-import { logApiError } from '../utils/debug';
 import ModernHeader from '../components/ModernHeader';
-import Loading from '../components/Loading';
 
 const HomePage = () => {
-  const [bibles, setBibles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    const fetchBibles = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await axios.get(`${API_CONFIG.BASE_URL}/bibles`, {
-          headers: getApiHeaders(),
-          signal: abortController.signal
-        });
-        const sortedBibles = sortVersionsByLanguage(response.data.data);
-        setBibles(sortedBibles);
-      } catch (err) {
-        if (err.name !== 'AbortError' && err.name !== 'CanceledError') {
-          logApiError('/bibles', err);
-          setError('Failed to load Bible versions. Please try again.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBibles();
-
-    return () => {
-      abortController.abort();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const sortVersionsByLanguage = useCallback((bibleVersionList) => {
-    const sortedVersions = {};
-
-    for (const version of bibleVersionList) {
-      if (!sortedVersions[version.language.name]) {
-        sortedVersions[version.language.name] = [];
-      }
-      sortedVersions[version.language.name].push(version);
-    }
-
-    for (const version in sortedVersions) {
-      sortedVersions[version].sort((a, b) => a.abbreviation.localeCompare(b.abbreviation));
-    }
-
-    return sortedVersions;
-  }, []);
-
-  const filteredBibles = useMemo(() =>
-    searchTerm
-      ? Object.entries(bibles).reduce((acc, [language, versions]) => {
-          const filtered = versions.filter(
-            (v) =>
-              v.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              v.abbreviation.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-          if (filtered.length > 0) acc[language] = filtered;
-          return acc;
-        }, {})
-      : bibles,
-    [bibles, searchTerm]
-  );
-
   return (
     <div className="fade-in">
-      <ModernHeader title="ForYah Bible" />
-      
-      <main className="container" style={{ paddingTop: '2rem' }}>
-        {/* Search Bar */}
-        <div style={{ marginBottom: '2rem' }}>
-          <label htmlFor="version-search" className="visually-hidden">
-            Search for a Bible version
-          </label>
-          <input
-            id="version-search"
-            type="search"
-            placeholder="Search for a Bible version..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            aria-label="Search for a Bible version"
-            style={{
-              width: '100%',
-              padding: '0.75rem 1rem',
-              fontSize: '1rem',
-              borderRadius: 'var(--radius-lg)',
-              border: '1px solid var(--border-color)',
-              backgroundColor: 'var(--bg-secondary)',
-              color: 'var(--text-primary)',
-              transition: 'all var(--transition-fast)'
-            }}
-          />
+      <ModernHeader title="All4Yah" />
+
+      <main className="container" style={{ paddingTop: '2rem', maxWidth: '900px', margin: '0 auto' }}>
+        {/* Hero Section */}
+        <div className="card" style={{
+          marginBottom: '2.5rem',
+          background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)',
+          color: 'white',
+          padding: '3rem 2rem',
+          textAlign: 'center',
+          border: '3px solid #D4AF37',
+          boxShadow: '0 8px 24px rgba(212, 175, 55, 0.3)'
+        }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✦</div>
+          <h1 style={{
+            fontSize: '2.5rem',
+            marginBottom: '1rem',
+            fontWeight: 'bold',
+            textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+          }}>
+            All4Yah Manuscript Viewer
+          </h1>
+          <p style={{
+            fontSize: '1.25rem',
+            lineHeight: '1.8',
+            marginBottom: '0.5rem',
+            opacity: 0.95
+          }}>
+            Read the Scriptures in their original languages with <strong style={{ color: '#D4AF37' }}>divine name restoration</strong>
+          </p>
+          <p style={{
+            fontSize: '1rem',
+            opacity: 0.9,
+            fontStyle: 'italic'
+          }}>
+            "This is my name forever, the name you shall call me from generation to generation." - Exodus 3:15
+          </p>
         </div>
 
-        {/* Welcome Card */}
-        <div className="card" style={{ marginBottom: '2rem', background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)', color: 'white' }}>
-          <h2 style={{ marginBottom: '0.5rem' }}>Welcome to ForYah Bible</h2>
-          <p style={{ opacity: 0.9 }}>Select a Bible version to start reading</p>
-        </div>
-
-        {/* All4Yah Manuscript Viewer - Feature Card */}
+        {/* Main CTA Button */}
         <Link
           to="/manuscripts"
           className="card"
           style={{
-            marginBottom: '2rem',
-            background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)',
+            marginBottom: '3rem',
+            background: 'linear-gradient(135deg, #1976D2 0%, #0D47A1 100%)',
             color: 'white',
             textDecoration: 'none',
             display: 'block',
-            border: '3px solid #D4AF37',
-            boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)',
-            transition: 'all 0.3s ease'
+            padding: '2rem',
+            textAlign: 'center',
+            border: '2px solid rgba(255,255,255,0.3)',
+            boxShadow: '0 4px 16px rgba(25, 118, 210, 0.4)',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-4px)';
-            e.currentTarget.style.boxShadow = '0 8px 20px rgba(212, 175, 55, 0.4)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(25, 118, 210, 0.6)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(212, 175, 55, 0.3)';
+            e.currentTarget.style.boxShadow = '0 4px 16px rgba(25, 118, 210, 0.4)';
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
-            <span style={{ fontSize: '2.5rem' }}>✦</span>
-            <h2 style={{ margin: 0, fontSize: '1.5rem' }}>All4Yah Manuscript Viewer</h2>
-          </div>
-          <p style={{ marginBottom: '0.75rem', fontSize: '1.05rem', lineHeight: '1.6' }}>
-            View original Hebrew, Greek & English manuscripts side-by-side with <strong>divine name restoration</strong>
+          <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>
+            Start Reading →
+          </h2>
+          <p style={{ fontSize: '1rem', opacity: 0.9 }}>
+            Explore manuscripts in Hebrew, Greek, Aramaic, Latin & English
           </p>
-          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', fontSize: '0.9rem', opacity: 0.95 }}>
-            <span>📜 Westminster Leningrad Codex (Hebrew)</span>
-            <span>📖 SBL Greek New Testament</span>
-            <span>✨ Restored Names: Yahuah, Yahusha, Elohim</span>
-          </div>
-          <div style={{ marginTop: '1rem', fontSize: '0.95rem', fontWeight: 'bold', textAlign: 'right' }}>
-            Explore Manuscripts →
-          </div>
         </Link>
 
-        {loading ? (
-          <Loading type="skeleton" />
-        ) : error ? (
-          <div
-            className="card"
+        {/* Feature Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '1.5rem',
+          marginBottom: '3rem'
+        }}>
+          {/* Feature 1: Manuscripts */}
+          <div className="card" style={{ padding: '1.5rem' }}>
+            <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📜</div>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', color: 'var(--primary)' }}>
+              Original Manuscripts
+            </h3>
+            <ul style={{
+              listStyle: 'none',
+              padding: 0,
+              fontSize: '0.9rem',
+              lineHeight: '1.8',
+              color: 'var(--text-secondary)'
+            }}>
+              <li>• Westminster Leningrad Codex (Hebrew OT)</li>
+              <li>• SBL Greek New Testament</li>
+              <li>• Septuagint (LXX)</li>
+              <li>• Vulgate (Latin)</li>
+              <li>• Targum Onkelos (Aramaic)</li>
+              <li>• World English Bible (English)</li>
+            </ul>
+          </div>
+
+          {/* Feature 2: Divine Names */}
+          <div className="card" style={{ padding: '1.5rem' }}>
+            <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>✨</div>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', color: 'var(--primary)' }}>
+              Divine Name Restoration
+            </h3>
+            <ul style={{
+              listStyle: 'none',
+              padding: 0,
+              fontSize: '0.9rem',
+              lineHeight: '1.8',
+              color: 'var(--text-secondary)'
+            }}>
+              <li><strong style={{ color: '#2E7D32' }}>יהוה</strong> (H3068) → <strong>Yahuah</strong></li>
+              <li><strong style={{ color: '#2E7D32' }}>יהושע / Ἰησοῦς</strong> → <strong>Yahusha</strong></li>
+              <li><strong style={{ color: '#2E7D32' }}>אלהים / θεός</strong> → <strong>Elohim</strong></li>
+              <li style={{ marginTop: '0.5rem', fontStyle: 'italic', opacity: 0.8 }}>
+                Toggle between original and restored names
+              </li>
+            </ul>
+          </div>
+
+          {/* Feature 3: Coverage */}
+          <div className="card" style={{ padding: '1.5rem' }}>
+            <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📚</div>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', color: 'var(--primary)' }}>
+              Complete Coverage
+            </h3>
+            <ul style={{
+              listStyle: 'none',
+              padding: 0,
+              fontSize: '0.9rem',
+              lineHeight: '1.8',
+              color: 'var(--text-secondary)'
+            }}>
+              <li>• 66 Canonical Books (Protestant)</li>
+              <li>• 18 Deuterocanonical Books</li>
+              <li>• Parallel manuscript view</li>
+              <li>• Side-by-side comparison</li>
+              <li>• Hebrew RTL support</li>
+              <li>• Greek polytonic rendering</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* About Section */}
+        <div className="card" style={{
+          padding: '2rem',
+          background: 'var(--bg-secondary)',
+          borderLeft: '4px solid var(--primary)'
+        }}>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--primary)' }}>
+            About All4Yah
+          </h2>
+          <p style={{
+            fontSize: '1rem',
+            lineHeight: '1.8',
+            marginBottom: '1rem',
+            color: 'var(--text-secondary)'
+          }}>
+            The <strong>All4Yah Project</strong> is a "Digital Dead Sea Scrolls" initiative dedicated to
+            restoring the Word verse by verse using original manuscripts, transparent scholarship,
+            and modern technology.
+          </p>
+          <p style={{
+            fontSize: '1rem',
+            lineHeight: '1.8',
+            marginBottom: '1rem',
+            color: 'var(--text-secondary)'
+          }}>
+            We provide access to multiple ancient manuscripts in their original languages, allowing
+            readers to compare texts and discover the divine names as they appeared in the original
+            Hebrew and Greek Scriptures.
+          </p>
+          <p style={{
+            fontSize: '1.1rem',
+            fontWeight: 'bold',
+            color: 'var(--primary)',
+            marginTop: '1.5rem'
+          }}>
+            "Restoring truth, one name at a time."
+          </p>
+        </div>
+
+        {/* Bottom CTA */}
+        <div style={{ textAlign: 'center', marginTop: '3rem', marginBottom: '3rem' }}>
+          <Link
+            to="/manuscripts"
+            className="btn btn-primary"
             style={{
-              padding: '2rem',
-              textAlign: 'center',
-              backgroundColor: 'var(--error-bg, #fee)',
-              color: 'var(--error-text, #c33)'
+              fontSize: '1.25rem',
+              padding: '1rem 2.5rem',
+              textDecoration: 'none',
+              display: 'inline-block',
+              background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)',
+              border: '2px solid #D4AF37',
+              boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(212, 175, 55, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(212, 175, 55, 0.3)';
             }}
           >
-            <p style={{ marginBottom: '1rem' }}>{error}</p>
-            <button
-              className="btn btn-primary"
-              onClick={() => window.location.reload()}
-            >
-              Try Again
-            </button>
-          </div>
-        ) : (
-          <div>
-            {Object.entries(filteredBibles).map(([language, versions]) => (
-              <div key={language} style={{ marginBottom: '2rem' }}>
-                <h3 style={{ 
-                  fontSize: '1.25rem', 
-                  marginBottom: '1rem',
-                  color: 'var(--text-secondary)'
-                }}>
-                  {language}
-                </h3>
-                <div className="grid grid-cols-2" style={{ gap: '1rem' }}>
-                  {versions.map((version) => (
-                    <Link
-                      key={version.id}
-                      to={`/book?version=${version.id}&abbr=${version.abbreviation}`}
-                      className="card"
-                      aria-label={`Select ${version.name} (${version.abbreviation})`}
-                      style={{
-                        textDecoration: 'none',
-                        color: 'inherit',
-                        cursor: 'pointer',
-                        display: 'block'
-                      }}
-                    >
-                      <h4 style={{ 
-                        fontSize: '1.125rem', 
-                        marginBottom: '0.5rem',
-                        color: 'var(--primary)'
-                      }}>
-                        {version.abbreviation}
-                      </h4>
-                      <p style={{ 
-                        fontSize: '0.875rem',
-                        color: 'var(--text-secondary)',
-                        marginBottom: '0.25rem'
-                      }}>
-                        {version.name}
-                      </p>
-                      {version.description && (
-                        <p style={{ 
-                          fontSize: '0.75rem',
-                          color: 'var(--text-tertiary)',
-                          lineHeight: '1.4'
-                        }}>
-                          {version.description}
-                        </p>
-                      )}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+            Begin Your Journey →
+          </Link>
+        </div>
       </main>
     </div>
   );
