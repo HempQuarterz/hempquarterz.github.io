@@ -7,8 +7,10 @@
 import React, { useState, useEffect } from 'react';
 import { getVerse } from '../api/verses';
 import { restoreVerse } from '../api/restoration';
+import { getCrossReferences, getCrossReferenceCount } from '../api/crossReferences';
 import Loading from './Loading';
 import CrossReferencePanel from './CrossReferencePanel';
+import CrossReferenceBadge from './CrossReferenceBadge';
 import '../styles/manuscripts.css';
 
 const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
@@ -16,6 +18,9 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showRestored, setShowRestored] = useState(true);
+  const [crossReferences, setCrossReferences] = useState([]);
+  const [crossRefCount, setCrossRefCount] = useState(0);
+  const [showCrossRefPanel, setShowCrossRefPanel] = useState(true);
 
   useEffect(() => {
     async function loadVerses() {
@@ -77,6 +82,25 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
       loadVerses();
     }
   }, [book, chapter, verse, showRestored]);
+
+  // Load cross-references for the current verse
+  useEffect(() => {
+    async function loadCrossReferences() {
+      if (!book || !chapter || !verse) return;
+
+      try {
+        const refs = await getCrossReferences(book, chapter, verse);
+        setCrossReferences(refs);
+        setCrossRefCount(refs.length);
+      } catch (err) {
+        console.error('Failed to load cross-references:', err);
+        setCrossReferences([]);
+        setCrossRefCount(0);
+      }
+    }
+
+    loadCrossReferences();
+  }, [book, chapter, verse]);
 
   const handleToggleRestoration = () => {
     setShowRestored(!showRestored);
@@ -207,14 +231,22 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
             <div className="manuscript-meta">
               {ms.manuscript} • {ms.lang === 'hebrew' ? 'Hebrew' : ms.lang === 'greek' ? 'Greek' : ms.lang === 'aramaic' ? 'Aramaic' : ms.lang === 'latin' ? 'Latin' : 'English'}
             </div>
-            <div
-              className={getLanguageClass(ms.lang)}
-              dangerouslySetInnerHTML={{
-                __html: showRestored && ms.restorations
-                  ? highlightRestoredNames(ms.text, ms.restorations)
-                  : ms.text
-              }}
-            />
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+              <div
+                className={getLanguageClass(ms.lang)}
+                style={{ flex: 1 }}
+                dangerouslySetInnerHTML={{
+                  __html: showRestored && ms.restorations
+                    ? highlightRestoredNames(ms.text, ms.restorations)
+                    : ms.text
+                }}
+              />
+              <CrossReferenceBadge
+                count={crossRefCount}
+                references={crossReferences}
+                onBadgeClick={() => setShowCrossRefPanel(true)}
+              />
+            </div>
             {showRestored && ms.restored && ms.restorations && ms.restorations.length > 0 && (
               <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666', borderTop: '1px solid #e0e0e0', paddingTop: '0.75rem' }}>
                 <strong>Restorations:</strong>
