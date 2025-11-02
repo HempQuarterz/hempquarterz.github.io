@@ -13,7 +13,11 @@ import NetworkGraphViewer from '../components/NetworkGraphViewer';
 import ThematicDiscoveryPanel from '../components/ThematicDiscoveryPanel';
 import TimelineViewer from '../components/TimelineViewer';
 import AudioPlayer from '../components/AudioPlayer';
+import SearchBar from '../components/SearchBar';
+import SearchResults from '../components/SearchResults';
+import GematriaPanel from '../components/GematriaPanel';
 import { getVerse } from '../api/verses';
+import { searchAll } from '../api/search';
 import '../styles/manuscripts.css';
 
 const ManuscriptsPage = () => {
@@ -29,9 +33,67 @@ const ManuscriptsPage = () => {
   // State for current verse text (for thematic discovery)
   const [currentVerseText, setCurrentVerseText] = useState('');
 
+  // Search state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+
+  // Gematria state
+  const [showGematria, setShowGematria] = useState(false);
+
   // Unified verse change handler for CompactNavigation
   const handleVerseChange = (newVerse) => {
     setSelectedVerse(newVerse);
+    // Close search when navigating to a verse
+    setShowSearch(false);
+    setSearchResults(null);
+  };
+
+  // Handle search execution
+  const handleSearch = async (query) => {
+    if (!query || query.trim().length < 2) {
+      return;
+    }
+
+    setSearchQuery(query);
+    setSearchLoading(true);
+    setShowSearch(true);
+
+    try {
+      const results = await searchAll(query, {
+        versesLimit: 50
+      });
+      setSearchResults(results);
+    } catch (err) {
+      console.error('Search failed:', err);
+      setSearchResults({ verses: [], lexicon: [], total: 0 });
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  // Toggle search visibility
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+    if (showSearch) {
+      setSearchResults(null);
+      setSearchQuery('');
+    }
+    // Close gematria when opening search
+    if (!showSearch) {
+      setShowGematria(false);
+    }
+  };
+
+  // Toggle gematria visibility
+  const toggleGematria = () => {
+    setShowGematria(!showGematria);
+    // Close search when opening gematria
+    if (!showGematria) {
+      setShowSearch(false);
+      setSearchResults(null);
+    }
   };
 
   // Load current verse text for thematic discovery
@@ -59,62 +121,165 @@ const ManuscriptsPage = () => {
       />
 
       <main className="container" style={{ paddingTop: '2rem', maxWidth: '1600px' }}>
-        {/* Compact Navigation */}
-        <CompactNavigation
-          selectedVerse={selectedVerse}
-          onVerseChange={handleVerseChange}
-        />
+        {/* Action Buttons */}
+        <div style={{ marginBottom: '1rem', textAlign: 'center', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          {/* Search Toggle Button */}
+          <button
+            onClick={toggleSearch}
+            style={{
+              background: showSearch ? '#D4AF37' : 'linear-gradient(135deg, #2E7D32 0%, #388E3C 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '0.75rem 1.5rem',
+              fontSize: '1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            {showSearch ? 'Hide Search' : 'Search Manuscripts'}
+          </button>
 
-        {/* Manuscript Viewer - Now at the top! */}
-        <div style={{ marginTop: '2rem' }}>
-          <ManuscriptViewer
-            book={selectedVerse.book}
-            chapter={selectedVerse.chapter}
-            verse={selectedVerse.verse}
-            onVerseChange={handleVerseChange}
-          />
+          {/* Gematria Toggle Button */}
+          <button
+            onClick={toggleGematria}
+            style={{
+              background: showGematria ? '#D4AF37' : 'linear-gradient(135deg, #6A1B9A 0%, #8E24AA 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '0.75rem 1.5rem',
+              fontSize: '1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 6v6l4 2"></path>
+            </svg>
+            {showGematria ? 'Hide Gematria' : 'Gematria Explorer'}
+          </button>
         </div>
 
-        {/* Parallel Passage Viewer */}
-        <ParallelPassageViewer
-          book={selectedVerse.book}
-          chapter={selectedVerse.chapter}
-          verse={selectedVerse.verse}
-          onNavigate={handleVerseChange}
-        />
+        {/* Search Interface */}
+        {showSearch && (
+          <div style={{ marginBottom: '2rem' }}>
+            <SearchBar onSearch={handleSearch} autoFocus={true} />
+            <SearchResults
+              results={searchResults}
+              query={searchQuery}
+              onNavigate={handleVerseChange}
+              loading={searchLoading}
+            />
+          </div>
+        )}
 
-        {/* Network Graph Viewer - Tier 5 */}
-        <NetworkGraphViewer
-          book={selectedVerse.book}
-          chapter={selectedVerse.chapter}
-          verse={selectedVerse.verse}
-          onNavigate={handleVerseChange}
-          maxDepth={2}
-        />
+        {/* Gematria Panel */}
+        {showGematria && (
+          <div style={{ marginBottom: '2rem' }}>
+            <GematriaPanel
+              initialText=""
+              initialLanguage="hebrew"
+              onClose={() => setShowGematria(false)}
+            />
+          </div>
+        )}
 
-        {/* Thematic Discovery Panel - Tier 6 */}
-        <ThematicDiscoveryPanel
-          book={selectedVerse.book}
-          chapter={selectedVerse.chapter}
-          verse={selectedVerse.verse}
-          currentVerseText={currentVerseText}
-          onNavigate={handleVerseChange}
-        />
+        {/* Compact Navigation */}
+        {!showSearch && !showGematria && (
+          <CompactNavigation
+            selectedVerse={selectedVerse}
+            onVerseChange={handleVerseChange}
+          />
+        )}
 
-        {/* Timeline Viewer - Tier 7 */}
-        <TimelineViewer
-          book={selectedVerse.book}
-          chapter={selectedVerse.chapter}
-          verse={selectedVerse.verse}
-          onNavigate={handleVerseChange}
-        />
+        {/* Manuscript Viewer - Now at the top! */}
+        {!showSearch && !showGematria && (
+          <>
+            <div style={{ marginTop: '2rem' }}>
+              <ManuscriptViewer
+                book={selectedVerse.book}
+                chapter={selectedVerse.chapter}
+                verse={selectedVerse.verse}
+                onVerseChange={handleVerseChange}
+              />
+            </div>
 
-        {/* Audio Player - Tier 8 */}
-        <AudioPlayer
-          verseText={currentVerseText}
-          verseReference={`${selectedVerse.book} ${selectedVerse.chapter}:${selectedVerse.verse}`}
-          manuscript="WEB"
-        />
+            {/* Parallel Passage Viewer */}
+            <ParallelPassageViewer
+              book={selectedVerse.book}
+              chapter={selectedVerse.chapter}
+              verse={selectedVerse.verse}
+              onNavigate={handleVerseChange}
+            />
+
+            {/* Network Graph Viewer - Tier 5 */}
+            <NetworkGraphViewer
+              book={selectedVerse.book}
+              chapter={selectedVerse.chapter}
+              verse={selectedVerse.verse}
+              onNavigate={handleVerseChange}
+              maxDepth={2}
+            />
+
+            {/* Thematic Discovery Panel - Tier 6 */}
+            <ThematicDiscoveryPanel
+              book={selectedVerse.book}
+              chapter={selectedVerse.chapter}
+              verse={selectedVerse.verse}
+              currentVerseText={currentVerseText}
+              onNavigate={handleVerseChange}
+            />
+
+            {/* Timeline Viewer - Tier 7 */}
+            <TimelineViewer
+              book={selectedVerse.book}
+              chapter={selectedVerse.chapter}
+              verse={selectedVerse.verse}
+              onNavigate={handleVerseChange}
+            />
+
+            {/* Audio Player - Tier 8 */}
+            <AudioPlayer
+              verseText={currentVerseText}
+              verseReference={`${selectedVerse.book} ${selectedVerse.chapter}:${selectedVerse.verse}`}
+              manuscript="WEB"
+            />
+          </>
+        )}
 
         {/* Information Section */}
         <div style={{

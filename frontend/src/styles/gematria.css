@@ -1,0 +1,663 @@
+/**
+ * Gematria Components Styles
+ * Styling for GematriaChip and GematriaPanel components
+ */
+
+/* ===== GematriaChip Styles ===== */
+
+.gematria-chip-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.gematria-chip-text {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: #D4AF37;
+  text-underline-offset: 3px;
+}
+
+.gematria-tooltip {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2c2c2c;
+  color: #e0e0e0;
+  padding: 0.75rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  min-width: 150px;
+  pointer-events: none;
+}
+
+.gematria-tooltip-top {
+  bottom: calc(100% + 8px);
+}
+
+.gematria-tooltip-bottom {
+  top: calc(100% + 8px);
+}
+
+.gematria-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+}
+
+.gematria-tooltip-top::after {
+  bottom: -12px;
+  border-top-color: #2c2c2c;
+}
+
+.gematria-tooltip-bottom::after {
+  top: -12px;
+  border-bottom-color: #2c2c2c;
+}
+
+.gematria-tooltip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #444;
+}
+
+.gematria-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #D4AF37;
+}
+
+.gematria-system {
+  font-size: 0.75rem;
+  color: #aaa;
+  font-style: italic;
+}
+
+.gematria-normalized {
+  font-size: 0.75rem;
+  color: #bbb;
+  margin-bottom: 0.25rem;
+}
+
+.gematria-language {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-top: 0.25rem;
+}
+
+.gematria-breakdown-hint {
+  font-size: 0.7rem;
+  color: #888;
+  font-style: italic;
+  margin-top: 0.5rem;
+  border-top: 1px solid #444;
+  padding-top: 0.5rem;
+}
+
+/* ===== GematriaPanel Styles ===== */
+
+.gematria-panel {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+.gematria-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+  color: white;
+}
+
+.gematria-panel-header h2 {
+  margin: 0;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.5rem;
+}
+
+.panel-close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  line-height: 1;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.panel-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Faith Alignment Disclaimer */
+
+.faith-disclaimer {
+  background: #FFF9C4;
+  border-bottom: 2px solid #F9A825;
+  padding: 1rem 1.5rem;
+}
+
+.disclaimer-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.disclaimer-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.disclaimer-text {
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+.disclaimer-text strong {
+  color: #F57C00;
+}
+
+.disclaimer-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.disclaimer-close:hover {
+  color: #333;
+}
+
+/* Tabs */
+
+.gematria-tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  background: #f5f5f5;
+}
+
+.gematria-tabs .tab {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+}
+
+.gematria-tabs .tab:hover {
+  background: #e8e8e8;
+  color: #333;
+}
+
+.gematria-tabs .tab.active {
+  color: #2E7D32;
+  background: white;
+  border-bottom-color: #2E7D32;
+}
+
+/* Panel Content */
+
+.gematria-panel-content {
+  padding: 2rem;
+}
+
+/* Calculator Tab */
+
+.gematria-calculator {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.gematria-language-toggle {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.lang-btn {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-btn:hover {
+  border-color: #2E7D32;
+  background: #f5f5f5;
+}
+
+.lang-btn.active {
+  border-color: #2E7D32;
+  background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.gematria-input-area {
+  margin-bottom: 1.5rem;
+}
+
+.gematria-input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1.25rem;
+  font-family: 'Noto Serif Hebrew', 'Noto Serif', serif;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.gematria-input:focus {
+  outline: none;
+  border-color: #2E7D32;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.gematria-system-selector {
+  margin-bottom: 1.5rem;
+}
+
+.gematria-system-selector label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #555;
+}
+
+.system-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.system-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.system-btn:hover {
+  border-color: #D4AF37;
+  background: #fffef7;
+}
+
+.system-btn.active {
+  border-color: #D4AF37;
+  background: #D4AF37;
+  color: white;
+  font-weight: 600;
+}
+
+/* Results */
+
+.gematria-results {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 4px solid #D4AF37;
+}
+
+.gematria-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.result-value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #D4AF37;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.result-system {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+.result-normalized {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Letter Breakdown */
+
+.gematria-breakdown {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+}
+
+.gematria-breakdown h4 {
+  margin: 0 0 1rem 0;
+  color: #2E7D32;
+  font-size: 1rem;
+}
+
+.breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.breakdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f5f5f5;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.breakdown-char {
+  font-size: 1.5rem;
+  font-family: 'Noto Serif Hebrew', 'Noto Serif', serif;
+  margin-bottom: 0.25rem;
+}
+
+.breakdown-equals {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.breakdown-value {
+  font-weight: bold;
+  color: #D4AF37;
+}
+
+.breakdown-sum {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 2px solid #e0e0e0;
+  font-weight: bold;
+  color: #2E7D32;
+}
+
+/* Notable Value Card */
+
+.notable-value-card,
+.theme-card {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+  border: 2px solid #D4AF37;
+}
+
+.notable-value-card h4,
+.theme-card h4 {
+  margin: 0 0 0.75rem 0;
+  color: #2E7D32;
+  font-size: 1rem;
+}
+
+.notable-title,
+.theme-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #D4AF37;
+  margin-bottom: 0.5rem;
+}
+
+.notable-meaning,
+.theme-summary {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 0.75rem;
+}
+
+.notable-word,
+.theme-word {
+  font-size: 1.5rem;
+  font-family: 'Noto Serif Hebrew', 'Noto Serif', serif;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.notable-reference,
+.theme-references {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+.theme-basis {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+/* Number Themes Tab */
+
+.number-themes-list {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.number-themes-list h3 {
+  margin: 0 0 1rem 0;
+  color: #2E7D32;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.themes-intro {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #FFF9C4;
+  border-left: 4px solid #F9A825;
+  border-radius: 4px;
+}
+
+.themes-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.theme-item {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.theme-item:hover {
+  border-color: #D4AF37;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+}
+
+.theme-item-number {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+  color: white;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.theme-item-content {
+  flex: 1;
+}
+
+.theme-item-content h4 {
+  margin: 0 0 0.5rem 0;
+  color: #2E7D32;
+  font-size: 1.1rem;
+}
+
+.theme-item-word {
+  font-size: 1.25rem;
+  font-family: 'Noto Serif Hebrew', 'Noto Serif', serif;
+  margin-bottom: 0.5rem;
+  color: #D4AF37;
+}
+
+.theme-item-summary {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.theme-item-refs {
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Dark Mode Support */
+
+@media (prefers-color-scheme: dark) {
+  .gematria-panel {
+    background: #2c2c2c;
+    color: #e0e0e0;
+  }
+
+  .faith-disclaimer {
+    background: #4A3F2F;
+    border-bottom-color: #F9A825;
+  }
+
+  .disclaimer-text {
+    color: #e0e0e0;
+  }
+
+  .gematria-tabs {
+    background: #3a3a3a;
+    border-bottom-color: #444;
+  }
+
+  .gematria-tabs .tab {
+    color: #aaa;
+  }
+
+  .gematria-tabs .tab:hover {
+    background: #444;
+    color: #e0e0e0;
+  }
+
+  .gematria-tabs .tab.active {
+    background: #2c2c2c;
+    color: #4CAF50;
+  }
+
+  .lang-btn,
+  .system-btn {
+    background: #3a3a3a;
+    border-color: #555;
+    color: #e0e0e0;
+  }
+
+  .lang-btn:hover,
+  .system-btn:hover {
+    background: #444;
+  }
+
+  .gematria-input {
+    background: #3a3a3a;
+    border-color: #555;
+    color: #e0e0e0;
+  }
+
+  .gematria-results {
+    background: #3a3a3a;
+  }
+
+  .gematria-breakdown,
+  .notable-value-card,
+  .theme-card {
+    background: #3a3a3a;
+  }
+
+  .breakdown-item {
+    background: #444;
+  }
+
+  .theme-item {
+    background: #3a3a3a;
+    border-color: #555;
+  }
+
+  .themes-intro {
+    background: #4A3F2F;
+  }
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .gematria-panel-content {
+    padding: 1rem;
+  }
+
+  .system-buttons {
+    flex-direction: column;
+  }
+
+  .breakdown-grid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  }
+
+  .theme-item {
+    flex-direction: column;
+  }
+
+  .theme-item-number {
+    align-self: flex-start;
+  }
+}

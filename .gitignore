@@ -49,3 +49,4 @@ database/lxx-import.sql
 .playwright-mcp/*.png
 .playwright-mcp/*.jpg
 .playwright-mcp/*.jpeg
+memory-banks/
