@@ -8,11 +8,7 @@ import { useParams } from 'react-router-dom';
 import ManuscriptViewer from '../components/ManuscriptViewer';
 import ModernHeader from '../components/ModernHeader';
 import CompactNavigation from '../components/CompactNavigation';
-import ParallelPassageViewer from '../components/ParallelPassageViewer';
-import NetworkGraphViewer from '../components/NetworkGraphViewer';
-import ThematicDiscoveryPanel from '../components/ThematicDiscoveryPanel';
-import TimelineViewer from '../components/TimelineViewer';
-import AudioPlayer from '../components/AudioPlayer';
+import ConsolidatedPanel from '../components/ConsolidatedPanel';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
 import GematriaPanel from '../components/GematriaPanel';
@@ -238,106 +234,16 @@ const ManuscriptsPage = () => {
               />
             </div>
 
-            {/* Parallel Passage Viewer */}
-            <ParallelPassageViewer
-              book={selectedVerse.book}
-              chapter={selectedVerse.chapter}
-              verse={selectedVerse.verse}
-              onNavigate={handleVerseChange}
-            />
-
-            {/* Network Graph Viewer - Tier 5 */}
-            <NetworkGraphViewer
-              book={selectedVerse.book}
-              chapter={selectedVerse.chapter}
-              verse={selectedVerse.verse}
-              onNavigate={handleVerseChange}
-              maxDepth={2}
-            />
-
-            {/* Thematic Discovery Panel - Tier 6 */}
-            <ThematicDiscoveryPanel
+            {/* Consolidated Panel - All Features in Tabs */}
+            <ConsolidatedPanel
               book={selectedVerse.book}
               chapter={selectedVerse.chapter}
               verse={selectedVerse.verse}
               currentVerseText={currentVerseText}
               onNavigate={handleVerseChange}
             />
-
-            {/* Timeline Viewer - Tier 7 */}
-            <TimelineViewer
-              book={selectedVerse.book}
-              chapter={selectedVerse.chapter}
-              verse={selectedVerse.verse}
-              onNavigate={handleVerseChange}
-            />
-
-            {/* Audio Player - Tier 8 */}
-            <AudioPlayer
-              verseText={currentVerseText}
-              verseReference={`${selectedVerse.book} ${selectedVerse.chapter}:${selectedVerse.verse}`}
-              manuscript="WEB"
-            />
           </>
         )}
-
-        {/* Information Section */}
-        <div style={{
-          marginTop: '3rem',
-          padding: '2rem',
-          background: '#f9f9f9',
-          borderRadius: '8px',
-          borderLeft: '4px solid #D4AF37'
-        }}>
-          <h2 style={{
-            color: '#2E7D32',
-            marginBottom: '1rem',
-            fontFamily: 'Libre Baskerville, serif'
-          }}>
-            About the All4Yah Project
-          </h2>
-          <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#333', marginBottom: '1rem' }}>
-            The <strong>All4Yah Project</strong> is a "Digital Dead Sea Scrolls" initiative dedicated to
-            restoring the Word verse by verse using original manuscripts, transparent scholarship,
-            and modern technology.
-          </p>
-          <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#333', marginBottom: '1rem' }}>
-            We use the <strong>Westminster Leningrad Codex</strong> (Hebrew OT),
-            the <strong>SBL Greek New Testament</strong> (Greek NT), and
-            the <strong>World English Bible</strong> (English) to provide parallel manuscript views
-            with divine name restoration.
-          </p>
-
-          <h3 style={{
-            color: '#2E7D32',
-            marginTop: '1.5rem',
-            marginBottom: '0.75rem',
-            fontSize: '1.2rem'
-          }}>
-            Divine Name Restorations:
-          </h3>
-          <ul style={{
-            fontSize: '1rem',
-            lineHeight: '1.8',
-            color: '#333',
-            listStyle: 'none',
-            paddingLeft: 0
-          }}>
-            <li>✦ <strong>יהוה</strong> (H3068) → <strong className="restored-name">Yahuah</strong> - The personal name of the Creator (5,518× in OT)</li>
-            <li>✦ <strong>יהושע</strong> (H3091) / <strong>Ἰησοῦς</strong> (G2424) → <strong className="restored-name">Yahusha</strong> - "Yahuah saves"</li>
-            <li>✦ <strong>אלהים</strong> (H430) / <strong>θεός</strong> (G2316) → <strong className="restored-name">Elohim</strong> - Mighty One, Creator</li>
-          </ul>
-
-          <p style={{
-            marginTop: '1.5rem',
-            fontSize: '0.95rem',
-            color: '#666',
-            fontStyle: 'italic'
-          }}>
-            <strong>Mission:</strong> "This is my name forever, the name you shall call me from
-            generation to generation." - Exodus 3:15
-          </p>
-        </div>
       </main>
     </div>
   );
