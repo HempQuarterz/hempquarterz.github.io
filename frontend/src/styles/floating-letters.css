@@ -1,0 +1,153 @@
+/**
+ * Floating Letters - Ancient Hebrew/Greek characters animation
+ * Subtle, scholarly atmosphere with slow-moving sacred text
+ */
+
+.floating-letters-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.floating-letter {
+  position: absolute;
+  left: var(--left-pos);
+  bottom: 0;
+  font-family: var(--letter-font);
+  font-size: clamp(2rem, 5vw, 4rem);
+  color: var(--letter-color);
+  opacity: var(--letter-opacity);
+  transform: translateY(100vh) rotate(0deg) scale(var(--letter-scale));
+  will-change: transform, opacity;
+  pointer-events: none;
+  user-select: none;
+  animation: floatLetter var(--duration) linear var(--delay) infinite;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* Hebrew letters - right-to-left awareness */
+.floating-letter.hebrew {
+  direction: rtl;
+  font-weight: 500;
+}
+
+/* Greek letters */
+.floating-letter.greek {
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* ============================================================================
+   FLOATING ANIMATION - Slow upward drift with subtle rotation
+   ============================================================================ */
+
+@keyframes floatLetter {
+  0% {
+    transform: translateY(100vh) rotate(0deg) scale(calc(var(--letter-scale) * 0.9));
+    opacity: 0;
+  }
+  10% {
+    opacity: calc(var(--letter-opacity) * 1.2);
+  }
+  50% {
+    opacity: calc(var(--letter-opacity) * 0.8);
+  }
+  90% {
+    opacity: calc(var(--letter-opacity) * 0.6);
+  }
+  100% {
+    transform: translateY(-20vh) rotate(var(--end-rotate)) scale(calc(var(--letter-scale) * 1.1));
+    opacity: 0;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================ */
+
+/* Mobile - fewer letters, smaller size */
+@media (max-width: 768px) {
+  .floating-letter {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .floating-letter {
+    font-size: clamp(1.75rem, 4.5vw, 3rem);
+  }
+}
+
+/* Desktop - larger letters */
+@media (min-width: 1025px) {
+  .floating-letter {
+    font-size: clamp(2rem, 5vw, 4.5rem);
+  }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1920px) {
+  .floating-letter {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+  }
+}
+
+/* ============================================================================
+   DARK MODE ADJUSTMENTS
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .floating-letter.hebrew {
+    --letter-color: var(--ink-medium);
+  }
+
+  .floating-letter.greek {
+    --letter-color: var(--ink-light);
+  }
+
+  /* Slightly more visible in dark mode */
+  .floating-letter {
+    opacity: calc(var(--letter-opacity) * 1.3);
+  }
+}
+
+/* ============================================================================
+   PERFORMANCE & ACCESSIBILITY
+   ============================================================================ */
+
+/* Hardware acceleration */
+.floating-letter {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Respect reduced motion preference - disable animation */
+@media (prefers-reduced-motion: reduce) {
+  .floating-letter {
+    animation: none;
+    opacity: 0.02;
+    transform: translateY(50vh) rotate(0deg);
+  }
+}
+
+/* High performance mode - reduce animation complexity */
+@media (prefers-reduced-motion: reduce) {
+  .floating-letters-container {
+    display: none; /* Completely hide if motion is reduced */
+  }
+}
+
+/* Print - hide decorative elements */
+@media print {
+  .floating-letters-container {
+    display: none;
+  }
+}
