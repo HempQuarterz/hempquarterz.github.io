@@ -1,0 +1,81 @@
+/**
+ * Ink Ripple Effect - Click/tap creates spreading ink stain
+ * Like quill touching parchment, ink spreading in fibers
+ */
+
+.ink-ripple-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.ink-ripple {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(62, 39, 35, 0.15) 0%,
+    rgba(93, 64, 55, 0.12) 30%,
+    rgba(112, 66, 20, 0.08) 60%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  animation: inkRipple 800ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+  filter: url(#inkStain);
+}
+
+@keyframes inkRipple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.15;
+  }
+  100% {
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+  }
+}
+
+/* Dark mode - slightly different ink color */
+@media (prefers-color-scheme: dark) {
+  .ink-ripple {
+    background: radial-gradient(
+      circle,
+      rgba(232, 213, 181, 0.08) 0%,
+      rgba(212, 196, 168, 0.06) 30%,
+      rgba(181, 143, 89, 0.04) 60%,
+      transparent 70%
+    );
+  }
+}
+
+/* Mobile - smaller ripples */
+@media (max-width: 768px) {
+  @keyframes inkRipple {
+    100% {
+      width: 250px;
+      height: 250px;
+      opacity: 0;
+    }
+  }
+}
+
+/* Respect reduced motion - disable ripple effect */
+@media (prefers-reduced-motion: reduce) {
+  .ink-ripple {
+    animation: none;
+    display: none;
+  }
+}

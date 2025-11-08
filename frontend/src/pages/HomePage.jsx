@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/modern.css';
 import ModernHeader from '../components/ModernHeader';
+import ScrollUnfurl from '../components/ScrollUnfurl';
 
 const HomePage = () => {
   return (
@@ -9,41 +10,43 @@ const HomePage = () => {
       <ModernHeader title="All4Yah" />
 
       <main className="container" style={{ paddingTop: '2rem', maxWidth: '900px', margin: '0 auto' }}>
-        {/* Hero Section */}
-        <div className="card" style={{
-          marginBottom: '2.5rem',
-          background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)',
-          color: 'white',
-          padding: '3rem 2rem',
-          textAlign: 'center',
-          border: '3px solid #D4AF37',
-          boxShadow: '0 8px 24px rgba(212, 175, 55, 0.3)'
-        }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✦</div>
-          <h1 style={{
-            fontSize: '2.5rem',
-            marginBottom: '1rem',
-            fontWeight: 'bold',
-            textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+        {/* Hero Section - Scroll Unfurling Animation */}
+        <ScrollUnfurl>
+          <div className="card" style={{
+            marginBottom: '2.5rem',
+            background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)',
+            color: 'white',
+            padding: '3rem 2rem',
+            textAlign: 'center',
+            border: '3px solid #D4AF37',
+            boxShadow: '0 8px 24px rgba(212, 175, 55, 0.3)'
           }}>
-            All4Yah Manuscript Viewer
-          </h1>
-          <p style={{
-            fontSize: '1.25rem',
-            lineHeight: '1.8',
-            marginBottom: '0.5rem',
-            opacity: 0.95
-          }}>
-            Read the Scriptures in their original languages with <strong style={{ color: '#D4AF37' }}>divine name restoration</strong>
-          </p>
-          <p style={{
-            fontSize: '1rem',
-            opacity: 0.9,
-            fontStyle: 'italic'
-          }}>
-            "This is my name forever, the name you shall call me from generation to generation." - Exodus 3:15
-          </p>
-        </div>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✦</div>
+            <h1 style={{
+              fontSize: '2.5rem',
+              marginBottom: '1rem',
+              fontWeight: 'bold',
+              textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+            }}>
+              All4Yah Manuscript Viewer
+            </h1>
+            <p style={{
+              fontSize: '1.25rem',
+              lineHeight: '1.8',
+              marginBottom: '0.5rem',
+              opacity: 0.95
+            }}>
+              Read the Scriptures in their original languages with <strong style={{ color: '#D4AF37' }}>divine name restoration</strong>
+            </p>
+            <p style={{
+              fontSize: '1rem',
+              opacity: 0.9,
+              fontStyle: 'italic'
+            }}>
+              "This is my name forever, the name you shall call me from generation to generation." - Exodus 3:15
+            </p>
+          </div>
+        </ScrollUnfurl>
 
         {/* Main CTA Button */}
         <Link

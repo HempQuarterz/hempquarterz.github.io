@@ -14,6 +14,8 @@ import { Provider } from 'react-redux';
 // Scholarly theme components - ancient text aesthetic
 import FloatingLetters from './components/FloatingLetters';
 import ParchmentFilters from './components/ParchmentFilters';
+import InkRipple from './components/InkRipple';
+import PageTurnTransition from './components/PageTurnTransition';
 import './styles/scholarly-theme.css';
 
 
@@ -33,20 +35,25 @@ const App = () => {
       {/* Floating Hebrew/Greek letters */}
       <FloatingLetters count={30} hebrewRatio={0.6} density="medium" />
 
+      {/* Ink ripple click effect */}
+      <InkRipple />
+
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/manuscripts" element={<ManuscriptsPage />} />
-          <Route path="/manuscript" element={<ManuscriptsPage />} />
-          <Route path="/manuscripts/:book/:chapter/:verse" element={<ManuscriptsPage />} />
-          <Route path="/manuscript/:book/:chapter/:verse" element={<ManuscriptsPage />} />
-          <Route path="/book" element={<BookPage />} />
-          <Route path="/chapter/:version/:abbr/:book" element={<ChapterPage />} />
-          <Route path="/verse/:version/:abbr/:book/:chapter" element={<VersePage />} />
-          <Route path="/scripture/:bibleId/:version/:abbr/:book/:chapter/:verseId" element={<ScripturePage />} />
-          <Route path="/lsi" element={<LSIPage />} />
-          <Route path="/lsi/demo" element={<AudioCaptureDemo />} />
-        </Routes>
+        <PageTurnTransition>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/manuscripts" element={<ManuscriptsPage />} />
+            <Route path="/manuscript" element={<ManuscriptsPage />} />
+            <Route path="/manuscripts/:book/:chapter/:verse" element={<ManuscriptsPage />} />
+            <Route path="/manuscript/:book/:chapter/:verse" element={<ManuscriptsPage />} />
+            <Route path="/book" element={<BookPage />} />
+            <Route path="/chapter/:version/:abbr/:book" element={<ChapterPage />} />
+            <Route path="/verse/:version/:abbr/:book/:chapter" element={<VersePage />} />
+            <Route path="/scripture/:bibleId/:version/:abbr/:book/:chapter/:verseId" element={<ScripturePage />} />
+            <Route path="/lsi" element={<LSIPage />} />
+            <Route path="/lsi/demo" element={<AudioCaptureDemo />} />
+          </Routes>
+        </PageTurnTransition>
       </Router>
     </Provider>
   );

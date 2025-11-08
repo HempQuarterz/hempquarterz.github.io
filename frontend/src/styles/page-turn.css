@@ -1,0 +1,100 @@
+/**
+ * Page Turn Transition - Route change animation
+ * Simulates turning a page in an ancient manuscript
+ */
+
+.page-turn-wrapper {
+  width: 100%;
+  animation-duration: 600ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: forwards;
+}
+
+/* ============================================================================
+   FADE OUT - Page turning away
+   ============================================================================ */
+
+.page-turn-wrapper.fadeOut {
+  animation-name: pageTurnOut;
+}
+
+@keyframes pageTurnOut {
+  0% {
+    opacity: 1;
+    transform: perspective(2000px) rotateY(0deg);
+    transform-origin: left center;
+  }
+  100% {
+    opacity: 0.3;
+    transform: perspective(2000px) rotateY(-90deg);
+    transform-origin: left center;
+  }
+}
+
+/* ============================================================================
+   FADE IN - New page turning in
+   ============================================================================ */
+
+.page-turn-wrapper.fadeIn {
+  animation-name: pageTurnIn;
+}
+
+@keyframes pageTurnIn {
+  0% {
+    opacity: 0.3;
+    transform: perspective(2000px) rotateY(90deg);
+    transform-origin: right center;
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(2000px) rotateY(0deg);
+    transform-origin: right center;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE - Simpler animation on mobile
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Simpler fade on mobile for performance */
+  @keyframes pageTurnOut {
+    0% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+  }
+
+  @keyframes pageTurnIn {
+    0% {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY - No animation if reduced motion preferred
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .page-turn-wrapper {
+    animation: none !important;
+  }
+
+  .page-turn-wrapper.fadeOut {
+    opacity: 0;
+  }
+
+  .page-turn-wrapper.fadeIn {
+    opacity: 1;
+  }
+}
