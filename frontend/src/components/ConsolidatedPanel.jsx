@@ -11,6 +11,7 @@ import NetworkGraphViewer from './NetworkGraphViewer';
 import ThematicDiscoveryPanel from './ThematicDiscoveryPanel';
 import TimelineViewer from './TimelineViewer';
 import AudioPlayer from './AudioPlayer';
+import ManuscriptIcon from './icons/ManuscriptIcon';
 import '../styles/consolidated-panel.css';
 
 const ConsolidatedPanel = ({
@@ -26,37 +27,37 @@ const ConsolidatedPanel = ({
     {
       id: 'references',
       label: 'References',
-      icon: '📖',
+      icon: 'reference',
       description: 'Cross-references & parallel passages'
     },
     {
       id: 'network',
       label: 'Network',
-      icon: '🕸️',
+      icon: 'network',
       description: 'Interactive reference graph'
     },
     {
       id: 'discovery',
       label: 'Discovery',
-      icon: '🔍',
+      icon: 'discovery',
       description: 'AI thematic search'
     },
     {
       id: 'timeline',
       label: 'Timeline',
-      icon: '📅',
+      icon: 'timeline',
       description: 'Historical context'
     },
     {
       id: 'audio',
       label: 'Audio',
-      icon: '🎧',
+      icon: 'audio',
       description: 'Text-to-speech player'
     },
     {
       id: 'about',
       label: 'About',
-      icon: 'ℹ️',
+      icon: 'info',
       description: 'Project information'
     }
   ];
@@ -208,7 +209,13 @@ const ConsolidatedPanel = ({
             className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
             title={tab.description}
           >
-            <span className="tab-icon">{tab.icon}</span>
+            <span className="tab-icon">
+              <ManuscriptIcon
+                name={tab.icon}
+                size={20}
+                color={activeTab === tab.id ? 'var(--primary)' : 'var(--text-secondary)'}
+              />
+            </span>
             <span className="tab-label">{tab.label}</span>
           </button>
         ))}

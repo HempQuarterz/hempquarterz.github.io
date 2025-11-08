@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../styles/modern.css';
 import ModernHeader from '../components/ModernHeader';
 import ScrollUnfurl from '../components/ScrollUnfurl';
+import ManuscriptIcon from '../components/icons/ManuscriptIcon';
 
 const HomePage = () => {
   return (
@@ -91,7 +92,9 @@ const HomePage = () => {
         }}>
           {/* Feature 1: Manuscripts */}
           <div className="card" style={{ padding: '1.5rem' }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📜</div>
+            <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+              <ManuscriptIcon name="scroll" size={48} color="var(--primary)" />
+            </div>
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', color: 'var(--primary)' }}>
               Original Manuscripts
             </h3>
@@ -113,7 +116,9 @@ const HomePage = () => {
 
           {/* Feature 2: Divine Names */}
           <div className="card" style={{ padding: '1.5rem' }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>✨</div>
+            <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+              <ManuscriptIcon name="divine" size={48} color="#D4AF37" className="active" />
+            </div>
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', color: 'var(--primary)' }}>
               Divine Name Restoration
             </h3>
@@ -135,7 +140,9 @@ const HomePage = () => {
 
           {/* Feature 3: Coverage */}
           <div className="card" style={{ padding: '1.5rem' }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>📚</div>
+            <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+              <ManuscriptIcon name="books" size={48} color="var(--primary)" />
+            </div>
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem', color: 'var(--primary)' }}>
               Complete Coverage
             </h3>

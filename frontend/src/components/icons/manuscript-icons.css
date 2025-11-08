@@ -1,0 +1,200 @@
+/**
+ * Manuscript Icons CSS
+ * Medieval manuscript-style SVG icon styling
+ * Ornamental effects and hover states
+ */
+
+/* ============================================================================
+   BASE ICON STYLING
+   ============================================================================ */
+
+.manuscript-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* ============================================================================
+   HOVER EFFECTS - Subtle illumination glow
+   ============================================================================ */
+
+.manuscript-icon:hover {
+  filter:
+    drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3))
+    drop-shadow(0 0 8px rgba(212, 175, 55, 0.2));
+  transform: scale(1.1);
+}
+
+/* Interactive icons (clickable) get cursor pointer */
+button .manuscript-icon,
+a .manuscript-icon,
+[role="button"] .manuscript-icon {
+  cursor: pointer;
+}
+
+/* ============================================================================
+   ANIMATION - Subtle pulsing for active states
+   ============================================================================ */
+
+.manuscript-icon.active {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  }
+  50% {
+    filter:
+      drop-shadow(0 2px 4px rgba(212, 175, 55, 0.4))
+      drop-shadow(0 0 12px rgba(212, 175, 55, 0.3));
+  }
+}
+
+/* ============================================================================
+   SPECIAL EFFECTS - Divine icon gets extra sparkle
+   ============================================================================ */
+
+.manuscript-icon-divine {
+  animation: divineSpark 3s ease-in-out infinite;
+}
+
+@keyframes divineSpark {
+  0%, 100% {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 8px rgba(212, 175, 55, 0.6))
+      drop-shadow(0 0 16px rgba(212, 175, 55, 0.4));
+    transform: rotate(15deg);
+  }
+}
+
+.manuscript-icon-divine:hover {
+  animation: divineSpark 1.5s ease-in-out infinite;
+}
+
+/* ============================================================================
+   STAR ICON - Rotation effect
+   ============================================================================ */
+
+.manuscript-icon-star {
+  animation: starRotate 10s linear infinite;
+}
+
+@keyframes starRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.manuscript-icon-star:hover {
+  animation: starRotate 3s linear infinite;
+}
+
+/* ============================================================================
+   SIZE VARIANTS
+   ============================================================================ */
+
+.manuscript-icon-small {
+  width: 16px;
+  height: 16px;
+}
+
+.manuscript-icon-medium {
+  width: 24px;
+  height: 24px;
+}
+
+.manuscript-icon-large {
+  width: 32px;
+  height: 32px;
+}
+
+.manuscript-icon-xlarge {
+  width: 48px;
+  height: 48px;
+}
+
+/* ============================================================================
+   COLOR VARIANTS
+   ============================================================================ */
+
+.manuscript-icon-primary {
+  stroke: var(--primary);
+  color: var(--primary);
+}
+
+.manuscript-icon-gold {
+  stroke: var(--gold);
+  color: var(--gold);
+}
+
+.manuscript-icon-secondary {
+  stroke: var(--text-secondary);
+  color: var(--text-secondary);
+}
+
+.manuscript-icon-white {
+  stroke: #ffffff;
+  color: #ffffff;
+}
+
+/* ============================================================================
+   DARK MODE
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  .manuscript-icon {
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
+  }
+
+  .manuscript-icon:hover {
+    filter:
+      drop-shadow(0 2px 6px rgba(212, 175, 55, 0.5))
+      drop-shadow(0 0 12px rgba(212, 175, 55, 0.3));
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .manuscript-icon,
+  .manuscript-icon-divine,
+  .manuscript-icon-star {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .manuscript-icon:hover {
+    transform: none !important;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+button:focus-visible .manuscript-icon,
+a:focus-visible .manuscript-icon {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* ============================================================================
+   PRINT
+   ============================================================================ */
+
+@media print {
+  .manuscript-icon {
+    filter: none;
+    animation: none;
+  }
+}
