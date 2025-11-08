@@ -51,4 +51,9 @@ database/lxx-import.sql
 .playwright-mcp/*.png
 .playwright-mcp/*.jpg
 .playwright-mcp/*.jpeg
+
+# LSI audio test recordings (temporary test artifacts)
+.playwright-mcp/*.webm
+.playwright-mcp/*.mp3
+.playwright-mcp/*.wav
 memory-banks/
