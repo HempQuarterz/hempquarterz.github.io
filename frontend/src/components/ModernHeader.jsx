@@ -71,20 +71,40 @@ const ModernHeader = ({ title = "ForYah Bible" }) => {
         <div className="bottom-nav-content">
           <Link
             to="/"
-            className={`nav-item ${isHome ? 'active' : ''}`}
+            className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}
             aria-label="Go to home page"
           >
             <span style={{ fontSize: '1.25rem' }} aria-hidden="true">📖</span>
             <span style={{ fontSize: '0.75rem' }}>Home</span>
           </Link>
-          <button className="nav-item" aria-label="Search Bible" disabled>
-            <span style={{ fontSize: '1.25rem' }} aria-hidden="true">🔍</span>
-            <span style={{ fontSize: '0.75rem' }}>Search</span>
-          </button>
-          <button className="nav-item" aria-label="View saved verses" disabled>
-            <span style={{ fontSize: '1.25rem' }} aria-hidden="true">⭐</span>
-            <span style={{ fontSize: '0.75rem' }}>Saved</span>
-          </button>
+          <Link
+            to="/manuscripts"
+            className={`nav-item ${location.pathname.startsWith('/manuscript') ? 'active' : ''}`}
+            aria-label="View manuscripts"
+          >
+            <span style={{ fontSize: '1.25rem' }} aria-hidden="true">📜</span>
+            <span style={{ fontSize: '0.75rem' }}>Bible</span>
+          </Link>
+          <Link
+            to="/lsi"
+            className={`nav-item ${location.pathname.startsWith('/lsi') ? 'active' : ''}`}
+            aria-label="Linguistic Spirit Interface"
+            style={{ position: 'relative' }}
+          >
+            <span style={{ fontSize: '1.25rem' }} aria-hidden="true">🕊️</span>
+            <span style={{ fontSize: '0.75rem' }}>LSI</span>
+            <span style={{
+              position: 'absolute',
+              top: '4px',
+              right: '8px',
+              background: '#FFD700',
+              color: '#4A148C',
+              fontSize: '0.5rem',
+              padding: '1px 4px',
+              borderRadius: '6px',
+              fontWeight: 'bold'
+            }}>NEW</span>
+          </Link>
           <button className="nav-item" aria-label="Open settings" disabled>
             <span style={{ fontSize: '1.25rem' }} aria-hidden="true">⚙️</span>
             <span style={{ fontSize: '0.75rem' }}>Settings</span>

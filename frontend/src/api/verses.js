@@ -132,7 +132,8 @@ export async function getChapter(manuscript, book, chapter) {
       .eq('manuscript_id', manuscriptId)
       .eq('book', book)
       .eq('chapter', chapter)
-      .order('verse');
+      .order('verse')
+      .limit(200); // Ensure we get all verses (max 176 verses in Psalm 119)
 
     if (error) {
       throw new Error(`Failed to get chapter: ${error.message}`);
@@ -310,19 +311,36 @@ export async function getBookChapterCount(manuscript, book) {
  */
 export async function getBookChapters(book) {
   try {
-    const { data, error } = await supabase
-      .from('verses')
-      .select('chapter')
-      .eq('book', book)
-      .order('chapter');
+    // Use RPC call to get distinct chapters directly from database
+    // This avoids Supabase's 1000-row limit on regular queries
+    const { data, error } = await supabase.rpc('get_book_chapters', {
+      p_book: book
+    });
 
     if (error) {
-      throw new Error(`Failed to get chapters for ${book}: ${error.message}`);
+      // Fallback to old method if RPC function doesn't exist
+      console.warn('RPC function not available, using fallback method');
+      const manuscriptId = await getManuscriptId('WEB');
+
+      const { data: fallbackData, error: fallbackError } = await supabase
+        .from('verses')
+        .select('chapter')
+        .eq('book', book)
+        .eq('manuscript_id', manuscriptId)
+        .order('chapter')
+        .limit(1000);
+
+      if (fallbackError) {
+        throw new Error(`Failed to get chapters for ${book}: ${fallbackError.message}`);
+      }
+
+      // Get unique chapters and sort
+      const chapters = [...new Set(fallbackData.map(v => v.chapter))].sort((a, b) => a - b);
+      return chapters;
     }
 
-    // Get unique chapters and sort
-    const chapters = [...new Set(data.map(v => v.chapter))].sort((a, b) => a - b);
-    return chapters;
+    // RPC returns array of chapter numbers already sorted and distinct
+    return data.map(row => row.chapter).sort((a, b) => a - b);
   } catch (err) {
     console.error('getBookChapters error:', err);
     throw err;
@@ -337,12 +355,17 @@ export async function getBookChapters(book) {
  */
 export async function getChapterVerses(book, chapter) {
   try {
+    // Use a manuscript filter to reduce row count (WEB is always present)
+    const manuscriptId = await getManuscriptId('WEB');
+
     const { data, error } = await supabase
       .from('verses')
       .select('verse')
       .eq('book', book)
       .eq('chapter', chapter)
-      .order('verse');
+      .eq('manuscript_id', manuscriptId)
+      .order('verse')
+      .limit(200); // Ensure we get all verses (max 176 verses in Psalm 119)
 
     if (error) {
       throw new Error(`Failed to get verses for ${book} ${chapter}: ${error.message}`);

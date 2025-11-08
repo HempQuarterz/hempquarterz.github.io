@@ -49,39 +49,207 @@ const HomePage = () => {
           </div>
         </ScrollUnfurl>
 
-        {/* Main CTA Button */}
-        <Link
-          to="/manuscripts"
-          className="card"
-          style={{
-            marginBottom: '3rem',
-            background: 'linear-gradient(135deg, #1976D2 0%, #0D47A1 100%)',
-            color: 'white',
-            textDecoration: 'none',
-            display: 'block',
-            padding: '2rem',
-            textAlign: 'center',
-            border: '2px solid rgba(255,255,255,0.3)',
-            boxShadow: '0 4px 16px rgba(25, 118, 210, 0.4)',
-            transition: 'all 0.3s ease',
-            cursor: 'pointer'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-4px)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(25, 118, 210, 0.6)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 4px 16px rgba(25, 118, 210, 0.4)';
-          }}
-        >
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>
-            Start Reading →
-          </h2>
-          <p style={{ fontSize: '1rem', opacity: 0.9 }}>
-            Explore manuscripts in Hebrew, Greek, Aramaic, Latin & English
-          </p>
-        </Link>
+        {/* Main Navigation - Two Column Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '1.5rem',
+          marginBottom: '3rem'
+        }}>
+          {/* Manuscripts CTA */}
+          <Link
+            to="/manuscripts"
+            className="card"
+            style={{
+              background: 'linear-gradient(135deg, #1976D2 0%, #0D47A1 100%)',
+              color: 'white',
+              textDecoration: 'none',
+              display: 'block',
+              padding: '2rem',
+              textAlign: 'center',
+              border: '2px solid rgba(255,255,255,0.3)',
+              boxShadow: '0 4px 16px rgba(25, 118, 210, 0.4)',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(25, 118, 210, 0.6)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(25, 118, 210, 0.4)';
+            }}
+          >
+            <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>📜</div>
+            <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>
+              Manuscript Viewer
+            </h2>
+            <p style={{ fontSize: '1rem', opacity: 0.9 }}>
+              Read Hebrew, Greek, Aramaic, Latin & English scriptures
+            </p>
+          </Link>
+
+          {/* LSI CTA - NEW */}
+          <Link
+            to="/lsi"
+            className="card"
+            style={{
+              background: 'linear-gradient(135deg, #6A1B9A 0%, #4A148C 100%)',
+              color: 'white',
+              textDecoration: 'none',
+              display: 'block',
+              padding: '2rem',
+              textAlign: 'center',
+              border: '2px solid rgba(156, 39, 176, 0.5)',
+              boxShadow: '0 4px 16px rgba(106, 27, 154, 0.4)',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(106, 27, 154, 0.6)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(106, 27, 154, 0.4)';
+            }}
+          >
+            <div style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              background: 'rgba(255,215,0,0.9)',
+              color: '#4A148C',
+              padding: '0.25rem 0.6rem',
+              borderRadius: '12px',
+              fontSize: '0.7rem',
+              fontWeight: 'bold',
+              letterSpacing: '0.5px'
+            }}>
+              NEW
+            </div>
+            <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>🕊️</div>
+            <h2 style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>
+              Spirit Interface (LSI)
+            </h2>
+            <p style={{ fontSize: '1rem', opacity: 0.9 }}>
+              AI-powered prayer analysis & spiritual reflection
+            </p>
+          </Link>
+        </div>
+
+        {/* LSI Feature Highlight - NEW */}
+        <div className="card" style={{
+          marginBottom: '2.5rem',
+          background: 'linear-gradient(135deg, rgba(106, 27, 154, 0.05) 0%, rgba(74, 20, 140, 0.1) 100%)',
+          border: '2px solid rgba(106, 27, 154, 0.3)',
+          padding: '2rem'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+            <div style={{ fontSize: '3rem' }}>🕊️</div>
+            <div>
+              <h2 style={{ fontSize: '1.75rem', marginBottom: '0.25rem', color: '#6A1B9A' }}>
+                Introducing: Linguistic Spirit Interface (LSI)
+              </h2>
+              <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', margin: 0 }}>
+                Where Ancient Prayer Meets Modern AI
+              </p>
+            </div>
+            <div style={{
+              background: '#FFD700',
+              color: '#4A148C',
+              padding: '0.4rem 0.8rem',
+              borderRadius: '16px',
+              fontSize: '0.75rem',
+              fontWeight: 'bold',
+              marginLeft: 'auto'
+            }}>
+              PHASE 3
+            </div>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '1.5rem',
+            marginBottom: '1.5rem'
+          }}>
+            <div>
+              <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: '#6A1B9A' }}>
+                🎙️ Audio Capture
+              </h4>
+              <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+                Record Spirit-led prayer sessions with professional-grade audio processing
+              </p>
+            </div>
+            <div>
+              <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: '#6A1B9A' }}>
+                🌊 Waveform Visualization
+              </h4>
+              <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+                See your prayer flow as celestial art with frequency analysis
+              </p>
+            </div>
+            <div>
+              <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: '#6A1B9A' }}>
+                📖 Biblical Analysis
+              </h4>
+              <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+                AI-powered pattern matching with Hebrew & Greek Scripture roots
+              </p>
+            </div>
+            <div>
+              <h4 style={{ fontSize: '1rem', marginBottom: '0.5rem', color: '#6A1B9A' }}>
+                📝 Spiritual Journal
+              </h4>
+              <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+                Document your spiritual journey with prayer session insights
+              </p>
+            </div>
+          </div>
+
+          <div style={{
+            background: 'rgba(255, 193, 7, 0.1)',
+            border: '1px solid rgba(255, 193, 7, 0.3)',
+            borderRadius: '8px',
+            padding: '1rem',
+            marginBottom: '1rem'
+          }}>
+            <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: 'var(--text-secondary)', margin: 0 }}>
+              <strong style={{ color: '#F57C00' }}>⚠️ Faith Alignment:</strong> LSI provides interpretive analysis for personal spiritual reflection only.
+              AI-generated insights are not prophetic revelation or authoritative spiritual guidance.
+            </p>
+          </div>
+
+          <Link
+            to="/lsi"
+            className="btn"
+            style={{
+              display: 'inline-block',
+              background: 'linear-gradient(135deg, #6A1B9A 0%, #4A148C 100%)',
+              color: 'white',
+              padding: '0.75rem 1.5rem',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              fontWeight: '600',
+              transition: 'all 0.3s ease',
+              border: '2px solid rgba(106, 27, 154, 0.5)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 16px rgba(106, 27, 154, 0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            Explore LSI Features →
+          </Link>
+        </div>
 
         {/* Feature Grid */}
         <div style={{

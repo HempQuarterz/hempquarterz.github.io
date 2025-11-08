@@ -370,3 +370,136 @@
     color: #D4AF37;
   }
 }
+
+/* ============================================================================
+   CHAPTER VIEW MODE (TIER 10)
+   ============================================================================ */
+
+/* View Mode Toggle Buttons */
+.view-mode-toggle {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.view-toggle-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #666;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.view-toggle-btn:hover {
+  border-color: #2E7D32;
+  background: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.view-toggle-btn.active {
+  background: #2E7D32;
+  color: white;
+  border-color: #2E7D32;
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+.view-toggle-btn:focus {
+  outline: 3px solid rgba(46, 125, 50, 0.3);
+  outline-offset: 2px;
+}
+
+/* Chapter View Content */
+.chapter-view-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Verse Row in Chapter View */
+.verse-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.verse-row:hover {
+  background: rgba(46, 125, 50, 0.05);
+}
+
+/* Verse Number in Chapter View */
+.verse-row .verse-number {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: #2E7D32;
+  min-width: 3rem;
+  text-align: right;
+  font-size: 0.95rem;
+  padding-top: 0.25rem;
+  font-family: 'Libre Baskerville', serif;
+}
+
+/* Ensure text within verse row respects language classes */
+.verse-row .hebrew-text,
+.verse-row .greek-text,
+.verse-row .english-text {
+  flex: 1;
+}
+
+/* Responsive adjustments for chapter view */
+@media (max-width: 768px) {
+  .view-mode-toggle {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .view-toggle-btn {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .verse-row {
+    gap: 0.5rem;
+  }
+
+  .verse-row .verse-number {
+    min-width: 2rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Dark mode support for chapter view */
+@media (prefers-color-scheme: dark) {
+  .view-toggle-btn {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #ccc;
+  }
+
+  .view-toggle-btn:hover {
+    background: #333;
+    border-color: #2E7D32;
+  }
+
+  .view-toggle-btn.active {
+    background: #2E7D32;
+    color: white;
+  }
+
+  .verse-row:hover {
+    background: rgba(46, 125, 50, 0.15);
+  }
+}

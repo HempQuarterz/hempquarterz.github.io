@@ -1,0 +1,377 @@
+/**
+ * ManuscriptCarousel Styles
+ * Modern, sleek carousel design for manuscript translations
+ * Features: Touch-optimized, smooth transitions, elegant depth
+ */
+
+/* ============================================================================
+   CONTAINER & LAYOUT
+   ============================================================================ */
+
+.manuscript-carousel-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* ============================================================================
+   MANUSCRIPT SELECTOR PILLS
+   ============================================================================ */
+
+.manuscript-selector {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #2E7D32 #f0f0f0;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.manuscript-selector::-webkit-scrollbar {
+  height: 6px;
+}
+
+.manuscript-selector::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+
+.manuscript-selector::-webkit-scrollbar-thumb {
+  background: #2E7D32;
+  border-radius: 3px;
+}
+
+.manuscript-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 1.25rem;
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 100px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.manuscript-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
+  border-color: #2E7D32;
+}
+
+.manuscript-pill.active {
+  background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+  border-color: #2E7D32;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+.pill-code {
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+.pill-lang {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.manuscript-pill.active .pill-lang {
+  opacity: 0.95;
+}
+
+/* ============================================================================
+   CAROUSEL WRAPPER & TRACK
+   ============================================================================ */
+
+.manuscript-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  margin-bottom: 1.5rem;
+}
+
+.carousel-track {
+  position: relative;
+  width: 100%;
+  min-height: 450px;
+  overflow: visible;
+}
+
+.manuscript-card {
+  position: relative;
+  display: flex;
+  min-height: 450px;
+  transition-property: transform;
+  will-change: transform;
+}
+
+.manuscript-slide {
+  padding: 2rem;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================================
+   NAVIGATION ARROWS
+   ============================================================================ */
+
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #2E7D32;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: #2E7D32;
+}
+
+.carousel-nav:hover {
+  background: #2E7D32;
+  color: #fff;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+}
+
+.carousel-nav:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.carousel-nav-prev {
+  left: 1rem;
+}
+
+.carousel-nav-next {
+  right: 1rem;
+}
+
+/* ============================================================================
+   MANUSCRIPT HEADER (inside carousel)
+   ============================================================================ */
+
+.manuscript-header-carousel {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.manuscript-header-carousel h3 {
+  color: #2E7D32;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.manuscript-meta {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* ============================================================================
+   CAROUSEL INDICATORS (DOTS)
+   ============================================================================ */
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ccc;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+}
+
+.indicator-dot:hover {
+  background: #2E7D32;
+  transform: scale(1.2);
+}
+
+.indicator-dot.active {
+  background: #2E7D32;
+  width: 24px;
+  border-radius: 5px;
+}
+
+/* ============================================================================
+   CAROUSEL COUNTER
+   ============================================================================ */
+
+.carousel-counter {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+  padding: 0.5rem;
+}
+
+/* ============================================================================
+   CHAPTER VIEW CONTENT (inside carousel)
+   ============================================================================ */
+
+.chapter-view-content {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.chapter-view-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chapter-view-content::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 4px;
+}
+
+.chapter-view-content::-webkit-scrollbar-thumb {
+  background: #2E7D32;
+  border-radius: 4px;
+}
+
+.verse-row {
+  display: flex;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.verse-row:last-child {
+  border-bottom: none;
+}
+
+.verse-number {
+  font-weight: 700;
+  color: #2E7D32;
+  min-width: 40px;
+  text-align: right;
+  font-size: 0.9rem;
+}
+
+/* ============================================================================
+   RESPONSIVE - TABLET
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .manuscript-carousel-container {
+    padding: 0.5rem;
+  }
+
+  .manuscript-selector {
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .manuscript-pill {
+    padding: 0.6rem 1rem;
+    min-width: 85px;
+  }
+
+  .pill-code {
+    font-size: 0.85rem;
+  }
+
+  .pill-lang {
+    font-size: 0.7rem;
+  }
+
+  .manuscript-slide {
+    padding: 1.5rem;
+    min-height: 300px;
+  }
+
+  .carousel-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .carousel-nav-prev {
+    left: 0.5rem;
+  }
+
+  .carousel-nav-next {
+    right: 0.5rem;
+  }
+
+  .manuscript-header-carousel h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE - MOBILE
+   ============================================================================ */
+
+@media (max-width: 480px) {
+  .manuscript-pill {
+    padding: 0.5rem 0.75rem;
+    min-width: 75px;
+  }
+
+  .manuscript-slide {
+    padding: 1rem;
+  }
+
+  .carousel-nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-nav svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY - REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .manuscript-card {
+    transition: none !important;
+  }
+
+  .carousel-nav,
+  .manuscript-pill,
+  .indicator-dot {
+    transition: none !important;
+  }
+}

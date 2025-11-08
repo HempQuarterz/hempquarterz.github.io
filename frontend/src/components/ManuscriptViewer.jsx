@@ -5,12 +5,12 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { getVerse } from '../api/verses';
-import { restoreVerse } from '../api/restoration';
-import { getCrossReferences, getCrossReferenceCount, getOTQuotations, highlightQuotations } from '../api/crossReferences';
+import { getVerse, getChapter } from '../api/verses';
+import { restoreVerse, restoreChapter } from '../api/restoration';
+import { getCrossReferences, getOTQuotations, highlightQuotations } from '../api/crossReferences';
 import Loading from './Loading';
-import CrossReferencePanel from './CrossReferencePanel';
 import CrossReferenceBadge from './CrossReferenceBadge';
+import ManuscriptCarousel from './ManuscriptCarousel';
 import '../styles/manuscripts.css';
 
 const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
@@ -18,9 +18,9 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showRestored, setShowRestored] = useState(true);
+  const [viewMode, setViewMode] = useState('verse'); // 'verse' or 'chapter'
   const [crossReferences, setCrossReferences] = useState([]);
   const [crossRefCount, setCrossRefCount] = useState(0);
-  const [showCrossRefPanel, setShowCrossRefPanel] = useState(true);
   const [quotations, setQuotations] = useState([]);
 
   useEffect(() => {
@@ -53,12 +53,27 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
           { code: 'WEB', name: 'World English Bible', lang: 'english' }
         ];
 
-        // Try to load from all manuscripts
-        const manuscriptPromises = allManuscripts.map(ms =>
-          getVerse(ms.code, book, chapter, verse)
-            .then(v => v ? { ...v, name: ms.name, lang: ms.lang } : null)
-            .catch(() => null)
-        );
+        // Try to load from all manuscripts (verse or chapter mode)
+        const manuscriptPromises = allManuscripts.map(async (ms) => {
+          try {
+            if (viewMode === 'chapter') {
+              // Chapter mode: fetch all verses in the chapter
+              const verses = await getChapter(ms.code, book, chapter);
+              return verses && verses.length > 0 ? {
+                name: ms.name,
+                lang: ms.lang,
+                manuscript: ms.code,
+                verses: verses
+              } : null;
+            } else {
+              // Verse mode: fetch single verse
+              const v = await getVerse(ms.code, book, chapter, verse);
+              return v ? { ...v, name: ms.name, lang: ms.lang } : null;
+            }
+          } catch {
+            return null;
+          }
+        });
 
         const results = await Promise.all(manuscriptPromises);
 
@@ -67,7 +82,14 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
 
         // Apply restoration if enabled
         const processedManuscripts = showRestored
-          ? await Promise.all(validManuscripts.map(m => restoreVerse(m)))
+          ? await Promise.all(validManuscripts.map(async (m) => {
+              if (viewMode === 'chapter') {
+                const restoredVerses = await restoreChapter(m.verses);
+                return { ...m, verses: restoredVerses };
+              } else {
+                return restoreVerse(m);
+              }
+            }))
           : validManuscripts;
 
         setManuscripts(processedManuscripts);
@@ -82,7 +104,7 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
     if (book && chapter && verse) {
       loadVerses();
     }
-  }, [book, chapter, verse, showRestored]);
+  }, [book, chapter, verse, showRestored, viewMode]);
 
   // Load cross-references for the current verse
   useEffect(() => {
@@ -239,6 +261,24 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
         </p>
       </div>
 
+      {/* View Mode Toggle */}
+      <div className="view-mode-toggle" style={{ textAlign: 'center', marginBottom: '1rem' }}>
+        <button
+          className={`view-toggle-btn ${viewMode === 'verse' ? 'active' : ''}`}
+          onClick={() => setViewMode('verse')}
+          aria-pressed={viewMode === 'verse'}
+        >
+          📄 Verse View
+        </button>
+        <button
+          className={`view-toggle-btn ${viewMode === 'chapter' ? 'active' : ''}`}
+          onClick={() => setViewMode('chapter')}
+          aria-pressed={viewMode === 'chapter'}
+        >
+          📖 Chapter View
+        </button>
+      </div>
+
       {/* Restoration Toggle */}
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <button
@@ -255,54 +295,17 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
         )}
       </div>
 
-      {/* Parallel Manuscript Display */}
-      <div className="parallel-view">
-        {manuscripts.map((ms, index) => (
-          <div key={index} className="manuscript-panel">
-            <h3>{ms.name}</h3>
-            <div className="manuscript-meta">
-              {ms.manuscript} • {ms.lang === 'hebrew' ? 'Hebrew' : ms.lang === 'greek' ? 'Greek' : ms.lang === 'aramaic' ? 'Aramaic' : ms.lang === 'latin' ? 'Latin' : 'English'}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-              <div
-                className={getLanguageClass(ms.lang)}
-                style={{ flex: 1 }}
-                dangerouslySetInnerHTML={{
-                  __html: showRestored && ms.restorations
-                    ? highlightRestoredNames(ms.text, ms.restorations, ms.manuscript)
-                    : highlightQuotations(ms.text, ms.manuscript === 'WEB' ? quotations : [])
-                }}
-              />
-              <CrossReferenceBadge
-                count={crossRefCount}
-                references={crossReferences}
-                onBadgeClick={() => setShowCrossRefPanel(true)}
-              />
-            </div>
-            {showRestored && ms.restored && ms.restorations && ms.restorations.length > 0 && (
-              <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666', borderTop: '1px solid #e0e0e0', paddingTop: '0.75rem' }}>
-                <strong>Restorations:</strong>
-                <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem' }}>
-                  {ms.restorations.map((r, i) => (
-                    <li key={i}>
-                      {r.original} → <strong className="restored-name">{r.restored}</strong>
-                      {r.strongNumber && ` (${r.strongNumber})`}
-                      {r.count && ` - ${r.count}×`}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Cross-References Panel */}
-      <CrossReferencePanel
-        book={book}
-        chapter={chapter}
-        verse={verse}
-        onReferenceClick={onVerseChange}
+      {/* Modern Carousel Manuscript Display */}
+      <ManuscriptCarousel
+        manuscripts={manuscripts}
+        viewMode={viewMode}
+        showRestored={showRestored}
+        crossRefCount={crossRefCount}
+        crossReferences={crossReferences}
+        quotations={quotations}
+        highlightRestoredNames={highlightRestoredNames}
+        highlightQuotations={highlightQuotations}
+        getLanguageClass={getLanguageClass}
       />
 
       {/* Deuterocanonical Notice */}

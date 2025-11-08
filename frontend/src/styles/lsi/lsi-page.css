@@ -1,0 +1,240 @@
+/**
+ * LSI Page Styles
+ * Main page layout for Linguistic Spirit Interface
+ */
+
+/* Page Container */
+.lsi-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  min-height: 100vh;
+}
+
+/* Page Header */
+.lsi-page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lsi-page-title {
+  margin: 0 0 1rem 0;
+  font-size: 2.5rem;
+  font-family: 'Libre Baskerville', serif;
+  background: linear-gradient(135deg, #FFD966 0%, #2dd4bf 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.lsi-page-subtitle {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #adb5bd;
+  font-style: italic;
+}
+
+/* Tab Navigation */
+.lsi-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.lsi-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: rgba(15, 52, 96, 0.6);
+  border: 2px solid rgba(45, 212, 191, 0.2);
+  border-radius: 12px;
+  color: #adb5bd;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.lsi-tab:hover {
+  border-color: #2dd4bf;
+  background: rgba(45, 212, 191, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.2);
+}
+
+.lsi-tab.active {
+  background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+  border-color: #2dd4bf;
+  color: white;
+  box-shadow: 0 6px 20px rgba(45, 212, 191, 0.4);
+}
+
+.tab-icon {
+  font-size: 1.5rem;
+}
+
+.tab-label {
+  font-size: 1rem;
+}
+
+/* Tab Content */
+.lsi-content {
+  margin-bottom: 3rem;
+}
+
+.tab-panel {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Info Footer */
+.lsi-info-footer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.info-card {
+  background: rgba(26, 26, 46, 0.8);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(45, 212, 191, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.info-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  color: #2dd4bf;
+  font-weight: 600;
+}
+
+.info-card p {
+  margin: 0;
+  line-height: 1.7;
+  color: #dee2e6;
+  font-size: 0.95rem;
+}
+
+.info-card ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  line-height: 1.8;
+  color: #dee2e6;
+  font-size: 0.95rem;
+}
+
+.info-card li {
+  margin-bottom: 0.5rem;
+}
+
+.info-card strong {
+  color: #FFD966;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .lsi-page {
+    padding: 1rem;
+  }
+
+  .lsi-page-header {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .lsi-page-title {
+    font-size: 1.75rem;
+  }
+
+  .lsi-page-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .lsi-tabs {
+    flex-direction: column;
+  }
+
+  .lsi-tab {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .lsi-info-footer {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: light) {
+  .lsi-page {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+  }
+
+  .lsi-page-header {
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .lsi-tab {
+    background: rgba(255, 255, 255, 0.8);
+    color: #1a1a2e;
+  }
+
+  .lsi-tab:hover {
+    background: rgba(45, 212, 191, 0.2);
+  }
+
+  .info-card {
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .info-card p,
+  .info-card ol {
+    color: #333;
+  }
+}
+
+/* Accessibility */
+.lsi-tab:focus {
+  outline: 3px solid rgba(45, 212, 191, 0.5);
+  outline-offset: 2px;
+}
+
+/* Loading Animation */
+.lsi-loading {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #adb5bd;
+}
+
+.lsi-loading-spinner {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

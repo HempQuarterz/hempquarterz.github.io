@@ -21,14 +21,20 @@ const ConsolidatedPanel = ({
   currentVerseText,
   onNavigate
 }) => {
-  const [activeTab, setActiveTab] = useState('references');
+  const [activeTab, setActiveTab] = useState('cross-refs');
 
   const tabs = [
     {
-      id: 'references',
-      label: 'References',
+      id: 'cross-refs',
+      label: 'Cross-Refs',
       icon: 'reference',
-      description: 'Cross-references & parallel passages'
+      description: 'Cross-references to other verses'
+    },
+    {
+      id: 'parallel',
+      label: 'Parallel',
+      icon: 'books',
+      description: 'Parallel passages & quotations'
     },
     {
       id: 'network',
@@ -64,27 +70,27 @@ const ConsolidatedPanel = ({
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'references':
+      case 'cross-refs':
         return (
           <div className="tab-content-wrapper">
-            <div className="references-grid">
-              <div className="cross-refs-section">
-                <CrossReferencePanel
-                  book={book}
-                  chapter={chapter}
-                  verse={verse}
-                  onReferenceClick={onNavigate}
-                />
-              </div>
-              <div className="parallel-section">
-                <ParallelPassageViewer
-                  book={book}
-                  chapter={chapter}
-                  verse={verse}
-                  onNavigate={onNavigate}
-                />
-              </div>
-            </div>
+            <CrossReferencePanel
+              book={book}
+              chapter={chapter}
+              verse={verse}
+              onReferenceClick={onNavigate}
+            />
+          </div>
+        );
+
+      case 'parallel':
+        return (
+          <div className="tab-content-wrapper">
+            <ParallelPassageViewer
+              book={book}
+              chapter={chapter}
+              verse={verse}
+              onNavigate={onNavigate}
+            />
           </div>
         );
 

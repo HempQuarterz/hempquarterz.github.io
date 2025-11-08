@@ -307,17 +307,22 @@ Set these environment variables in Netlify dashboard:
 - ✅ Strong's Concordance integration (19,027 entries)
 - ✅ Cross-reference system (344,369 entries)
 - ✅ Canonical tier classification (5-tier system)
+- ✅ Cross-Reference UI (Tiers 1-8: Sidebar, Badges, Parallel Viewer, OT Quotations, Network Graph, Thematic Discovery, Timeline, Audio)
+- [ ] Global search with Strong's numbers
 - [ ] AI translation engine (GPT-4/Claude)
 - [ ] Morphological analysis UI
 - [ ] Interlinear word-by-word display
-- [ ] Advanced search with Strong's numbers
 
 ### Phase 3 (Months 7-9)
+- [ ] Linguistic Spirit Interface (LSI) - **NEW** 🕊️
+  - [ ] Spiritual Tongues Analyzer (STA) - AI-assisted prayer pattern reflection
+  - [ ] Heavenly Speech Mapper (HSM) - Waveform visualization as celestial art
+  - [ ] Prayer Journal with Scripture suggestions
+  - [ ] Faith Alignment Framework integration
 - [ ] Manuscript provenance timeline
 - [ ] Community annotation system
 - [ ] Scholar verification badges
 - [ ] Public discussion threads
-- [ ] Advanced morphology search
 
 ### Phase 4 (Months 10-12)
 - [ ] Complete site redesign
@@ -326,14 +331,21 @@ Set these environment variables in Netlify dashboard:
 - [ ] Blog/progress updates
 - [ ] Newsletter integration
 - [ ] Mobile app versions
+- [ ] LSI Community Mode (optional anonymous waveform sharing)
 
 ---
 
 ## 📝 Documentation
 
+### Technical Guides
 - **[API Usage Guide](docs/API_USAGE.md)** - API endpoints and examples
 - **[Name Restoration Guide](docs/NAME_RESTORATION.md)** - How divine names are restored
 - **[Phase 1 Actions](docs/PHASE_1_ACTIONS.md)** - Implementation plan
+
+### Spiritual Technology
+- **[Linguistic Spirit Interface (LSI)](docs/LINGUISTIC_SPIRIT_INTERFACE.md)** - AI-assisted prayer reflection system 🕊️
+
+### Session Summaries
 - **[Session Summary Oct 24](SESSION_SUMMARY_2025-10-24.md)** - Phase 1 completion
 - **[Session Summary Oct 25](SESSION_SUMMARY_2025-10-25.md)** - UI testing & deployment
 

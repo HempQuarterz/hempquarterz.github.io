@@ -18,7 +18,7 @@ const CrossReferencePanel = ({ book, chapter, verse, onReferenceClick }) => {
   const [references, setReferences] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [groupByCategory, setGroupByCategory] = useState(false);
 
   useEffect(() => {
