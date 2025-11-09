@@ -22,7 +22,17 @@ const HomePage = () => {
             border: '3px solid #D4AF37',
             boxShadow: '0 8px 24px rgba(212, 175, 55, 0.3)'
           }}>
-            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✦</div>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+              <img
+                src="/logo-scroll.png"
+                alt="All4Yah Torah Scroll Logo"
+                style={{
+                  height: '120px',
+                  width: 'auto',
+                  filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))'
+                }}
+              />
+            </div>
             <h1 style={{
               fontSize: '2.5rem',
               marginBottom: '1rem',

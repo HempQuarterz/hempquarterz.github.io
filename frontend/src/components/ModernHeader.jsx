@@ -30,13 +30,18 @@ const ModernHeader = ({ title = "ForYah Bible" }) => {
         <div className="container">
           <div className="header-content">
             <div className="logo-section">
-              <div 
-                className="logo" 
+              <img
+                src="/logo-scroll.png"
+                alt="All4Yah Torah Scroll Logo"
+                className="logo"
                 onClick={() => navigate('/')}
-                style={{ cursor: 'pointer' }}
-              >
-                F
-              </div>
+                style={{
+                  cursor: 'pointer',
+                  height: '48px',
+                  width: 'auto',
+                  objectFit: 'contain'
+                }}
+              />
               <h1 style={{ fontSize: '1.5rem', margin: 0 }}>{title}</h1>
             </div>
             

@@ -57,3 +57,9 @@ database/lxx-import.sql
 .playwright-mcp/*.mp3
 .playwright-mcp/*.wav
 memory-banks/
+
+# Icon generation scripts (development utility)
+generate-icons.js
+
+# Windows Zone.Identifier files
+*.Zone.Identifier
