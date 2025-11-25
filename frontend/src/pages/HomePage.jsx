@@ -39,23 +39,85 @@ const HomePage = () => {
               fontWeight: 'bold',
               textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
             }}>
-              All4Yah Manuscript Viewer
+              All4Yah
             </h1>
+            <p style={{
+              fontSize: '1.5rem',
+              fontStyle: 'italic',
+              marginBottom: '1.5rem',
+              color: '#D4AF37',
+              textShadow: '1px 1px 3px rgba(0,0,0,0.3)'
+            }}>
+              "Restoring the Word, verse by verse."
+            </p>
             <p style={{
               fontSize: '1.25rem',
               lineHeight: '1.8',
-              marginBottom: '0.5rem',
+              marginBottom: '1.5rem',
               opacity: 0.95
             }}>
-              Read the Scriptures in their original languages with <strong style={{ color: '#D4AF37' }}>divine name restoration</strong>
+              Experience Scripture with the original divine names restored: <strong style={{ color: '#D4AF37' }}>יהוה→Yahuah</strong>, <strong style={{ color: '#D4AF37' }}>יהושע→Yahusha</strong>, <strong style={{ color: '#D4AF37' }}>אלהים→Elohim</strong>
             </p>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              borderRadius: '8px',
+              padding: '1rem 1.5rem',
+              marginBottom: '1.5rem',
+              display: 'inline-block',
+              backdropFilter: 'blur(10px)'
+            }}>
+              <div style={{
+                display: 'flex',
+                gap: '2rem',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+                fontSize: '0.95rem'
+              }}>
+                <span><strong>248,871</strong> verses</span>
+                <span style={{ opacity: 0.7 }}>•</span>
+                <span><strong>12</strong> manuscripts</span>
+                <span style={{ opacity: 0.7 }}>•</span>
+                <span><strong>4</strong> languages</span>
+              </div>
+            </div>
             <p style={{
               fontSize: '1rem',
               opacity: 0.9,
-              fontStyle: 'italic'
+              fontStyle: 'italic',
+              marginBottom: '1.5rem'
             }}>
               "This is my name forever, the name you shall call me from generation to generation." - Exodus 3:15
             </p>
+            <Link
+              to="/about"
+              className="btn"
+              style={{
+                display: 'inline-block',
+                background: '#D4AF37',
+                color: '#1B5E20',
+                padding: '0.875rem 2rem',
+                borderRadius: '50px',
+                textDecoration: 'none',
+                fontWeight: '700',
+                fontSize: '1.1rem',
+                transition: 'all 0.3s ease',
+                border: '2px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(212, 175, 55, 0.6)';
+                e.currentTarget.style.background = '#f0c040';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+                e.currentTarget.style.background = '#D4AF37';
+              }}
+            >
+              Learn About Our Mission →
+            </Link>
           </div>
         </ScrollUnfurl>
 
