@@ -91,6 +91,14 @@ const ModernHeader = ({ title = "ForYah Bible" }) => {
             <span style={{ fontSize: '0.75rem' }}>Bible</span>
           </Link>
           <Link
+            to="/about"
+            className={`nav-item ${location.pathname === '/about' ? 'active' : ''}`}
+            aria-label="About All4Yah"
+          >
+            <span style={{ fontSize: '1.25rem' }} aria-hidden="true">ℹ️</span>
+            <span style={{ fontSize: '0.75rem' }}>About</span>
+          </Link>
+          <Link
             to="/lsi"
             className={`nav-item ${location.pathname.startsWith('/lsi') ? 'active' : ''}`}
             aria-label="Linguistic Spirit Interface"
@@ -110,10 +118,6 @@ const ModernHeader = ({ title = "ForYah Bible" }) => {
               fontWeight: 'bold'
             }}>NEW</span>
           </Link>
-          <button className="nav-item" aria-label="Open settings" disabled>
-            <span style={{ fontSize: '1.25rem' }} aria-hidden="true">⚙️</span>
-            <span style={{ fontSize: '0.75rem' }}>Settings</span>
-          </button>
         </div>
       </nav>
     </>

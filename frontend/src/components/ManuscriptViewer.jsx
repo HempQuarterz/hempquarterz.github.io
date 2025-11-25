@@ -256,9 +256,30 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
 
   return (
     <div className="manuscript-viewer">
-      {/* Header */}
-      <div className="manuscript-header">
+      {/* Enhanced Hero Section */}
+      <div className="manuscript-header hero-section">
         <h1>All4Yah Manuscript Viewer</h1>
+        <p className="tagline">"Restoring the Word, verse by verse."</p>
+
+        <div className="mission-banner">
+          <div className="mission-content">
+            <h2>✦ Restored Divine Names</h2>
+            <p className="mission-text">
+              Experience Scripture as originally written. We restore the sacred names that were
+              replaced by tradition: <strong className="restored-name-example">יהוה</strong> (YHWH) appears as <strong className="restored-name-example">Yahuah</strong>,
+              <strong className="restored-name-example"> יהושע</strong> (Yehoshua) / <strong className="restored-name-example">Ἰησοῦς</strong> (Iesous) as <strong className="restored-name-example">Yahusha</strong>,
+              and <strong className="restored-name-example">אלהים</strong> (Elohim) / <strong className="restored-name-example">θεός</strong> (theos) as <strong className="restored-name-example">Elohim</strong>.
+            </p>
+            <div className="mission-stats">
+              <span className="stat"><strong>5,518×</strong> Yahuah in OT</span>
+              <span className="stat-divider">•</span>
+              <span className="stat"><strong>12 manuscripts</strong></span>
+              <span className="stat-divider">•</span>
+              <span className="stat"><strong>248,871 verses</strong></span>
+            </div>
+          </div>
+        </div>
+
         <p className="verse-reference">
           <span className="verse-number">{book} {chapter}:{verse}</span>
           Parallel Manuscript Display

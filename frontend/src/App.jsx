@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ManuscriptsPage from './pages/ManuscriptsPage';
+import AboutPage from './pages/AboutPage';
 import LSIPage from './pages/LSIPage';
 import BookPage from './components/BookPage';
 import ChapterPage from './components/ChapterPage';
@@ -42,6 +43,7 @@ const App = () => {
         <PageTurnTransition>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="/manuscripts" element={<ManuscriptsPage />} />
             <Route path="/manuscript" element={<ManuscriptsPage />} />
             <Route path="/manuscripts/:book/:chapter/:verse" element={<ManuscriptsPage />} />
