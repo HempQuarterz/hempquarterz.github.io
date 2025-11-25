@@ -7,27 +7,68 @@ import { supabase } from '../config/supabase';
 
 // Cache for name mappings to avoid repeated database queries
 let nameMappingsCache = null;
+let nameMappingsPromise = null;
+
+/**
+ * Safely parse a regex pattern from string
+ * @param {string} patternString - String representation of regex (e.g., "/pattern/gi")
+ * @returns {RegExp|null} Parsed regex or null if invalid
+ */
+function parseRegexPattern(patternString) {
+  try {
+    // Parse pattern like "/foo/gi" into components
+    const match = patternString.match(/^\/(.*)\/([gimsuvy]*)$/);
+    if (match) {
+      return new RegExp(match[1], match[2]);
+    }
+    // Fallback: try as plain pattern
+    return new RegExp(patternString, 'g');
+  } catch (err) {
+    console.error('Failed to parse regex pattern:', patternString, err);
+    return null;
+  }
+}
 
 /**
  * Load all name mappings from database
  * @returns {Promise<Array>} Array of name mapping objects
  */
 async function loadNameMappings() {
+  // If cache exists, return it immediately
   if (nameMappingsCache) {
     return nameMappingsCache;
   }
 
-  const { data, error } = await supabase
-    .from('name_mappings')
-    .select('*')
-    .order('original_text');
-
-  if (error) {
-    throw new Error(`Failed to load name mappings: ${error.message}`);
+  // If a request is already in progress, return the same promise
+  if (nameMappingsPromise) {
+    return nameMappingsPromise;
   }
 
-  nameMappingsCache = data;
-  return data;
+  // Start new request
+  nameMappingsPromise = supabase
+    .from('name_mappings')
+    .select('*')
+    .order('original_text')
+    .then(({ data, error }) => {
+      if (error) {
+        nameMappingsPromise = null; // Reset on error
+        throw new Error(`Failed to load name mappings: ${error.message}`);
+      }
+      nameMappingsCache = data;
+      nameMappingsPromise = null; // Clear promise after success
+      return data;
+    });
+
+  return nameMappingsPromise;
+}
+
+/**
+ * Preload name mappings into cache
+ * Call this early to avoid multiple requests
+ * @returns {Promise<void>}
+ */
+export async function preloadNameMappings() {
+  await loadNameMappings();
 }
 
 /**
@@ -35,6 +76,7 @@ async function loadNameMappings() {
  */
 export function clearMappingsCache() {
   nameMappingsCache = null;
+  nameMappingsPromise = null;
 }
 
 /**
@@ -73,8 +115,8 @@ export async function restoreByStrongsNumbers(text, strongNumbers, language) {
       const original = mapping.original_text;
       const restored = mapping.restored_rendering;
 
-      // For Hebrew, do simple word replacement
-      if (language === 'hebrew') {
+      // For Hebrew and Aramaic, do simple word replacement
+      if (language === 'hebrew' || language === 'aramaic') {
         if (restoredText.includes(original)) {
           restoredText = restoredText.replace(new RegExp(original, 'g'), restored);
           restorations.push({
@@ -85,19 +127,21 @@ export async function restoreByStrongsNumbers(text, strongNumbers, language) {
           });
         }
       }
-      // For English, use pattern matching if available
-      else if (language === 'english' && mapping.context_rules.pattern) {
-        const pattern = eval(mapping.context_rules.pattern); // Convert string back to RegExp
-        const matches = restoredText.match(pattern);
+      // For English and Greek, use pattern matching if available
+      else if ((language === 'english' || language === 'greek') && mapping.context_rules.pattern) {
+        const pattern = parseRegexPattern(mapping.context_rules.pattern);
+        if (pattern) {
+          const matches = restoredText.match(pattern);
 
-        if (matches) {
-          restoredText = restoredText.replace(pattern, restored);
-          restorations.push({
-            original,
-            restored,
-            strongNumber: mapping.strong_number,
-            count: matches.length
-          });
+          if (matches) {
+            restoredText = restoredText.replace(pattern, restored);
+            restorations.push({
+              original,
+              restored,
+              strongNumber: mapping.strong_number,
+              count: matches.length
+            });
+          }
         }
       }
     }
@@ -149,17 +193,19 @@ export async function restoreByPattern(text, language) {
       const restored = mapping.restored_rendering;
 
       if (mapping.context_rules.pattern) {
-        const pattern = eval(mapping.context_rules.pattern);
-        const matches = restoredText.match(pattern);
+        const pattern = parseRegexPattern(mapping.context_rules.pattern);
+        if (pattern) {
+          const matches = restoredText.match(pattern);
 
-        if (matches) {
-          restoredText = restoredText.replace(pattern, restored);
-          restorations.push({
-            original,
-            restored,
-            count: matches.length,
-            method: 'pattern'
-          });
+          if (matches) {
+            restoredText = restoredText.replace(pattern, restored);
+            restorations.push({
+              original,
+              restored,
+              count: matches.length,
+              method: 'pattern'
+            });
+          }
         }
       } else if (mapping.context_rules.whole_word) {
         // Simple whole word replacement
@@ -201,10 +247,14 @@ export async function restoreVerse(verse) {
   try {
     // Determine language based on manuscript
     let language;
-    if (verse.manuscript === 'WLC') {
+    if (verse.manuscript === 'WLC' || verse.manuscript === 'DSS') {
       language = 'hebrew';
-    } else if (verse.manuscript === 'SBLGNT') {
+    } else if (verse.manuscript === 'SBLGNT' || verse.manuscript === 'LXX' ||
+               verse.manuscript === 'BYZMT' || verse.manuscript === 'TR' ||
+               verse.manuscript === 'N1904' || verse.manuscript === 'SIN') {
       language = 'greek';
+    } else if (verse.manuscript === 'PESHITTA' || verse.manuscript === 'ONKELOS') {
+      language = 'aramaic';
     } else {
       language = 'english';
     }
@@ -299,5 +349,6 @@ export default {
   restoreParallelVerse,
   restoreChapter,
   getNameMappings,
+  preloadNameMappings,
   clearMappingsCache
 };

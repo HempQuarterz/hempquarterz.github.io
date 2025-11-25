@@ -6,10 +6,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { getVerse, getChapter } from '../api/verses';
-import { restoreVerse, restoreChapter } from '../api/restoration';
+import { restoreVerse, restoreChapter, preloadNameMappings } from '../api/restoration';
 import { getCrossReferences, getOTQuotations, highlightQuotations } from '../api/crossReferences';
-import Loading from './Loading';
-import CrossReferenceBadge from './CrossReferenceBadge';
+import ManuscriptSkeleton from './ManuscriptSkeleton';
 import ManuscriptCarousel from './ManuscriptCarousel';
 import '../styles/manuscripts.css';
 
@@ -23,6 +22,13 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
   const [crossRefCount, setCrossRefCount] = useState(0);
   const [quotations, setQuotations] = useState([]);
 
+  // Preload name mappings on component mount to optimize performance
+  useEffect(() => {
+    preloadNameMappings().catch(err => {
+      console.error('Failed to preload name mappings:', err);
+    });
+  }, []);
+
   useEffect(() => {
     async function loadVerses() {
       try {
@@ -30,7 +36,11 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
         setError(null);
 
         // Define all manuscripts to try loading
+        // Order: English first, then Hebrew, Greek, Latin, Aramaic
         const allManuscripts = [
+          // English (displayed first for accessibility)
+          { code: 'WEB', name: 'World English Bible', lang: 'english' },
+
           // Hebrew OT
           { code: 'WLC', name: 'Westminster Leningrad Codex', lang: 'hebrew' },
           { code: 'DSS', name: 'Dead Sea Scrolls', lang: 'hebrew' },
@@ -43,14 +53,12 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
           { code: 'N1904', name: 'Nestle 1904', lang: 'greek' },
           { code: 'SIN', name: 'Codex Sinaiticus', lang: 'greek' },
 
-          // Aramaic
-          { code: 'ONKELOS', name: 'Targum Onkelos', lang: 'aramaic' },
-
           // Latin
           { code: 'VUL', name: 'Vulgate', lang: 'latin' },
 
-          // English
-          { code: 'WEB', name: 'World English Bible', lang: 'english' }
+          // Aramaic
+          { code: 'ONKELOS', name: 'Targum Onkelos', lang: 'aramaic' },
+          { code: 'PESHITTA', name: 'Peshitta (Syriac)', lang: 'aramaic' }
         ];
 
         // Try to load from all manuscripts (verse or chapter mode)
@@ -194,11 +202,7 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
   };
 
   if (loading) {
-    return (
-      <div className="manuscript-viewer">
-        <Loading type="manuscripts" />
-      </div>
-    );
+    return <ManuscriptSkeleton />;
   }
 
   if (error) {
