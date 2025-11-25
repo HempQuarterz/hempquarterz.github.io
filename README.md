@@ -31,9 +31,9 @@ We restore the original divine names:
 ### Manuscript Viewer
 - ✅ **Parallel manuscript display** - Hebrew/Greek/Latin + English side-by-side
 - ✅ **Divine name restoration toggle** - Switch between original and restored
-- ✅ **224,886 verses** - Complete coverage across 11 manuscripts (Hebrew, Greek, Latin, Aramaic, English)
-- ✅ **11 manuscripts** - WLC, SBLGNT, WEB, LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS
-- ✅ **8 divine name mappings** - Hebrew, Greek, and English restorations
+- ✅ **248,871 verses** - Complete coverage across 12 manuscripts (Hebrew, Greek, Latin, Aramaic, English)
+- ✅ **12 manuscripts** - WLC, SBLGNT, WEB, LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS, PESHITTA
+- ✅ **12 divine name mappings** - Hebrew, Greek, English, and Aramaic restorations
 - ✅ **Gold highlighting (✦)** - Visually distinct restored names
 - ✅ **Hover tooltips** - See original text on hover
 - ✅ **Responsive design** - Mobile-friendly 3-column grid
@@ -49,6 +49,9 @@ We restore the original divine names:
 - 📱 Mobile-responsive design
 - ♿ Accessibility features
 - 🔍 8 quick-select sample verses
+- ✨ **Loading skeletons** - Animated placeholders for polished UX
+- ⚡ **Query optimization** - Name mappings cached (1 API call per session)
+- 🌍 **English-first display** - Accessible manuscript ordering
 
 ---
 
@@ -57,14 +60,14 @@ We restore the original divine names:
 **Provider:** Supabase (PostgreSQL)
 
 **Statistics:**
-- **Total Verses:** 224,886 verses across all manuscripts
-- **Manuscripts:** 11 (WLC, SBLGNT, WEB, LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS)
-- **Languages:** Hebrew, Greek, Latin, Aramaic, English
+- **Total Verses:** 248,871 verses across all manuscripts
+- **Manuscripts:** 12 (WLC, SBLGNT, WEB, LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS, PESHITTA)
+- **Languages:** Hebrew, Greek, Latin, Aramaic (Syriac), English
 - **Strong's Lexicon:** 19,027 entries (Hebrew H1-H8674 + Greek G1-G5624)
 - **Cross-References:** 343,869 parallel passages and quotations
 - **Canonical Books:** 90 (Tier 1-4 classification: 66 Canonical + 21 Deuterocanonical + 2 Apocrypha + 1 Ethiopian)
 - **English Coverage:** 38,080 verses (31,402 canonical + 6,678 deuterocanonical)
-- **Name Mappings:** 8 divine name restorations
+- **Name Mappings:** 12 divine name restorations (Hebrew, Greek, English, Aramaic)
 
 **Manuscripts Breakdown:**
 
@@ -81,6 +84,7 @@ We restore the original divine names:
 | **BYZMT** | Byzantine Majority Text | Greek | NT | 6,911 | Medieval |
 | **N1904** | Nestle 1904 | Greek | NT | 7,943 | 1904 |
 | **ONKELOS** | Targum Onkelos | Aramaic | Torah | 5,839 | 1st-2nd c. CE |
+| **PESHITTA** | Peshitta (Syriac/Aramaic OT) | Aramaic | OT | 23,985 | 2nd-5th c. CE |
 
 **Cross-Reference System:**
 - **343,869 cross-references** linking related passages
@@ -150,21 +154,26 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 ```
 hempquarterz.github.io/
-├── src/
-│   ├── api/
-│   │   ├── verses.js           # Verse retrieval API (370 lines)
-│   │   └── restoration.js      # Name restoration engine (304 lines)
-│   ├── components/
-│   │   ├── ManuscriptViewer.jsx   # Parallel manuscript display (220 lines)
-│   │   └── ...                     # Other components
-│   ├── pages/
-│   │   ├── HomePage.jsx        # Landing page
-│   │   └── ManuscriptsPage.jsx # Manuscript viewer page (240 lines)
-│   ├── styles/
-│   │   └── manuscripts.css     # Manuscript viewer styles (360 lines)
-│   └── config/
-│       ├── api.js              # API configuration
-│       └── supabase.js         # Supabase client setup
+├── frontend/
+│   ├── src/
+│   │   ├── api/
+│   │   │   ├── verses.js           # Verse retrieval API (370 lines)
+│   │   │   └── restoration.js      # Name restoration engine (355 lines)
+│   │   ├── components/
+│   │   │   ├── ManuscriptViewer.jsx   # Parallel manuscript display (351 lines)
+│   │   │   ├── ManuscriptSkeleton.jsx # Loading skeleton (56 lines)
+│   │   │   └── ...                     # Other components
+│   │   ├── pages/
+│   │   │   ├── HomePage.jsx        # Landing page
+│   │   │   └── ManuscriptsPage.jsx # Manuscript viewer page (240 lines)
+│   │   ├── styles/
+│   │   │   ├── manuscripts.css     # Manuscript viewer styles (360 lines)
+│   │   │   └── skeleton.css        # Loading skeleton styles (127 lines)
+│   │   └── config/
+│   │       ├── api.js              # API configuration
+│   │       └── supabase.js         # Supabase client setup
+│   └── public/
+│       └── index.html
 ├── database/
 │   ├── schema.sql              # Database schema
 │   ├── import-wlc.js           # Hebrew OT import (330 lines)
@@ -172,12 +181,10 @@ hempquarterz.github.io/
 │   ├── import-web.js           # English import (350 lines)
 │   ├── import-greek-name-mappings.js  # Greek restorations (200 lines)
 │   └── test-greek-restoration.js      # Test suite (420 lines)
-├── docs/
-│   ├── API_USAGE.md            # API documentation
-│   ├── NAME_RESTORATION.md     # Restoration guide
-│   └── PHASE_1_ACTIONS.md      # Implementation plan
-└── public/
-    └── index.html
+└── docs/
+    ├── API_USAGE.md            # API documentation
+    ├── NAME_RESTORATION.md     # Restoration guide
+    └── PHASE_1_ACTIONS.md      # Implementation plan
 ```
 
 ---
@@ -297,10 +304,12 @@ Set these environment variables in Netlify dashboard:
 ### Phase 1 ✅ (Complete)
 - ✅ Database infrastructure (Supabase)
 - ✅ Import WLC Hebrew, SBLGNT Greek, WEB English
-- ✅ Divine name restoration system (8 mappings)
+- ✅ Divine name restoration system (12 mappings)
 - ✅ API endpoints (verses.js, restoration.js)
 - ✅ React UI with ManuscriptViewer component
 - ✅ Production deployment (Netlify)
+- ✅ UX Polish: Loading skeletons, query optimization, English-first ordering
+- ✅ Performance: Name mappings cached (90% API call reduction)
 
 ### Phase 2 (Partially Complete)
 - ✅ Import additional manuscripts (LXX, DSS, VUL, SIN, TR, BYZMT, N1904, ONKELOS)
