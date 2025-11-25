@@ -34,6 +34,9 @@ const AudioCaptureDemo = () => {
   const [sessionId, setSessionId] = useState(null);
   const [diagnostics, setDiagnostics] = useState(null);
   const [showDiagnostics, setShowDiagnostics] = useState(false);
+  const [isAnalyzingPhonetics, setIsAnalyzingPhonetics] = useState(false);
+  const [phoneticAnalysis, setPhoneticAnalysis] = useState(null);
+  const [translationViewMode, setTranslationViewMode] = useState('detailed'); // 'detailed' or 'side-by-side'
 
   // Refs
   const audioProcessorRef = useRef(null);
@@ -306,6 +309,149 @@ const AudioCaptureDemo = () => {
       setError(err.message || 'Failed to save recording');
       setIsUploading(false);
       setUploadSuccess(false);
+    }
+  };
+
+  /**
+   * Analyze Phonetics - Extract acoustic patterns and match to Hebrew/Greek roots
+   */
+  const handleAnalyzePhonetics = async () => {
+    if (!recordedBlob) {
+      setError('No recording to analyze');
+      return;
+    }
+
+    try {
+      setIsAnalyzingPhonetics(true);
+      setError(null);
+      console.log('🔬 Starting phonetic analysis...');
+
+      // Simulate phonetic analysis (in production, this would call actual analysis API)
+      // This demonstrates the UI/UX flow
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate processing
+
+      // Mock analysis results
+      const mockAnalysis = {
+        acousticPatterns: [
+          {
+            timestamp: '00:02',
+            frequency: '280 Hz',
+            intensity: '45 dB',
+            phoneme: '/a/',
+            confidence: 0.92
+          },
+          {
+            timestamp: '00:05',
+            frequency: '350 Hz',
+            intensity: '52 dB',
+            phoneme: '/hu/',
+            confidence: 0.88
+          },
+          {
+            timestamp: '00:08',
+            frequency: '420 Hz',
+            intensity: '48 dB',
+            phoneme: '/sha/',
+            confidence: 0.85
+          }
+        ],
+        hebrewGreekMatches: [
+          {
+            phoneme: '/a/',
+            strongsNumber: 'H1',
+            root: 'אָב (ab)',
+            meaning: 'father',
+            confidence: 0.89,
+            scriptureExample: 'Genesis 2:24'
+          },
+          {
+            phoneme: '/hu/',
+            strongsNumber: 'H1931',
+            root: 'הוּא (hu)',
+            meaning: 'he, it',
+            confidence: 0.91,
+            scriptureExample: 'Genesis 1:1'
+          },
+          {
+            phoneme: '/sha/',
+            strongsNumber: 'G4982',
+            root: 'σῴζω (sozo)',
+            meaning: 'to save, deliver',
+            confidence: 0.86,
+            scriptureExample: 'Matthew 1:21'
+          }
+        ],
+        // Word-by-word translation for side-by-side view
+        wordTranslation: {
+          stanzas: [
+            {
+              stanzaNumber: 1,
+              words: [
+                {
+                  phonetic: '/a/',
+                  root: 'אָב',
+                  transliteration: 'ab',
+                  meaning: 'father',
+                  strongsNumber: 'H1',
+                  confidence: 0.89
+                },
+                {
+                  phonetic: '/hu/',
+                  root: 'הוּא',
+                  transliteration: 'hu',
+                  meaning: 'he',
+                  strongsNumber: 'H1931',
+                  confidence: 0.91
+                },
+                {
+                  phonetic: '/sha/',
+                  root: 'σῴζω',
+                  transliteration: 'sozo',
+                  meaning: 'save',
+                  strongsNumber: 'G4982',
+                  confidence: 0.86
+                }
+              ]
+            },
+            {
+              stanzaNumber: 2,
+              words: [
+                {
+                  phonetic: '/ya/',
+                  root: 'יָהּ',
+                  transliteration: 'Yah',
+                  meaning: 'Yah (divine name)',
+                  strongsNumber: 'H3050',
+                  confidence: 0.94
+                },
+                {
+                  phonetic: '/el/',
+                  root: 'אֵל',
+                  transliteration: 'El',
+                  meaning: 'God',
+                  strongsNumber: 'H410',
+                  confidence: 0.88
+                }
+              ]
+            }
+          ]
+        },
+        summary: {
+          totalPhonemes: 12,
+          matchedRoots: 8,
+          avgConfidence: 0.88,
+          primaryLanguage: 'Hebrew/Aramaic',
+          secondaryLanguage: 'Greek'
+        }
+      };
+
+      setPhoneticAnalysis(mockAnalysis);
+      setIsAnalyzingPhonetics(false);
+      console.log('✅ Phonetic analysis complete');
+    } catch (err) {
+      console.error('❌ Phonetic analysis error:', err);
+      setError(err.message || 'Failed to analyze phonetics');
+      setIsAnalyzingPhonetics(false);
     }
   };
 
@@ -722,6 +868,19 @@ const AudioCaptureDemo = () => {
                   </button>
                 )}
                 <button
+                  className="btn-primary"
+                  onClick={handleAnalyzePhonetics}
+                  disabled={isUploading || isAnalyzingPhonetics}
+                  style={{
+                    background: isAnalyzingPhonetics
+                      ? 'linear-gradient(135deg, #9C27B0 0%, #6A1B9A 100%)'
+                      : 'linear-gradient(135deg, #6A1B9A 0%, #4A148C 100%)',
+                    border: '2px solid rgba(106, 27, 154, 0.5)'
+                  }}
+                >
+                  {isAnalyzingPhonetics ? '🔬 Analyzing...' : '🔬 Analyze Phonetics'}
+                </button>
+                <button
                   className="btn-secondary"
                   onClick={() => {
                     const a = document.createElement('a');
@@ -740,11 +899,467 @@ const AudioCaptureDemo = () => {
                     setRecordedBlob(null);
                     setUploadSuccess(false);
                     setSessionId(null);
+                    setPhoneticAnalysis(null);
                   }}
                   disabled={isUploading}
                 >
                   🗑️ Discard
                 </button>
+              </div>
+            </div>
+          )}
+
+          {/* Phonetic Analysis Results */}
+          {phoneticAnalysis && (
+            <div style={{
+              marginTop: '2rem',
+              padding: '1.5rem',
+              background: 'linear-gradient(135deg, rgba(106, 27, 154, 0.05) 0%, rgba(74, 20, 140, 0.1) 100%)',
+              border: '2px solid rgba(106, 27, 154, 0.3)',
+              borderRadius: '12px'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '1.5rem',
+                paddingBottom: '1rem',
+                borderBottom: '2px solid rgba(106, 27, 154, 0.2)'
+              }}>
+                <div>
+                  <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#6A1B9A' }}>
+                    🔬 Phonetic Analysis Results
+                  </h3>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: 0 }}>
+                    Acoustic patterns matched to Hebrew & Greek roots via Strong's Concordance
+                  </p>
+                </div>
+                <button
+                  onClick={() => setPhoneticAnalysis(null)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#666',
+                    cursor: 'pointer',
+                    fontSize: '1.5rem',
+                    padding: '0.25rem'
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* View Toggle */}
+              <div style={{
+                display: 'flex',
+                gap: '0.5rem',
+                marginBottom: '1.5rem',
+                background: 'rgba(106, 27, 154, 0.05)',
+                padding: '0.5rem',
+                borderRadius: '8px'
+              }}>
+                <button
+                  onClick={() => setTranslationViewMode('detailed')}
+                  style={{
+                    flex: 1,
+                    padding: '0.75rem 1rem',
+                    background: translationViewMode === 'detailed'
+                      ? 'linear-gradient(135deg, #6A1B9A 0%, #4A148C 100%)'
+                      : 'transparent',
+                    color: translationViewMode === 'detailed' ? 'white' : '#6A1B9A',
+                    border: translationViewMode === 'detailed' ? 'none' : '2px solid rgba(106, 27, 154, 0.3)',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem',
+                    fontWeight: '600',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  📊 Detailed Analysis
+                </button>
+                <button
+                  onClick={() => setTranslationViewMode('side-by-side')}
+                  style={{
+                    flex: 1,
+                    padding: '0.75rem 1rem',
+                    background: translationViewMode === 'side-by-side'
+                      ? 'linear-gradient(135deg, #6A1B9A 0%, #4A148C 100%)'
+                      : 'transparent',
+                    color: translationViewMode === 'side-by-side' ? 'white' : '#6A1B9A',
+                    border: translationViewMode === 'side-by-side' ? 'none' : '2px solid rgba(106, 27, 154, 0.3)',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '0.9rem',
+                    fontWeight: '600',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  ⇄ Side-by-Side Translation
+                </button>
+              </div>
+
+              {/* Conditional View Rendering */}
+              {translationViewMode === 'detailed' ? (
+                <>
+              {/* Summary Statistics */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                gap: '1rem',
+                marginBottom: '1.5rem'
+              }}>
+                <div style={{
+                  background: 'rgba(106, 27, 154, 0.1)',
+                  padding: '1rem',
+                  borderRadius: '8px',
+                  textAlign: 'center'
+                }}>
+                  <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#6A1B9A' }}>
+                    {phoneticAnalysis.summary.totalPhonemes}
+                  </div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                    Phonemes Detected
+                  </div>
+                </div>
+                <div style={{
+                  background: 'rgba(106, 27, 154, 0.1)',
+                  padding: '1rem',
+                  borderRadius: '8px',
+                  textAlign: 'center'
+                }}>
+                  <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#6A1B9A' }}>
+                    {phoneticAnalysis.summary.matchedRoots}
+                  </div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                    Matched Roots
+                  </div>
+                </div>
+                <div style={{
+                  background: 'rgba(106, 27, 154, 0.1)',
+                  padding: '1rem',
+                  borderRadius: '8px',
+                  textAlign: 'center'
+                }}>
+                  <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#6A1B9A' }}>
+                    {Math.round(phoneticAnalysis.summary.avgConfidence * 100)}%
+                  </div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                    Avg Confidence
+                  </div>
+                </div>
+              </div>
+
+              {/* Acoustic Patterns */}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#6A1B9A' }}>
+                  🌊 Acoustic Patterns Detected
+                </h4>
+                <div style={{
+                  display: 'grid',
+                  gap: '0.75rem'
+                }}>
+                  {phoneticAnalysis.acousticPatterns.map((pattern, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        background: 'white',
+                        padding: '1rem',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(106, 27, 154, 0.2)',
+                        display: 'grid',
+                        gridTemplateColumns: 'auto 1fr auto',
+                        alignItems: 'center',
+                        gap: '1rem'
+                      }}
+                    >
+                      <div style={{
+                        background: 'linear-gradient(135deg, #6A1B9A 0%, #4A148C 100%)',
+                        color: 'white',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '6px',
+                        fontSize: '0.9rem',
+                        fontWeight: 'bold'
+                      }}>
+                        {pattern.timestamp}
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 'bold', fontSize: '1.1rem', color: '#6A1B9A' }}>
+                          Phoneme: {pattern.phoneme}
+                        </div>
+                        <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                          Frequency: {pattern.frequency} • Intensity: {pattern.intensity}
+                        </div>
+                      </div>
+                      <div style={{
+                        background: pattern.confidence >= 0.9
+                          ? 'rgba(16, 185, 129, 0.1)'
+                          : pattern.confidence >= 0.8
+                          ? 'rgba(245, 158, 11, 0.1)'
+                          : 'rgba(239, 68, 68, 0.1)',
+                        color: pattern.confidence >= 0.9
+                          ? '#10b981'
+                          : pattern.confidence >= 0.8
+                          ? '#f59e0b'
+                          : '#ef4444',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '6px',
+                        fontSize: '0.85rem',
+                        fontWeight: 'bold'
+                      }}>
+                        {Math.round(pattern.confidence * 100)}% match
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Hebrew/Greek Root Matches */}
+              <div>
+                <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#6A1B9A' }}>
+                  📖 Hebrew & Greek Root Matches (Strong's Concordance)
+                </h4>
+                <div style={{
+                  display: 'grid',
+                  gap: '1rem'
+                }}>
+                  {phoneticAnalysis.hebrewGreekMatches.map((match, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        background: 'white',
+                        padding: '1.25rem',
+                        borderRadius: '8px',
+                        border: '2px solid rgba(106, 27, 154, 0.2)'
+                      }}
+                    >
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'start',
+                        marginBottom: '0.75rem'
+                      }}>
+                        <div>
+                          <div style={{
+                            display: 'inline-block',
+                            background: '#D4AF37',
+                            color: 'white',
+                            padding: '0.25rem 0.75rem',
+                            borderRadius: '6px',
+                            fontSize: '0.85rem',
+                            fontWeight: 'bold',
+                            marginBottom: '0.5rem'
+                          }}>
+                            {match.strongsNumber}
+                          </div>
+                          <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#2E7D32' }}>
+                            {match.root}
+                          </div>
+                        </div>
+                        <div style={{
+                          background: match.confidence >= 0.9
+                            ? 'rgba(16, 185, 129, 0.1)'
+                            : 'rgba(245, 158, 11, 0.1)',
+                          color: match.confidence >= 0.9 ? '#10b981' : '#f59e0b',
+                          padding: '0.5rem 0.75rem',
+                          borderRadius: '6px',
+                          fontSize: '0.85rem',
+                          fontWeight: 'bold'
+                        }}>
+                          {Math.round(match.confidence * 100)}% confidence
+                        </div>
+                      </div>
+                      <div style={{ marginBottom: '0.5rem' }}>
+                        <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                          Phoneme: <strong>{match.phoneme}</strong>
+                        </span>
+                      </div>
+                      <div style={{ marginBottom: '0.5rem' }}>
+                        <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                          Meaning: <strong style={{ color: 'var(--text-primary)' }}>{match.meaning}</strong>
+                        </span>
+                      </div>
+                      <div style={{
+                        background: 'rgba(106, 27, 154, 0.05)',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: '6px',
+                        fontSize: '0.85rem',
+                        fontStyle: 'italic',
+                        color: 'var(--text-secondary)'
+                      }}>
+                        📖 Example: {match.scriptureExample}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              </>
+              ) : (
+                /* Side-by-Side Translation View */
+                <div>
+                  {phoneticAnalysis.wordTranslation.stanzas.map((stanza, stanzaIdx) => (
+                    <div key={stanzaIdx} style={{
+                      marginBottom: '2rem',
+                      padding: '1.5rem',
+                      background: 'white',
+                      border: '2px solid rgba(106, 27, 154, 0.2)',
+                      borderRadius: '12px'
+                    }}>
+                      {/* Stanza Header */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        marginBottom: '1.5rem',
+                        paddingBottom: '0.75rem',
+                        borderBottom: '2px solid rgba(106, 27, 154, 0.1)'
+                      }}>
+                        <div style={{
+                          background: 'linear-gradient(135deg, #6A1B9A 0%, #4A148C 100%)',
+                          color: 'white',
+                          padding: '0.4rem 0.8rem',
+                          borderRadius: '6px',
+                          fontSize: '0.85rem',
+                          fontWeight: 'bold'
+                        }}>
+                          Stanza {stanza.stanzaNumber}
+                        </div>
+                        <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                          {stanza.words.length} words
+                        </div>
+                      </div>
+
+                      {/* Word-by-Word Table */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 2fr 2fr auto',
+                        gap: '0.75rem',
+                        fontSize: '0.9rem'
+                      }}>
+                        {/* Table Headers */}
+                        <div style={{ fontWeight: 'bold', color: '#6A1B9A', paddingBottom: '0.5rem', borderBottom: '2px solid rgba(106, 27, 154, 0.2)' }}>
+                          Phonetic
+                        </div>
+                        <div style={{ fontWeight: 'bold', color: '#6A1B9A', paddingBottom: '0.5rem', borderBottom: '2px solid rgba(106, 27, 154, 0.2)' }}>
+                          Hebrew/Greek Root
+                        </div>
+                        <div style={{ fontWeight: 'bold', color: '#6A1B9A', paddingBottom: '0.5rem', borderBottom: '2px solid rgba(106, 27, 154, 0.2)' }}>
+                          English Meaning
+                        </div>
+                        <div style={{ fontWeight: 'bold', color: '#6A1B9A', paddingBottom: '0.5rem', borderBottom: '2px solid rgba(106, 27, 154, 0.2)' }}>
+                          Confidence
+                        </div>
+
+                        {/* Word Rows */}
+                        {stanza.words.map((word, wordIdx) => (
+                          <React.Fragment key={wordIdx}>
+                            <div style={{
+                              padding: '0.75rem 0.5rem',
+                              background: 'rgba(106, 27, 154, 0.03)',
+                              borderRadius: '6px',
+                              fontFamily: 'monospace',
+                              fontSize: '1.1rem',
+                              color: '#4A148C'
+                            }}>
+                              {word.phonetic}
+                            </div>
+                            <div style={{
+                              padding: '0.75rem 0.5rem',
+                              background: 'rgba(212, 175, 55, 0.05)',
+                              borderRadius: '6px'
+                            }}>
+                              <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#2E7D32', marginBottom: '0.25rem' }}>
+                                {word.root}
+                              </div>
+                              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                <span style={{
+                                  background: '#D4AF37',
+                                  color: 'white',
+                                  padding: '0.1rem 0.4rem',
+                                  borderRadius: '4px',
+                                  fontSize: '0.7rem',
+                                  fontWeight: 'bold'
+                                }}>
+                                  {word.strongsNumber}
+                                </span>
+                                <span style={{ fontStyle: 'italic' }}>{word.transliteration}</span>
+                              </div>
+                            </div>
+                            <div style={{
+                              padding: '0.75rem 0.5rem',
+                              background: 'rgba(106, 27, 154, 0.03)',
+                              borderRadius: '6px',
+                              fontSize: '1rem',
+                              color: 'var(--text-primary)'
+                            }}>
+                              {word.meaning}
+                            </div>
+                            <div style={{
+                              padding: '0.75rem 0.5rem',
+                              borderRadius: '6px',
+                              textAlign: 'center'
+                            }}>
+                              <div style={{
+                                background: word.confidence >= 0.9
+                                  ? 'rgba(16, 185, 129, 0.1)'
+                                  : word.confidence >= 0.8
+                                    ? 'rgba(245, 158, 11, 0.1)'
+                                    : 'rgba(239, 68, 68, 0.1)',
+                                color: word.confidence >= 0.9
+                                  ? '#10b981'
+                                  : word.confidence >= 0.8
+                                    ? '#f59e0b'
+                                    : '#ef4444',
+                                padding: '0.4rem 0.6rem',
+                                borderRadius: '6px',
+                                fontSize: '0.85rem',
+                                fontWeight: 'bold'
+                              }}>
+                                {Math.round(word.confidence * 100)}%
+                              </div>
+                            </div>
+                          </React.Fragment>
+                        ))}
+                      </div>
+
+                      {/* Sentence Flow Preview */}
+                      <div style={{
+                        marginTop: '1.5rem',
+                        padding: '1rem',
+                        background: 'linear-gradient(135deg, rgba(106, 27, 154, 0.05) 0%, rgba(74, 20, 140, 0.08) 100%)',
+                        borderRadius: '8px',
+                        border: '1px dashed rgba(106, 27, 154, 0.3)'
+                      }}>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 'bold', color: '#6A1B9A', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                          📖 Sentence Flow
+                        </div>
+                        <div style={{ fontSize: '1rem', lineHeight: '1.8', color: 'var(--text-primary)' }}>
+                          {stanza.words.map((word, idx) => (
+                            <span key={idx}>
+                              <span style={{ fontWeight: '600', color: '#2E7D32' }}>{word.meaning}</span>
+                              {idx < stanza.words.length - 1 && ' '}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Faith Alignment Notice (shown in both views) */}
+              <div style={{
+                marginTop: '1.5rem',
+                padding: '1rem',
+                background: 'rgba(255, 193, 7, 0.1)',
+                border: '1px solid rgba(255, 193, 7, 0.3)',
+                borderRadius: '8px'
+              }}>
+                <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: 'var(--text-secondary)', margin: 0 }}>
+                  <strong style={{ color: '#F57C00' }}>⚠️ Faith Alignment:</strong> Phonetic analysis provides interpretive suggestions for personal spiritual reflection only.
+                  AI-detected patterns and root matches are computational estimations, not prophetic revelation or authoritative Biblical interpretation.
+                  Always verify matches with Scripture and seek guidance from the Spirit.
+                </p>
               </div>
             </div>
           )}
