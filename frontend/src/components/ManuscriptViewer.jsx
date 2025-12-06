@@ -8,11 +8,12 @@ import React, { useState, useEffect } from 'react';
 import { getVerse, getChapter } from '../api/verses';
 import { restoreVerse, restoreChapter, preloadNameMappings } from '../api/restoration';
 import { getCrossReferences, getOTQuotations, highlightQuotations } from '../api/crossReferences';
+import { getCanonicalBook } from '../api/canonicalBooks';
 import ManuscriptSkeleton from './ManuscriptSkeleton';
 import ManuscriptCarousel from './ManuscriptCarousel';
 import '../styles/manuscripts.css';
 
-const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
+const ManuscriptViewer = ({ book, chapter, verse, onVerseChange, isReaderMode }) => {
   const [manuscripts, setManuscripts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,6 +22,7 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
   const [crossReferences, setCrossReferences] = useState([]);
   const [crossRefCount, setCrossRefCount] = useState(0);
   const [quotations, setQuotations] = useState([]);
+  const [bookName, setBookName] = useState('');
 
   // Preload name mappings on component mount to optimize performance
   useEffect(() => {
@@ -28,6 +30,30 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
       console.error('Failed to preload name mappings:', err);
     });
   }, []);
+
+  // Fetch canonical book name
+  useEffect(() => {
+    async function loadBookName() {
+      if (book) {
+        try {
+          // Try to get canonical name, fallback to book code
+          const bookData = await getCanonicalBook(book);
+          setBookName(bookData?.book_name || book);
+        } catch (err) {
+          console.warn('Failed to load book name:', err);
+          setBookName(book);
+        }
+      }
+    }
+    loadBookName();
+  }, [book]);
+
+  // Effect: Force Chapter View when Reader Mode is enabled
+  useEffect(() => {
+    if (isReaderMode) {
+      setViewMode('chapter');
+    }
+  }, [isReaderMode]);
 
   useEffect(() => {
     async function loadVerses() {
@@ -91,13 +117,13 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
         // Apply restoration if enabled
         const processedManuscripts = showRestored
           ? await Promise.all(validManuscripts.map(async (m) => {
-              if (viewMode === 'chapter') {
-                const restoredVerses = await restoreChapter(m.verses);
-                return { ...m, verses: restoredVerses };
-              } else {
-                return restoreVerse(m);
-              }
-            }))
+            if (viewMode === 'chapter') {
+              const restoredVerses = await restoreChapter(m.verses);
+              return { ...m, verses: restoredVerses };
+            } else {
+              return restoreVerse(m);
+            }
+          }))
           : validManuscripts;
 
         setManuscripts(processedManuscripts);
@@ -331,6 +357,7 @@ const ManuscriptViewer = ({ book, chapter, verse, onVerseChange }) => {
         highlightRestoredNames={highlightRestoredNames}
         highlightQuotations={highlightQuotations}
         getLanguageClass={getLanguageClass}
+        bookName={bookName}
       />
 
       {/* Deuterocanonical Notice */}

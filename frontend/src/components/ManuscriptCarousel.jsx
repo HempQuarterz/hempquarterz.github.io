@@ -17,13 +17,24 @@ const ManuscriptCarousel = ({
   quotations,
   highlightRestoredNames,
   highlightQuotations,
-  getLanguageClass
+  getLanguageClass,
+  bookName
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const carouselRef = useRef(null);
+
+  // Helper to clean verse text (strip book titles from verse 1)
+  const cleanVerseText = (text, verseNum) => {
+    if (!text || verseNum !== 1 || !bookName) return text;
+
+    // Regex to match "BookName." or "BookName 1:1" at start
+    // Case insensitive, optional period, optional spaces
+    const pattern = new RegExp(`^${bookName}\\.?\\s*(\\d+:\\d+)?\\s*`, 'i');
+    return text.replace(pattern, '').trim();
+  };
 
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
@@ -117,9 +128,9 @@ const ManuscriptCarousel = ({
             <span className="pill-code">{ms.manuscript}</span>
             <span className="pill-lang">
               {ms.lang === 'hebrew' ? 'Hebrew' :
-               ms.lang === 'greek' ? 'Greek' :
-               ms.lang === 'aramaic' ? 'Aramaic' :
-               ms.lang === 'latin' ? 'Latin' : 'English'}
+                ms.lang === 'greek' ? 'Greek' :
+                  ms.lang === 'aramaic' ? 'Aramaic' :
+                    ms.lang === 'latin' ? 'Latin' : 'English'}
             </span>
           </button>
         ))}
@@ -183,8 +194,8 @@ const ManuscriptCarousel = ({
                           style={{ flex: 1 }}
                           dangerouslySetInnerHTML={{
                             __html: showRestored && verseData.restorations
-                              ? highlightRestoredNames(verseData.text, verseData.restorations, ms.manuscript)
-                              : verseData.text
+                              ? highlightRestoredNames(cleanVerseText(verseData.text, verseData.verse), verseData.restorations, ms.manuscript)
+                              : cleanVerseText(verseData.text, verseData.verse)
                           }}
                         />
                       </div>
@@ -199,8 +210,8 @@ const ManuscriptCarousel = ({
                         style={{ flex: 1 }}
                         dangerouslySetInnerHTML={{
                           __html: showRestored && ms.restorations
-                            ? highlightRestoredNames(ms.text, ms.restorations, ms.manuscript)
-                            : highlightQuotations(ms.text, ms.manuscript === 'WEB' ? quotations : [])
+                            ? highlightRestoredNames(cleanVerseText(ms.text, 1), ms.restorations, ms.manuscript) // Force verse 1 check for single view context if needed, but 'ms' lacks verse number prop at this level usually, assuming single verse mode implies current verse.
+                            : highlightQuotations(cleanVerseText(ms.text, 1), ms.manuscript === 'WEB' ? quotations : [])
                         }}
                       />
                       <CrossReferenceBadge

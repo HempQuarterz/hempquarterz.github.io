@@ -1,0 +1,194 @@
+/* ============================================================================
+   READER MODE - Distraction-Free Reading
+   ============================================================================ */
+
+/* Base transition for all elements */
+.reader-mode-transition {
+    transition: all 0.5s ease-in-out;
+}
+
+/* Hidden elements in Reader Mode */
+.reader-mode-active .modern-header,
+.reader-mode-active .action-buttons,
+.reader-mode-active .compact-nav,
+.reader-mode-active .search-interface,
+.reader-mode-active .gematria-panel,
+.reader-mode-active .consolidated-panel,
+.reader-mode-active .hero-section,
+.reader-mode-active .manuscript-selector,
+/* Hide pills */
+.reader-mode-active .carousel-indicators,
+/* Hide dots */
+.reader-mode-active .carousel-counter,
+/* Hide count */
+.reader-mode-active .view-mode-toggle,
+/* Hide View Mode Toggle */
+.reader-mode-active .restoration-toggle {
+    /* Hide Restoration Toggle */
+    opacity: 0;
+    pointer-events: none;
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Reader Mode Container */
+.reader-mode-container {
+    max-width: 1600px !important;
+    /* Significantly wider */
+    width: 95vw;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-top: 4rem !important;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Reader Mode Typography Enhancements */
+.reader-mode-active .manuscript-viewer {
+    font-size: 1.25em;
+    /* Larger, readable text */
+    max-width: 100%;
+}
+
+.reader-mode-active .chapter-view-content {
+    column-count: 1;
+    /* Default mobile */
+    column-gap: 4rem;
+    column-rule: 1px solid rgba(212, 175, 55, 0.2);
+    text-align: justify;
+    padding: 0 1rem;
+}
+
+/* Landscape/Desktop Multi-Column */
+@media (min-width: 1024px) {
+    .reader-mode-active .chapter-view-content {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 1800px) {
+    .reader-mode-active .chapter-view-content {
+        column-count: 3;
+    }
+}
+
+.reader-mode-active .verse-row {
+    margin-bottom: 1rem;
+    break-inside: avoid;
+    /* Don't split verses */
+    display: block;
+    /* Flow better in columns */
+}
+
+.reader-mode-active .verse-number {
+    float: left;
+    margin-right: 0.5rem;
+    color: #D4AF37;
+    margin-top: 0.2rem;
+}
+
+/* Floating Toggle Button */
+.reader-mode-toggle {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #D4AF37;
+    color: #2E7D32;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Cardo', serif;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.reader-mode-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.3);
+    background: white;
+}
+
+.reader-mode-toggle.active {
+    background: #2E7D32;
+    color: white;
+    border-color: #2E7D32;
+}
+
+/* Reader Mode Minimal Navigation */
+.reader-nav {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease 0.3s;
+    /* Delay appearance */
+}
+
+.reader-mode-active .reader-nav {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.reader-nav-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.reader-nav-btn:hover {
+    background: #fff;
+    border-color: #D4AF37;
+    color: #D4AF37;
+    transform: scale(1.1);
+}
+
+/* Dark Mode Overrides */
+@media (prefers-color-scheme: dark) {
+    .reader-mode-toggle {
+        background: rgba(30, 30, 30, 0.8);
+        border-color: #88C0D0;
+        color: #ECEFF4;
+    }
+
+    .reader-mode-toggle:hover {
+        background: #2E3440;
+    }
+
+    .reader-mode-toggle.active {
+        background: #88C0D0;
+        color: #2E3440;
+    }
+
+    .reader-nav-btn {
+        background: rgba(46, 52, 64, 0.8);
+        border-color: #4C566A;
+        color: #D8DEE9;
+    }
+
+    .reader-nav-btn:hover {
+        background: #3B4252;
+        border-color: #88C0D0;
+        color: #88C0D0;
+    }
+}

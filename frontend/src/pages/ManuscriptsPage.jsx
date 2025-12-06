@@ -15,6 +15,7 @@ import GematriaPanel from '../components/GematriaPanel';
 import { getVerse } from '../api/verses';
 import { searchAll } from '../api/search';
 import '../styles/manuscripts.css';
+import '../styles/reader-mode.css';
 
 const ManuscriptsPage = () => {
   const { book, chapter, verse } = useParams();
@@ -37,6 +38,19 @@ const ManuscriptsPage = () => {
 
   // Gematria state
   const [showGematria, setShowGematria] = useState(false);
+
+  // Reader Mode state
+  const [isReaderMode, setIsReaderMode] = useState(false);
+
+  // Toggle Reader Mode
+  const toggleReaderMode = () => {
+    setIsReaderMode(!isReaderMode);
+    // Close other panels when entering reader mode
+    if (!isReaderMode) {
+      setShowSearch(false);
+      setShowGematria(false);
+    }
+  };
 
   // Unified verse change handler for CompactNavigation
   const handleVerseChange = (newVerse) => {
@@ -110,15 +124,29 @@ const ManuscriptsPage = () => {
   }, [selectedVerse.book, selectedVerse.chapter, selectedVerse.verse]);
 
   return (
-    <div className="fade-in">
-      <ModernHeader
-        title="All4Yah Manuscripts"
-        subtitle="Original Hebrew, Greek & English with Divine Name Restoration"
-      />
+    <div className={`fade-in ${isReaderMode ? 'reader-mode-active' : ''}`}>
+      {/* Reader Mode Toggle */}
+      <button
+        className={`reader-mode-toggle ${isReaderMode ? 'active' : ''}`}
+        onClick={toggleReaderMode}
+        title={isReaderMode ? "Exit Reader Mode" : "Enter Reader Mode"}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+        {isReaderMode ? "Exit Reader" : "Reader Mode"}
+      </button>
 
-      <main className="container" style={{ paddingTop: '2rem', maxWidth: '1600px' }}>
-        {/* Action Buttons */}
-        <div style={{ marginBottom: '1rem', textAlign: 'center', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+      <div className="reader-mode-transition">
+        <ModernHeader
+          title="All4Yah Manuscripts"
+          subtitle="Original Hebrew, Greek & English with Divine Name Restoration"
+        />
+      </div>
+
+      <main className={`container ${isReaderMode ? 'reader-mode-container' : ''}`} style={{ paddingTop: '2rem', maxWidth: '1600px' }}>
+        <div className="action-buttons" style={{ marginBottom: '1rem', textAlign: 'center', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
           {/* Search Toggle Button */}
           <button
             onClick={toggleSearch}
@@ -191,35 +219,41 @@ const ManuscriptsPage = () => {
         </div>
 
         {/* Search Interface */}
-        {showSearch && (
-          <div style={{ marginBottom: '2rem' }}>
-            <SearchBar onSearch={handleSearch} autoFocus={true} />
-            <SearchResults
-              results={searchResults}
-              query={searchQuery}
-              onNavigate={handleVerseChange}
-              loading={searchLoading}
-            />
-          </div>
-        )}
+        <div className={`search-interface ${showSearch ? 'active' : ''}`}>
+          {showSearch && (
+            <div style={{ marginBottom: '2rem' }}>
+              <SearchBar onSearch={handleSearch} autoFocus={true} />
+              <SearchResults
+                results={searchResults}
+                query={searchQuery}
+                onNavigate={handleVerseChange}
+                loading={searchLoading}
+              />
+            </div>
+          )}
+        </div>
 
         {/* Gematria Panel */}
-        {showGematria && (
-          <div style={{ marginBottom: '2rem' }}>
-            <GematriaPanel
-              initialText=""
-              initialLanguage="hebrew"
-              onClose={() => setShowGematria(false)}
-            />
-          </div>
-        )}
+        <div className={`gematria-panel ${showGematria ? 'active' : ''}`}>
+          {showGematria && (
+            <div style={{ marginBottom: '2rem' }}>
+              <GematriaPanel
+                initialText=""
+                initialLanguage="hebrew"
+                onClose={() => setShowGematria(false)}
+              />
+            </div>
+          )}
+        </div>
 
         {/* Compact Navigation */}
         {!showSearch && !showGematria && (
-          <CompactNavigation
-            selectedVerse={selectedVerse}
-            onVerseChange={handleVerseChange}
-          />
+          <div className="compact-nav">
+            <CompactNavigation
+              selectedVerse={selectedVerse}
+              onVerseChange={handleVerseChange}
+            />
+          </div>
         )}
 
         {/* Manuscript Viewer - Now at the top! */}
@@ -231,17 +265,44 @@ const ManuscriptsPage = () => {
                 chapter={selectedVerse.chapter}
                 verse={selectedVerse.verse}
                 onVerseChange={handleVerseChange}
+                isReaderMode={isReaderMode}
               />
             </div>
 
             {/* Consolidated Panel - All Features in Tabs */}
-            <ConsolidatedPanel
-              book={selectedVerse.book}
-              chapter={selectedVerse.chapter}
-              verse={selectedVerse.verse}
-              currentVerseText={currentVerseText}
-              onNavigate={handleVerseChange}
-            />
+            <div className="consolidated-panel">
+              <ConsolidatedPanel
+                book={selectedVerse.book}
+                chapter={selectedVerse.chapter}
+                verse={selectedVerse.verse}
+                currentVerseText={currentVerseText}
+                onNavigate={handleVerseChange}
+              />
+            </div>
+
+            {/* Reader Mode Minimal Navigation */}
+            {isReaderMode && (
+              <div className="reader-nav">
+                <button
+                  className="reader-nav-btn"
+                  onClick={() => handleVerseChange({ ...selectedVerse, chapter: Math.max(1, selectedVerse.chapter - 1) })}
+                  title="Previous Chapter"
+                  disabled={selectedVerse.chapter <= 1}
+                >
+                  ←
+                </button>
+                <div style={{ fontFamily: 'Cardo', fontWeight: 'bold', paddingTop: '12px' }}>
+                  {selectedVerse.book} {selectedVerse.chapter}
+                </div>
+                <button
+                  className="reader-nav-btn"
+                  onClick={() => handleVerseChange({ ...selectedVerse, chapter: selectedVerse.chapter + 1 })}
+                  title="Next Chapter"
+                >
+                  →
+                </button>
+              </div>
+            )}
           </>
         )}
       </main>
