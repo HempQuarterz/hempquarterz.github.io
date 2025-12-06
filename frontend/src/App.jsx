@@ -17,6 +17,7 @@ import FloatingLetters from './components/FloatingLetters';
 import ParchmentFilters from './components/ParchmentFilters';
 import InkRipple from './components/InkRipple';
 import PageTurnTransition from './components/PageTurnTransition';
+import CelestialBackground from './components/CelestialBackground';
 import './styles/scholarly-theme.css';
 
 
@@ -26,6 +27,9 @@ const App = () => {
     <Provider store={store}>
       {/* SVG filter definitions for parchment effects */}
       <ParchmentFilters />
+
+      {/* Celestial Background (Primary Visual) */}
+      <CelestialBackground />
 
       {/* Parchment background with texture */}
       <div className="parchment-background" aria-hidden="true" />

@@ -1,4 +1,20 @@
 @import url("https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700|Roboto:300,400,700");
+
+:root {
+  /* Celestial colors */
+  --color-space-dark: #000411;
+  --color-midnight: #0D1B2A;
+  --color-royal-blue: #1a237e;
+  --color-gold: #D4AF37;
+  --color-gold-glow: rgba(212, 175, 55, 0.4);
+
+  /* Animation durations */
+  --duration-instant: 150ms;
+  --duration-fast: 300ms;
+  --duration-normal: 500ms;
+  --duration-slow: 800ms;
+}
+
 html,
 body {
   margin: 0;
