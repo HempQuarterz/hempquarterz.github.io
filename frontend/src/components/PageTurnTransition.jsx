@@ -9,27 +9,12 @@ import '../styles/page-turn.css';
 
 const PageTurnTransition = ({ children }) => {
   const location = useLocation();
-  const [displayLocation, setDisplayLocation] = React.useState(location);
-  const [transitionStage, setTransitionStage] = React.useState('fadeIn');
-
-  React.useEffect(() => {
-    if (location !== displayLocation) {
-      // Start page turn animation
-      setTransitionStage('fadeOut');
-    }
-  }, [location, displayLocation]);
-
-  const onAnimationEnd = () => {
-    if (transitionStage === 'fadeOut') {
-      setTransitionStage('fadeIn');
-      setDisplayLocation(location);
-    }
-  };
 
   return (
     <div
-      className={`page-turn-wrapper ${transitionStage}`}
-      onAnimationEnd={onAnimationEnd}
+      key={location.pathname}
+      className="page-turn-wrapper fade-in"
+      style={{ animation: 'simpleFadeIn 0.5s ease-out forwards' }}
     >
       {children}
     </div>

@@ -117,7 +117,7 @@
    ============================================================================ */
 
 .restored-name {
-  color: #D4AF37;
+  color: var(--brand-gold-dark);
   font-weight: 700;
   position: relative;
   cursor: help;
@@ -128,7 +128,7 @@
   font-size: 0.6em;
   vertical-align: super;
   margin-left: 2px;
-  color: #D4AF37;
+  color: var(--brand-gold-dark);
 }
 
 .restored-name:hover {
@@ -182,7 +182,7 @@
   font-family: 'Libre Baskerville', serif;
   font-size: 0.9rem;
   font-weight: 700;
-  color: #3B4252;
+  color: var(--ink-dark);
   margin-bottom: 1.5rem;
   text-align: center;
 }
@@ -254,10 +254,10 @@
 
 .strongs-number {
   font-size: 0.7em;
-  color: #666;
+  color: var(--ink-medium);
   vertical-align: super;
   cursor: help;
-  opacity: 0.6;
+  opacity: 0.8;
   transition: opacity 0.2s;
 }
 
@@ -286,7 +286,7 @@
 
 .manuscript-header p {
   font-size: 1.1rem;
-  color: #666;
+  color: var(--ink-medium);
   font-style: italic;
 }
 

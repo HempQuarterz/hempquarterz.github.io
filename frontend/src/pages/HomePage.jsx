@@ -4,6 +4,7 @@ import '../styles/modern.css';
 import ModernHeader from '../components/ModernHeader';
 import ScrollUnfurl from '../components/ScrollUnfurl';
 import ManuscriptIcon from '../components/icons/ManuscriptIcon';
+import parchmentTexture from '../assets/textures/parchment.png';
 
 const HomePage = () => {
   return (
@@ -15,29 +16,35 @@ const HomePage = () => {
         <ScrollUnfurl>
           <div className="card" style={{
             marginBottom: '2.5rem',
-            background: 'linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%)',
-            color: 'white',
+            backgroundImage: `url(${parchmentTexture})`,
+            backgroundSize: 'cover',
+            backgroundBlendMode: 'multiply',
+            backgroundColor: 'var(--brand-parchment)',
+            color: 'var(--ink-dark)',
             padding: '3rem 2rem',
             textAlign: 'center',
-            border: '3px solid #D4AF37',
-            boxShadow: '0 8px 24px rgba(212, 175, 55, 0.3)'
+            border: '3px solid var(--brand-gold)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)'
           }}>
             <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
               <img
-                src="/logo-scroll.png"
-                alt="All4Yah Torah Scroll Logo"
+                src="/logo-brand.svg"
+                alt="All4Yah Brand Logo"
                 style={{
-                  height: '120px',
+                  height: '140px',
                   width: 'auto',
-                  filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))'
+                  filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))'
                 }}
               />
             </div>
             <h1 style={{
-              fontSize: '2.5rem',
+              fontSize: '3rem',
               marginBottom: '1rem',
-              fontWeight: 'bold',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+              fontWeight: '700',
+              color: 'var(--ink-dark)',
+              fontFamily: "'Cinzel', serif", /* Brand Rule */
+              letterSpacing: '0.02em',
+              textShadow: 'none'
             }}>
               All4Yah
             </h1>
@@ -45,8 +52,9 @@ const HomePage = () => {
               fontSize: '1.5rem',
               fontStyle: 'italic',
               marginBottom: '1.5rem',
-              color: '#D4AF37',
-              textShadow: '1px 1px 3px rgba(0,0,0,0.3)'
+              color: 'var(--gold-accent)',
+              filter: 'brightness(0.9)',
+              fontWeight: '600'
             }}>
               "Restoring the Word, verse by verse."
             </p>
@@ -54,17 +62,17 @@ const HomePage = () => {
               fontSize: '1.25rem',
               lineHeight: '1.8',
               marginBottom: '1.5rem',
-              opacity: 0.95
+              color: 'var(--ink-medium)'
             }}>
-              Experience Scripture with the original divine names restored: <strong style={{ color: '#D4AF37' }}>יהוה→Yahuah</strong>, <strong style={{ color: '#D4AF37' }}>יהושע→Yahusha</strong>, <strong style={{ color: '#D4AF37' }}>אלהים→Elohim</strong>
+              Experience Scripture with the original divine names restored: <strong style={{ color: 'var(--wood-dark)' }}>יהוה→Yahuah</strong>, <strong style={{ color: 'var(--wood-dark)' }}>יהושע→Yahusha</strong>, <strong style={{ color: 'var(--wood-dark)' }}>אלהים→Elohim</strong>
             </p>
             <div style={{
-              background: 'rgba(255, 255, 255, 0.1)',
+              background: 'rgba(139, 69, 19, 0.05)',
               borderRadius: '8px',
               padding: '1rem 1.5rem',
               marginBottom: '1.5rem',
               display: 'inline-block',
-              backdropFilter: 'blur(10px)'
+              border: '1px solid rgba(139, 69, 19, 0.1)'
             }}>
               <div style={{
                 display: 'flex',
@@ -72,18 +80,19 @@ const HomePage = () => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexWrap: 'wrap',
-                fontSize: '0.95rem'
+                fontSize: '0.95rem',
+                color: 'var(--ink-medium)'
               }}>
                 <span><strong>248,871</strong> verses</span>
-                <span style={{ opacity: 0.7 }}>•</span>
+                <span style={{ opacity: 0.5 }}>•</span>
                 <span><strong>12</strong> manuscripts</span>
-                <span style={{ opacity: 0.7 }}>•</span>
+                <span style={{ opacity: 0.5 }}>•</span>
                 <span><strong>4</strong> languages</span>
               </div>
             </div>
             <p style={{
               fontSize: '1rem',
-              opacity: 0.9,
+              color: 'var(--ink-light)',
               fontStyle: 'italic',
               marginBottom: '1.5rem'
             }}>
@@ -95,24 +104,24 @@ const HomePage = () => {
               style={{
                 display: 'inline-block',
                 background: '#D4AF37',
-                color: '#1B5E20',
+                color: '#3E2723',
                 padding: '0.875rem 2rem',
                 borderRadius: '50px',
                 textDecoration: 'none',
                 fontWeight: '700',
                 fontSize: '1.1rem',
                 transition: 'all 0.3s ease',
-                border: '2px solid rgba(255, 255, 255, 0.3)',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+                border: '1px solid rgba(62, 39, 35, 0.2)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 6px 20px rgba(212, 175, 55, 0.6)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(212, 175, 55, 0.4)';
                 e.currentTarget.style.background = '#f0c040';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
                 e.currentTarget.style.background = '#D4AF37';
               }}
             >
@@ -216,14 +225,13 @@ const HomePage = () => {
         {/* LSI Feature Highlight - NEW */}
         <div className="card" style={{
           marginBottom: '2.5rem',
-          background: 'linear-gradient(135deg, rgba(106, 27, 154, 0.05) 0%, rgba(74, 20, 140, 0.1) 100%)',
           border: '2px solid rgba(106, 27, 154, 0.3)',
           padding: '2rem'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
             <div style={{ fontSize: '3rem' }}>🕊️</div>
             <div>
-              <h2 style={{ fontSize: '1.75rem', marginBottom: '0.25rem', color: '#6A1B9A' }}>
+              <h2 style={{ fontSize: '1.75rem', marginBottom: '0.25rem', color: 'var(--brand-midnight)' }}>
                 Introducing: Linguistic Spirit Interface (LSI)
               </h2>
               <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', margin: 0 }}>

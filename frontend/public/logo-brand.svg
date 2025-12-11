@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="scrollGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FBF5DB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F9E4A4;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Glow -->
+  <circle cx="256" cy="256" r="240" fill="#F9E4A4" fill-opacity="0.2" filter="url(#glow)" />
+  
+  <!-- Scroll Body -->
+  <path d="M140 100 Q 256 50 372 100 L 372 400 Q 256 450 140 400 Z" fill="url(#scrollGrad)" stroke="#D4AF37" stroke-width="4" />
+  <path d="M140 400 Q 256 450 372 400" fill="none" stroke="#D4AF37" stroke-width="4" />
+  
+  <!-- Flame/Spirit -->
+  <path d="M256 120 Q 200 200 256 300 Q 312 200 256 120" fill="#D4AF37" fill-opacity="0.8" />
+  <path d="M256 140 Q 220 200 256 280 Q 292 200 256 140" fill="#FBF5DB" />
+  
+  <!-- Tech Nodes -->
+  <circle cx="200" cy="250" r="4" fill="#609CB4" />
+  <circle cx="312" cy="250" r="4" fill="#609CB4" />
+  <line x1="200" y1="250" x2="256" y2="280" stroke="#609CB4" stroke-width="2" opacity="0.6" />
+  <line x1="312" y1="250" x2="256" y2="280" stroke="#609CB4" stroke-width="2" opacity="0.6" />
+</svg>

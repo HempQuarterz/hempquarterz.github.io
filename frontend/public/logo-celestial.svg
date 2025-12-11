@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Divine Rays -->
+  <path d="M50 5 L50 20 M50 50 L50 35" stroke="#D4AF37" stroke-width="2" stroke-linecap="round"/>
+  <path d="M50 5 L55 15 M45 15 L50 5" fill="#D4AF37" opacity="0.5"/>
+  <circle cx="50" cy="28" r="3" fill="#D4AF37"/>
+  
+  <!-- Open Scroll -->
+  <path d="M20 35 C 20 25, 35 25, 35 35 V 85 C 35 95, 20 95, 20 85 V 35 Z" fill="none" stroke="#D4AF37" stroke-width="3"/>
+  <path d="M80 35 C 80 25, 65 25, 65 35 V 85 C 65 95, 80 95, 80 85 V 35 Z" fill="none" stroke="#D4AF37" stroke-width="3"/>
+  <path d="M35 35 H 65" stroke="#D4AF37" stroke-width="2"/>
+  <path d="M35 85 H 65" stroke="#D4AF37" stroke-width="2"/>
+  
+  <!-- Text Lines -->
+  <path d="M40 45 H 60" stroke="#D4AF37" stroke-width="1" opacity="0.6"/>
+  <path d="M40 55 H 60" stroke="#D4AF37" stroke-width="1" opacity="0.6"/>
+  <path d="M40 65 H 60" stroke="#D4AF37" stroke-width="1" opacity="0.6"/>
+</svg>

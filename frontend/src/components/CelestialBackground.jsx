@@ -11,80 +11,81 @@ const CelestialBackground = () => {
         <Particles
             id="tsparticles"
             init={particlesInit}
-            options={{
-                fullScreen: {
-                    enable: true,
-                    zIndex: -1
-                },
-                background: {
-                    color: {
-                        value: "#0D1B2A", // Midnight blue base
-                    },
-                },
-                fpsLimit: 120,
-                interactivity: {
-                    events: {
-                        onHover: {
-                            enable: true,
-                            mode: "bubble", // Subtle interaction
-                        },
-                        resize: true,
-                    },
-                    modes: {
-                        bubble: {
-                            distance: 200,
-                            duration: 2,
-                            size: 0,
-                            opacity: 0,
-                        },
-                    },
-                },
-                particles: {
-                    color: {
-                        value: "#D4AF37", // Gold
-                    },
-                    links: {
+                options={{
+                    fullScreen: {
                         enable: true,
-                        distance: 150,
-                        color: "#D4AF37",
-                        opacity: 0.1, // Very subtle links
-                        width: 1,
+                        zIndex: -1
                     },
-                    move: {
-                        direction: "none",
-                        enable: true,
-                        outModes: {
-                            default: "bounce",
+                    background: {
+                        color: {
+                            value: "#0D1B2A", // Midnight blue base
                         },
-                        random: true,
-                        speed: 0.5, // Slow, peaceful movement
-                        straight: false,
                     },
-                    number: {
-                        density: {
-                            enable: true,
-                            area: 800,
+                    fpsLimit: 60, // Cap at 60 for smoothness performance
+                    interactivity: {
+                        events: {
+                            onHover: {
+                                enable: true,
+                                mode: "bubble",
+                            },
+                            resize: true,
                         },
-                        value: 80, // Moderate density
+                        modes: {
+                            bubble: {
+                                distance: 200,
+                                duration: 2,
+                                size: 0,
+                                opacity: 0.8,
+                            },
+                        },
                     },
-                    opacity: {
-                        value: 0.5,
-                        animation: {
+                    particles: {
+                        color: {
+                            value: "#D4AF37", // Gold
+                        },
+                        links: {
+                            enable: false, // DISABLED for cleaner look
+                            distance: 150,
+                            color: "#D4AF37",
+                            opacity: 0.1,
+                            width: 1,
+                        },
+                        move: {
+                            direction: "top", // Rising stars
                             enable: true,
-                            speed: 1,
-                            minimumValue: 0.1,
-                            sync: false
-                        }
+                            outModes: {
+                                default: "out", // Flow off screen, don't bounce
+                            },
+                            random: true,
+                            speed: 0.2, // Very slow, meditative
+                            straight: false,
+                        },
+                        number: {
+                            density: {
+                                enable: true,
+                                area: 800,
+                            },
+                            value: 60, // Reduced density
+                        },
+                        opacity: {
+                            value: 0.5,
+                            random: true,
+                            animation: {
+                                enable: true,
+                                speed: 0.5, // Slow twinkle
+                                minimumValue: 0.1,
+                                sync: false
+                            }
+                        },
+                        shape: {
+                            type: "circle",
+                        },
+                        size: {
+                            value: { min: 1, max: 2 }, // Smaller, more distant stars
+                        },
                     },
-                    shape: {
-                        type: "circle",
-                    },
-                    size: {
-                        value: { min: 1, max: 3 },
-                    },
-                },
-                detectRetina: true,
-            }}
+                    detectRetina: true,
+                }}
             className="celestial-background"
         />
     );

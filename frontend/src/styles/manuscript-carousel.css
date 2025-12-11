@@ -103,9 +103,16 @@
   width: 100%;
   overflow: hidden;
   border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  /* Parchment Background Application */
+  background-color: var(--brand-parchment);
+  /* #FBF5DB */
+  background-image: url('../assets/textures/parchment.png');
+  background-size: cover;
+  background-blend-mode: multiply;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   margin-bottom: 1.5rem;
+  border: 1px solid var(--brand-gold);
+  /* Adding gold border for consistency */
 }
 
 .carousel-track {
@@ -193,8 +200,9 @@
 
 .manuscript-meta {
   font-size: 0.9rem;
-  color: #666;
-  font-weight: 500;
+  color: var(--ink-medium);
+  /* Darker than #666 */
+  font-weight: 600;
 }
 
 /* ============================================================================
@@ -279,7 +287,8 @@
 
 .verse-number {
   font-weight: 700;
-  color: #2E7D32;
+  color: var(--brand-midnight);
+  /* High contrast vs Green */
   min-width: 40px;
   text-align: right;
   font-size: 0.9rem;

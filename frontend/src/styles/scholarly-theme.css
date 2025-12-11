@@ -7,48 +7,121 @@
    COLOR PALETTE - Ancient Library & Candlelit Study
    ============================================================================ */
 
-:root {
-  /* Light Mode - Ancient Library */
-  --parchment-light: #F4E8D8;
-  --parchment-medium: #EDD9C0;
-  --parchment-dark: #D4C4A8;
-  --ink-dark: #3E2723;
-  --ink-medium: #5D4037;
-  --ink-light: #795548;
-  --gold-accent: #D4AF37;
-  --gold-hover: #C19A2E;
-  --wood-dark: #654321;
-  --wood-medium: #8B4513;
-  --leather-brown: #704214;
+/* ============================================================================
+   COLOR PALETTE - All4Yah Brand Kit v1
+   ============================================================================ */
 
-  /* Base backgrounds */
-  --bg-primary: var(--parchment-light);
-  --bg-secondary: var(--parchment-medium);
-  --text-primary: var(--ink-dark);
-  --text-secondary: var(--ink-medium);
-  --accent-primary: var(--gold-accent);
+:root,
+[data-theme="light"] {
+  /* Brand Constants */
+  --brand-midnight: #0E233B;
+  --brand-parchment: #FBF5DB;
+  /* Scroll Parchment */
+  --brand-gold: #F9E4A4;
+  /* Radiant Gold */
+  --brand-teal: #609CB4;
+  /* Data Light Blue */
+  --brand-grey: #8E938F;
+  /* Stone Grey */
+  /* Muted Gold Shadow */
+  --brand-gold-dark: #9C6F03;
+  /* High Contrast Dark Gold for Text */
+
+  /* Theme Mapping - Light Mode (Scroll/Study) */
+  --parchment-light: var(--brand-parchment);
+  --parchment-medium: #F3ECE0;
+  /* Slightly darker shift for texture */
+
+  --bg-primary: var(--brand-parchment) !important;
+  --bg-secondary: #F3F4F6 !important;
+  /* Off-white shadow for panels */
+
+  --ink-dark: #111827;
+  /* Dark Text */
+  --ink-medium: #374151;
+  --ink-light: var(--brand-grey);
+
+  --text-primary: var(--ink-dark) !important;
+  --text-secondary: var(--ink-medium) !important;
+
+  --accent-primary: var(--brand-midnight) !important;
+  /* In light mode, midnight is a strong accent */
+  --accent-secondary: var(--brand-teal) !important;
+  --button-text: var(--brand-parchment);
+
+  /* Typography */
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-scripture: 'Cormorant Garamond', serif;
+
+  /* Make body transparent so fixed backgrounds show */
+  background-color: transparent !important;
 }
 
-/* Dark Mode - Candlelit Study */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --parchment-dark: #2A2318;
-    --parchment-medium: #1F1810;
-    --parchment-light: #352B1E;
-    --ink-light: #E8D5B5;
-    --ink-medium: #D4C4A8;
-    --ink-dark: #F5E6D3;
-    --gold-accent: #D4AF37;
-    --gold-hover: #E8C547;
-    --candle-glow: #FFB74D;
-    --candle-dim: #FF9800;
+/* Dark Mode - Celestial/Midnight Revelation */
+[data-theme="dark"] {
+  /* Theme Mapping - Dark Mode */
+  --bg-primary: #0E233B !important;
+  /* All4Yah Midnight */
+  --bg-secondary: #132D4A !important;
+  /* Slightly lighter midnight */
 
-    --bg-primary: var(--parchment-dark);
-    --bg-secondary: var(--parchment-medium);
-    --text-primary: var(--ink-light);
-    --text-secondary: var(--ink-medium);
-    --accent-primary: var(--gold-accent);
-  }
+  --parchment-light: #FBF5DB;
+  /* KEEP PARCHMENT LIGHT (Floating Scrolls) */
+  --ink-dark: #111827;
+  /* Text on parchment cards is always dark */
+
+  --text-primary: var(--brand-gold) !important;
+  /* Gold text directly on Midnight BG */
+  --text-secondary: #E5E7EB !important;
+  /* Light grey on Midnight */
+
+  --accent-primary: var(--brand-gold) !important;
+  --accent-secondary: var(--brand-teal) !important;
+
+  --candle-glow: #F9E4A4;
+  /* Gold glow */
+}
+
+/* Typography Application */
+body {
+  font-family: var(--font-body);
+  background-color: transparent !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
+}
+
+.scripture-text,
+.verse-text {
+  font-family: var(--font-scripture);
+}
+
+/* Button & Link Styles from Brand Kit */
+a {
+  color: var(--brand-teal);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--brand-gold) !important;
+  color: var(--brand-midnight) !important;
+  font-family: var(--font-body);
+  font-weight: 600;
+  border: none;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--brand-teal);
+  color: var(--brand-parchment);
 }
 
 /* ============================================================================
@@ -66,7 +139,7 @@
   filter: url(#parchmentTexture);
 }
 
-/* Light mode parchment gradient overlay */
+/* Light mode parchment gradient overlay - Adjusted to be richer/less white */
 .parchment-background::before {
   content: '';
   position: absolute;
@@ -74,26 +147,23 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(
-    ellipse at 50% 30%,
-    rgba(244, 232, 216, 0.9) 0%,
-    rgba(237, 217, 192, 0.7) 50%,
-    rgba(212, 196, 168, 0.5) 100%
-  );
-  mix-blend-mode: overlay;
-  opacity: 0.4;
+  background: radial-gradient(ellipse at 50% 30%,
+      rgba(251, 245, 219, 0.95) 0%,
+      /* Brand Parchment #FBF5DB */
+      rgba(243, 236, 224, 0.85) 50%,
+      rgba(225, 215, 195, 0.7) 100%);
+  mix-blend-mode: multiply;
+  /* Changed from overlay to multiply for richer color */
+  opacity: 1;
+  /* Increased opacity */
 }
 
-@media (prefers-color-scheme: dark) {
-  .parchment-background::before {
-    background: radial-gradient(
-      ellipse at 50% 30%,
+[data-theme="dark"] .parchment-background::before {
+  background: radial-gradient(ellipse at 50% 30%,
       rgba(53, 43, 30, 0.9) 0%,
       rgba(31, 24, 16, 0.7) 50%,
-      rgba(42, 35, 24, 0.5) 100%
-    );
-    opacity: 0.6;
-  }
+      rgba(42, 35, 24, 0.5) 100%);
+  opacity: 0.6;
 }
 
 /* Age spots and wear marks */
@@ -123,40 +193,33 @@
   transform: translateX(-50%);
   width: 800px;
   height: 800px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 183, 77, 0.06) 0%,
-    rgba(255, 152, 0, 0.03) 40%,
-    transparent 60%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(255, 183, 77, 0.06) 0%,
+      rgba(255, 152, 0, 0.03) 40%,
+      transparent 60%);
   z-index: -1;
   pointer-events: none;
-  animation: candleFlicker 5s ease-in-out infinite;
+  animation: candleFlicker 8s ease-in-out infinite;
+  /* Slower, calmer */
   opacity: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  .candle-glow {
-    opacity: 1;
-  }
+[data-theme="dark"] .candle-glow {
+  opacity: 1;
 }
 
 @keyframes candleFlicker {
-  0%, 100% {
-    opacity: 0.04;
+
+  0%,
+  100% {
+    opacity: 0.03;
     transform: translateX(-50%) scale(1);
   }
-  25% {
-    opacity: 0.06;
-    transform: translateX(-50%) scale(1.02);
-  }
+
   50% {
-    opacity: 0.03;
-    transform: translateX(-50%) scale(0.98);
-  }
-  75% {
     opacity: 0.05;
-    transform: translateX(-50%) scale(1.01);
+    /* Very subtle pulse */
+    transform: translateX(-50%) scale(1.02);
   }
 }
 
@@ -174,14 +237,95 @@
 
 .parchment-background,
 .candle-glow {
-  will-change: auto; /* Only animate when necessary */
+  will-change: auto;
+  /* Only animate when necessary */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
+/* ============================================================================
+   GLOBAL PARCHMENT TEXTURE INTEGRATION
+   ============================================================================ */
+
+/* Apply parchment to all cards, inputs, and text areas */
+.card,
+input[type="text"],
+input[type="search"],
+input[type="email"],
+textarea,
+.verse-text,
+.scripture-content,
+.bible-text,
+.manuscript-viewer {
+  background-image: url('../assets/textures/parchment.png'), linear-gradient(to bottom right, var(--bg-secondary), var(--bg-primary));
+  background-blend-mode: multiply;
+  background-size: cover;
+  border: 1px solid rgba(139, 69, 19, 0.2);
+  box-shadow: inset 0 0 20px rgba(139, 69, 19, 0.05);
+}
+
+/* Specific overrides for Dark Mode - "Floating Scrolls" style */
+/* Specific overrides for Dark Mode - "Floating Scrolls" style */
+[data-theme="dark"] .card,
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] .verse-text,
+[data-theme="dark"] .scripture-content,
+[data-theme="dark"] .manuscript-carousel,
+[data-theme="dark"] .manuscript-slide,
+[data-theme="dark"] .english-text,
+[data-theme="dark"] .hebrew-text,
+[data-theme="dark"] .greek-text {
+  /* CRITICAL FIX: Override the gradient to be LIGHT, so 'multiply' works correctly */
+  background-image: url('../assets/textures/parchment.png'), linear-gradient(to bottom right, #F4E8D8, #EDD9C0);
+  background-blend-mode: multiply;
+
+  /* Ensure the background color fallback is also light */
+  background-color: var(--parchment-light);
+
+  /* FORCE dark text */
+  color: var(--ink-dark) !important;
+
+  /* Make it pop against the dark starfield */
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  /* Gold border */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  /* Deep floating shadow */
+}
+
+/* Ensure headings inside dark mode cards are also dark ink, not gold */
+[data-theme="dark"] .card h1,
+[data-theme="dark"] .card h2,
+[data-theme="dark"] .card h3,
+[data-theme="dark"] .card h4,
+[data-theme="dark"] .card strong,
+[data-theme="dark"] .verse-text strong {
+  color: var(--ink-dark) !important;
+}
+
+[data-theme="dark"] .card .btn {
+  /* Buttons can stay gold/dark */
+}
+
+/* Simple Fade Animation for Page Stability */
+@keyframes simpleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .candle-glow {
-    animation: none;
+
+  .candle-glow,
+  .page-turn-wrapper {
+    animation: none !important;
+    transition: none !important;
   }
 }
