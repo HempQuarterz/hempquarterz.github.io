@@ -1,5 +1,0 @@
-"""
-# Documents
-
-Higher level documentation.
-"""

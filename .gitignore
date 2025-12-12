@@ -8,6 +8,12 @@ database/node_modules
 /.pnp
 .pnp.js
 
+# Python virtual environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+
 # testing
 /coverage
 frontend/coverage
