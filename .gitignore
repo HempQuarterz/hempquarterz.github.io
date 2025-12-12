@@ -69,3 +69,6 @@ generate-icons.js
 
 # Windows Zone.Identifier files
 *.Zone.Identifier
+
+# Claude Code local settings (user-specific)
+.claude/settings.local.json
