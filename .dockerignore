@@ -1,0 +1,57 @@
+# Dependencies
+node_modules
+*/node_modules
+**/node_modules
+
+# Build output (we build inside Docker)
+frontend/build
+
+# Development files
+.git
+.gitignore
+.vscode
+.idea
+*.md
+!README.md
+
+# Environment files (use docker-compose env_file instead)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+coverage
+*.test.js
+*.spec.js
+__tests__
+
+# Python virtual environments
+venv
+*.pyc
+__pycache__
+
+# Manuscripts (large data files)
+manuscripts
+
+# Temporary files
+*.tmp
+*.temp
+.cache
+
+# IDE
+.idea
+*.swp
+*.swo
+
+# Docker files (don't need inside container)
+Dockerfile
+docker-compose*.yml
+.dockerignore

@@ -1,0 +1,94 @@
+# ============================================================================
+# All4Yah Docker Compose Configuration
+# ============================================================================
+# Multi-container setup for development and production
+#
+# Usage:
+#   docker-compose up -d              # Start all services
+#   docker-compose up -d --build      # Rebuild and start
+#   docker-compose logs -f            # View logs
+#   docker-compose down               # Stop all services
+#
+# Profiles:
+#   docker-compose --profile dev up   # Development mode
+#   docker-compose --profile prod up  # Production mode
+# ============================================================================
+
+version: '3.8'
+
+services:
+  # ==========================================================================
+  # Production: Single optimized container
+  # ==========================================================================
+  all4yah:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: all4yah-prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    env_file:
+      - ./backend/.env
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - prod
+
+  # ==========================================================================
+  # Development: Separate containers with hot reload
+  # ==========================================================================
+  frontend-dev:
+    image: node:20-alpine
+    container_name: all4yah-frontend-dev
+    working_dir: /app
+    command: sh -c "npm install --legacy-peer-deps && npm start"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend-dev
+    profiles:
+      - dev
+
+  backend-dev:
+    image: node:20-alpine
+    container_name: all4yah-backend-dev
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+    env_file:
+      - ./backend/.env
+    profiles:
+      - dev
+
+# ==========================================================================
+# Networks
+# ==========================================================================
+networks:
+  default:
+    name: all4yah-network
+    driver: bridge
