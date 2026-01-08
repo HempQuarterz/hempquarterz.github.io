@@ -298,7 +298,7 @@ export async function getPrayerSessions(userId = null, options = {}) {
   }
 }
 
-export default {
+const supabaseStorageApi = {
   initializeStorageBucket,
   uploadAudioFile,
   getAudioUrl,
@@ -307,3 +307,5 @@ export default {
   updatePrayerSession,
   getPrayerSessions
 };
+
+export default supabaseStorageApi;

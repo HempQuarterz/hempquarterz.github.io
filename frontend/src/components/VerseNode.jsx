@@ -7,7 +7,7 @@ import React, { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 
 const VerseNode = ({ data, selected }) => {
-  const { book, chapter, verse, isRoot, depth, label } = data;
+  const { book, chapter, verse, isRoot, depth } = data;
 
   // Node styling based on state
   const nodeClass = `verse-node ${isRoot ? 'root-node' : ''} ${selected ? 'selected' : ''} depth-${depth}`;

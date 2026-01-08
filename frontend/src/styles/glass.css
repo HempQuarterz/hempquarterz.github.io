@@ -1,0 +1,156 @@
+/* Premium Glassmorphism & Dock Styles */
+
+:root {
+    --dock-bg: rgba(10, 10, 15, 0.5);
+    --dock-border: rgba(255, 255, 255, 0.08);
+    --dock-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    --active-glow: rgba(212, 175, 55, 0.15);
+    /* Brand Gold Glow */
+}
+
+/* Base Glass Panel - The "Frosted Sheet" Look */
+.glass-panel {
+    background: var(--dock-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--dock-border);
+    box-shadow: var(--dock-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Noise overlay for texture (prevents banding) */
+.glass-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+/* The Levitating Dock Container */
+.glass-dock {
+    background: rgba(5, 5, 10, 0.4);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    /* Pill shape */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.glass-dock:hover {
+    background: rgba(5, 5, 10, 0.5);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow:
+        0 15px 50px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Tooltips */
+.glass-tooltip {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Scrollbar hiding for clean UI */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* --- V3: CHROMIUM GLASS (Generative System) --- */
+
+/* 
+   Refractive Glass with Chromatic Aberration 
+   Simulates light bending through thick crystal
+*/
+.glass-chromium {
+    background: rgba(15, 15, 20, 0.4);
+    backdrop-filter: blur(24px) saturate(220%);
+    -webkit-backdrop-filter: blur(24px) saturate(220%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: visible;
+    /* Needed for glow spill */
+    /* Subtle prism edge */
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        -1px 0 2px rgba(0, 255, 255, 0.1),
+        /* Cyan shift */
+        1px 0 2px rgba(255, 0, 255, 0.1),
+        /* Magenta shift */
+        0 12px 40px rgba(0, 0, 0, 0.4);
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Iridescent Sheen (Hover) */
+.glass-chromium::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    background: conic-gradient(from 0deg at 50% 50%,
+            transparent 0%,
+            rgba(255, 255, 255, 0.05) 20%,
+            transparent 40%,
+            rgba(200, 200, 255, 0.05) 60%,
+            transparent 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.glass-chromium:hover::after {
+    opacity: 1;
+}
+
+/* Deep Noise Texture (High Fidelity) */
+.glass-noise-high {
+    position: relative;
+}
+
+.glass-noise-high::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    /* Slightly more visible than standard */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: 0;
+}
+
+/* Magnetic Button Base Styles */
+.magnetic-btn-glow {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    border-radius: 50%;
+    background: radial-gradient(circle closest-side, rgba(255, 255, 255, 0.15), transparent);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}

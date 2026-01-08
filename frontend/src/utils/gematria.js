@@ -42,7 +42,9 @@ const finalToNormal = {
 
 /**
  * Normal form to final form mapping (Hebrew)
+ * Reserved for future use in text normalization
  */
+// eslint-disable-next-line no-unused-vars
 const normalToFinal = {
   'כ': 'ך',
   'מ': 'ם',
@@ -360,7 +362,7 @@ export const NOTABLE_VALUES = {
   888: { name: 'Jesus (Greek)', meaning: 'Ἰησοῦς in isopsephy', reference: 'Matthew 1:21' }
 };
 
-export default {
+const gematriaUtils = {
   calculateGematria,
   calculateHebrewGematria,
   calculateGreekGematria,
@@ -370,3 +372,5 @@ export default {
   GEMATRIA_SYSTEMS,
   NOTABLE_VALUES
 };
+
+export default gematriaUtils;

@@ -16,8 +16,7 @@ import {
   MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { getCrossReferences } from '../api/crossReferences';
-import { formatCrossReference, getCategoryColor } from '../api/crossReferences';
+import { getCrossReferences, getCategoryColor } from '../api/crossReferences';
 import VerseNode from './VerseNode';
 import RelationshipEdge from './RelationshipEdge';
 import '../styles/networkGraph.css';

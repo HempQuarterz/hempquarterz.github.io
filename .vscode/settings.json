@@ -1,5 +1,16 @@
 {
     "cSpell.words": [
         "webfonts"
-    ]
+    ],
+    "terminal.integrated.profiles.windows": {
+        "WSL Ubuntu": {
+            "path": "C:\\Windows\\System32\\wsl.exe",
+            "args": [
+                "-d",
+                "Ubuntu",
+                "--cd",
+                "/home/hempquarterz/projects/All4Yah"
+            ]
+        }
+    }
 }

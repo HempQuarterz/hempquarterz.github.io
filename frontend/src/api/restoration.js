@@ -342,7 +342,7 @@ export async function getNameMappings() {
 }
 
 // Export all functions
-export default {
+const restorationApi = {
   restoreByStrongsNumbers,
   restoreByPattern,
   restoreVerse,
@@ -352,3 +352,5 @@ export default {
   preloadNameMappings,
   clearMappingsCache
 };
+
+export default restorationApi;

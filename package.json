@@ -1,5 +1,10 @@
 {
   "devDependencies": {
     "canvas": "^3.2.0"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.4.2",
+    "three": "^0.182.0"
   }
 }

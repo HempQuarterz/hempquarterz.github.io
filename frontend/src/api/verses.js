@@ -387,7 +387,8 @@ export async function getChapterVerses(book, chapter) {
  */
 export async function getBooks(manuscript) {
   try {
-    const manuscriptId = await getManuscriptId(manuscript);
+    // Validate manuscript exists (optional use of result)
+    await getManuscriptId(manuscript);
 
     const { data, error } = await supabase
       .from('verses')
@@ -459,7 +460,7 @@ export async function getRestoredChapter(manuscript, book, chapter) {
 }
 
 // Export all functions
-export default {
+const versesApi = {
   getVerse,
   getVerses,
   getParallelVerse,
@@ -477,3 +478,5 @@ export default {
   getRestoredParallelVerse,
   getRestoredChapter
 };
+
+export default versesApi;

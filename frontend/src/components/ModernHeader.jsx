@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { BibleNavigator } from './Navigation';
+import { Menu } from 'lucide-react';
 
 const ModernHeader = ({ title = "All4Yah" }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [theme, setTheme] = useState('light');
+  const [isNavigatorOpen, setIsNavigatorOpen] = useState(false);
+  const [currentSelection, setCurrentSelection] = useState({ book: 'GEN', chapter: 1, verse: 1 });
 
   useEffect(() => {
     // Initialize theme from localStorage or default
@@ -21,8 +25,6 @@ const ModernHeader = ({ title = "All4Yah" }) => {
     document.documentElement.setAttribute('data-theme', newTheme);
   };
 
-  const isHome = location.pathname === '/';
-
   return (
     <>
       <header style={{
@@ -30,15 +32,25 @@ const ModernHeader = ({ title = "All4Yah" }) => {
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: '1rem 2rem',
-        background: '#0E233B', /* Brand Rule: Midnight Background Always */
+        background: 'rgba(14, 35, 59, 0.85)', /* Glass Midnight */
         color: '#F9E4A4', /* Brand Rule: Radiant Gold Text */
+        backdropFilter: 'blur(12px)', /* Glass Effect */
         boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
         position: 'sticky',
         top: 0,
         zIndex: 1000,
-        borderBottom: '1px solid #609CB4' /* Data Light Blue Accent */
+        borderBottom: '1px solid rgba(96, 156, 180, 0.3)' /* Subtle Data Blue Accent */
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          {/* Hamburger Menu - Navigator Trigger */}
+          <button
+            onClick={() => setIsNavigatorOpen(true)}
+            className="p-2 rounded-lg hover:bg-white/10 transition-colors text-[#F9E4A4]"
+            aria-label="Open Scripture Navigator"
+          >
+            <Menu size={28} strokeWidth={2} />
+          </button>
+
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none' }}>
             <img
               src="/logo-brand.svg"
@@ -147,6 +159,17 @@ const ModernHeader = ({ title = "All4Yah" }) => {
           <span>Theme</span>
         </button>
       </nav>
+
+      {/* Navigation Overlay */}
+      <BibleNavigator
+        isOpen={isNavigatorOpen}
+        onClose={() => setIsNavigatorOpen(false)}
+        currentSelection={currentSelection}
+        onSelectionChange={(selection) => {
+          setCurrentSelection(selection);
+          navigate(`/manuscripts?book=${selection.book}&chapter=${selection.chapter}&verse=${selection.verse}`);
+        }}
+      />
     </>
   );
 };

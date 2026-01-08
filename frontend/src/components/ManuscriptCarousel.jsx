@@ -111,8 +111,6 @@ const ManuscriptCarousel = ({
     return null;
   }
 
-  const currentManuscript = manuscripts[activeIndex];
-
   return (
     <div className="manuscript-carousel-container">
       {/* Manuscript Selector Pills */}

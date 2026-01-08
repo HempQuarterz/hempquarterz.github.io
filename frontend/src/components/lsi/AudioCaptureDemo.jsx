@@ -90,7 +90,8 @@ const AudioCaptureDemo = () => {
         showGrid: true
       });
     }
-  }, [canvasRef.current]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * Initialize audio processor
@@ -296,9 +297,9 @@ const AudioCaptureDemo = () => {
 
       console.log(`✅ Audio uploaded: ${uploadResult.filePath}`);
 
-      // Step 3: Update session with file path
-      const updateResult = await sessionResult.session;
-      // Note: We could update the session here with audio_file_path if needed
+      // Step 3: Session is already created, audio path stored in uploadResult
+      // Future: Could update session with additional metadata here
+      void sessionResult.session; // Acknowledge session reference
 
       setUploadSuccess(true);
       setIsUploading(false);

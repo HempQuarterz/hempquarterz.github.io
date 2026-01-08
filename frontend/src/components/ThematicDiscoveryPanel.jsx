@@ -4,7 +4,7 @@
  * Uses Transformers.js for client-side semantic similarity
  */
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   generateEmbedding,
   findSimilarVerses,
@@ -25,8 +25,6 @@ const ThematicDiscoveryPanel = ({ book, chapter, verse, currentVerseText, onNavi
   const [poolLoading, setPoolLoading] = useState(false);
   const [selectedThreshold, setSelectedThreshold] = useState(0.6);
   const [maxResults, setMaxResults] = useState(10);
-
-  const abortControllerRef = useRef(null);
 
   /**
    * Preload the ML model on component mount
@@ -84,7 +82,6 @@ const ThematicDiscoveryPanel = ({ book, chapter, verse, currentVerseText, onNavi
       // In production: Load from pre-computed embedding database
       const sampleBooks = ['GEN', 'PSA', 'ISA', 'MAT', 'JHN', 'ROM', 'REV'];
       const sampleChapters = [1, 1, 53, 5, 3, 8, 21]; // Notable chapters
-      const sampleVerses = [1, 1, 1, 1, 16, 28, 1]; // Notable verses
 
       const versePromises = sampleBooks.map(async (bookCode, idx) => {
         try {

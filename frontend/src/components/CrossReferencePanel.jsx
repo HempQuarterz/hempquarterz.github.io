@@ -7,7 +7,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   getCrossReferences,
-  getCrossReferenceCount,
   formatCrossReference,
   getCategoryDisplayName,
   getCategoryColor

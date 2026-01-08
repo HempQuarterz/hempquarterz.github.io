@@ -139,7 +139,7 @@ a {
   filter: url(#parchmentTexture);
 }
 
-/* Light mode parchment gradient overlay - Adjusted to be richer/less white */
+/* Light mode parchment glass overlay */
 .parchment-background::before {
   content: '';
   position: absolute;
@@ -147,23 +147,26 @@ a {
   left: 0;
   width: 100%;
   height: 100%;
+  /* Glass Parchment: Semi-transparent + textured */
   background: radial-gradient(ellipse at 50% 30%,
-      rgba(251, 245, 219, 0.95) 0%,
-      /* Brand Parchment #FBF5DB */
-      rgba(243, 236, 224, 0.85) 50%,
-      rgba(225, 215, 195, 0.7) 100%);
-  mix-blend-mode: multiply;
-  /* Changed from overlay to multiply for richer color */
+      rgba(251, 245, 219, 0.4) 0%,
+      rgba(243, 236, 224, 0.3) 50%,
+      rgba(225, 215, 195, 0.2) 100%);
+  backdrop-filter: blur(8px);
+  /* The Glass Effect */
+  mix-blend-mode: normal;
   opacity: 1;
-  /* Increased opacity */
 }
 
 [data-theme="dark"] .parchment-background::before {
+  /* Dark Glass Parchment */
   background: radial-gradient(ellipse at 50% 30%,
-      rgba(53, 43, 30, 0.9) 0%,
-      rgba(31, 24, 16, 0.7) 50%,
-      rgba(42, 35, 24, 0.5) 100%);
-  opacity: 0.6;
+      rgba(53, 43, 30, 0.4) 0%,
+      rgba(31, 24, 16, 0.3) 50%,
+      rgba(42, 35, 24, 0.2) 100%);
+  backdrop-filter: blur(12px);
+  /* Stronger blur for dark mode */
+  opacity: 1;
 }
 
 /* Age spots and wear marks */
@@ -276,12 +279,16 @@ textarea,
 [data-theme="dark"] .english-text,
 [data-theme="dark"] .hebrew-text,
 [data-theme="dark"] .greek-text {
-  /* CRITICAL FIX: Override the gradient to be LIGHT, so 'multiply' works correctly */
-  background-image: url('../assets/textures/parchment.png'), linear-gradient(to bottom right, #F4E8D8, #EDD9C0);
-  background-blend-mode: multiply;
+  /* CRITICAL FIX: Glass Parchment for Cards */
+  background-image: url('../assets/textures/parchment.png');
+  background-blend-mode: overlay;
+  /* Use overlay for glass texture */
 
-  /* Ensure the background color fallback is also light */
-  background-color: var(--parchment-light);
+  /* Semi-transparent light background for contrast against dark starry night */
+  background-color: rgba(251, 245, 219, 0.85);
+  /* 85% opacity parchment */
+  backdrop-filter: blur(16px);
+  /* Strong blur to ensure text readability */
 
   /* FORCE dark text */
   color: var(--ink-dark) !important;

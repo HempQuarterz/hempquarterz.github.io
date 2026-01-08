@@ -435,7 +435,7 @@ export function highlightQuotations(verseText, quotations) {
 }
 
 // Export all functions
-export default {
+const crossReferencesApi = {
   getCrossReferences,
   getCrossReferencesByCategory,
   getCrossReferenceCount,
@@ -449,3 +449,5 @@ export default {
   getCategoryColor,
   getParallelTypeDisplayName
 };
+
+export default crossReferencesApi;

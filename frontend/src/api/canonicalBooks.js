@@ -192,7 +192,7 @@ export async function searchCanonicalBooks(searchTerm, tiers = null) {
 }
 
 // Export all functions
-export default {
+const canonicalBooksApi = {
   getCanonicalBooks,
   getCanonicalBook,
   getTierCounts,
@@ -200,3 +200,5 @@ export default {
   getHighProvenanceBooks,
   searchCanonicalBooks
 };
+
+export default canonicalBooksApi;

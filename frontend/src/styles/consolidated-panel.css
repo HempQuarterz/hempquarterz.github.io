@@ -1,14 +1,18 @@
 /**
  * Consolidated Panel Styles
  * Modern tabbed interface for manuscript features
+ * "Glass Scroll" Edition
  */
 
 .consolidated-panel {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  background: rgba(14, 35, 59, 0.4);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
   margin-top: 2rem;
+  color: #e2e8f0;
 }
 
 /* ============================================================================
@@ -17,16 +21,14 @@
 
 .tab-navigation {
   display: flex;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-  border-bottom: 2px solid #ddd;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   overflow-x: auto;
-  /* Hide scrollbar but keep functionality */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;
 }
 
 .tab-navigation::-webkit-scrollbar {
-  display: none; /* Chrome/Safari/Opera */
+  display: none;
 }
 
 .tab-button {
@@ -40,24 +42,27 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border-bottom: 3px solid transparent;
-  flex-shrink: 0; /* Prevent tabs from shrinking on mobile */
+  flex-shrink: 0;
   min-width: 100px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .tab-button:hover {
-  background: rgba(46, 125, 50, 0.05);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .tab-button.active {
-  background: #fff;
-  border-bottom-color: #2E7D32;
-  color: #2E7D32;
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom-color: #D4AF37;
+  color: #D4AF37;
   font-weight: 600;
 }
 
 .tab-icon {
   font-size: 1.5rem;
   line-height: 1;
+  color: inherit;
 }
 
 .tab-label {
@@ -66,17 +71,13 @@
   white-space: nowrap;
 }
 
-.tab-button.active .tab-label {
-  font-weight: 700;
-}
-
 /* ============================================================================
    TAB CONTENT
    ============================================================================ */
 
 .tab-content {
   min-height: 400px;
-  background: #fff;
+  background: transparent;
 }
 
 .tab-content-wrapper {
@@ -89,6 +90,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -96,7 +98,7 @@
 }
 
 /* ============================================================================
-   REFERENCES TAB (TWO-COLUMN LAYOUT)
+   REFERENCES GRID
    ============================================================================ */
 
 .references-grid {
@@ -111,19 +113,17 @@
   }
 }
 
-.cross-refs-section,
-.parallel-section {
-  /* Let child components handle their own styling */
+/* Content Text Overrides for Dark Background */
+.about-content h2,
+.about-content h3 {
+  color: #F9E4A4 !important;
+  /* Gold */
 }
 
-/* ============================================================================
-   ABOUT TAB CONTENT
-   ============================================================================ */
-
-.about-content {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1rem;
+.about-content p,
+.about-content li {
+  color: #e2e8f0 !important;
+  /* Soft White */
 }
 
 /* ============================================================================
@@ -147,80 +147,12 @@
   .tab-content-wrapper {
     padding: 1rem;
   }
-
-  .references-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ============================================================================
-   DARK MODE SUPPORT
-   ============================================================================ */
-
-@media (prefers-color-scheme: dark) {
-  .consolidated-panel {
-    background: #2a2a2a;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  }
-
-  .tab-navigation {
-    background: linear-gradient(135deg, #333 0%, #2a2a2a 100%);
-    border-bottom-color: #444;
-  }
-
-  .tab-button {
-    color: #ccc;
-  }
-
-  .tab-button:hover {
-    background: rgba(46, 125, 50, 0.15);
-  }
-
-  .tab-button.active {
-    background: #2a2a2a;
-    color: #88C0D0;
-    border-bottom-color: #88C0D0;
-  }
-
-  .tab-content {
-    background: #2a2a2a;
-  }
-
-  .about-content h2,
-  .about-content h3 {
-    color: #88C0D0 !important;
-  }
-
-  .about-content p,
-  .about-content li {
-    color: #d8dee9 !important;
-  }
-}
-
-/* ============================================================================
-   LOADING STATES
-   ============================================================================ */
-
-.tab-content-wrapper .loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
-  color: #666;
-  font-style: italic;
 }
 
 /* ============================================================================
    SCROLL OPTIMIZATION
    ============================================================================ */
-
 .tab-content {
-  /* Enable hardware acceleration */
   transform: translateZ(0);
   will-change: contents;
-}
-
-/* Smooth scrolling within tab content */
-.tab-content-wrapper {
-  scroll-behavior: smooth;
 }

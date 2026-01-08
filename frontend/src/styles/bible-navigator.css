@@ -1,0 +1,183 @@
+/**
+ * Bible Navigator Styles
+ * Miller Column Scripture Navigation with Royal/Gold Theme
+ */
+
+/* === Color Variables === */
+:root {
+  --royal-800: #1e2a4a;
+  --royal-900: #0f1729;
+  --royal-950: #080c18;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+}
+
+/* === Navigator Overlay === */
+.bible-navigator-overlay {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* === Main Container === */
+.bible-navigator-container {
+  background: linear-gradient(180deg, var(--royal-900) 0%, var(--royal-950) 100%);
+}
+
+@media (min-width: 768px) {
+  .bible-navigator-container {
+    box-shadow:
+      0 25px 50px -12px rgba(0, 0, 0, 0.5),
+      0 0 60px rgba(212, 175, 55, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* === Header === */
+.nav-header {
+  background: linear-gradient(
+    90deg,
+    var(--royal-900) 0%,
+    var(--royal-800) 50%,
+    var(--royal-900) 100%
+  );
+}
+
+/* === Navigation Columns === */
+.nav-column {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+}
+
+.nav-column::-webkit-scrollbar {
+  width: 6px;
+}
+
+.nav-column::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nav-column::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.3);
+  border-radius: 3px;
+}
+
+.nav-column::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.5);
+}
+
+/* === Navigation Items === */
+.nav-item {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-item:active {
+  transform: scale(0.97);
+}
+
+.nav-item-selected {
+  animation: nav-item-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes nav-item-glow {
+  from {
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.15);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+  }
+}
+
+/* === Search Input === */
+.nav-column input[type="text"]:focus {
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+/* === Mobile Responsive === */
+@media (max-width: 767px) {
+  .bible-navigator-container {
+    border-radius: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .nav-column {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/* === Glass Panel Effect === */
+.nav-column > div:first-child {
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 41, 0.9) 0%,
+    rgba(15, 23, 41, 0.7) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* === Testament Tabs === */
+.nav-column button.bg-brand-gold {
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+}
+
+/* === Chapter/Verse Grid Items === */
+.nav-item[class*="h-12"] {
+  aspect-ratio: 1;
+  min-width: 0;
+}
+
+/* === Smooth Transitions === */
+.nav-column,
+.nav-item,
+.bible-navigator-container {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* === Loading State Placeholder === */
+.nav-column-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--slate-500);
+}
+
+/* === Empty State === */
+.nav-column-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--slate-600);
+  text-align: center;
+  padding: 2rem;
+}
+
+.nav-column-empty svg {
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* === Keyboard Navigation Focus States === */
+.nav-item:focus-visible {
+  outline: 2px solid var(--brand-gold, #d4af37);
+  outline-offset: 2px;
+}
+
+/* === Print Styles === */
+@media print {
+  .bible-navigator-overlay {
+    display: none;
+  }
+}
