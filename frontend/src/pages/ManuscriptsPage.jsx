@@ -234,9 +234,9 @@ const ManuscriptsPage = () => {
       </div>
 
       {showSearch && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={(e) => { if (e.target === e.currentTarget) toggleSearch(); }}>
-          <div className="bg-slate-900 p-6 rounded-2xl max-w-4xl w-full border border-gray-700 relative" style={{ maxHeight: '85vh', overflow: 'auto' }}>
-            <button onClick={toggleSearch} className="absolute top-4 right-4 text-gray-400 hover:text-white">✕</button>
+        <div className="search-modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) toggleSearch(); }}>
+          <div className="search-modal-container">
+            <button onClick={toggleSearch} className="search-modal-close">✕</button>
             <SearchBar onSearch={handleSearch} autoFocus={true} initialQuery={searchQuery} />
             <SearchResults
               results={searchResults}

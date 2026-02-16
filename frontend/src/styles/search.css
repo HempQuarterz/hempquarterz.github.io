@@ -3,6 +3,52 @@
  * Styling for SearchBar and SearchResults components
  */
 
+/* ===== Search Modal Styles ===== */
+
+.search-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.search-modal-container {
+  background: #1a1e2e;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 900px;
+  width: 100%;
+  border: 1px solid #334155;
+  position: relative;
+  max-height: 85vh;
+  overflow: auto;
+}
+
+.search-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.search-modal-close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
 /* ===== SearchBar Styles ===== */
 
 .search-bar-container {
@@ -28,6 +74,143 @@
 .search-input-wrapper:focus-within {
   border-color: #2E7D32;
   box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+/* Dark modal context overrides */
+.search-modal-container .search-input-wrapper {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+.search-modal-container .search-input-wrapper:focus-within {
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+.search-modal-container .search-input {
+  background: transparent;
+  color: #e2e8f0;
+}
+
+.search-modal-container .search-tip {
+  color: #94a3b8;
+}
+
+.search-modal-container .search-tip code {
+  background: #1e293b;
+  color: #cbd5e1;
+}
+
+.search-modal-container .filter-chip {
+  border-color: #475569;
+  color: #94a3b8;
+}
+
+.search-modal-container .filter-chip:hover {
+  border-color: #4CAF50;
+  color: #4CAF50;
+}
+
+.search-modal-container .filter-chip.active {
+  background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
+  color: white;
+  border-color: #2E7D32;
+}
+
+.search-modal-container .search-results-header h2,
+.search-modal-container .search-section-title {
+  color: #4CAF50;
+}
+
+.search-modal-container .search-results-header {
+  border-bottom-color: #334155;
+}
+
+.search-modal-container .search-section-title {
+  border-bottom-color: #334155;
+}
+
+.search-modal-container .search-result-item {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+.search-modal-container .verse-result:hover {
+  border-color: #4CAF50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+.search-modal-container .verse-reference {
+  color: #4CAF50;
+}
+
+.search-modal-container .verse-manuscript {
+  color: #94a3b8;
+}
+
+.search-modal-container .verse-text {
+  color: #e2e8f0;
+}
+
+.search-modal-container .lexicon-result:hover {
+  border-color: #D4AF37;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
+}
+
+.search-modal-container .lexicon-strong {
+  color: #D4AF37;
+}
+
+.search-modal-container .lexicon-transliteration {
+  color: #94a3b8;
+}
+
+.search-modal-container .lexicon-original {
+  color: #e2e8f0;
+}
+
+.search-modal-container .lexicon-definition {
+  color: #cbd5e1;
+}
+
+.search-modal-container .lexicon-expand-hint {
+  color: #64748b;
+}
+
+.search-modal-container .restoration-toggle {
+  color: #94a3b8;
+}
+
+.search-modal-container .search-empty {
+  color: #94a3b8;
+}
+
+.search-modal-container .search-empty-hint {
+  color: #64748b;
+}
+
+.search-modal-container .strong-tag {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+.search-modal-container .strong-tag-more {
+  background: #1e293b;
+  color: #64748b;
+}
+
+.search-modal-container .search-highlight {
+  background-color: #854d0e;
+  color: #fef08a;
+}
+
+.search-modal-container .load-more-button {
+  border-color: #4CAF50;
+  color: #4CAF50;
+}
+
+.search-modal-container .load-more-button:hover:not(:disabled) {
+  background: rgba(76, 175, 80, 0.1);
 }
 
 .search-input {
