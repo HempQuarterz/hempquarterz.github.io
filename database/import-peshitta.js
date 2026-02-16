@@ -142,6 +142,12 @@ function parsePeshittaFile(filePath, bookCode) {
       const verseNum = parseInt(verseMatch[1]);
       const verseText = verseMatch[2].trim();
 
+      // Skip verse 0 (title/superscription) - database requires verse > 0
+      if (verseNum === 0) {
+        console.log(`  Skipping verse 0 (title/superscription) in chapter ${currentChapter}`);
+        continue;
+      }
+
       verses.push({
         book: bookCode,
         chapter: currentChapter,

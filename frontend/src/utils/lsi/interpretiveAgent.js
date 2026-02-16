@@ -67,8 +67,8 @@ export class InterpretiveAgent {
   constructor(options = {}) {
     this.provider = options.provider || LLM_PROVIDERS.MOCK;
     this.model = options.model || this.getDefaultModel();
-    this.apiKey = options.apiKey || this.getApiKeyFromEnv();
-    this.useProxy = options.useProxy !== false; // Default to proxy for security
+    // SECURITY: API keys are stored server-side only, never in browser
+    // The backend proxy handles API key management
     this.maxTokens = options.maxTokens || 1000;
     this.temperature = options.temperature || 0.7;
   }
@@ -81,23 +81,9 @@ export class InterpretiveAgent {
       case LLM_PROVIDERS.OPENAI:
         return LLM_MODELS.GPT35;
       case LLM_PROVIDERS.CLAUDE:
-        return LLM_MODELS.CLAUDE_HAIKU;
+        return LLM_MODELS.CLAUDE_HAIKU; // Default: Claude Haiku (cost-effective)
       default:
         return 'mock';
-    }
-  }
-
-  /**
-   * Get API key from environment
-   */
-  getApiKeyFromEnv() {
-    switch (this.provider) {
-      case LLM_PROVIDERS.OPENAI:
-        return process.env.REACT_APP_OPENAI_API_KEY;
-      case LLM_PROVIDERS.CLAUDE:
-        return process.env.REACT_APP_ANTHROPIC_API_KEY;
-      default:
-        return null;
     }
   }
 
@@ -216,25 +202,24 @@ Generate a spiritual reflection insight (200-300 words) that:
   }
 
   /**
-   * Call LLM API (with provider-specific logic)
+   * Call LLM API via secure backend proxy
+   *
+   * SECURITY: All LLM calls go through the backend proxy.
+   * API keys are stored server-side only, never in browser.
    *
    * @param {String} prompt - Constructed prompt
    * @returns {Promise<String>} Raw LLM response
    */
   async callLLM(prompt) {
-    // MOCK MODE: Return demo insights
-    if (this.provider === LLM_PROVIDERS.MOCK || !this.apiKey) {
-      console.warn('⚠️ Using mock LLM mode - integrate real API in production');
+    // MOCK MODE: Return demo insights (no API call)
+    if (this.provider === LLM_PROVIDERS.MOCK) {
+      console.warn('⚠️ Using mock LLM mode - configure backend proxy for production');
       return this.getMockLLMResponse();
     }
 
-    // PRODUCTION: Proxy to backend for API key security
-    if (this.useProxy) {
-      return await this.callLLMViaProxy(prompt);
-    }
-
-    // DIRECT API CALL (not recommended for production - exposes API key)
-    return await this.callLLMDirect(prompt);
+    // PRODUCTION: Always use secure backend proxy
+    // API keys are stored on the server, never exposed to browser
+    return await this.callLLMViaProxy(prompt);
   }
 
   /**
@@ -265,74 +250,10 @@ Generate a spiritual reflection insight (200-300 words) that:
     return result.insights || result.content || result.text;
   }
 
-  /**
-   * Call LLM directly (for development only)
-   *
-   * @param {String} prompt - Prompt text
-   * @returns {Promise<String>} LLM response
-   */
-  async callLLMDirect(prompt) {
-    switch (this.provider) {
-      case LLM_PROVIDERS.OPENAI:
-        return await this.callOpenAIDirect(prompt);
-      case LLM_PROVIDERS.CLAUDE:
-        return await this.callClaudeDirect(prompt);
-      default:
-        throw new Error(`Unsupported provider: ${this.provider}`);
-    }
-  }
-
-  /**
-   * OpenAI API call
-   */
-  async callOpenAIDirect(prompt) {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.apiKey}`
-      },
-      body: JSON.stringify({
-        model: this.model,
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: this.maxTokens,
-        temperature: this.temperature
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`OpenAI API error: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result.choices[0].message.content;
-  }
-
-  /**
-   * Claude API call
-   */
-  async callClaudeDirect(prompt) {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': this.apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: this.model,
-        max_tokens: this.maxTokens,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`Claude API error: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result.content[0].text;
-  }
+  // SECURITY: Direct API call methods have been removed.
+  // All LLM calls now go through the secure backend proxy at /api/lsi/generate-insights
+  // API keys are stored server-side only (OPENAI_API_KEY, ANTHROPIC_API_KEY)
+  // See /backend/server.js for proxy implementation
 
   /**
    * Mock LLM response for demo mode
@@ -539,8 +460,17 @@ Generate a spiritual reflection insight (200-300 words) that:
 }
 
 /**
- * Export default singleton instance (mock mode)
+ * Export default singleton instance
+ *
+ * Default: MOCK mode for demo/development
+ * Production: Change to CLAUDE once backend proxy is deployed with API keys
+ *
+ * To enable production LLM:
+ * 1. Deploy backend proxy (see /backend/README.md)
+ * 2. Configure ANTHROPIC_API_KEY on the backend
+ * 3. Set REACT_APP_PROXY_URL in frontend environment
+ * 4. Change provider below to LLM_PROVIDERS.CLAUDE
  */
 export default new InterpretiveAgent({
-  provider: LLM_PROVIDERS.MOCK
+  provider: LLM_PROVIDERS.MOCK  // Change to LLM_PROVIDERS.CLAUDE when backend is ready
 });

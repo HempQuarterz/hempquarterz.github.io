@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import ModernHeader from '../components/ModernHeader';
 import parchmentTexture from '../assets/textures/parchment.png';
 
 const AboutPage = () => {
@@ -44,7 +43,7 @@ const AboutPage = () => {
 
   return (
     <div className="about-page fade-in">
-      <ModernHeader title="About All4Yah" />
+      {/* Note: BreadcrumbRibbon is now rendered at App level */}
 
       <main className="container" style={{ paddingTop: '2rem', maxWidth: '900px', margin: '0 auto', color: 'var(--ink-dark)' }}>
 

@@ -68,6 +68,28 @@ const DockItem = ({ icon, label, onClick, isActive, isMobile }) => {
 };
 
 
+// Panel content stagger animation
+const panelContentVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.03,
+            delayChildren: 0.15
+        }
+    }
+};
+
+const panelItemVariants = {
+    hidden: { opacity: 0, x: -10, scale: 0.95 },
+    visible: {
+        opacity: 1,
+        x: 0,
+        scale: 1,
+        transition: { type: "spring", stiffness: 150, damping: 15 }
+    }
+};
+
 /**
  * SpatialPanel
  * The glass sheet that slides out containing the Grid
@@ -88,7 +110,12 @@ const SpatialPanel = ({ title, onClose, children, isMobile }) => {
             `}
         >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-white/5 shrink-0">
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.3 }}
+                className="flex items-center justify-between p-5 border-b border-white/5 shrink-0"
+            >
                 <h2 className="font-cinzel text-xl text-brand-gold font-bold tracking-wide flex items-center gap-3">
                     {/* Decorative Dot */}
                     <span className="relative flex h-3 w-3">
@@ -97,21 +124,31 @@ const SpatialPanel = ({ title, onClose, children, isMobile }) => {
                     </span>
                     {title}
                 </h2>
-                <button
+                <motion.button
                     onClick={onClose}
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.9 }}
                     className="p-2 rounded-full hover:bg-white/10 text-gray-500 hover:text-white transition-colors"
                 >
                     <X size={20} />
-                </button>
-            </div>
+                </motion.button>
+            </motion.div>
 
-            {/* Content Container */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar p-1">
+            {/* Content Container with stagger */}
+            <motion.div
+                variants={panelContentVariants}
+                initial="hidden"
+                animate="visible"
+                className="flex-1 overflow-y-auto custom-scrollbar p-1"
+            >
                 {children}
-            </div>
+            </motion.div>
         </motion.div>
     );
 };
+
+// Export variants for use in child components
+export { panelItemVariants };
 
 
 // --- Main Component ---
@@ -251,11 +288,14 @@ export const SpatialSidebar = ({
                     <SpatialPanel key="books" title="Library" onClose={closePanel} isMobile={isMobile}>
                         <div className="grid grid-cols-2 gap-3 p-3">
                             {books.map(b => (
-                                <button
+                                <motion.button
                                     key={b.book_code}
+                                    variants={panelItemVariants}
                                     onClick={() => handleBookSelect(b.book_code)}
+                                    whileHover={{ scale: 1.02, y: -2 }}
+                                    whileTap={{ scale: 0.98 }}
                                     className={`
-                                        relative group p-3 rounded-xl border transition-all duration-300 text-left overflow-hidden flex items-center justify-between
+                                        relative group p-3 rounded-xl border transition-colors duration-200 text-left overflow-hidden flex items-center justify-between
                                         ${currentBook === b.book_code
                                             ? 'bg-brand-gold/10 border-brand-gold/40 text-brand-gold'
                                             : 'bg-white/5 border-transparent hover:bg-white/10 hover:border-white/10 text-gray-300'
@@ -269,7 +309,7 @@ export const SpatialSidebar = ({
                                             className="w-1.5 h-1.5 rounded-full bg-brand-gold shadow-[0_0_8px_rgba(212,175,55,1)]"
                                         />
                                     )}
-                                </button>
+                                </motion.button>
                             ))}
                         </div>
                     </SpatialPanel>
@@ -280,19 +320,22 @@ export const SpatialSidebar = ({
                     <SpatialPanel key="chapters" title={`${currentBook || 'Scripture'} Chapters`} onClose={closePanel} isMobile={isMobile}>
                         <div className="grid grid-cols-5 gap-3 p-4">
                             {chapters.map(ch => (
-                                <button
+                                <motion.button
                                     key={ch}
+                                    variants={panelItemVariants}
                                     onClick={() => { onChapterChange(ch); if (isMobile) closePanel(); }}
+                                    whileHover={{ scale: 1.1, y: -2 }}
+                                    whileTap={{ scale: 0.9 }}
                                     className={`
-                                        aspect-square rounded-xl flex items-center justify-center font-mono text-sm transition-all duration-300
+                                        aspect-square rounded-xl flex items-center justify-center font-mono text-sm transition-colors duration-200
                                         ${parseInt(currentChapter) === ch
-                                            ? 'bg-brand-gold text-black font-bold shadow-[0_4px_20px_rgba(212,175,55,0.4)] scale-110 border border-brand-gold'
+                                            ? 'bg-brand-gold text-black font-bold shadow-[0_4px_20px_rgba(212,175,55,0.4)] border border-brand-gold'
                                             : 'bg-white/5 text-gray-400 border border-white/5 hover:bg-white/10 hover:border-white/20 hover:text-white'
                                         }
                                     `}
                                 >
                                     {ch}
-                                </button>
+                                </motion.button>
                             ))}
                         </div>
                     </SpatialPanel>
@@ -304,9 +347,12 @@ export const SpatialSidebar = ({
                         <div className="p-4 space-y-4">
 
                             {/* Toggle Block: Restoration */}
-                            <div
+                            <motion.div
+                                variants={panelItemVariants}
                                 onClick={toggleRestoration}
-                                className="group p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all cursor-pointer flex items-center justify-between"
+                                whileHover={{ scale: 1.01, y: -2 }}
+                                whileTap={{ scale: 0.99 }}
+                                className="group p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-colors cursor-pointer flex items-center justify-between"
                             >
                                 <div className="flex items-center gap-4">
                                     <div className={`p-3 rounded-xl transition-colors ${showRestored ? 'bg-brand-gold/20 text-brand-gold' : 'bg-black/40 text-gray-500'}`}>
@@ -317,15 +363,26 @@ export const SpatialSidebar = ({
                                         <p className="text-xs text-gray-500">Restore original Hebrew names</p>
                                     </div>
                                 </div>
-                                <div className={`w-12 h-7 rounded-full relative transition-colors duration-300 ${showRestored ? 'bg-brand-gold' : 'bg-white/10'}`}>
-                                    <div className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-all duration-300 ${showRestored ? 'left-6' : 'left-1'}`} />
-                                </div>
-                            </div>
+                                <motion.div
+                                    className={`w-12 h-7 rounded-full relative transition-colors duration-300 ${showRestored ? 'bg-brand-gold' : 'bg-white/10'}`}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <motion.div
+                                        layout
+                                        className="absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm"
+                                        animate={{ left: showRestored ? '1.5rem' : '0.25rem' }}
+                                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                    />
+                                </motion.div>
+                            </motion.div>
 
                             {/* Toggle Block: View Mode */}
-                            <div
+                            <motion.div
+                                variants={panelItemVariants}
                                 onClick={() => setViewMode(viewMode === 'chapter' ? 'verse' : 'chapter')}
-                                className="group p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all cursor-pointer flex items-center justify-between"
+                                whileHover={{ scale: 1.01, y: -2 }}
+                                whileTap={{ scale: 0.99 }}
+                                className="group p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-colors cursor-pointer flex items-center justify-between"
                             >
                                 <div className="flex items-center gap-4">
                                     <div className={`p-3 rounded-xl transition-colors bg-black/40 text-gray-400 group-hover:text-white`}>
@@ -336,10 +393,16 @@ export const SpatialSidebar = ({
                                         <p className="text-xs text-gray-500">{viewMode === 'chapter' ? 'Continuous Chapter' : 'Verse by Verse'}</p>
                                     </div>
                                 </div>
-                                <div className="text-xs font-mono px-2 py-1 rounded bg-white/5 border border-white/5 text-gray-400">
+                                <motion.div
+                                    className="text-xs font-mono px-2 py-1 rounded bg-white/5 border border-white/5 text-gray-400"
+                                    key={viewMode}
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ type: "spring", stiffness: 300 }}
+                                >
                                     {viewMode === 'chapter' ? 'CHAP' : 'VRS'}
-                                </div>
-                            </div>
+                                </motion.div>
+                            </motion.div>
                         </div>
                     </SpatialPanel>
                 )}

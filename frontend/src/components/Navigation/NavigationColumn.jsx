@@ -5,7 +5,30 @@
  */
 
 import React, { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
+
+// Stagger animation variants
+const gridVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.015,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.9, y: 10 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 150, damping: 15 }
+  }
+};
 
 const NavigationColumn = ({
   data,
@@ -97,7 +120,13 @@ const NavigationColumn = ({
 
       {/* Grid Content */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden p-3 custom-scrollbar">
-        <div className={`grid ${getGridClass()} auto-rows-min`}>
+        <motion.div
+          className={`grid ${getGridClass()} auto-rows-min`}
+          variants={gridVariants}
+          initial="hidden"
+          animate="visible"
+          key={`${type}-${filteredData.length}`}
+        >
           {filteredData.map((item, idx) => {
             // Determine if selected
             const isSelected = type === 'book'
@@ -108,11 +137,14 @@ const NavigationColumn = ({
             const label = typeof item === 'object' ? item.name : item;
 
             return (
-              <button
+              <motion.button
                 key={idx}
+                variants={itemVariants}
                 onClick={() => onSelect(item)}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
                 className={`
-                  nav-item relative overflow-hidden group rounded-lg border transition-all duration-200
+                  nav-item relative overflow-hidden group rounded-lg border transition-colors duration-200
                   flex flex-col items-center justify-center text-center
                   ${type === 'book' ? 'h-16 p-2' : 'h-12'}
                   ${isSelected
@@ -133,10 +165,10 @@ const NavigationColumn = ({
                     {item.testament}
                   </span>
                 )}
-              </button>
+              </motion.button>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

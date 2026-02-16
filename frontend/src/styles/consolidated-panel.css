@@ -131,21 +131,49 @@
    ============================================================================ */
 
 @media (max-width: 768px) {
+  /* Mobile: Convert horizontal scroll to 2-row grid */
+  .tab-navigation {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.25rem;
+    padding: 0.5rem;
+    overflow-x: visible;
+  }
+
   .tab-button {
-    padding: 0.75rem 1rem;
-    min-width: 80px;
+    padding: 0.75rem 0.5rem;
+    min-width: unset;
+    border-bottom: none;
+    border-radius: 12px;
+    /* Larger touch target for mobile */
+    min-height: 64px;
+  }
+
+  .tab-button.active {
+    background: rgba(212, 175, 55, 0.15);
+    border-bottom: none;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
   }
 
   .tab-icon {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
   }
 
   .tab-label {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
+    text-align: center;
+    line-height: 1.2;
   }
 
   .tab-content-wrapper {
     padding: 1rem;
+  }
+}
+
+/* Very small screens: 3 columns */
+@media (max-width: 400px) {
+  .tab-navigation {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -155,4 +183,17 @@
 .tab-content {
   transform: translateZ(0);
   will-change: contents;
+}
+
+/* ============================================================================
+   ACCESSIBILITY - Reduced Motion
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .tab-content-wrapper {
+    animation: none;
+  }
+
+  .tab-button {
+    transition: none;
+  }
 }

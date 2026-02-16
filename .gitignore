@@ -72,3 +72,6 @@ generate-icons.js
 
 # Claude Code local settings (user-specific)
 .claude/settings.local.json
+
+# Genkit runtime data
+.genkit/

@@ -1,14 +1,37 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 /**
  * BentoGrid - A modular, auto-responsive grid layout.
  * Best used for dashboards and modern landing pages.
+ *
+ * Respects prefers-reduced-motion for accessibility.
  */
 export const BentoGrid = ({ className, children }) => {
+    const prefersReducedMotion = useReducedMotion();
+
+    // Stagger animation variants for the grid container
+    const gridVariants = prefersReducedMotion ? {
+        hidden: { opacity: 1 },
+        visible: { opacity: 1 }
+    } : {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+            }
+        }
+    };
+
     return (
-        <div
+        <motion.div
             className={`grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto ${className}`}
+            variants={gridVariants}
+            initial="hidden"
+            animate="visible"
             style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -19,13 +42,15 @@ export const BentoGrid = ({ className, children }) => {
             }}
         >
             {children}
-        </div>
+        </motion.div>
     );
 };
 
 /**
  * BentoItem - A single cell in the Bento Grid.
  * Supports row/col spanning and built-in hover effects.
+ *
+ * Respects prefers-reduced-motion for accessibility.
  */
 export const BentoItem = ({
     className,
@@ -37,10 +62,32 @@ export const BentoItem = ({
     rowSpan = 1,
     onClick
 }) => {
+    const prefersReducedMotion = useReducedMotion();
+
+    // Individual item entrance animation
+    const itemVariants = prefersReducedMotion ? {
+        hidden: { opacity: 1, y: 0, scale: 1 },
+        visible: { opacity: 1, y: 0, scale: 1 }
+    } : {
+        hidden: { opacity: 0, y: 30, scale: 0.95 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+                type: "spring",
+                stiffness: 100,
+                damping: 15
+            }
+        }
+    };
+
     return (
         <motion.div
-            whileHover={{ y: -5, scale: 1.01 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            variants={itemVariants}
+            whileHover={prefersReducedMotion ? {} : { y: -5, scale: 1.02 }}
+            whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
+            transition={prefersReducedMotion ? {} : { type: "spring", stiffness: 300, damping: 20 }}
             className={className}
             onClick={onClick}
             style={{

@@ -2,55 +2,107 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen, Mic, Feather, Info } from 'lucide-react';
-import ModernHeader from '../components/ModernHeader';
 import { AuroraBackground } from '../components/ui/AuroraBackground';
 import { BentoGrid, BentoItem } from '../components/ui/BentoGrid';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import '../styles/modern.css'; // Ensure base styles are loaded
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const prefersReducedMotion = useReducedMotion();
 
-  // Animation variants for Staggered Load
-  const containerVariants = {
+  // Letter-by-letter animation for hero title (respects reduced motion)
+  const letterVariants = prefersReducedMotion ? {
+    hidden: { opacity: 1, y: 0, scale: 1 },
+    visible: { opacity: 1, y: 0, scale: 1 }
+  } : {
+    hidden: { opacity: 0, y: 50, scale: 0.8 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        delay: i * 0.08,
+        type: "spring",
+        stiffness: 120,
+        damping: 12
+      }
+    })
+  };
+
+  // Container for hero title letters
+  const heroContainerVariants = prefersReducedMotion ? {
+    hidden: { opacity: 1 },
+    visible: { opacity: 1 }
+  } : {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  // Animation variants for Staggered Load (BentoGrid)
+  const containerVariants = prefersReducedMotion ? {
+    hidden: { opacity: 1 },
+    show: { opacity: 1 }
+  } : {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.1,
+        delayChildren: 0.8 // Start after hero animation
       }
     }
   };
+
+  const heroTitle = "ALL4YAH";
 
   return (
     <div className="relative min-h-screen font-sans text-brand-gold">
       {/* 1. Living Background */}
       <AuroraBackground className="fixed inset-0 z-0" />
 
-      {/* 2. Glass Header (Overlay) */}
-      <div className="relative z-50">
-        <ModernHeader title="All4Yah" />
-      </div>
+      {/* Note: BreadcrumbRibbon is now rendered at App level */}
 
       <main className="relative z-10 container mx-auto px-4 py-8">
 
         {/* 3. Hero Section - Cinematic Typography */}
         <div className="text-center mb-12 mt-8">
           <motion.h1
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
+            variants={heroContainerVariants}
+            initial="hidden"
+            animate="visible"
             style={{
               fontFamily: "'Cinzel', serif",
               fontSize: 'clamp(3rem, 8vw, 6rem)',
               fontWeight: 700,
-              background: 'linear-gradient(to bottom, #F9E4A4, #9C6F03)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 0 30px rgba(249, 228, 164, 0.4))',
-              lineHeight: 1.1
+              lineHeight: 1.1,
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '0.02em'
             }}
           >
-            ALL4YAH
+            {heroTitle.split('').map((letter, i) => (
+              <motion.span
+                key={i}
+                custom={i}
+                variants={letterVariants}
+                style={{
+                  display: 'inline-block',
+                  background: 'linear-gradient(to bottom, #F9E4A4, #9C6F03)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  filter: 'drop-shadow(0 0 30px rgba(249, 228, 164, 0.4))',
+                }}
+              >
+                {letter}
+              </motion.span>
+            ))}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -106,14 +158,15 @@ const HomePage = () => {
               header={
                 <div className="flex items-center justify-center h-full">
                   <motion.div
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 3, repeat: Infinity }}
+                    animate={prefersReducedMotion ? {} : { scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+                    transition={prefersReducedMotion ? {} : { duration: 3, repeat: Infinity }}
                     style={{
                       width: '80px',
                       height: '80px',
                       borderRadius: '50%',
                       background: 'radial-gradient(circle, #609CB4 0%, transparent 70%)',
-                      filter: 'blur(10px)'
+                      filter: 'blur(10px)',
+                      opacity: prefersReducedMotion ? 0.65 : undefined
                     }}
                   />
                 </div>

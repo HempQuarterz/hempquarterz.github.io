@@ -9,7 +9,6 @@
  */
 
 import React, { useState } from 'react';
-import ModernHeader from '../components/ModernHeader';
 import AudioCaptureDemo from '../components/lsi/AudioCaptureDemo';
 import SpiritualJournal from '../components/lsi/SpiritualJournal';
 import '../styles/lsi/lsi-page.css';
@@ -19,8 +18,7 @@ const LSIPage = () => {
 
   return (
     <div className="lsi-page">
-      {/* Navigation Header */}
-      <ModernHeader title="All4Yah" />
+      {/* Note: BreadcrumbRibbon is now rendered at App level */}
 
       {/* Page Header */}
       <div className="lsi-page-header">

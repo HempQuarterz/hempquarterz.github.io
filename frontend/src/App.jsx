@@ -20,6 +20,9 @@ import PageTurnTransition from './components/PageTurnTransition';
 import NebulaBackground from './components/ui/NebulaBackground';
 import './styles/scholarly-theme.css';
 
+// Covenant Navigation System
+import { BreadcrumbRibbon, GlobalDockProvider } from './components/navigation';
+
 const App = () => {
   return (
     <Provider store={store}>
@@ -42,22 +45,30 @@ const App = () => {
       <InkRipple />
 
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <PageTurnTransition>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/manuscripts" element={<ManuscriptsPage />} />
-            <Route path="/manuscript" element={<ManuscriptsPage />} />
-            <Route path="/manuscripts/:book/:chapter/:verse" element={<ManuscriptsPage />} />
-            <Route path="/manuscript/:book/:chapter/:verse" element={<ManuscriptsPage />} />
-            <Route path="/book" element={<BookPage />} />
-            <Route path="/chapter/:version/:abbr/:book" element={<ChapterPage />} />
-            <Route path="/verse/:version/:abbr/:book/:chapter" element={<VersePage />} />
-            <Route path="/scripture/:bibleId/:version/:abbr/:book/:chapter/:verseId" element={<ScripturePage />} />
-            <Route path="/lsi" element={<LSIPage />} />
-            <Route path="/lsi/demo" element={<AudioCaptureDemo />} />
-          </Routes>
-        </PageTurnTransition>
+        {/* Global Dock State Provider (includes CovenantDock) */}
+        <GlobalDockProvider>
+          {/* Breadcrumb Header */}
+          <BreadcrumbRibbon />
+
+          <PageTurnTransition>
+            <div className="page-with-dock">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/manuscripts" element={<ManuscriptsPage />} />
+                <Route path="/manuscript" element={<ManuscriptsPage />} />
+                <Route path="/manuscripts/:book/:chapter/:verse" element={<ManuscriptsPage />} />
+                <Route path="/manuscript/:book/:chapter/:verse" element={<ManuscriptsPage />} />
+                <Route path="/book" element={<BookPage />} />
+                <Route path="/chapter/:version/:abbr/:book" element={<ChapterPage />} />
+                <Route path="/verse/:version/:abbr/:book/:chapter" element={<VersePage />} />
+                <Route path="/scripture/:bibleId/:version/:abbr/:book/:chapter/:verseId" element={<ScripturePage />} />
+                <Route path="/lsi" element={<LSIPage />} />
+                <Route path="/lsi/demo" element={<AudioCaptureDemo />} />
+              </Routes>
+            </div>
+          </PageTurnTransition>
+        </GlobalDockProvider>
       </Router>
     </Provider>
   );

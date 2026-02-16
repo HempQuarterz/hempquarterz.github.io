@@ -1,0 +1,155 @@
+/**
+ * BreadcrumbRibbon Styles
+ * Minimal contextual header with breadcrumb navigation
+ */
+
+.breadcrumb-ribbon {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background: rgba(14, 35, 59, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Desktop: Add left padding for dock */
+@media (min-width: 768px) {
+  .breadcrumb-ribbon {
+    padding-left: 6rem;
+  }
+}
+
+/* ============================================================================
+   LOGO
+   ============================================================================ */
+
+.ribbon-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.ribbon-logo-img {
+  height: 28px;
+  width: auto;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.ribbon-logo:hover .ribbon-logo-img {
+  opacity: 1;
+}
+
+/* ============================================================================
+   BREADCRUMB TRAIL
+   ============================================================================ */
+
+.breadcrumb-trail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.breadcrumb-separator {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.breadcrumb-link {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.breadcrumb-link:hover {
+  color: #F9E4A4;
+}
+
+.breadcrumb-current {
+  color: #F9E4A4;
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* Mobile: Truncate breadcrumbs */
+@media (max-width: 600px) {
+  .breadcrumb-trail {
+    gap: 0.35rem;
+  }
+
+  .breadcrumb-link,
+  .breadcrumb-current {
+    font-size: 0.75rem;
+  }
+
+  .breadcrumb-current {
+    max-width: 120px;
+  }
+
+  /* Hide middle breadcrumbs on very small screens */
+  .breadcrumb-trail > *:nth-child(n+3):nth-last-child(n+3) {
+    display: none;
+  }
+
+  /* Show ellipsis when hiding middle items */
+  .breadcrumb-trail > *:nth-child(2):not(:nth-last-child(2))::after {
+    content: '...';
+    margin-left: 0.5rem;
+    color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* ============================================================================
+   THEME TOGGLE
+   ============================================================================ */
+
+.ribbon-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(96, 156, 180, 0.3);
+  color: #F9E4A4;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.ribbon-theme-toggle:hover {
+  background: rgba(96, 156, 180, 0.1);
+  border-color: rgba(96, 156, 180, 0.5);
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .ribbon-logo-img,
+  .breadcrumb-link,
+  .ribbon-theme-toggle {
+    transition: none;
+  }
+}

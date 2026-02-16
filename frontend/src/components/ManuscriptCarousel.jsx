@@ -4,7 +4,8 @@
  * Features: Touch/swipe support, keyboard navigation, smooth transitions
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 import CrossReferenceBadge from './CrossReferenceBadge';
 import '../styles/manuscript-carousel.css';
 
@@ -21,10 +22,17 @@ const ManuscriptCarousel = ({
   bookName
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const carouselRef = useRef(null);
+  const controls = useAnimation();
+
+  // Calculate slide width for drag constraints
+  const getSlideWidth = useCallback(() => {
+    if (carouselRef.current) {
+      return carouselRef.current.offsetWidth;
+    }
+    return 0;
+  }, []);
 
   // Helper to clean verse text (strip book titles from verse 1)
   const cleanVerseText = (text, verseNum) => {
@@ -36,62 +44,65 @@ const ManuscriptCarousel = ({
     return text.replace(pattern, '').trim();
   };
 
-  // Minimum swipe distance (in px)
-  const minSwipeDistance = 50;
-
-  // Handle touch start
-  const onTouchStart = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  // Handle touch move
-  const onTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  // Handle touch end
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe && activeIndex < manuscripts.length - 1) {
-      goToNext();
-    }
-    if (isRightSwipe && activeIndex > 0) {
-      goToPrevious();
-    }
-  };
-
-  // Navigate to next manuscript
-  const goToNext = () => {
-    if (activeIndex < manuscripts.length - 1 && !isTransitioning) {
-      setIsTransitioning(true);
-      setActiveIndex(activeIndex + 1);
-      setTimeout(() => setIsTransitioning(false), 300);
-    }
-  };
-
-  // Navigate to previous manuscript
-  const goToPrevious = () => {
-    if (activeIndex > 0 && !isTransitioning) {
-      setIsTransitioning(true);
-      setActiveIndex(activeIndex - 1);
-      setTimeout(() => setIsTransitioning(false), 300);
-    }
-  };
-
-  // Navigate to specific index
-  const goToIndex = (index) => {
-    if (index !== activeIndex && !isTransitioning) {
+  // Navigate to specific index with animation
+  const goToIndex = useCallback((index) => {
+    if (index !== activeIndex && !isTransitioning && index >= 0 && index < manuscripts.length) {
       setIsTransitioning(true);
       setActiveIndex(index);
-      setTimeout(() => setIsTransitioning(false), 300);
+      controls.start({
+        x: -index * getSlideWidth(),
+        transition: { type: "spring", stiffness: 300, damping: 30 }
+      });
+      setTimeout(() => setIsTransitioning(false), 400);
     }
+  }, [activeIndex, isTransitioning, manuscripts.length, controls, getSlideWidth]);
+
+  // Navigate to next manuscript
+  const goToNext = useCallback(() => {
+    if (activeIndex < manuscripts.length - 1 && !isTransitioning) {
+      goToIndex(activeIndex + 1);
+    }
+  }, [activeIndex, manuscripts.length, isTransitioning, goToIndex]);
+
+  // Navigate to previous manuscript
+  const goToPrevious = useCallback(() => {
+    if (activeIndex > 0 && !isTransitioning) {
+      goToIndex(activeIndex - 1);
+    }
+  }, [activeIndex, isTransitioning, goToIndex]);
+
+  // Handle drag end with velocity-based momentum
+  const handleDragEnd = (event, info) => {
+    const slideWidth = getSlideWidth();
+    const velocity = info.velocity.x;
+    const offset = info.offset.x;
+
+    // Determine swipe direction based on velocity and offset
+    // High velocity = quick swipe, low velocity = drag based on distance
+    const swipeThreshold = 100; // velocity threshold
+    const dragThreshold = slideWidth * 0.2; // 20% of slide width
+
+    let newIndex = activeIndex;
+
+    if (velocity < -swipeThreshold || (velocity > -swipeThreshold && offset < -dragThreshold)) {
+      // Swiped left - go to next
+      newIndex = Math.min(activeIndex + 1, manuscripts.length - 1);
+    } else if (velocity > swipeThreshold || (velocity < swipeThreshold && offset > dragThreshold)) {
+      // Swiped right - go to previous
+      newIndex = Math.max(activeIndex - 1, 0);
+    }
+
+    // Snap to the target slide with spring animation
+    goToIndex(newIndex);
   };
+
+  // Update animation when activeIndex changes
+  useEffect(() => {
+    controls.start({
+      x: -activeIndex * getSlideWidth(),
+      transition: { type: "spring", stiffness: 300, damping: 30 }
+    });
+  }, [activeIndex, controls, getSlideWidth]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -138,31 +149,36 @@ const ManuscriptCarousel = ({
       <div
         className="manuscript-carousel"
         ref={carouselRef}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
       >
         {/* Navigation Arrows */}
         {activeIndex > 0 && (
-          <button
+          <motion.button
             className="carousel-nav carousel-nav-prev"
             onClick={goToPrevious}
             aria-label="Previous manuscript"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
-          </button>
+          </motion.button>
         )}
 
-        {/* Manuscript Card */}
+        {/* Manuscript Card - Draggable with momentum */}
         <div className="carousel-track">
-          <div
+          <motion.div
             className="manuscript-card"
-            style={{
-              transform: `translateX(-${activeIndex * 100}%)`,
-              transition: isTransitioning ? 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)' : 'none'
+            drag="x"
+            dragConstraints={{
+              left: -(manuscripts.length - 1) * getSlideWidth(),
+              right: 0
             }}
+            dragElastic={0.1}
+            onDragEnd={handleDragEnd}
+            animate={controls}
+            style={{ cursor: 'grab' }}
+            whileDrag={{ cursor: 'grabbing' }}
           >
             {manuscripts.map((ms, index) => (
               <div
@@ -235,20 +251,22 @@ const ManuscriptCarousel = ({
                 )}
               </div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Navigation Arrows */}
         {activeIndex < manuscripts.length - 1 && (
-          <button
+          <motion.button
             className="carousel-nav carousel-nav-next"
             onClick={goToNext}
             aria-label="Next manuscript"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
-          </button>
+          </motion.button>
         )}
       </div>
 

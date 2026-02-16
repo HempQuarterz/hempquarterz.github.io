@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { BibleNavigator } from './Navigation';
 import { Menu } from 'lucide-react';
 
 const ModernHeader = ({ title = "All4Yah" }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [theme, setTheme] = useState('light');
   const [isNavigatorOpen, setIsNavigatorOpen] = useState(false);
   const [currentSelection, setCurrentSelection] = useState({ book: 'GEN', chapter: 1, verse: 1 });
@@ -38,7 +37,7 @@ const ModernHeader = ({ title = "All4Yah" }) => {
         boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
         position: 'sticky',
         top: 0,
-        zIndex: 1000,
+        zIndex: 50, /* Unified z-index tier: Navigation = 50 */
         borderBottom: '1px solid rgba(96, 156, 180, 0.3)' /* Subtle Data Blue Accent */
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
@@ -102,63 +101,15 @@ const ModernHeader = ({ title = "All4Yah" }) => {
         </nav>
       </header>
 
-      {/* Mobile Bottom Navigation - Kept for mobile users but updated with brand colors */}
+      {/* Mobile-responsive styles - Desktop nav hidden on mobile, hamburger menu available */}
       <style>{`
         @media (min-width: 768px) {
-          .bottom-nav { display: none; }
           .desktop-nav { display: flex; }
         }
         @media (max-width: 767px) {
-          .bottom-nav { 
-            display: flex; 
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #0E233B;
-            border-top: 1px solid #D4AF37;
-            padding: 0.5rem;
-            justify-content: space-around;
-            z-index: 1000;
-          }
           .desktop-nav { display: none; }
-          .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: #FBF5DB;
-            font-size: 0.75rem;
-          }
-           .nav-item.active {
-            color: #F9E4A4;
-            font-weight: bold;
-           }
         }
       `}</style>
-
-      <nav className="bottom-nav">
-        <Link to="/" className={`nav-item ${location.pathname === '/' ? 'active' : ''}`}>
-          <img src="/icons/icon-manuscript.svg" alt="Home" width="24" height="24" />
-          <span>Home</span>
-        </Link>
-        <Link to="/manuscripts" className={`nav-item ${location.pathname.startsWith('/manuscript') ? 'active' : ''}`}>
-          <img src="/icons/icon-scroll.svg" alt="Bible" width="24" height="24" />
-          <span>Bible</span>
-        </Link>
-        <Link to="/about" className={`nav-item ${location.pathname === '/about' ? 'active' : ''}`}>
-          <img src="/icons/icon-info.svg" alt="About" width="24" height="24" />
-          <span>About</span>
-        </Link>
-        <Link to="/lsi" className={`nav-item ${location.pathname.startsWith('/lsi') ? 'active' : ''}`}>
-          <img src="/icons/icon-dove.svg" alt="Spirit" width="24" height="24" />
-          <span>Spirit</span>
-        </Link>
-        <button onClick={toggleTheme} className="nav-item" style={{ background: 'none', border: 'none', padding: 0 }}>
-          <img src={theme === 'light' ? "/icons/icon-sun.svg" : "/icons/icon-moon.svg"} alt="Theme" width="24" height="24" />
-          <span>Theme</span>
-        </button>
-      </nav>
 
       {/* Navigation Overlay */}
       <BibleNavigator
