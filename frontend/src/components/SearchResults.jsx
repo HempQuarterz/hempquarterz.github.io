@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { restoreVerse } from '../api/restoration';
 import '../styles/search.css';
 
-const SearchResults = ({ results, query, onNavigate, loading = false }) => {
+const SearchResults = ({ results, query, onNavigate, onLoadMore, loading = false, loadingMore = false }) => {
   const [restorationEnabled, setRestorationEnabled] = useState(true);
   const [expandedLexicon, setExpandedLexicon] = useState(new Set());
 
@@ -188,6 +188,15 @@ const SearchResults = ({ results, query, onNavigate, loading = false }) => {
           <div className="search-results-list">
             {verses.map((verse) => renderVerseResult(verse))}
           </div>
+          {onLoadMore && verses.length >= 20 && (
+            <button
+              className="load-more-button"
+              onClick={onLoadMore}
+              disabled={loadingMore}
+            >
+              {loadingMore ? 'Loading...' : 'Load more verses'}
+            </button>
+          )}
         </section>
       )}
     </div>

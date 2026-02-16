@@ -18,7 +18,8 @@ export async function searchVerses(query, options = {}) {
   const {
     manuscripts = [],
     books = [],
-    limit = 50
+    limit = 50,
+    offset = 0
   } = options;
 
   try {
@@ -33,15 +34,16 @@ export async function searchVerses(query, options = {}) {
         chapter,
         verse,
         text,
-        strong_numbers,
-        ts_rank(to_tsvector('english', text), plainto_tsquery('english', '${query}')) as relevance
+        strong_numbers
       `)
       .textSearch('text', query, {
         type: 'plain',
         config: 'english'
       })
-      .order('relevance', { ascending: false })
-      .limit(limit);
+      .order('book')
+      .order('chapter')
+      .order('verse')
+      .range(offset, offset + limit - 1);
 
     // Filter by manuscripts if specified
     if (manuscripts.length > 0) {
@@ -85,14 +87,10 @@ export async function searchStrongs(query) {
       // Exact match on Strong's number
       queryBuilder = queryBuilder.eq('strong_number', query.toUpperCase());
     } else {
-      // Full-text search on original_word, transliteration, and definition
-      queryBuilder = queryBuilder.textSearch(
-        'original_word,transliteration,definition',
-        query,
-        {
-          type: 'plain',
-          config: 'english'
-        }
+      // Search across multiple columns using ilike
+      const term = `%${query}%`;
+      queryBuilder = queryBuilder.or(
+        `original_word.ilike.${term},transliteration.ilike.${term},definition.ilike.${term}`
       );
     }
 
@@ -212,9 +210,11 @@ export async function getSearchSuggestions(query, type = 'keywords') {
  * @returns {Promise<Object>} Object containing verse results and lexicon results
  */
 export async function searchAll(query, options = {}) {
+  const { manuscripts = [], books = [], versesLimit = 20, offset = 0 } = options;
+
   try {
     const [verses, lexicon] = await Promise.all([
-      searchVerses(query, { ...options, limit: options.versesLimit || 20 }),
+      searchVerses(query, { manuscripts, books, limit: versesLimit, offset }),
       searchStrongs(query)
     ]);
 

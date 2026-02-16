@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import ManuscriptViewer from '../components/ManuscriptViewer';
 import ConsolidatedPanel from '../components/ConsolidatedPanel';
 import GematriaPanel from '../components/GematriaPanel';
+import SearchBar from '../components/SearchBar';
+import SearchResults from '../components/SearchResults';
+import { searchAll, searchVerses } from '../api/search';
 import { setSelectedVerse } from '../manuscriptsSlice';
 import '../styles/manuscripts.css';
 
@@ -14,6 +17,12 @@ const ManuscriptsPage = () => {
   const [isReaderMode, setIsReaderMode] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showGematria, setShowGematria] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState(null);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchFilters, setSearchFilters] = useState({});
+  const [searchOffset, setSearchOffset] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   // Sync URL params with Redux state
   useEffect(() => {
@@ -30,21 +39,112 @@ const ManuscriptsPage = () => {
     }
   }, [dispatch, searchParams]);
 
-  const handleVerseChange = (newVerse) => {
+  // Auto-trigger search from URL ?search= param
+  useEffect(() => {
+    const urlQuery = searchParams.get('search');
+    if (urlQuery && !showSearch) {
+      setShowSearch(true);
+      handleSearch(urlQuery);
+    }
+    // Only run on mount / when search param changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams.get('search')]);
+
+  const handleVerseChange = useCallback((newVerse) => {
     dispatch(setSelectedVerse(newVerse));
     setSearchParams({
       book: newVerse.book,
       chapter: newVerse.chapter,
       verse: newVerse.verse
     });
-  };
+  }, [dispatch, setSearchParams]);
 
-  const toggleSearch = () => setShowSearch(!showSearch);
+  const toggleSearch = () => {
+    setShowSearch(prev => !prev);
+    if (showSearch) {
+      setSearchResults(null);
+      setSearchQuery('');
+      setSearchOffset(0);
+      setSearchFilters({});
+      // Remove search param from URL
+      const next = new URLSearchParams(searchParams);
+      next.delete('search');
+      setSearchParams(next, { replace: true });
+    }
+  };
   const toggleGematria = () => setShowGematria(!showGematria);
+
+  const handleSearch = useCallback(async (query, filters = {}) => {
+    setSearchQuery(query);
+    setSearchFilters(filters);
+    setSearchOffset(0);
+    setSearchLoading(true);
+
+    // Update URL with search query
+    const next = new URLSearchParams(searchParams);
+    next.set('search', query);
+    setSearchParams(next, { replace: true });
+
+    try {
+      const results = await searchAll(query, { ...filters, versesLimit: 20 });
+      setSearchResults(results);
+    } catch (err) {
+      console.error('Search failed:', err);
+      setSearchResults({ verses: [], lexicon: [], total: 0 });
+    } finally {
+      setSearchLoading(false);
+    }
+  }, [searchParams, setSearchParams]);
+
+  const handleLoadMore = useCallback(async () => {
+    const newOffset = searchOffset + 20;
+    setLoadingMore(true);
+    try {
+      const moreVerses = await searchVerses(searchQuery, {
+        ...searchFilters,
+        limit: 20,
+        offset: newOffset
+      });
+      setSearchResults(prev => ({
+        ...prev,
+        verses: [...(prev?.verses || []), ...moreVerses],
+        total: (prev?.total || 0) + moreVerses.length
+      }));
+      setSearchOffset(newOffset);
+    } catch (err) {
+      console.error('Load more failed:', err);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [searchQuery, searchFilters, searchOffset]);
+
+  const handleSearchNavigate = useCallback((verse) => {
+    handleVerseChange(verse);
+    setShowSearch(false);
+    setSearchResults(null);
+    setSearchQuery('');
+    setSearchOffset(0);
+    setSearchFilters({});
+    // Remove search param from URL
+    const next = new URLSearchParams(searchParams);
+    next.delete('search');
+    setSearchParams(next, { replace: true });
+  }, [handleVerseChange, searchParams, setSearchParams]);
 
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
+      // Escape closes search
+      if (e.key === 'Escape' && showSearch) {
+        toggleSearch();
+        return;
+      }
+      // '/' opens search (when not in an input)
+      if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
+        e.preventDefault();
+        setShowSearch(true);
+        return;
+      }
       // Toggle Reader Mode with 'R'
       if (e.key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
         setIsReaderMode(prev => !prev);
@@ -57,7 +157,8 @@ const ManuscriptsPage = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showSearch]);
 
   return (
     <div className={`fade-in ${isReaderMode ? 'reader-mode-active' : ''}`}>
@@ -133,11 +234,18 @@ const ManuscriptsPage = () => {
       </div>
 
       {showSearch && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-slate-900 p-6 rounded-2xl max-w-xl w-full border border-gray-700 relative">
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4" onClick={(e) => { if (e.target === e.currentTarget) toggleSearch(); }}>
+          <div className="bg-slate-900 p-6 rounded-2xl max-w-4xl w-full border border-gray-700 relative" style={{ maxHeight: '85vh', overflow: 'auto' }}>
             <button onClick={toggleSearch} className="absolute top-4 right-4 text-gray-400 hover:text-white">✕</button>
-            <h2 className="text-xl font-bold text-brand-gold mb-4">Scripture Search</h2>
-            <p className="text-gray-400">Search functionality would go here...</p>
+            <SearchBar onSearch={handleSearch} autoFocus={true} initialQuery={searchQuery} />
+            <SearchResults
+              results={searchResults}
+              query={searchQuery}
+              onNavigate={handleSearchNavigate}
+              onLoadMore={handleLoadMore}
+              loading={searchLoading}
+              loadingMore={loadingMore}
+            />
           </div>
         </div>
       )}

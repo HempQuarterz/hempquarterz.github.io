@@ -6,11 +6,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getSearchSuggestions } from '../api/search';
 import '../styles/search.css';
 
-const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, or keywords...", autoFocus = false }) => {
-  const [query, setQuery] = useState('');
+const AVAILABLE_MANUSCRIPTS = ['WEB', 'WLC', 'SBLGNT', 'LXX'];
+
+const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, or keywords...", autoFocus = false, initialQuery = '' }) => {
+  const [query, setQuery] = useState(initialQuery);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const [selectedManuscripts, setSelectedManuscripts] = useState(new Set());
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
 
@@ -60,10 +63,22 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const toggleManuscript = (code) => {
+    setSelectedManuscripts(prev => {
+      const next = new Set(prev);
+      if (next.has(code)) {
+        next.delete(code);
+      } else {
+        next.add(code);
+      }
+      return next;
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
-      onSearch(query.trim());
+      onSearch(query.trim(), { manuscripts: [...selectedManuscripts] });
       setShowSuggestions(false);
     }
   };
@@ -87,7 +102,7 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
     }
 
     setQuery(searchQuery);
-    onSearch(searchQuery);
+    onSearch(searchQuery, { manuscripts: [...selectedManuscripts] });
     setShowSuggestions(false);
   };
 
@@ -214,6 +229,19 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
           </div>
         )}
       </form>
+
+      <div className="search-filters">
+        {AVAILABLE_MANUSCRIPTS.map(code => (
+          <button
+            key={code}
+            type="button"
+            className={`filter-chip ${selectedManuscripts.has(code) ? 'active' : ''}`}
+            onClick={() => toggleManuscript(code)}
+          >
+            {code}
+          </button>
+        ))}
+      </div>
 
       <div className="search-tips">
         <span className="search-tip">
