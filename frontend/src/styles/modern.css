@@ -497,3 +497,97 @@ a:hover {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* ============================================================================
+   SKIP NAVIGATION LINK
+   ============================================================================ */
+
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 1rem;
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   GLOBAL FOCUS STATES
+   ============================================================================ */
+
+/* Focus ring utility class */
+.focus-ring:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+/* Global :focus-visible for interactive elements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="switch"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+/* Component-specific focus states */
+.btn:focus-visible,
+.btn-secondary:focus-visible,
+.btn-icon:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   REDUCED MOTION - GLOBAL
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .fade-in {
+    animation: none;
+  }
+
+  .skeleton {
+    animation: none;
+  }
+
+  .spinner {
+    animation: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .btn-primary:hover {
+    transform: none;
+  }
+}

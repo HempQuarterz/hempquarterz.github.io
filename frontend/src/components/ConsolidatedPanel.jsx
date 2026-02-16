@@ -207,15 +207,19 @@ const ConsolidatedPanel = ({
   return (
     <div className="consolidated-panel">
       {/* Tab Navigation */}
-      <div className="tab-navigation">
+      <div className="tab-navigation" role="tablist" aria-label="Manuscript tools">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
             title={tab.description}
+            role="tab"
+            aria-selected={activeTab === tab.id}
+            aria-controls={`consolidated-tabpanel-${tab.id}`}
+            id={`consolidated-tab-${tab.id}`}
           >
-            <span className="tab-icon">
+            <span className="tab-icon" aria-hidden="true">
               <ManuscriptIcon
                 name={tab.icon}
                 size={20}
@@ -228,7 +232,12 @@ const ConsolidatedPanel = ({
       </div>
 
       {/* Tab Content */}
-      <div className="tab-content">
+      <div
+        className="tab-content"
+        role="tabpanel"
+        id={`consolidated-tabpanel-${activeTab}`}
+        aria-labelledby={`consolidated-tab-${activeTab}`}
+      >
         {renderTabContent()}
       </div>
     </div>

@@ -80,24 +80,32 @@ const GematriaPanel = ({ initialText = '', initialLanguage = 'hebrew', onClose }
   const renderCalculator = () => (
     <div className="gematria-calculator">
       {/* Language Toggle */}
-      <div className="gematria-language-toggle">
+      <div className="gematria-language-toggle" role="group" aria-label="Language selection">
         <button
           className={`lang-btn ${language === 'hebrew' ? 'active' : ''}`}
           onClick={() => handleLanguageChange('hebrew')}
+          aria-label="Select Hebrew language"
+          aria-pressed={language === 'hebrew'}
         >
-          🔯 Hebrew
+          <span className="lang-badge" aria-hidden="true">HEB</span> Hebrew
         </button>
         <button
           className={`lang-btn ${language === 'greek' ? 'active' : ''}`}
           onClick={() => handleLanguageChange('greek')}
+          aria-label="Select Greek language"
+          aria-pressed={language === 'greek'}
         >
-          ✝ Greek
+          <span className="lang-badge" aria-hidden="true">GRK</span> Greek
         </button>
       </div>
 
       {/* Input Area */}
       <div className="gematria-input-area">
+        <label htmlFor="gematria-text-input" className="visually-hidden">
+          Enter {language === 'hebrew' ? 'Hebrew' : 'Greek'} text for gematria calculation
+        </label>
         <textarea
+          id="gematria-text-input"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           placeholder={
@@ -172,7 +180,7 @@ const GematriaPanel = ({ initialText = '', initialLanguage = 'hebrew', onClose }
           {/* Notable Value Info */}
           {getNotableValue(results.value) && (
             <div className="notable-value-card">
-              <h4>📖 Notable Biblical Value</h4>
+              <h4>Notable Biblical Value</h4>
               {(() => {
                 const notable = getNotableValue(results.value);
                 return (
@@ -198,7 +206,7 @@ const GematriaPanel = ({ initialText = '', initialLanguage = 'hebrew', onClose }
           {/* Database Theme Info */}
           {getThemeForValue(results.value) && (
             <div className="theme-card">
-              <h4>🔍 Scriptural Significance</h4>
+              <h4>Scriptural Significance</h4>
               {(() => {
                 const theme = getThemeForValue(results.value);
                 return (
@@ -303,16 +311,24 @@ const GematriaPanel = ({ initialText = '', initialLanguage = 'hebrew', onClose }
       </div>
 
       {/* Tabs */}
-      <div className="gematria-tabs">
+      <div className="gematria-tabs" role="tablist" aria-label="Gematria tools">
         <button
           className={`tab ${selectedTab === 'calculator' ? 'active' : ''}`}
           onClick={() => setSelectedTab('calculator')}
+          role="tab"
+          aria-selected={selectedTab === 'calculator'}
+          aria-controls="gematria-tabpanel-calculator"
+          id="gematria-tab-calculator"
         >
           Calculator
         </button>
         <button
           className={`tab ${selectedTab === 'themes' ? 'active' : ''}`}
           onClick={() => setSelectedTab('themes')}
+          role="tab"
+          aria-selected={selectedTab === 'themes'}
+          aria-controls="gematria-tabpanel-themes"
+          id="gematria-tab-themes"
         >
           Number Themes ({numberThemes.length})
         </button>
@@ -320,8 +336,16 @@ const GematriaPanel = ({ initialText = '', initialLanguage = 'hebrew', onClose }
 
       {/* Tab Content */}
       <div className="gematria-panel-content">
-        {selectedTab === 'calculator' && renderCalculator()}
-        {selectedTab === 'themes' && renderNumberThemes()}
+        {selectedTab === 'calculator' && (
+          <div role="tabpanel" id="gematria-tabpanel-calculator" aria-labelledby="gematria-tab-calculator">
+            {renderCalculator()}
+          </div>
+        )}
+        {selectedTab === 'themes' && (
+          <div role="tabpanel" id="gematria-tabpanel-themes" aria-labelledby="gematria-tab-themes">
+            {renderNumberThemes()}
+          </div>
+        )}
       </div>
     </div>
   );

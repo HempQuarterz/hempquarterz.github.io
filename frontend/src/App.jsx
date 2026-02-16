@@ -26,6 +26,11 @@ import { BreadcrumbRibbon, GlobalDockProvider } from './components/navigation';
 const App = () => {
   return (
     <Provider store={store}>
+      {/* Skip Navigation Link */}
+      <a href="#main-content" className="skip-to-content">
+        Skip to content
+      </a>
+
       {/* SVG filter definitions for parchment effects */}
       <ParchmentFilters />
 
@@ -51,7 +56,7 @@ const App = () => {
           <BreadcrumbRibbon />
 
           <PageTurnTransition>
-            <div className="page-with-dock">
+            <div id="main-content" className="page-with-dock">
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/about" element={<AboutPage />} />

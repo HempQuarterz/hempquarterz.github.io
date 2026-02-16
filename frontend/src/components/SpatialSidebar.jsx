@@ -13,7 +13,7 @@ import '../styles/bible-navigator.css';
  * DockItem
  * A single icon in the floating dock with "Spotlight" active state
  */
-const DockItem = ({ icon, label, onClick, isActive, isMobile }) => {
+const DockItem = ({ icon, label, onClick, isActive, isMobile, ariaExpanded }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
@@ -42,6 +42,8 @@ const DockItem = ({ icon, label, onClick, isActive, isMobile }) => {
                 onClick={onClick}
                 strength={0.4}
                 className="relative w-12 h-12 flex items-center justify-center"
+                aria-label={label}
+                aria-expanded={ariaExpanded}
             >
                 {/* The Active "Spotlight" Pill Background */}
                 {isActive && (
@@ -249,6 +251,7 @@ export const SpatialSidebar = ({
                     isActive={isNavigatorOpen}
                     onClick={openNavigator}
                     isMobile={isMobile}
+                    ariaExpanded={isNavigatorOpen}
                 />
 
                 <DockItem
@@ -257,6 +260,7 @@ export const SpatialSidebar = ({
                     isActive={activeTab === 'books'}
                     onClick={() => toggleTab('books')}
                     isMobile={isMobile}
+                    ariaExpanded={activeTab === 'books'}
                 />
 
                 <DockItem
@@ -265,6 +269,7 @@ export const SpatialSidebar = ({
                     isActive={activeTab === 'chapters'}
                     onClick={() => toggleTab('chapters')}
                     isMobile={isMobile}
+                    ariaExpanded={activeTab === 'chapters'}
                 />
 
                 {/* Divider */}
@@ -276,6 +281,7 @@ export const SpatialSidebar = ({
                     isActive={activeTab === 'settings'}
                     onClick={() => toggleTab('settings')}
                     isMobile={isMobile}
+                    ariaExpanded={activeTab === 'settings'}
                 />
             </motion.nav>
 
@@ -353,6 +359,11 @@ export const SpatialSidebar = ({
                                 whileHover={{ scale: 1.01, y: -2 }}
                                 whileTap={{ scale: 0.99 }}
                                 className="group p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-colors cursor-pointer flex items-center justify-between"
+                                role="switch"
+                                aria-checked={showRestored}
+                                aria-label="Toggle divine name restoration"
+                                tabIndex={0}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleRestoration(); } }}
                             >
                                 <div className="flex items-center gap-4">
                                     <div className={`p-3 rounded-xl transition-colors ${showRestored ? 'bg-brand-gold/20 text-brand-gold' : 'bg-black/40 text-gray-500'}`}>
@@ -366,6 +377,7 @@ export const SpatialSidebar = ({
                                 <motion.div
                                     className={`w-12 h-7 rounded-full relative transition-colors duration-300 ${showRestored ? 'bg-brand-gold' : 'bg-white/10'}`}
                                     whileTap={{ scale: 0.95 }}
+                                    aria-hidden="true"
                                 >
                                     <motion.div
                                         layout

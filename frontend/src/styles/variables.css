@@ -70,6 +70,20 @@
   --z-dropdown: 100;
   --z-modal: 200;
   --z-notification: 300;
+
+  /* Focus Ring */
+  --focus-ring-color: #4CAF50;
+  --focus-ring-width: 3px;
+
+  /* Responsive Font Scale */
+  --font-xs: 0.75rem;
+  --font-sm: 0.875rem;
+  --font-base: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.25rem;
+  --font-2xl: 1.5rem;
+  --font-3xl: 2rem;
+  --font-4xl: 2.5rem;
 }
 
 /* Light Theme Override (Ancient Library) */

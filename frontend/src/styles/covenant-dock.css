@@ -584,6 +584,44 @@
    REDUCED MOTION
    ============================================================================ */
 
+/* ============================================================================
+   FOCUS VISIBLE STATES
+   ============================================================================ */
+
+.dock-item:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+.library-book-btn:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+.chapter-btn:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+.settings-go-btn:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+.settings-toggle-card:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+.dock-panel-close:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
 @media (prefers-reduced-motion: reduce) {
   .dock-panel-dot-ping {
     animation: none;

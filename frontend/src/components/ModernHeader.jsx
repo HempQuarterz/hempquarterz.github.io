@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { BibleNavigator } from './Navigation';
 import { Menu } from 'lucide-react';
+import '../styles/modern-header.css';
 
 const ModernHeader = ({ title = "All4Yah" }) => {
   const navigate = useNavigate();
@@ -26,90 +27,47 @@ const ModernHeader = ({ title = "All4Yah" }) => {
 
   return (
     <>
-      <header style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '1rem 2rem',
-        background: 'rgba(14, 35, 59, 0.85)', /* Glass Midnight */
-        color: '#F9E4A4', /* Brand Rule: Radiant Gold Text */
-        backdropFilter: 'blur(12px)', /* Glass Effect */
-        boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 50, /* Unified z-index tier: Navigation = 50 */
-        borderBottom: '1px solid rgba(96, 156, 180, 0.3)' /* Subtle Data Blue Accent */
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+      <header className="mh-header">
+        <div className="mh-left">
           {/* Hamburger Menu - Navigator Trigger */}
           <button
             onClick={() => setIsNavigatorOpen(true)}
-            className="p-2 rounded-lg hover:bg-white/10 transition-colors text-[#F9E4A4]"
+            className="mh-menu-btn"
             aria-label="Open Scripture Navigator"
           >
             <Menu size={28} strokeWidth={2} />
           </button>
 
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none' }}>
+          <Link to="/" className="mh-logo-link">
             <img
               src="/logo-brand.svg"
               alt="All4Yah Logo"
-              style={{ height: '50px', width: 'auto' }}
+              className="mh-logo-img"
             />
-            <h1 style={{
-              fontSize: '1.8rem',
-              fontWeight: '700',
-              margin: 0,
-              fontFamily: "'Cinzel', serif", /* Brand Rule: Cinzel Heading */
-              color: '#F9E4A4',
-              letterSpacing: '0.05em'
-            }}>
-              {title}
-            </h1>
+            <h1 className="mh-title">{title}</h1>
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="desktop-nav" style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <Link to="/" className="nav-link" style={{ color: '#FBF5DB', fontFamily: "'Inter', sans-serif" }}>Home</Link>
-          <Link to="/manuscripts" className="nav-link" style={{ color: '#FBF5DB', fontFamily: "'Inter', sans-serif" }}>Manuscripts</Link>
-          <Link to="/lsi" className="nav-link" style={{ color: '#FBF5DB', fontFamily: "'Inter', sans-serif" }}>Spirit AI</Link>
-          <Link to="/about" className="nav-link" style={{ color: '#FBF5DB', fontFamily: "'Inter', sans-serif" }}>About</Link>
+        <nav className="mh-desktop-nav">
+          <Link to="/" className="mh-nav-link">Home</Link>
+          <Link to="/manuscripts" className="mh-nav-link">Manuscripts</Link>
+          <Link to="/lsi" className="mh-nav-link">Spirit AI</Link>
+          <Link to="/about" className="mh-nav-link">About</Link>
 
           <button
             onClick={toggleTheme}
-            style={{
-              background: 'transparent',
-              border: '1px solid #609CB4',
-              borderRadius: '50%',
-              width: '40px',
-              height: '40px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#F9E4A4'
-            }}
-            title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+            className="mh-theme-toggle"
+            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
           >
             <img
               src={theme === 'light' ? "/icons/icon-sun.svg" : "/icons/icon-moon.svg"}
-              alt="Toggle Theme"
-              style={{ width: '20px', height: '20px' }}
+              alt=""
+              className="mh-theme-icon"
             />
           </button>
         </nav>
       </header>
-
-      {/* Mobile-responsive styles - Desktop nav hidden on mobile, hamburger menu available */}
-      <style>{`
-        @media (min-width: 768px) {
-          .desktop-nav { display: flex; }
-        }
-        @media (max-width: 767px) {
-          .desktop-nav { display: none; }
-        }
-      `}</style>
 
       {/* Navigation Overlay */}
       <BibleNavigator

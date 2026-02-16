@@ -572,6 +572,32 @@
 }
 
 /* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .pillar:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .stat-box:hover {
+    transform: none;
+  }
+
+  .cta-btn.primary:hover,
+  .cta-btn.secondary:hover {
+    transform: none;
+  }
+
+  .pillar,
+  .stat-box,
+  .cta-btn {
+    transition: none;
+  }
+}
+
+/* ============================================================================
    MOBILE RESPONSIVENESS
    ============================================================================ */
 

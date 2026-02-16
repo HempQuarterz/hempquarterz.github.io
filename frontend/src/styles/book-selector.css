@@ -1,0 +1,78 @@
+/**
+ * BookSelector - Extracted Inline Styles
+ * Replaces 3 duplicated inline style blocks
+ */
+
+.bs-search-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.bs-search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.bs-search-input:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+.bs-section {
+  margin-bottom: 2rem;
+}
+
+.bs-section-title {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.bs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.bs-book-btn {
+  text-align: center;
+  padding: 1rem 0.5rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  transition: all var(--transition-fast);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.bs-book-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.bs-book-btn--selected {
+  border: 2px solid var(--primary);
+  background-color: var(--primary-bg, rgba(59, 130, 246, 0.1));
+}
+
+.bs-book-name {
+  font-weight: 500;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-book-btn:hover {
+    transform: none;
+  }
+}

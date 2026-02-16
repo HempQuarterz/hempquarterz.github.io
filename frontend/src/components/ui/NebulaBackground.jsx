@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -180,11 +180,26 @@ const NebulaPlane = () => {
 };
 
 export const NebulaBackground = ({ className }) => {
+    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        setPrefersReducedMotion(mediaQuery.matches);
+        const handler = (e) => setPrefersReducedMotion(e.matches);
+        mediaQuery.addEventListener('change', handler);
+        return () => mediaQuery.removeEventListener('change', handler);
+    }, []);
+
     return (
-        <div className={`fixed inset-0 w-full h-full bg-[#050810] -z-10 ${className}`}>
-            <Canvas camera={{ position: [0, 0, 5] }}>
-                <NebulaPlane />
-            </Canvas>
+        <div
+            className={`fixed inset-0 w-full h-full bg-[#050810] -z-10 ${className}`}
+            aria-hidden="true"
+        >
+            {!prefersReducedMotion && (
+                <Canvas camera={{ position: [0, 0, 5] }}>
+                    <NebulaPlane />
+                </Canvas>
+            )}
         </div>
     );
 };

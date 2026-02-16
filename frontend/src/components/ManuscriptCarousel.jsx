@@ -156,6 +156,7 @@ const ManuscriptCarousel = ({
             className="carousel-nav carousel-nav-prev"
             onClick={goToPrevious}
             aria-label="Previous manuscript"
+            aria-controls="manuscript-carousel-track"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -166,9 +167,9 @@ const ManuscriptCarousel = ({
         )}
 
         {/* Manuscript Card - Draggable with momentum */}
-        <div className="carousel-track">
+        <div className="carousel-track" id="manuscript-carousel-track">
           <motion.div
-            className="manuscript-card"
+            className="manuscript-card carousel-draggable"
             drag="x"
             dragConstraints={{
               left: -(manuscripts.length - 1) * getSlideWidth(),
@@ -177,7 +178,6 @@ const ManuscriptCarousel = ({
             dragElastic={0.1}
             onDragEnd={handleDragEnd}
             animate={controls}
-            style={{ cursor: 'grab' }}
             whileDrag={{ cursor: 'grabbing' }}
           >
             {manuscripts.map((ms, index) => (
@@ -234,9 +234,9 @@ const ManuscriptCarousel = ({
                       />
                     </div>
                     {showRestored && ms.restored && ms.restorations && ms.restorations.length > 0 && (
-                      <div style={{ marginTop: '1rem', fontSize: '0.85rem', color: '#666', borderTop: '1px solid #e0e0e0', paddingTop: '0.75rem' }}>
+                      <div className="carousel-restorations">
                         <strong>Restorations:</strong>
-                        <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem' }}>
+                        <ul className="carousel-restorations-list">
                           {ms.restorations.map((r, i) => (
                             <li key={i}>
                               {r.original} → <strong className="restored-name">{r.restored}</strong>
@@ -260,6 +260,7 @@ const ManuscriptCarousel = ({
             className="carousel-nav carousel-nav-next"
             onClick={goToNext}
             aria-label="Next manuscript"
+            aria-controls="manuscript-carousel-track"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >

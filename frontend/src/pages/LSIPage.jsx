@@ -22,26 +22,32 @@ const LSIPage = () => {
 
       {/* Page Header */}
       <div className="lsi-page-header">
-        <h1 className="lsi-page-title">🎙️ Linguistic Spirit Interface</h1>
+        <h1 className="lsi-page-title">Linguistic Spirit Interface</h1>
         <p className="lsi-page-subtitle">
           AI-Powered Prayer Analysis Through Ancient Hebrew & Greek Scripture
         </p>
       </div>
 
       {/* Tab Navigation */}
-      <div className="lsi-tabs">
+      <div className="lsi-tabs" role="tablist" aria-label="LSI tools">
         <button
           className={`lsi-tab ${activeTab === 'demo' ? 'active' : ''}`}
           onClick={() => setActiveTab('demo')}
+          role="tab"
+          aria-selected={activeTab === 'demo'}
+          aria-controls="tabpanel-demo"
+          id="tab-demo"
         >
-          <span className="tab-icon">🎙️</span>
           <span className="tab-label">Audio Capture</span>
         </button>
         <button
           className={`lsi-tab ${activeTab === 'journal' ? 'active' : ''}`}
           onClick={() => setActiveTab('journal')}
+          role="tab"
+          aria-selected={activeTab === 'journal'}
+          aria-controls="tabpanel-journal"
+          id="tab-journal"
         >
-          <span className="tab-icon">📖</span>
           <span className="tab-label">Spiritual Journal</span>
         </button>
       </div>
@@ -49,13 +55,13 @@ const LSIPage = () => {
       {/* Tab Content */}
       <div className="lsi-content">
         {activeTab === 'demo' && (
-          <div className="tab-panel">
+          <div className="tab-panel" role="tabpanel" id="tabpanel-demo" aria-labelledby="tab-demo">
             <AudioCaptureDemo />
           </div>
         )}
 
         {activeTab === 'journal' && (
-          <div className="tab-panel">
+          <div className="tab-panel" role="tabpanel" id="tabpanel-journal" aria-labelledby="tab-journal">
             <SpiritualJournal />
           </div>
         )}
@@ -64,7 +70,7 @@ const LSIPage = () => {
       {/* System Info Footer */}
       <div className="lsi-info-footer">
         <div className="info-card">
-          <h3>📚 What is LSI?</h3>
+          <h3>What is LSI?</h3>
           <p>
             The Linguistic Spirit Interface analyzes prayer utterances (including glossolalia)
             through the lens of ancient Hebrew, Greek, and Aramaic Scripture using AI-powered
@@ -73,7 +79,7 @@ const LSIPage = () => {
         </div>
 
         <div className="info-card">
-          <h3>🔬 How It Works</h3>
+          <h3>How It Works</h3>
           <ol>
             <li><strong>Record</strong> your prayer session using your microphone</li>
             <li><strong>Analyze</strong> acoustic patterns and detect phonetic utterances</li>
@@ -83,7 +89,7 @@ const LSIPage = () => {
         </div>
 
         <div className="info-card">
-          <h3>⚠️ Faith Alignment</h3>
+          <h3>Faith Alignment</h3>
           <p>
             <strong>Important:</strong> LSI provides interpretive analysis for personal spiritual
             reflection only. AI-generated insights are not prophetic revelation or authoritative
@@ -93,7 +99,7 @@ const LSIPage = () => {
         </div>
 
         <div className="info-card">
-          <h3>🔐 Privacy & Security</h3>
+          <h3>Privacy &amp; Security</h3>
           <p>
             Your prayer sessions are private and secure. Audio files are stored in encrypted
             Supabase Storage with user-level access controls. AI analysis uses isolated processing

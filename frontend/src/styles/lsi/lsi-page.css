@@ -216,8 +216,13 @@
 }
 
 /* Accessibility */
-.lsi-tab:focus {
-  outline: 3px solid rgba(45, 212, 191, 0.5);
+.lsi-tab:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline-offset: 2px;
+}
+
+.info-card:focus-visible {
+  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
   outline-offset: 2px;
 }
 
@@ -237,4 +242,26 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-panel {
+    animation: none;
+  }
+
+  .lsi-loading-spinner {
+    animation: none;
+  }
+
+  .lsi-tab:hover {
+    transform: none;
+  }
+
+  .lsi-tab {
+    transition: none;
+  }
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { getCanonicalBooks } from '../api/canonicalBooks';
 import CanonicalBadge from './CanonicalBadge';
 import Loading from './Loading';
+import '../styles/book-selector.css';
 
 /**
  * BookSelector - Navigation component for selecting Bible books
@@ -90,199 +91,50 @@ const BookSelector = ({ selectedBook, onBookSelect, selectedTiers = [1, 2] }) =>
     );
   }
 
+  const renderBookGroup = (books, title) => (
+    <div className="bs-section">
+      <h3 className="bs-section-title">{title}</h3>
+      <div className="bs-grid">
+        {books.map((book) => (
+          <button
+            key={book.book_code}
+            onClick={() => handleBookClick(book.book_code)}
+            className={`bs-book-btn ${selectedBook === book.book_code ? 'bs-book-btn--selected' : ''}`}
+            aria-label={`Select ${book.book_name}`}
+          >
+            <p className="bs-book-name">{book.book_name}</p>
+            {book.canonical_tier && (
+              <CanonicalBadge
+                tier={book.canonical_tier}
+                showEmoji={true}
+                showLabel={false}
+                showTooltip={true}
+                compact={true}
+              />
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div>
       {/* Search Bar */}
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div className="bs-search-wrapper">
         <input
           type="search"
           placeholder="Search for a book..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           aria-label="Search for a Bible book"
-          style={{
-            width: '100%',
-            padding: '0.75rem 1rem',
-            fontSize: '1rem',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--border-color)',
-            backgroundColor: 'var(--bg-secondary)',
-            color: 'var(--text-primary)',
-            transition: 'all var(--transition-fast)'
-          }}
+          className="bs-search-input"
         />
       </div>
 
-      {/* Old Testament */}
-      {oldTestament.length > 0 && (
-        <div style={{ marginBottom: '2rem' }}>
-          <h3 style={{
-            fontSize: '1.1rem',
-            marginBottom: '1rem',
-            color: 'var(--text-secondary)',
-            fontWeight: '600'
-          }}>
-            Old Testament
-          </h3>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-            gap: '0.75rem'
-          }}>
-            {oldTestament.map((book) => (
-              <button
-                key={book.book_code}
-                onClick={() => handleBookClick(book.book_code)}
-                className={`card ${selectedBook === book.book_code ? 'selected' : ''}`}
-                aria-label={`Select ${book.book_name}`}
-                style={{
-                  textAlign: 'center',
-                  padding: '1rem 0.5rem',
-                  border: selectedBook === book.book_code
-                    ? '2px solid var(--primary-color)'
-                    : '1px solid var(--border-color)',
-                  backgroundColor: selectedBook === book.book_code
-                    ? 'var(--primary-bg, rgba(59, 130, 246, 0.1))'
-                    : 'var(--bg-secondary)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.5rem',
-                  alignItems: 'center',
-                  transition: 'all var(--transition-fast)'
-                }}
-              >
-                <p style={{ fontWeight: '500', margin: 0, fontSize: '0.9rem' }}>
-                  {book.book_name}
-                </p>
-                {book.canonical_tier && (
-                  <CanonicalBadge
-                    tier={book.canonical_tier}
-                    showEmoji={true}
-                    showLabel={false}
-                    showTooltip={true}
-                    compact={true}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* New Testament */}
-      {newTestament.length > 0 && (
-        <div style={{ marginBottom: '2rem' }}>
-          <h3 style={{
-            fontSize: '1.1rem',
-            marginBottom: '1rem',
-            color: 'var(--text-secondary)',
-            fontWeight: '600'
-          }}>
-            New Testament
-          </h3>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-            gap: '0.75rem'
-          }}>
-            {newTestament.map((book) => (
-              <button
-                key={book.book_code}
-                onClick={() => handleBookClick(book.book_code)}
-                className={`card ${selectedBook === book.book_code ? 'selected' : ''}`}
-                aria-label={`Select ${book.book_name}`}
-                style={{
-                  textAlign: 'center',
-                  padding: '1rem 0.5rem',
-                  border: selectedBook === book.book_code
-                    ? '2px solid var(--primary-color)'
-                    : '1px solid var(--border-color)',
-                  backgroundColor: selectedBook === book.book_code
-                    ? 'var(--primary-bg, rgba(59, 130, 246, 0.1))'
-                    : 'var(--bg-secondary)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.5rem',
-                  alignItems: 'center',
-                  transition: 'all var(--transition-fast)'
-                }}
-              >
-                <p style={{ fontWeight: '500', margin: 0, fontSize: '0.9rem' }}>
-                  {book.book_name}
-                </p>
-                {book.canonical_tier && (
-                  <CanonicalBadge
-                    tier={book.canonical_tier}
-                    showEmoji={true}
-                    showLabel={false}
-                    showTooltip={true}
-                    compact={true}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Deuterocanonical/Apocrypha */}
-      {deuterocanonical.length > 0 && (
-        <div>
-          <h3 style={{
-            fontSize: '1.1rem',
-            marginBottom: '1rem',
-            color: 'var(--text-secondary)',
-            fontWeight: '600'
-          }}>
-            Deuterocanonical & Apocrypha
-          </h3>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))',
-            gap: '0.75rem'
-          }}>
-            {deuterocanonical.map((book) => (
-              <button
-                key={book.book_code}
-                onClick={() => handleBookClick(book.book_code)}
-                className={`card ${selectedBook === book.book_code ? 'selected' : ''}`}
-                aria-label={`Select ${book.book_name}`}
-                style={{
-                  textAlign: 'center',
-                  padding: '1rem 0.5rem',
-                  border: selectedBook === book.book_code
-                    ? '2px solid var(--primary-color)'
-                    : '1px solid var(--border-color)',
-                  backgroundColor: selectedBook === book.book_code
-                    ? 'var(--primary-bg, rgba(59, 130, 246, 0.1))'
-                    : 'var(--bg-secondary)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '0.5rem',
-                  alignItems: 'center',
-                  transition: 'all var(--transition-fast)'
-                }}
-              >
-                <p style={{ fontWeight: '500', margin: 0, fontSize: '0.9rem' }}>
-                  {book.book_name}
-                </p>
-                {book.canonical_tier && (
-                  <CanonicalBadge
-                    tier={book.canonical_tier}
-                    showEmoji={true}
-                    showLabel={false}
-                    showTooltip={true}
-                    compact={true}
-                  />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      {oldTestament.length > 0 && renderBookGroup(oldTestament, 'Old Testament')}
+      {newTestament.length > 0 && renderBookGroup(newTestament, 'New Testament')}
+      {deuterocanonical.length > 0 && renderBookGroup(deuterocanonical, 'Deuterocanonical & Apocrypha')}
     </div>
   );
 };

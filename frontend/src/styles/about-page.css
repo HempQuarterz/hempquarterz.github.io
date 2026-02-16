@@ -1,0 +1,168 @@
+/**
+ * About Page - Extracted Inline Styles
+ * Replaces all inline style objects from AboutPage.jsx
+ */
+
+/* Container */
+.about-container {
+  padding-top: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  color: var(--ink-dark);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Intro Section */
+.about-intro {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.about-title {
+  font-family: 'Cinzel', serif;
+  font-size: 3.5rem;
+  color: var(--brand-gold);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.about-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.25rem;
+  color: var(--brand-parchment);
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Card */
+.about-card {
+  margin-bottom: 2.5rem;
+  background-color: var(--brand-parchment);
+  color: var(--ink-dark);
+  padding: 2.5rem;
+  border: 1px solid var(--brand-gold);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}
+
+/* Section Title */
+.about-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  color: var(--brand-midnight);
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--brand-gold);
+  padding-bottom: 0.5rem;
+  display: inline-block;
+}
+
+/* Heading */
+.about-heading {
+  font-family: 'Cinzel', serif;
+  color: var(--brand-midnight);
+  margin-bottom: 0.75rem;
+}
+
+/* Paragraph */
+.about-paragraph {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.7;
+  color: var(--ink-dark);
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.about-paragraph--sm {
+  font-size: 0.95rem;
+}
+
+/* Grid */
+.about-grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.about-grid--3col {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* Name Cards */
+.about-name-card {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(139, 69, 19, 0.1);
+}
+
+.about-name-hebrew {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  color: var(--brand-midnight);
+  margin-bottom: 0.25rem;
+}
+
+.about-name-mapping {
+  font-family: 'Cinzel', serif;
+  color: var(--brand-midnight);
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--brand-teal);
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+.about-name-meta {
+  font-size: 0.9rem;
+  color: var(--ink-medium);
+  margin-bottom: 0.75rem;
+}
+
+/* CTA */
+.about-cta {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.about-cta-button {
+  display: inline-block;
+  background: var(--brand-gold);
+  color: var(--brand-midnight);
+  padding: 1rem 3rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--brand-midnight);
+  box-shadow: 0 0 20px rgba(249, 228, 164, 0.4);
+}
+
+.about-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(249, 228, 164, 0.6);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .about-cta-button:hover {
+    transform: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 2.5rem;
+  }
+
+  .about-card {
+    padding: 1.5rem;
+  }
+
+  .about-section-title {
+    font-size: 1.5rem;
+  }
+}
