@@ -17,7 +17,7 @@ import FloatingLetters from './components/FloatingLetters';
 import ParchmentFilters from './components/ParchmentFilters';
 import InkRipple from './components/InkRipple';
 import PageTurnTransition from './components/PageTurnTransition';
-import NebulaBackground from './components/ui/NebulaBackground';
+
 import './styles/scholarly-theme.css';
 
 // Covenant Navigation System
@@ -33,9 +33,6 @@ const App = () => {
 
       {/* SVG filter definitions for parchment effects */}
       <ParchmentFilters />
-
-      {/* Nebula Background (WebGL Fluid Simulation) */}
-      <NebulaBackground />
 
       {/* Parchment background with texture */}
       <div className="parchment-background" aria-hidden="true" />
