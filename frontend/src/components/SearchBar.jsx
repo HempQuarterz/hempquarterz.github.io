@@ -146,6 +146,8 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
         <div
           key={suggestion.strong_number}
           className={`search-suggestion ${isSelected ? 'selected' : ''}`}
+          role="option"
+          aria-selected={isSelected}
           onClick={() => handleSuggestionClick(suggestion)}
         >
           <div className="suggestion-primary">
@@ -165,6 +167,8 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
         <div
           key={suggestion.code}
           className={`search-suggestion ${isSelected ? 'selected' : ''}`}
+          role="option"
+          aria-selected={isSelected}
           onClick={() => handleSuggestionClick(suggestion)}
         >
           <div className="suggestion-primary">
@@ -193,7 +197,9 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
     <div className="search-bar-container">
       <form onSubmit={handleSubmit} className="search-form">
         <div className="search-input-wrapper">
+          <label htmlFor="search-manuscripts" className="sr-only">Search manuscripts</label>
           <input
+            id="search-manuscripts"
             ref={inputRef}
             type="text"
             value={query}
@@ -203,6 +209,10 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
             placeholder={placeholder}
             className="search-input"
             autoFocus={autoFocus}
+            role="combobox"
+            aria-expanded={showSuggestions}
+            aria-autocomplete="list"
+            aria-controls="search-suggestions-list"
           />
           <button type="submit" className="search-button" disabled={!query.trim()}>
             <svg
@@ -224,7 +234,7 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
         </div>
 
         {showSuggestions && suggestions.length > 0 && (
-          <div ref={suggestionsRef} className="search-suggestions">
+          <div ref={suggestionsRef} className="search-suggestions" id="search-suggestions-list" role="listbox">
             {suggestions.map((suggestion, index) => renderSuggestion(suggestion, index))}
           </div>
         )}
@@ -237,6 +247,7 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
             type="button"
             className={`filter-chip ${selectedManuscripts.has(code) ? 'active' : ''}`}
             onClick={() => toggleManuscript(code)}
+            aria-pressed={selectedManuscripts.has(code)}
           >
             {code}
           </button>
@@ -245,7 +256,7 @@ const SearchBar = ({ onSearch, placeholder = "Search verses, Strong's numbers, o
 
       <div className="search-tips">
         <span className="search-tip">
-          💡 Try: <code>Yahuah</code>, <code>H3068</code>, <code>love</code>, or <code>GEN</code>
+          Try: <code>Yahuah</code>, <code>H3068</code>, <code>love</code>, or <code>GEN</code>
         </span>
       </div>
     </div>

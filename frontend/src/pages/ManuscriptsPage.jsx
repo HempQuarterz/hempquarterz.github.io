@@ -234,9 +234,9 @@ const ManuscriptsPage = () => {
       </div>
 
       {showSearch && (
-        <div className="search-modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) toggleSearch(); }}>
+        <div className="search-modal-overlay" role="dialog" aria-modal="true" aria-label="Search manuscripts" onClick={(e) => { if (e.target === e.currentTarget) toggleSearch(); }}>
           <div className="search-modal-container">
-            <button onClick={toggleSearch} className="search-modal-close">✕</button>
+            <button onClick={toggleSearch} className="search-modal-close" aria-label="Close search">✕</button>
             <SearchBar onSearch={handleSearch} autoFocus={true} initialQuery={searchQuery} />
             <SearchResults
               results={searchResults}

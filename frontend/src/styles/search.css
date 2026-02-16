@@ -3,6 +3,20 @@
  * Styling for SearchBar and SearchResults components
  */
 
+/* ===== Utility ===== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* ===== Search Modal Styles ===== */
 
 .search-modal-overlay {
@@ -162,6 +176,11 @@
 }
 
 .search-modal-container .lexicon-transliteration {
+  color: #94a3b8;
+}
+
+.search-modal-container .lexicon-language {
+  background: #1e293b;
   color: #94a3b8;
 }
 
@@ -545,8 +564,14 @@
 }
 
 .lexicon-language {
-  font-size: 1.2rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   margin-left: auto;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: #f0f0f0;
+  color: #555;
 }
 
 .lexicon-original {

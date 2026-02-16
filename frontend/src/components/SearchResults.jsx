@@ -12,9 +12,9 @@ const SearchResults = ({ results, query, onNavigate, onLoadMore, loading = false
 
   if (loading) {
     return (
-      <div className="search-results-container">
+      <div className="search-results-container" aria-live="polite" aria-busy="true">
         <div className="search-loading">
-          <div className="loading-spinner"></div>
+          <div className="loading-spinner" role="status" aria-label="Loading"></div>
           <p>Searching manuscripts...</p>
         </div>
       </div>
@@ -138,7 +138,7 @@ const SearchResults = ({ results, query, onNavigate, onLoadMore, loading = false
         <div className="lexicon-result-header">
           <span className="lexicon-strong">{entry.strong_number}</span>
           <span className="lexicon-transliteration">{entry.transliteration}</span>
-          <span className="lexicon-language">{entry.language === 'hebrew' ? '🔯' : '✝'}</span>
+          <span className="lexicon-language" aria-label={entry.language === 'hebrew' ? 'Hebrew' : 'Greek'}>{entry.language === 'hebrew' ? 'HEB' : 'GRK'}</span>
         </div>
         <div className="lexicon-original">{entry.original_word}</div>
         <div className={`lexicon-definition ${isExpanded ? 'expanded' : ''}`}>
@@ -152,7 +152,7 @@ const SearchResults = ({ results, query, onNavigate, onLoadMore, loading = false
   };
 
   return (
-    <div className="search-results-container">
+    <div className="search-results-container" aria-live="polite">
       <div className="search-results-header">
         <h2>
           Search Results for "{query}" ({total})
