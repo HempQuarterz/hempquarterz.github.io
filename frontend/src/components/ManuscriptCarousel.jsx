@@ -34,14 +34,61 @@ const ManuscriptCarousel = ({
     return 0;
   }, []);
 
+  // Helper to detect if verse 1 text is a WEB book title (not actual verse content)
+  const isBookTitleVerse = (text, verseNum) => {
+    if (!text || verseNum !== 1) return false;
+
+    // Check if text is just the book name (e.g., "1 Kings.", "Genesis.", "Exodus.")
+    if (bookName) {
+      const escaped = bookName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const nameOnly = new RegExp(`^${escaped}\\.?\\s*$`, 'i');
+      if (nameOnly.test(text.trim())) return true;
+    }
+
+    // WEB stores book headings as verse 1 for many books.
+    // Title patterns: "Paul's Letter to the Romans.", "The Good News According to Matthew.", etc.
+    const titlePatterns = [
+      /letter to/i,
+      /letter from/i,
+      /^\w+['\u2019]s\s+(first|second|third)?\s*letter/i,  // "Peter\u2019s First Letter.", "John\u2019s Second Letter."
+      /good news according/i,
+      /^the acts of/i,
+      /^the revelation of/i,
+      /commonly called/i,
+      /^the book of/i,
+      /^the first book of/i,
+      /^the second book of/i,
+      /^the song of/i,
+      /^the lament/i,
+      /^the proverbs/i,
+      /^the prophecy of/i,
+      /^the book of the prophet/i,
+    ];
+    // Short text ending with period that matches a known title pattern
+    if (text.length < 120 && text.endsWith('.')) {
+      if (titlePatterns.some(p => p.test(text))) return true;
+      // Also catch if text contains the book name and is short (likely a title)
+      if (bookName && text.toLowerCase().includes(bookName.toLowerCase()) && text.split(' ').length < 15) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   // Helper to clean verse text (strip book titles from verse 1)
   const cleanVerseText = (text, verseNum) => {
     if (!text || verseNum !== 1 || !bookName) return text;
 
+    // If entire text is a book title, return null to signal filtering
+    if (isBookTitleVerse(text, verseNum)) return null;
+
+    // Escape special regex characters in book name
+    const escaped = bookName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     // Regex to match "BookName." or "BookName 1:1" at start
-    // Case insensitive, optional period, optional spaces
-    const pattern = new RegExp(`^${bookName}\\.?\\s*(\\d+:\\d+)?\\s*`, 'i');
-    return text.replace(pattern, '').trim();
+    const pattern = new RegExp(`^${escaped}\\.?\\s*(\\d+:\\d+)?\\s*`, 'i');
+    const cleaned = text.replace(pattern, '').trim();
+    // Never return empty — if stripping would blank the verse, keep original
+    return cleaned || text;
   };
 
   // Navigate to specific index with animation
@@ -200,20 +247,24 @@ const ManuscriptCarousel = ({
                 {viewMode === 'chapter' ? (
                   /* Chapter View: Display all verses */
                   <div className="chapter-view-content">
-                    {ms.verses && ms.verses.map((verseData, vIndex) => (
-                      <div key={vIndex} className="verse-row">
-                        <span className="verse-number">{verseData.verse}</span>
-                        <div
-                          className={getLanguageClass(ms.lang)}
-                          style={{ flex: 1 }}
-                          dangerouslySetInnerHTML={{
-                            __html: showRestored && verseData.restorations
-                              ? highlightRestoredNames(cleanVerseText(verseData.text, verseData.verse), verseData.restorations, ms.manuscript)
-                              : cleanVerseText(verseData.text, verseData.verse)
-                          }}
-                        />
-                      </div>
-                    ))}
+                    {ms.verses && (() => {
+                      const filtered = ms.verses.filter(v => !isBookTitleVerse(v.text, v.verse));
+                      const verseOffset = filtered.length < ms.verses.length ? 1 : 0;
+                      return filtered.map((verseData, vIndex) => (
+                        <div key={vIndex} className="verse-row">
+                          <span className="verse-number">{verseData.verse - verseOffset}</span>
+                          <div
+                            className={getLanguageClass(ms.lang)}
+                            style={{ flex: 1 }}
+                            dangerouslySetInnerHTML={{
+                              __html: showRestored && verseData.restorations
+                                ? highlightRestoredNames(cleanVerseText(verseData.text, verseData.verse), verseData.restorations, ms.manuscript)
+                                : cleanVerseText(verseData.text, verseData.verse)
+                            }}
+                          />
+                        </div>
+                      ));
+                    })()}
                   </div>
                 ) : (
                   /* Verse View: Display single verse */
@@ -224,8 +275,8 @@ const ManuscriptCarousel = ({
                         style={{ flex: 1 }}
                         dangerouslySetInnerHTML={{
                           __html: showRestored && ms.restorations
-                            ? highlightRestoredNames(cleanVerseText(ms.text, 1), ms.restorations, ms.manuscript) // Force verse 1 check for single view context if needed, but 'ms' lacks verse number prop at this level usually, assuming single verse mode implies current verse.
-                            : highlightQuotations(cleanVerseText(ms.text, 1), ms.manuscript === 'WEB' ? quotations : [])
+                            ? highlightRestoredNames(cleanVerseText(ms.text, ms.verse) || ms.text, ms.restorations, ms.manuscript)
+                            : highlightQuotations(cleanVerseText(ms.text, ms.verse) || ms.text, ms.manuscript === 'WEB' ? quotations : [])
                         }}
                       />
                       <CrossReferenceBadge

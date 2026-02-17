@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getVerse, getChapter } from '../api/verses';
 import { restoreVerse, restoreChapter, preloadNameMappings } from '../api/restoration';
 import { getCrossReferences, getOTQuotations, highlightQuotations } from '../api/crossReferences';
-import { getCanonicalBook } from '../api/canonicalBooks';
+import { BIBLE_BOOKS } from '../utils/bibleStructure';
 import ManuscriptSkeleton from './ManuscriptSkeleton';
 import ManuscriptCarousel from './ManuscriptCarousel';
 import InterlinearViewer from './InterlinearViewer';
@@ -61,19 +61,12 @@ const ManuscriptViewer = ({
     preloadNameMappings().catch(console.error);
   }, []);
 
-  // Fetch canonical book name
+  // Resolve book name from local data (avoids async race condition)
   useEffect(() => {
-    async function loadBookName() {
-      if (book) {
-        try {
-          const bookData = await getCanonicalBook(book);
-          setBookName(bookData?.book_name || book);
-        } catch (err) {
-          setBookName(book);
-        }
-      }
+    if (book) {
+      const found = BIBLE_BOOKS.find(b => b.id === book);
+      setBookName(found?.name || book);
     }
-    loadBookName();
   }, [book]);
 
   // Force Chapter View when Reader Mode is enabled
@@ -198,48 +191,46 @@ const ManuscriptViewer = ({
   if (loading) return <ManuscriptSkeleton />;
 
   return (
-    <div className="relative min-h-screen text-slate-100">
+    <div className="manuscript-page-wrapper">
       {/* 1. Spatial Background */}
-      <div className="fixed inset-0 z-[-1]">
+      <div className="manuscript-bg-layer">
         <AuroraBackground />
       </div>
 
       {/* Note: Navigation is now handled by CovenantDock at App level */}
 
       {/* 2. Main Content Area (Glass Scroll) */}
-      <div className="flex-1 p-4 md:p-8 transition-all duration-300">
-        <div className="max-w-4xl mx-auto">
+      <div className="manuscript-content-area">
+        <div className="manuscript-inner">
 
           {/* Header Info - Simplified */}
-          <div className="mb-8 text-center">
-            <h1 className="font-serif text-3xl md:text-5xl text-brand-gold mb-2 drop-shadow-lg">
+          <div className="manuscript-page-header">
+            <h1 className="manuscript-page-title">
               {bookName} {chapter}
             </h1>
-            <p className="text-sm text-gray-400 font-mono tracking-widest uppercase">
-              {viewMode === 'chapter' ? 'Full Chapter' : `Verse ${verse}`} • {manuscripts.length} Manuscripts Loaded
+            <p className="manuscript-page-subtitle">
+              {viewMode === 'chapter' ? 'Full Chapter' : `Verse ${verse}`} &bull; {manuscripts.length} Manuscripts Loaded
             </p>
             {/* Interlinear Toggle - only shows in verse mode */}
             {viewMode === 'verse' && (
               <button
                 onClick={() => setShowInterlinear(!showInterlinear)}
-                className={`mt-3 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  showInterlinear
-                    ? 'bg-brand-gold/20 text-brand-gold border border-brand-gold/40'
-                    : 'bg-white/5 text-gray-400 border border-white/10 hover:bg-white/10 hover:text-brand-gold'
+                className={`interlinear-toggle ${
+                  showInterlinear ? 'interlinear-toggle--active' : 'interlinear-toggle--inactive'
                 }`}
               >
-                {showInterlinear ? '✦ Hide Interlinear' : '✧ Show Interlinear'}
+                {showInterlinear ? 'Hide Interlinear' : 'Show Interlinear'}
               </button>
             )}
           </div>
 
           {/* Error Display */}
-          {error && <div className="p-4 bg-red-900/50 rounded-lg text-red-200">{error}</div>}
+          {error && <div className="error-banner">{error}</div>}
 
           {/* Empty State / Deuterocanonical Notice */}
           {!loading && !error && manuscripts.length === 0 && (
-            <div className="glass-panel p-8 text-center rounded-2xl">
-              <h3 className="text-xl text-brand-gold mb-4">No Manuscripts Available</h3>
+            <div className="glass-panel empty-state-panel">
+              <h3 className="text-brand-gold" style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>No Manuscripts Available</h3>
               <p className="text-gray-300">This book may be currently unavailable or requires specific imports.</p>
             </div>
           )}
@@ -253,7 +244,7 @@ const ManuscriptViewer = ({
                 initial="initial"
                 animate="animate"
                 exit="exit"
-                className="relative z-10"
+                style={{ position: 'relative', zIndex: 10 }}
               >
                 <ManuscriptCarousel
                   manuscripts={manuscripts}
@@ -273,7 +264,7 @@ const ManuscriptViewer = ({
 
           {/* Interlinear Word-by-Word View */}
           {showInterlinear && viewMode === 'verse' && (
-            <div className="mt-6 relative z-10">
+            <div className="content-section" style={{ position: 'relative', zIndex: 10 }}>
               <InterlinearViewer
                 sourceManuscript="WLC"
                 targetManuscript="WEB"
@@ -286,7 +277,7 @@ const ManuscriptViewer = ({
 
           {/* Render children (like Consolidated Panel) */}
           {children && (
-            <div className="mt-8 relative z-10">
+            <div className="content-section--lg" style={{ position: 'relative', zIndex: 10 }}>
               {children}
             </div>
           )}
