@@ -69,14 +69,17 @@ const NavigationColumn = ({
 
     // When a specific testament is selected, just return one group
     if (testamentFilter !== 'All') {
-      return [{ testament: testamentFilter === 'Old' ? 'Old Testament' : 'New Testament', books: filteredData }];
+      const labels = { Old: 'Old Testament', New: 'New Testament', Deuterocanon: 'Deuterocanonical & Apocrypha' };
+      return [{ testament: labels[testamentFilter] || testamentFilter, books: filteredData }];
     }
 
     const old = filteredData.filter(b => b.testament === 'Old');
     const nw = filteredData.filter(b => b.testament === 'New');
+    const dc = filteredData.filter(b => b.testament === 'Deuterocanon');
     const groups = [];
     if (old.length > 0) groups.push({ testament: 'Old Testament', books: old });
     if (nw.length > 0) groups.push({ testament: 'New Testament', books: nw });
+    if (dc.length > 0) groups.push({ testament: 'Deuterocanonical & Apocrypha', books: dc });
     return groups;
   }, [type, filteredData, testamentFilter]);
 
@@ -124,15 +127,15 @@ const NavigationColumn = ({
 
             {/* Testament Tabs */}
             <div className="nav-testament-tabs">
-              {['All', 'Old', 'New'].map((t) => (
+              {[['All', 'All'], ['Old', 'OT'], ['New', 'NT'], ['Deuterocanon', 'DC']].map(([value, label]) => (
                 <button
-                  key={t}
-                  onClick={() => setTestamentFilter(t)}
+                  key={value}
+                  onClick={() => setTestamentFilter(value)}
                   className={`nav-testament-tab ${
-                    testamentFilter === t ? 'nav-testament-tab--active' : ''
+                    testamentFilter === value ? 'nav-testament-tab--active' : ''
                   }`}
                 >
-                  {t}
+                  {label}
                 </button>
               ))}
             </div>

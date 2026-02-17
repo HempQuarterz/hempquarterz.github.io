@@ -1,11 +1,11 @@
 /**
  * Static Bible Data for Instant "Miller Column" Navigation
- * 66 Books, Standard Protestant Canon (matches common request)
- * TODO: Expand for Apocrypha if needed based on canonical_books table
+ * 66 Canonical + 20 Deuterocanonical/Apocrypha books
+ * Matches canonical_books table tiers 1 & 2
  */
 
 export const BIBLE_BOOKS = [
-    // OLD TESTAMENT
+    // OLD TESTAMENT (39 books)
     { name: 'Genesis', chapters: 50, testament: 'Old', id: 'GEN' },
     { name: 'Exodus', chapters: 40, testament: 'Old', id: 'EXO' },
     { name: 'Leviticus', chapters: 27, testament: 'Old', id: 'LEV' },
@@ -46,7 +46,7 @@ export const BIBLE_BOOKS = [
     { name: 'Zechariah', chapters: 14, testament: 'Old', id: 'ZEC' },
     { name: 'Malachi', chapters: 4, testament: 'Old', id: 'MAL' },
 
-    // NEW TESTAMENT
+    // NEW TESTAMENT (27 books)
     { name: 'Matthew', chapters: 28, testament: 'New', id: 'MAT' },
     { name: 'Mark', chapters: 16, testament: 'New', id: 'MRK' },
     { name: 'Luke', chapters: 24, testament: 'New', id: 'LUK' },
@@ -73,7 +73,29 @@ export const BIBLE_BOOKS = [
     { name: '2 John', chapters: 1, testament: 'New', id: '2JN' },
     { name: '3 John', chapters: 1, testament: 'New', id: '3JN' },
     { name: 'Jude', chapters: 1, testament: 'New', id: 'JUD' },
-    { name: 'Revelation', chapters: 22, testament: 'New', id: 'REV' }
+    { name: 'Revelation', chapters: 22, testament: 'New', id: 'REV' },
+
+    // DEUTEROCANONICAL / APOCRYPHA (20 books, Tier 2)
+    { name: 'Tobit', chapters: 14, testament: 'Deuterocanon', id: 'TOB' },
+    { name: 'Judith', chapters: 16, testament: 'Deuterocanon', id: 'JDT' },
+    { name: 'Esther (Greek)', chapters: 16, testament: 'Deuterocanon', id: 'ESG' },
+    { name: 'Wisdom of Solomon', chapters: 19, testament: 'Deuterocanon', id: 'WIS' },
+    { name: 'Sirach', chapters: 51, testament: 'Deuterocanon', id: 'SIR' },
+    { name: 'Baruch', chapters: 5, testament: 'Deuterocanon', id: 'BAR' },
+    { name: 'Letter of Jeremiah', chapters: 1, testament: 'Deuterocanon', id: 'LJE' },
+    { name: 'Prayer of Azariah', chapters: 1, testament: 'Deuterocanon', id: 'S3Y' },
+    { name: 'Susanna', chapters: 1, testament: 'Deuterocanon', id: 'SUS' },
+    { name: 'Bel and the Dragon', chapters: 1, testament: 'Deuterocanon', id: 'BEL' },
+    { name: '1 Maccabees', chapters: 16, testament: 'Deuterocanon', id: '1MA' },
+    { name: '2 Maccabees', chapters: 15, testament: 'Deuterocanon', id: '2MA' },
+    { name: '3 Maccabees', chapters: 7, testament: 'Deuterocanon', id: '3MA' },
+    { name: '4 Maccabees', chapters: 18, testament: 'Deuterocanon', id: '4MA' },
+    { name: 'Psalm 151', chapters: 1, testament: 'Deuterocanon', id: 'PS2' },
+    { name: 'Prayer of Manasseh', chapters: 1, testament: 'Deuterocanon', id: 'MAN' },
+    { name: '1 Esdras', chapters: 9, testament: 'Deuterocanon', id: '1ES' },
+    { name: '2 Esdras', chapters: 16, testament: 'Deuterocanon', id: '2ES' },
+    { name: '1 Enoch', chapters: 108, testament: 'Deuterocanon', id: 'ENO' },
+    { name: 'Jubilees', chapters: 50, testament: 'Deuterocanon', id: 'JUB' }
 ];
 
 /**

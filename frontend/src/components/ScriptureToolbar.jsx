@@ -95,6 +95,7 @@ const ScriptureToolbar = ({ book, chapter, bookName, onBookChange, onChapterChan
   const filteredBooks = BIBLE_BOOKS.filter(b => {
     if (testamentTab === 'old' && b.testament !== 'Old') return false;
     if (testamentTab === 'new' && b.testament !== 'New') return false;
+    if (testamentTab === 'dc' && b.testament !== 'Deuterocanon') return false;
     if (bookFilter) {
       return b.name.toLowerCase().includes(bookFilter.toLowerCase());
     }
@@ -132,7 +133,7 @@ const ScriptureToolbar = ({ book, chapter, bookName, onBookChange, onChapterChan
               <div className="st-popover-backdrop" onClick={() => setShowBookSelector(false)} />
               <div className="st-popover st-book-popover" role="listbox" aria-label="Select book">
                 <div className="st-popover-tabs" role="tablist">
-                  {[['all', 'All'], ['old', 'OT'], ['new', 'NT']].map(([key, label]) => (
+                  {[['all', 'All'], ['old', 'OT'], ['new', 'NT'], ['dc', 'DC']].map(([key, label]) => (
                     <button
                       key={key}
                       role="tab"
