@@ -15,7 +15,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '../../supabaseClient';
+import { supabase } from '../../config/supabase';
 import '../../styles/lsi/session-detail.css';
 
 const SessionDetailView = ({ sessionId, onClose }) => {

@@ -1,0 +1,376 @@
+/**
+ * Layout Utilities - Replaces non-functional Tailwind utility classes
+ * These classes mirror Tailwind's API for components that relied on them
+ */
+
+/* ============================================================================
+   DISPLAY & POSITION
+   ============================================================================ */
+
+.relative { position: relative; }
+.fixed { position: fixed; }
+.absolute { position: absolute; }
+.sticky { position: sticky; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+
+/* ============================================================================
+   FLEXBOX
+   ============================================================================ */
+
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.flex-col { flex-direction: column; }
+.flex-1 { flex: 1 1 0%; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+/* ============================================================================
+   SIZING
+   ============================================================================ */
+
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.min-h-screen { min-height: 100vh; }
+.max-w-4xl { max-width: 56rem; }
+.max-w-7xl { max-width: 80rem; }
+.max-w-xl { max-width: 36rem; }
+
+/* ============================================================================
+   SPACING
+   ============================================================================ */
+
+.p-4 { padding: 1rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-8 { margin-top: 2rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-8 { margin-bottom: 2rem; }
+.mb-12 { margin-bottom: 3rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+
+/* ============================================================================
+   TYPOGRAPHY
+   ============================================================================ */
+
+.text-center { text-align: center; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+.font-sans { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+.font-serif { font-family: 'Cinzel', serif; }
+.font-mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+.font-medium { font-weight: 500; }
+.font-bold { font-weight: 700; }
+.italic { font-style: italic; }
+.tracking-widest { letter-spacing: 0.1em; }
+.uppercase { text-transform: uppercase; }
+.whitespace-nowrap { white-space: nowrap; }
+
+/* ============================================================================
+   COLORS (Brand)
+   ============================================================================ */
+
+.text-brand-gold { color: var(--brand-gold, #F9E4A4); }
+.text-slate-100 { color: #f1f5f9; }
+.text-gray-300 { color: #d1d5db; }
+.text-gray-400 { color: #9ca3af; }
+.text-red-200 { color: #fecaca; }
+.text-white { color: #fff; }
+
+.bg-midnight { background-color: #0E233B; }
+
+/* ============================================================================
+   Z-INDEX
+   ============================================================================ */
+
+.z-0 { z-index: 0; }
+.z-10 { z-index: 10; }
+.z-50 { z-index: 50; }
+
+/* ============================================================================
+   OVERFLOW
+   ============================================================================ */
+
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+
+/* ============================================================================
+   BORDERS & RADIUS
+   ============================================================================ */
+
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-2xl { border-radius: 1rem; }
+.border { border-width: 1px; border-style: solid; }
+
+/* ============================================================================
+   EFFECTS
+   ============================================================================ */
+
+.drop-shadow-lg { filter: drop-shadow(0 10px 8px rgba(0,0,0,.04)) drop-shadow(0 4px 3px rgba(0,0,0,.1)); }
+
+/* ============================================================================
+   TRANSITIONS
+   ============================================================================ */
+
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.duration-200 { transition-duration: 200ms; }
+.duration-300 { transition-duration: 300ms; }
+
+/* ============================================================================
+   RESPONSIVE (md = 768px)
+   ============================================================================ */
+
+@media (min-width: 768px) {
+  .md\:p-8 { padding: 2rem; }
+  .md\:text-5xl { font-size: 3rem; line-height: 1; }
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ============================================================================
+   PAGE-SPECIFIC UTILITIES
+   ============================================================================ */
+
+/* HomePage hero wrapper */
+.hero-page {
+  position: relative;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  color: var(--brand-gold, #F9E4A4);
+}
+
+/* Aurora fixed background */
+.aurora-fixed-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* Aurora inner wrapper */
+.aurora-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #0E233B;
+  overflow: hidden;
+}
+
+.aurora-content-layer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+}
+
+/* Main content area above aurora */
+.main-content-above {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Manuscript viewer wrapper */
+.manuscript-page-wrapper {
+  position: relative;
+  min-height: 100vh;
+  color: #f1f5f9;
+}
+
+.manuscript-bg-layer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.manuscript-content-area {
+  flex: 1;
+  padding: 1rem;
+  transition: all 300ms ease;
+}
+
+@media (min-width: 768px) {
+  .manuscript-content-area {
+    padding: 2rem;
+  }
+}
+
+.manuscript-inner {
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+/* Manuscript header */
+.manuscript-page-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.manuscript-page-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.875rem;
+  color: var(--brand-gold, #F9E4A4);
+  margin-bottom: 0.5rem;
+  filter: drop-shadow(0 10px 8px rgba(0,0,0,.04)) drop-shadow(0 4px 3px rgba(0,0,0,.1));
+}
+
+@media (min-width: 768px) {
+  .manuscript-page-title {
+    font-size: 3rem;
+  }
+}
+
+.manuscript-page-subtitle {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Error display */
+.error-banner {
+  padding: 1rem;
+  background: rgba(127, 29, 29, 0.5);
+  border-radius: 0.5rem;
+  color: #fecaca;
+}
+
+/* Empty state panel */
+.empty-state-panel {
+  padding: 2rem;
+  text-align: center;
+  border-radius: 1rem;
+}
+
+/* Interlinear toggle button */
+.interlinear-toggle {
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 200ms ease;
+  border: 1px solid;
+  cursor: pointer;
+  background: transparent;
+}
+
+.interlinear-toggle--active {
+  background: rgba(249, 228, 164, 0.2);
+  color: var(--brand-gold, #F9E4A4);
+  border-color: rgba(249, 228, 164, 0.4);
+}
+
+.interlinear-toggle--inactive {
+  background: rgba(255, 255, 255, 0.05);
+  color: #9ca3af;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.interlinear-toggle--inactive:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--brand-gold, #F9E4A4);
+}
+
+/* Gematria overlay */
+.gematria-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.gematria-panel-container {
+  background: #0f172a;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  max-width: 36rem;
+  width: 100%;
+  border: 1px solid #374151;
+  position: relative;
+}
+
+.gematria-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.gematria-close-btn:hover {
+  color: #fff;
+}
+
+/* Floating action buttons (Search/Gematria) */
+.floating-actions {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.floating-action-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.floating-action-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Content sections */
+.content-section {
+  margin-top: 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.content-section--lg {
+  margin-top: 2rem;
+}

@@ -8,18 +8,16 @@
    ============================================================================ */
 
 .audio-player-container {
-  background: #ffffff;
+  background: transparent;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  margin-top: 2rem;
 }
 
 .audio-header {
   padding: 1.5rem;
-  background: linear-gradient(135deg, #00BCD4 0%, #0097A7 100%);
-  color: #fff;
-  border-bottom: 2px solid #00838F;
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.2), rgba(0, 151, 167, 0.15));
+  color: #e2e8f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .audio-header h3 {
@@ -120,7 +118,7 @@
   background: rgba(0, 188, 212, 0.1);
   border-radius: 20px;
   font-size: 0.9rem;
-  color: #00838F;
+  color: #80DEEA;
   font-weight: 600;
 }
 
@@ -169,7 +167,7 @@
 .setting-group label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #333;
+  color: #e2e8f0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -177,21 +175,22 @@
 
 .setting-group select {
   padding: 0.6rem;
-  border: 2px solid #ddd;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
   font-size: 0.9rem;
-  background: white;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
   cursor: pointer;
   transition: border-color 0.2s;
 }
 
 .setting-group select:hover {
-  border-color: #00BCD4;
+  border-color: rgba(0, 188, 212, 0.4);
 }
 
 .setting-group select:focus {
   outline: none;
-  border-color: #00BCD4;
+  border-color: rgba(0, 188, 212, 0.5);
   box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
 }
 
@@ -199,7 +198,7 @@
   width: 100%;
   height: 6px;
   border-radius: 3px;
-  background: #e0e0e0;
+  background: rgba(255, 255, 255, 0.15);
   outline: none;
   -webkit-appearance: none;
 }
@@ -246,9 +245,9 @@
 .audio-error,
 .audio-error-message {
   padding: 1rem;
-  background: #ffebee;
-  color: #c62828;
-  border-left: 4px solid #c62828;
+  background: rgba(198, 40, 40, 0.15);
+  color: #ef9a9a;
+  border-left: 4px solid rgba(198, 40, 40, 0.5);
   margin: 1rem;
   border-radius: 4px;
 }
@@ -270,19 +269,19 @@
 
 .audio-footer {
   padding: 1rem 1.5rem;
-  background: #f9f9f9;
-  border-top: 1px solid #e0e0e0;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .audio-footer p {
   margin: 0;
   font-size: 0.85rem;
   line-height: 1.6;
-  color: #666;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .audio-footer strong {
-  color: #00BCD4;
+  color: var(--brand-gold, #F9E4A4);
 }
 
 /* ============================================================================
@@ -328,73 +327,24 @@
 }
 
 /* ============================================================================
-   DARK MODE SUPPORT
+   REDUCED MOTION
    ============================================================================ */
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-reduced-motion: reduce) {
   .audio-player-container {
-    background: #2E3440;
+    animation: none;
   }
 
-  .audio-header {
-    background: linear-gradient(135deg, #0097A7 0%, #00838F 100%);
+  .control-btn {
+    transition: none;
   }
 
-  .audio-controls {
-    background: #2E3440;
+  .control-btn:hover:not(:disabled) {
+    transform: none;
   }
 
-  .playback-status {
-    background: rgba(0, 151, 167, 0.2);
-    color: #88C0D0;
-  }
-
-  .audio-settings {
-    background: #2E3440;
-  }
-
-  .setting-group label {
-    color: #ECEFF4;
-  }
-
-  .setting-group select {
-    background: #3B4252;
-    color: #ECEFF4;
-    border-color: #4C566A;
-  }
-
-  .setting-group select:hover {
-    border-color: #88C0D0;
-  }
-
-  .setting-group select:focus {
-    border-color: #88C0D0;
-    box-shadow: 0 0 0 2px rgba(136, 192, 208, 0.2);
-  }
-
-  .setting-group input[type="range"] {
-    background: #4C566A;
-  }
-
-  .setting-group input[type="range"]::-webkit-slider-thumb {
-    background: #88C0D0;
-  }
-
-  .setting-group input[type="range"]::-moz-range-thumb {
-    background: #88C0D0;
-  }
-
-  .audio-footer {
-    background: #3B4252;
-    border-top-color: #4C566A;
-  }
-
-  .audio-footer p {
-    color: #D8DEE9;
-  }
-
-  .audio-footer strong {
-    color: #88C0D0;
+  .pulse-dot {
+    animation: none;
   }
 }
 

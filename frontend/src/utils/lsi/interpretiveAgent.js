@@ -16,7 +16,7 @@
  * 5. Stores results in session_analysis table
  */
 
-import { supabase } from '../../supabaseClient';
+import { supabase } from '../../config/supabase';
 
 /**
  * LLM Provider Configuration

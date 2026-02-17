@@ -1,6 +1,6 @@
 /**
  * BibleNavigator - Full-Screen Miller Column Scripture Navigator
- * Inspired by macOS Finder columns for intuitive Book → Chapter → Verse navigation
+ * Inspired by macOS Finder columns for intuitive Book > Chapter > Verse navigation
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Hash, FileText, X } from 'lucide-react';
 import { BIBLE_BOOKS } from '../../utils/bibleStructure';
 import NavigationColumn from './NavigationColumn';
+import '../../styles/bible-navigator.css';
 
 // Navigation column types for mobile tabs
 const NAV_COLUMNS = {
@@ -79,7 +80,6 @@ const BibleNavigator = ({
 
   // Default verse count - could be enhanced with actual verse counts
   const getVerseCount = (book, chapter) => {
-    // Common verse counts for popular chapters (can be expanded)
     const verseCounts = {
       'PSA-119': 176,
       'PSA-117': 2,
@@ -87,7 +87,7 @@ const BibleNavigator = ({
       'JHN-3': 36,
     };
     const key = `${book?.id}-${chapter}`;
-    return verseCounts[key] || 30; // Default to 30 verses
+    return verseCounts[key] || 30;
   };
 
   const verses = activeChapter
@@ -98,17 +98,14 @@ const BibleNavigator = ({
   const MobileTab = ({ type, label, icon: Icon, active }) => (
     <button
       onClick={() => setMobileView(type)}
-      className={`
-        flex-1 flex flex-col items-center justify-center py-3 transition-colors relative
-        ${active ? 'text-brand-gold' : 'text-slate-500 hover:text-slate-300'}
-      `}
+      className={`nav-mobile-tab ${active ? 'nav-mobile-tab--active' : ''}`}
     >
-      <Icon size={18} className="mb-1" />
-      <span className="text-[10px] uppercase font-bold tracking-wider">{label}</span>
+      <Icon size={18} className="nav-mobile-tab-icon" />
+      <span className="nav-mobile-tab-label">{label}</span>
       {active && (
         <motion.span
           layoutId="mobileTabIndicator"
-          className="absolute bottom-0 left-0 w-full h-0.5 bg-brand-gold shadow-[0_0_10px_rgba(212,175,55,0.8)]"
+          className="nav-mobile-tab-indicator"
         />
       )}
     </button>
@@ -117,14 +114,14 @@ const BibleNavigator = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="bible-navigator-overlay fixed inset-0 z-[100] overflow-hidden font-sans">
+        <div className="bible-navigator-overlay">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 bg-royal-950/85 backdrop-blur-md"
+            className="navigator-backdrop"
             onClick={onClose}
           />
 
@@ -134,28 +131,23 @@ const BibleNavigator = ({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: '-100%', opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="
-              bible-navigator-container
-              absolute w-full h-full
-              md:h-[600px] md:top-20 md:left-1/2 md:-translate-x-1/2 md:w-[1000px] md:rounded-2xl
-              bg-royal-900 border border-brand-gold/20 shadow-2xl overflow-hidden flex flex-col
-            "
+            className="bible-navigator-container"
           >
             {/* Header */}
-            <div className="nav-header h-16 border-b border-slate-700/50 flex items-center justify-between px-6 bg-gradient-to-r from-royal-900 via-royal-800 to-royal-900">
-              <div className="flex flex-col">
-                <span className="font-cinzel font-bold text-lg text-brand-gold tracking-wider">
+            <div className="nav-header">
+              <div className="nav-header-info">
+                <span className="nav-header-title">
                   Scripture Navigator
                 </span>
-                <span className="text-xs text-slate-500">
+                <span className="nav-header-subtitle">
                   {activeBook?.name || 'Select Book'}
-                  {activeChapter ? ` • Chapter ${activeChapter}` : ''}
+                  {activeChapter ? ` \u2022 Chapter ${activeChapter}` : ''}
                 </span>
               </div>
 
               <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-slate-700/50 text-slate-400 hover:text-white transition-colors"
+                className="nav-close-btn"
                 aria-label="Close navigator"
               >
                 <X size={20} />
@@ -163,7 +155,7 @@ const BibleNavigator = ({
             </div>
 
             {/* Mobile Tabs */}
-            <div className="md:hidden flex border-b border-slate-700/50 bg-royal-800/30">
+            <div className="nav-mobile-tabs">
               <MobileTab
                 type={NAV_COLUMNS.BOOKS}
                 label="Books"
@@ -185,7 +177,7 @@ const BibleNavigator = ({
             </div>
 
             {/* Content Area - Three Miller Columns */}
-            <div className="flex-1 flex overflow-hidden relative bg-gradient-to-b from-royal-900 to-royal-950">
+            <div className="nav-columns-area">
               <NavigationColumn
                 title="Books"
                 type="book"
@@ -215,18 +207,18 @@ const BibleNavigator = ({
             </div>
 
             {/* Desktop Footer */}
-            <div className="hidden md:flex h-10 bg-royal-950/50 border-t border-slate-800 items-center justify-between px-6">
-              <p className="text-[10px] text-slate-500 font-mono uppercase tracking-widest">
+            <div className="nav-footer">
+              <p className="nav-footer-path">
                 {activeBook ? activeBook.name : 'Select a Book'}
-                <span className="mx-2 text-slate-700">/</span>
-                {activeChapter ? `Chapter ${activeChapter}` : '—'}
-                <span className="mx-2 text-slate-700">/</span>
+                <span className="nav-footer-separator">/</span>
+                {activeChapter ? `Chapter ${activeChapter}` : '\u2014'}
+                <span className="nav-footer-separator">/</span>
                 Select Verse
               </p>
-              <div className="flex gap-2">
-                <div className={`w-2 h-2 rounded-full ${activeBook ? 'bg-brand-gold' : 'bg-slate-700'}`} />
-                <div className={`w-2 h-2 rounded-full ${activeChapter ? 'bg-brand-gold' : 'bg-slate-700'}`} />
-                <div className="w-2 h-2 rounded-full bg-slate-700" />
+              <div className="nav-footer-dots">
+                <div className={`nav-footer-dot ${activeBook ? 'nav-footer-dot--active' : ''}`} />
+                <div className={`nav-footer-dot ${activeChapter ? 'nav-footer-dot--active' : ''}`} />
+                <div className="nav-footer-dot" />
               </div>
             </div>
           </motion.div>

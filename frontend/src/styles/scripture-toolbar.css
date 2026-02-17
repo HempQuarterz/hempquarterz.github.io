@@ -1,0 +1,300 @@
+/* Scripture Toolbar - Inline Navigation */
+
+.scripture-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+  position: relative;
+  z-index: 20;
+}
+
+/* Navigation arrows */
+.st-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.st-nav-btn:hover:not(:disabled) {
+  color: var(--brand-gold, #F9E4A4);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 175, 55, 0.25);
+}
+
+.st-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Selector group (book + chapter) */
+.st-selectors {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  position: relative;
+}
+
+/* Book / Chapter selector buttons */
+.st-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: #e2e8f0;
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.st-selector:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.st-selector.st-selector--active {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.08);
+}
+
+.st-selector svg {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+/* Popover wrapper for positioning */
+.st-popover-anchor {
+  position: relative;
+}
+
+/* Popovers */
+.st-popover {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(14, 35, 59, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+/* Book popover */
+.st-book-popover {
+  width: 280px;
+}
+
+.st-popover-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.st-popover-tabs button {
+  flex: 1;
+  padding: 0.6rem 0;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.st-popover-tabs button:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.st-popover-tabs button.active {
+  color: var(--brand-gold, #F9E4A4);
+  border-bottom: 2px solid var(--brand-gold, #F9E4A4);
+}
+
+.st-book-search {
+  display: block;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.st-book-search::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.st-book-search:focus {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.st-book-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0.35rem 0;
+}
+
+.st-book-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.st-book-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.st-book-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+}
+
+.st-book-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+}
+
+.st-book-item.active {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--brand-gold, #F9E4A4);
+}
+
+.st-book-item-chapters {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.st-book-item.active .st-book-item-chapters {
+  color: rgba(212, 175, 55, 0.6);
+}
+
+/* Chapter popover */
+.st-chapter-popover {
+  width: 220px;
+  padding: 0.75rem;
+}
+
+.st-chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
+}
+
+.st-chapter-btn {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.st-chapter-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+}
+
+.st-chapter-btn.active {
+  background: var(--brand-gold, #F9E4A4);
+  color: #0E233B;
+  border-color: var(--brand-gold, #F9E4A4);
+  font-weight: 600;
+}
+
+/* Popover backdrop (click-outside catcher) */
+.st-popover-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+}
+
+/* Focus-visible */
+.st-nav-btn:focus-visible,
+.st-selector:focus-visible,
+.st-book-item:focus-visible,
+.st-chapter-btn:focus-visible,
+.st-popover-tabs button:focus-visible {
+  outline: 2px solid var(--brand-gold, #F9E4A4);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .st-nav-btn,
+  .st-selector,
+  .st-book-item,
+  .st-chapter-btn,
+  .st-popover-tabs button {
+    transition: none;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .scripture-toolbar {
+    gap: 0.3rem;
+  }
+
+  .st-nav-label {
+    display: none;
+  }
+
+  .st-selector {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.82rem;
+  }
+
+  .st-nav-btn {
+    padding: 0.45rem 0.5rem;
+  }
+
+  .st-popover {
+    left: 0;
+    transform: none;
+    right: 0;
+    width: auto;
+    max-width: calc(100vw - 2rem);
+  }
+
+  .st-book-popover {
+    width: auto;
+  }
+}

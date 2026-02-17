@@ -11,12 +11,6 @@ export { default as GlobalDockProvider } from './GlobalDockProvider';
 
 // Sub-components
 export { default as DockItem } from './DockItem';
-export { default as DockPanel, panelContentVariants, panelItemVariants } from './DockPanel';
-
-// Panels
-export { default as LibraryPanel } from './panels/LibraryPanel';
-export { default as ChaptersPanel } from './panels/ChaptersPanel';
-export { default as SettingsPanel } from './panels/SettingsPanel';
 
 // Hooks
 export { default as useBreadcrumbs } from './hooks/useBreadcrumbs';

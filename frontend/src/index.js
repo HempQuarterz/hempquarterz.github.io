@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/glass.css'; // Premium Glass Effects
+import './styles/layout-utilities.css'; // Layout utilities (replaces Tailwind)
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './styles/modern.css';

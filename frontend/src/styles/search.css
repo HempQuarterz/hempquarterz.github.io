@@ -3,8 +3,7 @@
  * Styling for SearchBar and SearchResults components
  */
 
-/* ===== Utility ===== */
-
+/* sr-only alias for .visually-hidden (defined in modern.css) */
 .sr-only {
   position: absolute;
   width: 1px;

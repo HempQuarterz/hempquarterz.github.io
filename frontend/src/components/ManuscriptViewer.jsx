@@ -12,6 +12,7 @@ import { getCrossReferences, getOTQuotations, highlightQuotations } from '../api
 import { BIBLE_BOOKS } from '../utils/bibleStructure';
 import ManuscriptSkeleton from './ManuscriptSkeleton';
 import ManuscriptCarousel from './ManuscriptCarousel';
+import ScriptureToolbar from './ScriptureToolbar';
 import InterlinearViewer from './InterlinearViewer';
 import { useDockContext } from './navigation/GlobalDockProvider';
 import { AuroraBackground } from './ui/AuroraBackground';
@@ -223,6 +224,15 @@ const ManuscriptViewer = ({
               </button>
             )}
           </div>
+
+          {/* Inline Navigation Toolbar */}
+          <ScriptureToolbar
+            book={book}
+            chapter={chapter}
+            bookName={bookName}
+            onBookChange={onBookChange}
+            onChapterChange={onChapterChange}
+          />
 
           {/* Error Display */}
           {error && <div className="error-banner">{error}</div>}

@@ -27,10 +27,10 @@
   top: 50%;
   transform: translateY(-50%);
   flex-direction: column;
-  width: 4.5rem;
-  padding: 1rem 0.5rem;
+  width: 5rem;
+  padding: 0.75rem 0.25rem;
   border-radius: 2.5rem;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 /* Mobile: Bottom horizontal dock */
@@ -47,50 +47,6 @@
 }
 
 /* ============================================================================
-   DOCK LOGO
-   ============================================================================ */
-
-.dock-logo {
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dock-logo-img {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: contain;
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
-  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
-}
-
-.dock-logo-img:hover {
-  opacity: 1;
-}
-
-/* ============================================================================
-   DOCK DIVIDER
-   ============================================================================ */
-
-.dock-divider {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.dock-divider.vertical {
-  width: 70%;
-  height: 1px;
-  margin: 0.5rem 0;
-}
-
-.dock-divider.horizontal {
-  width: 1px;
-  height: 60%;
-  margin: 0 0.25rem;
-}
-
-/* ============================================================================
    DOCK ITEM
    ============================================================================ */
 
@@ -103,14 +59,15 @@
 
 .dock-item {
   position: relative;
-  width: 3rem;
-  height: 3rem;
+  width: 3.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.15rem;
   border-radius: 1rem;
   cursor: pointer;
+  padding: 0.35rem 0;
   transition: background-color 0.2s ease;
 }
 
@@ -148,420 +105,20 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* Mobile label under icon */
+/* Label under icon (desktop and mobile) */
 .dock-item-label {
+  position: relative;
+  z-index: 1;
   font-size: 0.6rem;
   color: rgba(255, 255, 255, 0.5);
-  margin-top: 0.15rem;
   white-space: nowrap;
-}
-
-/* ============================================================================
-   DOCK TOOLTIP
-   ============================================================================ */
-
-.dock-tooltip {
-  position: absolute;
-  left: 100%;
-  z-index: 60;
-  padding: 0.5rem 0.75rem;
-  background: rgba(14, 35, 59, 0.95);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  color: #F9E4A4;
-  font-size: 0.85rem;
-  font-family: 'Cinzel', serif;
-  white-space: nowrap;
-  pointer-events: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* ============================================================================
-   DOCK PANELS
-   ============================================================================ */
-
-.dock-panel {
-  position: fixed;
-  z-index: 55;
-  background: rgba(14, 35, 59, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.dock-panel.desktop {
-  left: 6.5rem;
-  top: 6rem;
-  bottom: 6rem;
-  width: 24rem;
-  border-radius: 1.5rem;
-}
-
-.dock-panel.mobile {
-  bottom: 6rem;
-  left: 1rem;
-  right: 1rem;
-  max-height: 70vh;
-  border-radius: 1.5rem 1.5rem 1rem 1rem;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-/* Panel Header */
-.dock-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  flex-shrink: 0;
-}
-
-.dock-panel-title {
-  font-family: 'Cinzel', serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #F9E4A4;
-  letter-spacing: 0.02em;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0;
-}
-
-/* Animated dot */
-.dock-panel-dot {
-  position: relative;
-  width: 0.75rem;
-  height: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dock-panel-dot-ping {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: #F9E4A4;
-  opacity: 0.75;
-  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-.dock-panel-dot-core {
-  position: relative;
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  background: #F9E4A4;
-}
-
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-.dock-panel-close {
-  padding: 0.5rem;
-  border-radius: 50%;
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.dock-panel-close:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-/* Panel Content */
-.dock-panel-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0.5rem;
-}
-
-/* Custom scrollbar */
-.dock-panel-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.dock-panel-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.dock-panel-content::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-}
-
-.dock-panel-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Panel Loading State */
-.panel-loading {
-  padding: 2rem;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.5);
-  font-style: italic;
-}
-
-/* ============================================================================
-   LIBRARY PANEL
-   ============================================================================ */
-
-.library-panel-content {
-  padding: 0.5rem;
-}
-
-.library-section {
-  margin-bottom: 1.5rem;
-}
-
-.library-section-title {
-  font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin: 0 0 0.75rem 0.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  letter-spacing: 0.04em;
+  line-height: 1;
 }
 
-.library-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-}
-
-.library-book-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid transparent;
-  border-radius: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-family: 'Libre Baskerville', serif;
-  font-size: 0.85rem;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.library-book-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: white;
-}
-
-.library-book-btn.active {
-  background: rgba(212, 175, 55, 0.1);
-  border-color: rgba(212, 175, 55, 0.3);
+.dock-item-label.active {
   color: #F9E4A4;
-}
-
-.active-book-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #F9E4A4;
-  box-shadow: 0 0 8px rgba(212, 175, 55, 1);
-}
-
-/* ============================================================================
-   CHAPTERS PANEL
-   ============================================================================ */
-
-.chapters-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem;
-  padding: 1rem;
-}
-
-.chapter-btn {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.chapter-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-  color: white;
-}
-
-.chapter-btn.active {
-  background: #F9E4A4;
-  border-color: #F9E4A4;
-  color: #0E233B;
-  font-weight: 700;
-  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
-}
-
-/* ============================================================================
-   SETTINGS PANEL
-   ============================================================================ */
-
-.settings-panel-content {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.settings-toggle-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.settings-toggle-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.toggle-card-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.toggle-icon {
-  padding: 0.75rem;
-  border-radius: 0.75rem;
-  background: rgba(0, 0, 0, 0.4);
-  color: rgba(255, 255, 255, 0.5);
-  transition: all 0.2s ease;
-}
-
-.toggle-icon.active {
-  background: rgba(212, 175, 55, 0.2);
-  color: #F9E4A4;
-}
-
-.toggle-icon.neutral {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.toggle-info h3.toggle-title {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.toggle-info .toggle-desc {
-  margin: 0.25rem 0 0;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* Toggle Switch */
-.toggle-switch {
-  position: relative;
-  width: 3rem;
-  height: 1.75rem;
-  border-radius: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.toggle-switch.off {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.toggle-switch.on {
-  background: #F9E4A4;
-}
-
-.toggle-knob {
-  position: absolute;
-  top: 0.25rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  border-radius: 50%;
-  background: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Mode Badge */
-.mode-badge {
-  padding: 0.35rem 0.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.375rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-/* Settings Redirect */
-.settings-redirect {
-  padding: 2rem;
-  text-align: center;
-}
-
-.settings-info {
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 1.5rem;
-}
-
-.settings-go-btn {
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1));
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 0.5rem;
-  color: #F9E4A4;
-  font-family: 'Cinzel', serif;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.settings-go-btn:hover {
-  background: rgba(212, 175, 55, 0.3);
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-}
-
-/* ============================================================================
-   DOCK BACKDROP
-   ============================================================================ */
-
-.dock-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 40;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
 }
 
 /* ============================================================================
@@ -575,14 +132,10 @@
 
 @media (min-width: 768px) {
   .page-with-dock {
-    padding-left: 6rem;
+    padding-left: 5.5rem;
     padding-bottom: 0;
   }
 }
-
-/* ============================================================================
-   REDUCED MOTION
-   ============================================================================ */
 
 /* ============================================================================
    FOCUS VISIBLE STATES
@@ -593,45 +146,12 @@
   outline-offset: 2px;
 }
 
-.library-book-btn:focus-visible {
-  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
-  outline-offset: 2px;
-}
-
-.chapter-btn:focus-visible {
-  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
-  outline-offset: 2px;
-}
-
-.settings-go-btn:focus-visible {
-  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
-  outline-offset: 2px;
-}
-
-.settings-toggle-card:focus-visible {
-  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
-  outline-offset: 2px;
-}
-
-.dock-panel-close:focus-visible {
-  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
-  outline-offset: 2px;
-}
-
 /* ============================================================================
    REDUCED MOTION
    ============================================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  .dock-panel-dot-ping {
-    animation: none;
-  }
-
-  .dock-item,
-  .dock-panel,
-  .library-book-btn,
-  .chapter-btn,
-  .settings-toggle-card {
+  .dock-item {
     transition: none;
   }
 }

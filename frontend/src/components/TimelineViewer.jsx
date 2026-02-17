@@ -246,7 +246,7 @@ const TimelineViewer = ({ book, chapter, verse, onNavigate }) => {
     <div className="timeline-container">
       {/* Header */}
       <div className="timeline-header">
-        <h3>📅 Chronological Timeline View</h3>
+        <h3>Chronological Timeline View</h3>
         <p>
           {timelineEvents.length} events spanning biblical history
           {currentEvent && ` • Viewing: ${currentEvent.book} ${currentEvent.chapter}:${currentEvent.verse}`}

@@ -232,7 +232,7 @@ const AudioPlayer = ({ verseText, verseReference, manuscript = 'WEB', onPlayback
     return (
       <div className="audio-player-container">
         <div className="audio-error">
-          <strong>⚠️ Text-to-Speech Not Supported</strong>
+          <strong>Text-to-Speech Not Supported</strong>
           <p>{error}</p>
         </div>
       </div>
@@ -247,7 +247,7 @@ const AudioPlayer = ({ verseText, verseReference, manuscript = 'WEB', onPlayback
     <div className="audio-player-container">
       {/* Header */}
       <div className="audio-header">
-        <h3>🎧 Audio Playback</h3>
+        <h3>Audio Playback</h3>
         <p>Listen to {verseReference} read aloud</p>
       </div>
 
@@ -255,16 +255,16 @@ const AudioPlayer = ({ verseText, verseReference, manuscript = 'WEB', onPlayback
       <div className="audio-controls">
         <div className="playback-buttons">
           {!isPlaying ? (
-            <button className="control-btn play-btn" onClick={playAudio} title="Play">
-              ▶️ Play
+            <button className="control-btn play-btn" onClick={playAudio} aria-label="Play verse audio">
+              Play
             </button>
           ) : isPaused ? (
-            <button className="control-btn resume-btn" onClick={resumeAudio} title="Resume">
-              ▶️ Resume
+            <button className="control-btn resume-btn" onClick={resumeAudio} aria-label="Resume playback">
+              Resume
             </button>
           ) : (
-            <button className="control-btn pause-btn" onClick={pauseAudio} title="Pause">
-              ⏸️ Pause
+            <button className="control-btn pause-btn" onClick={pauseAudio} aria-label="Pause playback">
+              Pause
             </button>
           )}
 
@@ -272,9 +272,9 @@ const AudioPlayer = ({ verseText, verseReference, manuscript = 'WEB', onPlayback
             className="control-btn stop-btn"
             onClick={stopAudio}
             disabled={!isPlaying}
-            title="Stop"
+            aria-label="Stop playback"
           >
-            ⏹️ Stop
+            Stop
           </button>
         </div>
 
@@ -293,7 +293,7 @@ const AudioPlayer = ({ verseText, verseReference, manuscript = 'WEB', onPlayback
       <div className="audio-settings">
         <div className="setting-group">
           <label htmlFor="voice-select">
-            🗣️ Voice:
+            Voice:
           </label>
           <select
             id="voice-select"
@@ -315,7 +315,7 @@ const AudioPlayer = ({ verseText, verseReference, manuscript = 'WEB', onPlayback
 
         <div className="setting-group">
           <label htmlFor="rate-slider">
-            ⏩ Speed: {speechRate.toFixed(1)}x
+            Speed: {speechRate.toFixed(1)}x
           </label>
           <input
             id="rate-slider"
@@ -330,7 +330,7 @@ const AudioPlayer = ({ verseText, verseReference, manuscript = 'WEB', onPlayback
 
         <div className="setting-group">
           <label htmlFor="pitch-slider">
-            🎵 Pitch: {speechPitch.toFixed(1)}
+            Pitch: {speechPitch.toFixed(1)}
           </label>
           <input
             id="pitch-slider"
@@ -345,7 +345,7 @@ const AudioPlayer = ({ verseText, verseReference, manuscript = 'WEB', onPlayback
 
         <div className="setting-group">
           <label htmlFor="volume-slider">
-            🔊 Volume: {Math.round(volume * 100)}%
+            Volume: {Math.round(volume * 100)}%
           </label>
           <input
             id="volume-slider"
@@ -362,7 +362,7 @@ const AudioPlayer = ({ verseText, verseReference, manuscript = 'WEB', onPlayback
       {/* Error Display */}
       {error && (
         <div className="audio-error-message">
-          <strong>⚠️ Error:</strong> {error}
+          <strong>Error:</strong> {error}
         </div>
       )}
 

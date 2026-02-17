@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
  * @param {string} props.className - Additional classes
  * @param {number} props.strength - How strong the pull is (default: 0.5)
  */
-const MagneticButton = ({ children, onClick, className = "", strength = 0.5 }) => {
+const MagneticButton = ({ children, onClick, className = "", strength = 0.5, ...rest }) => {
     const ref = useRef(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -36,17 +36,20 @@ const MagneticButton = ({ children, onClick, className = "", strength = 0.5 }) =
     };
 
     return (
-        <motion.div
+        <motion.button
+            type="button"
             ref={ref}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             animate={{ x: position.x, y: position.y }}
             transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
             onClick={onClick}
-            className={`cursor-pointer ${className}`}
+            className={className}
+            style={{ cursor: 'pointer', background: 'none', border: 'none', padding: 0 }}
+            {...rest}
         >
             {children}
-        </motion.div>
+        </motion.button>
     );
 };
 

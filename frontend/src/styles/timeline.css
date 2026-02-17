@@ -1,6 +1,7 @@
 /**
  * Timeline Styling - Tier 7
  * Chronological visualization of biblical events
+ * Adapted for dark glass theme (ConsolidatedPanel context)
  */
 
 /* ============================================================================
@@ -8,18 +9,16 @@
    ============================================================================ */
 
 .timeline-container {
-  background: #ffffff;
+  background: transparent;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  margin-top: 2rem;
 }
 
 .timeline-header {
   padding: 1.5rem;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-  color: #fff;
-  border-bottom: 2px solid #E94E4E;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 142, 83, 0.15));
+  color: #e2e8f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .timeline-header h3 {
@@ -31,7 +30,7 @@
 .timeline-header p {
   margin: 0;
   font-size: 0.95rem;
-  opacity: 0.9;
+  opacity: 0.7;
 }
 
 /* ============================================================================
@@ -68,7 +67,7 @@
 
 .timeline-event:not(.current-event):hover .event-card {
   transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 .timeline-event.current-event {
@@ -82,8 +81,8 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 4px solid white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 4px solid rgba(30, 41, 59, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,7 +91,7 @@
 
 .timeline-event:hover .event-marker {
   transform: scale(1.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .timeline-event.current-event .event-marker {
@@ -109,21 +108,21 @@
 /* Event Card */
 .event-card {
   position: relative;
-  background: white;
-  border: 2px solid #e0e0e0;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 1rem;
   margin-top: 1rem;
   width: 90%;
   max-width: 600px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
 .timeline-event.current-event .event-card {
   border-color: var(--event-color);
-  border-width: 3px;
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+  border-width: 2px;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.08), rgba(30, 41, 59, 0.6));
 }
 
 .event-header {
@@ -135,7 +134,7 @@
 
 .event-reference {
   font-size: 0.95rem;
-  color: #333;
+  color: var(--brand-gold, #F9E4A4);
   font-family: 'Libre Baskerville', serif;
 }
 
@@ -152,17 +151,17 @@
 .event-text {
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #555;
+  color: rgba(255, 255, 255, 0.7);
   margin-bottom: 0.5rem;
 }
 
 .event-relation {
   font-size: 0.8rem;
-  color: #888;
+  color: rgba(255, 255, 255, 0.5);
   font-style: italic;
   margin-top: 0.5rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .current-badge {
@@ -180,7 +179,7 @@
 
 .click-hint {
   font-size: 0.8rem;
-  color: #FF6B6B;
+  color: var(--brand-gold, #F9E4A4);
   font-weight: 600;
   margin-top: 0.5rem;
   opacity: 0;
@@ -196,7 +195,7 @@
   position: absolute;
   width: 2px;
   height: 30px;
-  background: #ddd;
+  background: rgba(255, 255, 255, 0.15);
   left: 50%;
   bottom: -30px;
   transform: translateX(-50%);
@@ -244,14 +243,14 @@
 
 .timeline-legend {
   padding: 1rem 1.5rem;
-  background: #f9f9f9;
-  border-top: 1px solid #e0e0e0;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .timeline-legend h4 {
   margin: 0 0 0.75rem 0;
   font-size: 0.9rem;
-  color: #333;
+  color: #e2e8f0;
   font-weight: 600;
 }
 
@@ -266,15 +265,15 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.8rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .legend-color {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(30, 41, 59, 0.9);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* ============================================================================
@@ -283,19 +282,19 @@
 
 .timeline-footer {
   padding: 1rem 1.5rem;
-  background: #f9f9f9;
-  border-top: 1px solid #e0e0e0;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .timeline-footer p {
   margin: 0;
   font-size: 0.85rem;
   line-height: 1.6;
-  color: #666;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .timeline-footer strong {
-  color: #FF6B6B;
+  color: var(--brand-gold, #F9E4A4);
 }
 
 /* ============================================================================
@@ -307,13 +306,14 @@
 .timeline-empty {
   padding: 3rem;
   text-align: center;
-  color: #666;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .timeline-error {
-  color: #c62828;
-  background: #ffebee;
-  border-left: 4px solid #c62828;
+  color: #ef9a9a;
+  background: rgba(198, 40, 40, 0.15);
+  border-left: 4px solid rgba(198, 40, 40, 0.5);
+  border-radius: 4px;
 }
 
 .timeline-empty {
@@ -365,82 +365,20 @@
 }
 
 /* ============================================================================
-   DARK MODE SUPPORT
+   REDUCED MOTION
    ============================================================================ */
 
-@media (prefers-color-scheme: dark) {
-  .timeline-container {
-    background: #2E3440;
+@media (prefers-reduced-motion: reduce) {
+  .timeline-event {
+    animation: none;
   }
 
-  .timeline-header {
-    background: linear-gradient(135deg, #BF616A 0%, #D08770 100%);
+  .timeline-event:not(.current-event):hover .event-card {
+    transform: none;
   }
 
-  .timeline-content {
-    background: #2E3440;
-  }
-
-  .timeline-line {
-    background: linear-gradient(180deg, #BF616A 0%, #D08770 50%, #EBCB8B 100%);
-  }
-
-  .event-card {
-    background: #3B4252;
-    border-color: #4C566A;
-    color: #ECEFF4;
-  }
-
-  .timeline-event.current-event .event-card {
-    background: linear-gradient(135deg, rgba(191, 97, 106, 0.1) 0%, rgba(59, 66, 82, 1) 100%);
-  }
-
-  .event-reference {
-    color: #ECEFF4;
-  }
-
-  .event-text {
-    color: #D8DEE9;
-  }
-
-  .event-relation {
-    color: #88C0D0;
-    border-top-color: #4C566A;
-  }
-
-  .click-hint {
-    color: #BF616A;
-  }
-
-  .timeline-legend {
-    background: #3B4252;
-    border-top-color: #4C566A;
-  }
-
-  .timeline-legend h4 {
-    color: #ECEFF4;
-  }
-
-  .legend-item {
-    color: #D8DEE9;
-  }
-
-  .timeline-footer {
-    background: #3B4252;
-    border-top-color: #4C566A;
-  }
-
-  .timeline-footer p {
-    color: #D8DEE9;
-  }
-
-  .timeline-footer strong {
-    color: #BF616A;
-  }
-
-  .timeline-loading,
-  .timeline-empty {
-    color: #D8DEE9;
+  .timeline-event.current-event .event-marker {
+    animation: none;
   }
 }
 

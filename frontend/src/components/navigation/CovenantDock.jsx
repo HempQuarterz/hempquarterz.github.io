@@ -1,59 +1,42 @@
 /**
  * CovenantDock - Unified floating navigation dock
  *
- * Provides global navigation (Home, Navigate, Manuscripts, Spirit AI, About)
- * plus context-aware items for specific pages (Library, Chapters, Settings on manuscripts)
+ * Provides global navigation with 5 items:
+ * Home, Scripture (opens BibleNavigator), Manuscripts, Spirit AI, About
  *
  * Layout:
- * - Desktop: Left vertical dock (macOS style)
- * - Mobile: Bottom horizontal dock (iOS tab bar style)
+ * - Desktop: Left vertical dock with labels
+ * - Mobile: Bottom horizontal dock
  */
 
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import {
-  Home, Navigation, BookOpen, Mic, Info,
-  Library, FileText, Settings
+  Home, BookOpen, Mic, Info, BookMarked
 } from 'lucide-react';
 
 import DockItem from './DockItem';
-import LibraryPanel from './panels/LibraryPanel';
-import ChaptersPanel from './panels/ChaptersPanel';
-import SettingsPanel from './panels/SettingsPanel';
 import { BibleNavigator } from '../Navigation';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 import '../../styles/covenant-dock.css';
 
-// Context for manuscript state (used by dock panels)
+// Context for manuscript state
 export const ManuscriptDockContext = createContext(null);
 
 export const useManuscriptDock = () => useContext(ManuscriptDockContext);
 
 const CovenantDock = ({
-  // Manuscript-specific props (passed from ManuscriptsPage or stored in context)
   currentBook,
   currentChapter,
   currentVerse,
-  onBookChange,
-  onChapterChange,
-  showRestored,
-  toggleRestoration,
-  viewMode,
-  setViewMode
 }) => {
-  const [activePanel, setActivePanel] = useState(null);
   const [isNavigatorOpen, setIsNavigatorOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const location = useLocation();
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
-
-  // Check if on manuscripts page (for context items) - currently unused but may be needed for conditional logic
-  // const isManuscriptsPage = location.pathname.startsWith('/manuscripts') ||
-  //   location.pathname.startsWith('/manuscript');
 
   // Responsive check
   useEffect(() => {
@@ -63,20 +46,8 @@ const CovenantDock = ({
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Close panel when route changes
-  useEffect(() => {
-    setActivePanel(null);
-  }, [location.pathname]);
-
-  const togglePanel = (panel) => {
-    setActivePanel(prev => prev === panel ? null : panel);
-  };
-
-  const closePanel = () => setActivePanel(null);
-
   const openNavigator = () => {
     setIsNavigatorOpen(true);
-    setActivePanel(null);
   };
 
   // Handle navigator selection
@@ -110,18 +81,6 @@ const CovenantDock = ({
         role="navigation"
         aria-label="Main navigation"
       >
-        {/* Logo (Desktop only) */}
-        {!isMobile && (
-          <div className="dock-logo">
-            <img
-              src="/logo-living.jpg"
-              alt="All4Yah"
-              className="dock-logo-img"
-            />
-          </div>
-        )}
-
-        {/* === GLOBAL ITEMS === */}
         <DockItem
           icon={Home}
           label="Home"
@@ -130,8 +89,8 @@ const CovenantDock = ({
         />
 
         <DockItem
-          icon={Navigation}
-          label="Navigate"
+          icon={BookMarked}
+          label="Scripture"
           onClick={openNavigator}
           isActive={isNavigatorOpen}
           isMobile={isMobile}
@@ -151,93 +110,13 @@ const CovenantDock = ({
           isMobile={isMobile}
         />
 
-        {!isMobile && (
-          <DockItem
-            icon={Info}
-            label="About"
-            to="/about"
-            isMobile={isMobile}
-          />
-        )}
-
-        {/* === CONTEXT ITEMS (always visible, work from anywhere) === */}
-        <div className={`dock-divider ${isMobile ? 'horizontal' : 'vertical'}`} />
-
         <DockItem
-          icon={Library}
-          label="Library"
-          onClick={() => togglePanel('library')}
-          isActive={activePanel === 'library'}
+          icon={Info}
+          label="About"
+          to="/about"
           isMobile={isMobile}
         />
-
-        <DockItem
-          icon={FileText}
-          label="Chapters"
-          onClick={() => togglePanel('chapters')}
-          isActive={activePanel === 'chapters'}
-          isMobile={isMobile}
-        />
-
-        {!isMobile && (
-          <DockItem
-            icon={Settings}
-            label="Settings"
-            onClick={() => togglePanel('settings')}
-            isActive={activePanel === 'settings'}
-            isMobile={isMobile}
-          />
-        )}
       </motion.nav>
-
-      {/* === PANELS === */}
-      <AnimatePresence>
-        {activePanel === 'library' && (
-          <LibraryPanel
-            key="library"
-            onClose={closePanel}
-            isMobile={isMobile}
-            currentBook={currentBook}
-            onBookSelect={onBookChange}
-          />
-        )}
-
-        {activePanel === 'chapters' && (
-          <ChaptersPanel
-            key="chapters"
-            onClose={closePanel}
-            isMobile={isMobile}
-            currentBook={currentBook}
-            currentChapter={currentChapter}
-            onChapterSelect={onChapterChange}
-          />
-        )}
-
-        {activePanel === 'settings' && (
-          <SettingsPanel
-            key="settings"
-            onClose={closePanel}
-            isMobile={isMobile}
-            showRestored={showRestored}
-            toggleRestoration={toggleRestoration}
-            viewMode={viewMode}
-            setViewMode={setViewMode}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Panel Backdrop */}
-      <AnimatePresence>
-        {activePanel && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={closePanel}
-            className="dock-backdrop"
-          />
-        )}
-      </AnimatePresence>
 
       {/* Bible Navigator Modal */}
       <BibleNavigator

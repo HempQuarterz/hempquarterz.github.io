@@ -273,7 +273,7 @@ const NetworkGraphViewer = ({ book, chapter, verse, onNavigate, maxDepth = 2 }) 
     <div className="network-graph-container">
       {/* Header */}
       <div className="network-header">
-        <h3>📊 Reference Network Graph</h3>
+        <h3>Reference Network Graph</h3>
         <p>
           {nodes.length} verses • {edges.length} connections
           {selectedNode && ` • Selected: ${selectedNode.data.label}`}

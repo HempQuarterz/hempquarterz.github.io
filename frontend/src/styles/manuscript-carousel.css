@@ -331,12 +331,21 @@
 .carousel-restorations {
   margin-top: 1rem;
   font-size: 0.85rem;
-  color: #666;
-  border-top: 1px solid #e0e0e0;
+  color: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 0.75rem;
+}
+
+.carousel-restorations strong {
+  color: var(--brand-gold, #F9E4A4);
 }
 
 .carousel-restorations-list {
   margin-top: 0.5rem;
   padding-left: 1.5rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.carousel-restorations-list li {
+  margin-bottom: 0.25rem;
 }

@@ -212,7 +212,7 @@ const ThematicDiscoveryPanel = ({ book, chapter, verse, currentVerseText, onNavi
     <div className="thematic-discovery-container">
       {/* Header */}
       <div className="discovery-header">
-        <h3>🧠 AI-Powered Thematic Discovery</h3>
+        <h3>AI-Powered Thematic Discovery</h3>
         <p>Find verses with similar spiritual themes using semantic AI</p>
       </div>
 
@@ -240,7 +240,7 @@ const ThematicDiscoveryPanel = ({ book, chapter, verse, currentVerseText, onNavi
       {/* Thematic Tags */}
       {thematicTags.length > 0 && !isModelLoading && (
         <div className="thematic-tags-section">
-          <h4>📚 Themes in this verse:</h4>
+          <h4>Themes in this verse:</h4>
           <div className="thematic-tags">
             {thematicTags.map((tag, idx) => (
               <span key={idx} className="thematic-tag">
@@ -291,10 +291,10 @@ const ThematicDiscoveryPanel = ({ book, chapter, verse, currentVerseText, onNavi
             disabled={isSearching || poolLoading || !currentVerseText}
           >
             {poolLoading
-              ? '⏳ Building verse database...'
+              ? 'Building verse database...'
               : isSearching
-              ? '🔍 Searching...'
-              : '🔍 Discover Similar Verses'}
+              ? 'Searching...'
+              : 'Discover Similar Verses'}
           </button>
         </div>
       )}
@@ -302,13 +302,14 @@ const ThematicDiscoveryPanel = ({ book, chapter, verse, currentVerseText, onNavi
       {/* Similar Verses Results */}
       {similarVerses.length > 0 && !isSearching && (
         <div className="similar-verses-section">
-          <h4>✨ Thematically Similar Verses ({similarVerses.length})</h4>
+          <h4>Thematically Similar Verses ({similarVerses.length})</h4>
           <div className="similar-verses-list">
             {similarVerses.map((similarVerse, idx) => (
-              <div
+              <button
                 key={idx}
                 className="similar-verse-card"
                 onClick={() => handleVerseClick(similarVerse)}
+                aria-label={`Navigate to ${similarVerse.book} ${similarVerse.chapter}:${similarVerse.verse}`}
               >
                 <div className="verse-header">
                   <span className="verse-reference">
@@ -331,7 +332,7 @@ const ThematicDiscoveryPanel = ({ book, chapter, verse, currentVerseText, onNavi
                   <span className="manuscript-badge">{similarVerse.manuscript}</span>
                   <span className="click-hint">Click to navigate →</span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>

@@ -28,7 +28,7 @@ export const BentoGrid = ({ className, children }) => {
 
     return (
         <motion.div
-            className={`grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto ${className}`}
+            className={className || ''}
             variants={gridVariants}
             initial="hidden"
             animate="visible"

@@ -32,7 +32,7 @@ export const AuroraBackground = ({ children, className }) => {
     // When reduced motion is preferred, render static gradients
     if (prefersReducedMotion) {
         return (
-            <div className={`relative w-full h-full bg-[#0E233B] overflow-hidden ${className}`}>
+            <div className={`aurora-wrapper ${className || ''}`}>
                 {/* Static Gold Gradient */}
                 <div
                     style={{
@@ -73,7 +73,7 @@ export const AuroraBackground = ({ children, className }) => {
                     }}
                 />
                 {/* Content Layer */}
-                <div className="relative z-10 w-full h-full">
+                <div className="aurora-content-layer">
                     {children}
                 </div>
             </div>
@@ -81,7 +81,7 @@ export const AuroraBackground = ({ children, className }) => {
     }
 
     return (
-        <div className={`relative w-full h-full bg-[#0E233B] overflow-hidden ${className}`}>
+        <div className={`aurora-wrapper ${className || ''}`}>
             {/* Mesh Gradients 1 - Gold (Majesty) */}
             <motion.div
                 animate={{
@@ -163,7 +163,7 @@ export const AuroraBackground = ({ children, className }) => {
             />
 
             {/* Content Layer */}
-            <div className="relative z-10 w-full h-full">
+            <div className="aurora-content-layer">
                 {children}
             </div>
         </div>

@@ -75,3 +75,28 @@ export const BIBLE_BOOKS = [
     { name: 'Jude', chapters: 1, testament: 'New', id: 'JUD' },
     { name: 'Revelation', chapters: 22, testament: 'New', id: 'REV' }
 ];
+
+/**
+ * Get the adjacent chapter (prev or next) with book boundary handling.
+ * Returns { book, chapter } or null if at absolute boundary.
+ */
+export function getAdjacentChapter(bookId, chapter, direction) {
+  const bookIndex = BIBLE_BOOKS.findIndex(b => b.id === bookId);
+  if (bookIndex === -1) return null;
+
+  if (direction === 'prev') {
+    if (chapter > 1) return { book: bookId, chapter: chapter - 1 };
+    if (bookIndex > 0) {
+      const prevBook = BIBLE_BOOKS[bookIndex - 1];
+      return { book: prevBook.id, chapter: prevBook.chapters };
+    }
+    return null;
+  } else {
+    const currentBook = BIBLE_BOOKS[bookIndex];
+    if (chapter < currentBook.chapters) return { book: bookId, chapter: chapter + 1 };
+    if (bookIndex < BIBLE_BOOKS.length - 1) {
+      return { book: BIBLE_BOOKS[bookIndex + 1].id, chapter: 1 };
+    }
+    return null;
+  }
+}

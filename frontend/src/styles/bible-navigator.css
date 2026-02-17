@@ -17,11 +17,56 @@
 /* === Navigator Overlay === */
 .bible-navigator-overlay {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  overflow: hidden;
+}
+
+/* === Backdrop === */
+.navigator-backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(8, 12, 24, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* === Main Container === */
 .bible-navigator-container {
   background: linear-gradient(180deg, var(--royal-900) 0%, var(--royal-950) 100%);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+@media (min-width: 768px) {
+  .bible-navigator-container {
+    height: min(650px, calc(100vh - 8rem));
+    top: 5rem;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: min(1100px, calc(100vw - 4rem));
+    border-radius: 1rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .bible-navigator-container {
+    width: min(1200px, calc(100vw - 6rem));
+  }
 }
 
 @media (min-width: 768px) {
@@ -35,12 +80,160 @@
 
 /* === Header === */
 .nav-header {
+  height: 4rem;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
   background: linear-gradient(
     90deg,
     var(--royal-900) 0%,
     var(--royal-800) 50%,
     var(--royal-900) 100%
   );
+  flex-shrink: 0;
+}
+
+.nav-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-header-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--brand-gold, #F9E4A4);
+  letter-spacing: 0.05em;
+}
+
+.nav-header-subtitle {
+  font-size: 0.75rem;
+  color: var(--slate-500);
+}
+
+.nav-close-btn {
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: var(--slate-500);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-close-btn:hover {
+  background: rgba(51, 65, 85, 0.5);
+  color: #fff;
+}
+
+/* === Mobile Tabs === */
+.nav-mobile-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  background: rgba(30, 42, 74, 0.3);
+}
+
+@media (min-width: 768px) {
+  .nav-mobile-tabs {
+    display: none;
+  }
+}
+
+.nav-mobile-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--slate-500);
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-mobile-tab--active {
+  color: var(--brand-gold, #F9E4A4);
+}
+
+.nav-mobile-tab-icon {
+  margin-bottom: 0.25rem;
+}
+
+.nav-mobile-tab-label {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.nav-mobile-tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--brand-gold, #F9E4A4);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
+}
+
+/* === Columns Area === */
+.nav-columns-area {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(180deg, var(--royal-900) 0%, var(--royal-950) 100%);
+}
+
+/* === Footer === */
+.nav-footer {
+  display: none;
+  height: 2.5rem;
+  background: rgba(8, 12, 24, 0.5);
+  border-top: 1px solid var(--slate-800);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .nav-footer {
+    display: flex;
+  }
+}
+
+.nav-footer-path {
+  font-size: 0.625rem;
+  color: var(--slate-500);
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.nav-footer-separator {
+  margin: 0 0.5rem;
+  color: var(--slate-700);
+}
+
+.nav-footer-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-footer-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--slate-700);
+}
+
+.nav-footer-dot--active {
+  background: var(--brand-gold, #F9E4A4);
 }
 
 /* === Navigation Columns === */
@@ -173,6 +366,346 @@
 .nav-item:focus-visible {
   outline: 2px solid var(--brand-gold, #d4af37);
   outline-offset: 2px;
+}
+
+/* === NavigationColumn Styles === */
+
+.nav-column-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: rgba(30, 42, 74, 0.3);
+  transition: all 0.3s ease;
+}
+
+.nav-column-wrapper--hidden {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav-column-wrapper {
+    width: 29%;
+    border-right: 1px solid rgba(51, 65, 85, 0.5);
+    display: flex !important;
+  }
+
+  .nav-column-wrapper--hidden {
+    display: flex;
+  }
+
+  .nav-column-wrapper--books {
+    width: 42%;
+  }
+
+  .nav-column-wrapper--verses {
+    border-right: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .nav-column-wrapper--active {
+    display: flex;
+    width: 100%;
+  }
+}
+
+/* Column Header */
+.nav-col-header {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  background: rgba(15, 23, 41, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 10;
+  position: sticky;
+  top: 0;
+  flex-shrink: 0;
+}
+
+.nav-col-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-col-header-row + .nav-book-controls {
+  margin-top: 0.75rem;
+}
+
+.nav-col-title {
+  color: var(--brand-gold, #F9E4A4);
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+}
+
+.nav-col-count {
+  font-size: 0.75rem;
+  color: var(--slate-500);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Book Controls */
+.nav-book-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.nav-search-wrapper {
+  position: relative;
+}
+
+.nav-search-icon {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  color: var(--slate-500);
+}
+
+.nav-search-input {
+  width: 100%;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid var(--slate-700);
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.5rem 0.375rem 2rem;
+  font-size: 0.75rem;
+  color: #e2e8f0;
+  transition: border-color 0.2s;
+}
+
+.nav-search-input::placeholder {
+  color: var(--slate-600);
+}
+
+.nav-search-input:focus {
+  border-color: rgba(212, 175, 55, 0.5);
+  outline: none;
+}
+
+/* Testament Tabs */
+.nav-testament-tabs {
+  display: flex;
+  padding: 0.25rem;
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 0.5rem;
+}
+
+.nav-testament-tab {
+  flex: 1;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  padding: 0.375rem 0;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: var(--slate-500);
+}
+
+.nav-testament-tab:hover {
+  color: #cbd5e1;
+}
+
+.nav-testament-tab--active {
+  background: var(--brand-gold, #F9E4A4);
+  color: var(--royal-900, #0f1729);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Grid Content Area */
+.nav-col-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .nav-col-content {
+    padding: 0.75rem;
+  }
+}
+
+/* === Book List Layout === */
+.nav-book-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Testament Section */
+.nav-testament-section {
+  margin-bottom: 0.25rem;
+}
+
+.nav-testament-section-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: rgba(15, 23, 41, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  margin-bottom: 0.25rem;
+}
+
+.nav-testament-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--brand-gold, #F9E4A4);
+}
+
+.nav-testament-section-count {
+  font-size: 0.625rem;
+  color: var(--slate-500);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Book Row */
+.nav-book-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  color: #94a3b8;
+  text-align: left;
+}
+
+.nav-book-row:hover {
+  background: rgba(51, 65, 85, 0.4);
+  color: #e2e8f0;
+}
+
+.nav-book-row--selected {
+  border-left-color: var(--brand-gold, #F9E4A4);
+  background: rgba(212, 175, 55, 0.08);
+  color: var(--brand-gold, #F9E4A4);
+}
+
+.nav-book-row-name {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.nav-book-row--selected .nav-book-row-name {
+  font-weight: 600;
+}
+
+.nav-book-row-chapters {
+  font-size: 0.6875rem;
+  color: var(--slate-600);
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+  margin-left: 0.75rem;
+  flex-shrink: 0;
+}
+
+.nav-book-row--selected .nav-book-row-chapters {
+  color: rgba(212, 175, 55, 0.5);
+}
+
+/* === Number Grid (Chapters & Verses) === */
+.nav-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.nav-grid--numbers {
+  grid-template-columns: repeat(auto-fill, minmax(3.25rem, 1fr));
+}
+
+/* Number Grid Items */
+.nav-grid-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+  background: rgba(30, 41, 59, 0.4);
+  color: #94a3b8;
+}
+
+.nav-grid-item:hover {
+  background: rgba(51, 65, 85, 0.6);
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+.nav-grid-item--number {
+  height: 3.25rem;
+  aspect-ratio: 1;
+}
+
+.nav-grid-item--selected {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1));
+  border-color: rgba(212, 175, 55, 0.5);
+  color: var(--brand-gold, #F9E4A4);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+.nav-grid-item-label {
+  font-weight: 700;
+}
+
+.nav-grid-item-label--number {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* === Book Row Focus States === */
+.nav-book-row:focus-visible {
+  outline: 2px solid var(--brand-gold, #d4af37);
+  outline-offset: -2px;
+  background: rgba(51, 65, 85, 0.4);
+}
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .nav-book-row,
+  .nav-grid-item,
+  .nav-column-wrapper,
+  .bible-navigator-container {
+    transition: none;
+  }
+
+  .nav-item-selected {
+    animation: none;
+  }
+
+  .nav-testament-section-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 /* === Print Styles === */

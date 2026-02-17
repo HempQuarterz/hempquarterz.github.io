@@ -8,6 +8,7 @@ import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
 import { searchAll, searchVerses } from '../api/search';
 import { setSelectedVerse } from '../manuscriptsSlice';
+import { getAdjacentChapter } from '../utils/bibleStructure';
 import '../styles/manuscripts.css';
 
 const ManuscriptsPage = () => {
@@ -153,12 +154,24 @@ const ManuscriptsPage = () => {
       if (e.key.toLowerCase() === 'g' && !e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
         setShowGematria(prev => !prev);
       }
+      // Previous chapter with '['
+      if (e.key === '[' && !e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
+        e.preventDefault();
+        const prev = getAdjacentChapter(selectedVerse.book, selectedVerse.chapter, 'prev');
+        if (prev) handleVerseChange({ book: prev.book, chapter: prev.chapter, verse: 1 });
+      }
+      // Next chapter with ']'
+      if (e.key === ']' && !e.ctrlKey && !e.metaKey && !e.target.matches('input, textarea')) {
+        e.preventDefault();
+        const next = getAdjacentChapter(selectedVerse.book, selectedVerse.chapter, 'next');
+        if (next) handleVerseChange({ book: next.book, chapter: next.chapter, verse: 1 });
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showSearch]);
+  }, [showSearch, selectedVerse, handleVerseChange]);
 
   return (
     <div className={`fade-in ${isReaderMode ? 'reader-mode-active' : ''}`}>
@@ -185,49 +198,21 @@ const ManuscriptsPage = () => {
         )}
       </ManuscriptViewer>
 
-      {/* Search & Gematria Overlays (preserved, but positioned z-index high) */}
-      <div style={{ position: 'fixed', top: '1rem', right: '1rem', zIndex: 50, display: 'flex', gap: '0.5rem' }}>
+      {/* Search & Gematria Overlays */}
+      <div className="floating-actions">
         {/* Search Button */}
         <button
           onClick={toggleSearch}
-          className="glass-button-icon"
-          title="Search"
-          style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            color: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease'
-          }}
+          className="floating-action-btn"
+          aria-label="Search manuscripts"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </button>
         {/* Gematria Button */}
         <button
           onClick={toggleGematria}
-          className="glass-button-icon"
-          title="Gematria"
-          style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            color: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease'
-          }}
+          className="floating-action-btn"
+          aria-label="Open Gematria calculator"
         >
           <span style={{ fontWeight: 'bold' }}>G</span>
         </button>
@@ -251,9 +236,9 @@ const ManuscriptsPage = () => {
       )}
 
       {showGematria && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-slate-900 p-6 rounded-2xl max-w-xl w-full border border-gray-700 relative">
-            <button onClick={toggleGematria} className="absolute top-4 right-4 text-gray-400 hover:text-white">✕</button>
+        <div className="gematria-overlay" role="dialog" aria-modal="true" aria-label="Gematria calculator" onClick={(e) => { if (e.target === e.currentTarget) toggleGematria(); }}>
+          <div className="gematria-panel-container">
+            <button onClick={toggleGematria} className="gematria-close-btn" aria-label="Close Gematria">&#x2715;</button>
             <GematriaPanel
               initialText=""
               initialLanguage="hebrew"

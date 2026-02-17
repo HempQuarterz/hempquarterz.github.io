@@ -147,53 +147,29 @@ const ConsolidatedPanel = ({
         return (
           <div className="tab-content-wrapper">
             <div className="about-content">
-              <h2 style={{
-                color: '#2E7D32',
-                marginBottom: '1rem',
-                fontFamily: 'Libre Baskerville, serif'
-              }}>
-                About the All4Yah Project
-              </h2>
-              <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#333', marginBottom: '1rem' }}>
-                The <strong>All4Yah Project</strong> is a "Digital Dead Sea Scrolls" initiative dedicated to
+              <h2>About the All4Yah Project</h2>
+              <p>
+                The <strong>All4Yah Project</strong> is a &ldquo;Digital Dead Sea Scrolls&rdquo; initiative dedicated to
                 restoring the Word verse by verse using original manuscripts, transparent scholarship,
                 and modern technology.
               </p>
-              <p style={{ fontSize: '1.05rem', lineHeight: '1.8', color: '#333', marginBottom: '1rem' }}>
+              <p>
                 We use the <strong>Westminster Leningrad Codex</strong> (Hebrew OT),
                 the <strong>SBL Greek New Testament</strong> (Greek NT), and
                 the <strong>World English Bible</strong> (English) to provide parallel manuscript views
                 with divine name restoration.
               </p>
 
-              <h3 style={{
-                color: '#2E7D32',
-                marginTop: '1.5rem',
-                marginBottom: '0.75rem',
-                fontSize: '1.2rem'
-              }}>
-                Divine Name Restorations:
-              </h3>
-              <ul style={{
-                fontSize: '1rem',
-                lineHeight: '1.8',
-                color: '#333',
-                listStyle: 'none',
-                paddingLeft: 0
-              }}>
-                <li>✦ <strong>יהוה</strong> (H3068) → <strong className="restored-name">Yahuah</strong> - The personal name of the Creator (5,518× in OT)</li>
-                <li>✦ <strong>יהושע</strong> (H3091) / <strong>Ἰησοῦς</strong> (G2424) → <strong className="restored-name">Yahusha</strong> - "Yahuah saves"</li>
-                <li>✦ <strong>אלהים</strong> (H430) / <strong>θεός</strong> (G2316) → <strong className="restored-name">Elohim</strong> - Mighty One, Creator</li>
+              <h3>Divine Name Restorations:</h3>
+              <ul className="about-restorations-list">
+                <li><strong>&#1497;&#1492;&#1493;&#1492;</strong> (H3068) &rarr; <strong className="restored-name">Yahuah</strong> - The personal name of the Creator (5,518x in OT)</li>
+                <li><strong>&#1497;&#1492;&#1493;&#1513;&#1506;</strong> (H3091) / <strong>&#7992;&#951;&#963;&#959;&#8166;&#962;</strong> (G2424) &rarr; <strong className="restored-name">Yahusha</strong> - &ldquo;Yahuah saves&rdquo;</li>
+                <li><strong>&#1488;&#1500;&#1492;&#1497;&#1501;</strong> (H430) / <strong>&#952;&#949;&#972;&#962;</strong> (G2316) &rarr; <strong className="restored-name">Elohim</strong> - Mighty One, Creator</li>
               </ul>
 
-              <p style={{
-                marginTop: '1.5rem',
-                fontSize: '0.95rem',
-                color: '#666',
-                fontStyle: 'italic'
-              }}>
-                <strong>Mission:</strong> "This is my name forever, the name you shall call me from
-                generation to generation." - Exodus 3:15
+              <p className="about-mission-quote">
+                <strong>Mission:</strong> &ldquo;This is my name forever, the name you shall call me from
+                generation to generation.&rdquo; - Exodus 3:15
               </p>
             </div>
           </div>

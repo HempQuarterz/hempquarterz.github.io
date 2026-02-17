@@ -12,6 +12,7 @@ import {
   getCategoryColor
 } from '../api/crossReferences';
 import Loading from './Loading';
+import '../styles/cross-reference.css';
 
 const CrossReferencePanel = ({ book, chapter, verse, onReferenceClick }) => {
   const [references, setReferences] = useState([]);
@@ -68,61 +69,42 @@ const CrossReferencePanel = ({ book, chapter, verse, onReferenceClick }) => {
   }
 
   return (
-    <div style={{
-      background: '#fff',
-      borderRadius: '8px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-      overflow: 'hidden',
-      marginTop: '1rem'
-    }}>
+    <div className="cross-ref-panel">
       {/* Header */}
-      <div
+      <button
         onClick={() => setIsOpen(!isOpen)}
-        style={{
-          padding: '1rem',
-          background: 'linear-gradient(135deg, #2E7D32 0%, #388E3C 100%)',
-          color: '#fff',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          userSelect: 'none'
-        }}
+        aria-expanded={isOpen}
+        aria-controls="cross-ref-content"
+        className="cross-ref-header"
       >
         <div>
-          <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '600' }}>
+          <h3 className="cross-ref-title">
             Cross-References
           </h3>
-          <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', opacity: 0.9 }}>
+          <p className="cross-ref-subtitle">
             {loading ? 'Loading...' : `${references.length} related passages`}
           </p>
         </div>
-        <span style={{ fontSize: '1.5rem' }}>{isOpen ? '▼' : '▶'}</span>
-      </div>
+        <span className="cross-ref-toggle" aria-hidden="true">{isOpen ? '\u25BC' : '\u25B6'}</span>
+      </button>
 
       {/* Content */}
       {isOpen && (
-        <div style={{ padding: '1rem' }}>
+        <div id="cross-ref-content" className="cross-ref-body">
           {loading && (
-            <div style={{ textAlign: 'center', padding: '2rem' }}>
+            <div className="cross-ref-loading">
               <Loading type="cross-references" />
             </div>
           )}
 
           {error && (
-            <div style={{
-              padding: '1rem',
-              background: '#ffebee',
-              border: '1px solid #ef5350',
-              borderRadius: '4px',
-              color: '#c62828'
-            }}>
+            <div className="cross-ref-error" role="alert">
               <strong>Error:</strong> {error}
             </div>
           )}
 
           {!loading && !error && references.length === 0 && (
-            <p style={{ textAlign: 'center', color: '#666', padding: '1rem' }}>
+            <p className="cross-ref-empty">
               No cross-references available for this verse.
             </p>
           )}
@@ -130,22 +112,11 @@ const CrossReferencePanel = ({ book, chapter, verse, onReferenceClick }) => {
           {!loading && !error && references.length > 0 && (
             <>
               {/* View Toggle */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                marginBottom: '1rem'
-              }}>
+              <div className="cross-ref-toggle-row">
                 <button
                   onClick={() => setGroupByCategory(!groupByCategory)}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    fontSize: '0.85rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    background: '#fff',
-                    cursor: 'pointer',
-                    color: '#666'
-                  }}
+                  className="cross-ref-group-btn"
+                  aria-pressed={groupByCategory}
                 >
                   {groupByCategory ? 'Show All' : 'Group by Type'}
                 </button>
@@ -153,70 +124,45 @@ const CrossReferencePanel = ({ book, chapter, verse, onReferenceClick }) => {
 
               {/* References List */}
               {Object.entries(groupedReferences).map(([category, refs]) => (
-                <div key={category} style={{ marginBottom: '1rem' }}>
+                <div key={category} className="cross-ref-category">
                   {groupByCategory && category !== 'all' && (
-                    <h4 style={{
-                      fontSize: '0.9rem',
-                      color: getCategoryColor(category),
-                      margin: '0 0 0.5rem 0',
-                      fontWeight: '600'
-                    }}>
+                    <h4
+                      className="cross-ref-category-title"
+                      style={{ color: getCategoryColor(category) }}
+                    >
                       {getCategoryDisplayName(category)} ({refs.length})
                     </h4>
                   )}
 
-                  <div style={{
-                    display: 'grid',
-                    gap: '0.5rem'
-                  }}>
+                  <div className="cross-ref-list">
                     {refs.map((ref, index) => (
-                      <div
+                      <button
                         key={index}
                         onClick={() => handleReferenceClick(ref)}
+                        className="cross-ref-card"
                         style={{
-                          padding: '0.75rem',
-                          border: `1px solid ${getCategoryColor(ref.link_type || 'other')}40`,
-                          borderLeft: `4px solid ${getCategoryColor(ref.link_type || 'other')}`,
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                          background: '#fafafa',
-                          transition: 'all 0.2s ease'
+                          borderLeftColor: getCategoryColor(ref.link_type || 'other'),
+                          borderColor: `${getCategoryColor(ref.link_type || 'other')}40`
                         }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#f0f0f0';
-                          e.currentTarget.style.transform = 'translateX(4px)';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = '#fafafa';
-                          e.currentTarget.style.transform = 'translateX(0)';
-                        }}
+                        aria-label={`Navigate to ${formatCrossReference(ref)}`}
                       >
-                        <div style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center'
-                        }}>
-                          <span style={{
-                            fontWeight: '600',
-                            color: '#2E7D32',
-                            fontSize: '0.95rem'
-                          }}>
+                        <div className="cross-ref-card-inner">
+                          <span className="cross-ref-reference">
                             {formatCrossReference(ref)}
                           </span>
                           {!groupByCategory && ref.link_type && (
-                            <span style={{
-                              fontSize: '0.75rem',
-                              padding: '0.25rem 0.5rem',
-                              borderRadius: '12px',
-                              background: `${getCategoryColor(ref.link_type)}20`,
-                              color: getCategoryColor(ref.link_type),
-                              fontWeight: '500'
-                            }}>
+                            <span
+                              className="cross-ref-badge"
+                              style={{
+                                background: `${getCategoryColor(ref.link_type)}20`,
+                                color: getCategoryColor(ref.link_type)
+                              }}
+                            >
                               {getCategoryDisplayName(ref.link_type)}
                             </span>
                           )}
                         </div>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </div>

@@ -63,16 +63,16 @@ const HomePage = () => {
   const heroTitle = "ALL4YAH";
 
   return (
-    <div className="relative min-h-screen font-sans text-brand-gold">
+    <div className="hero-page">
       {/* 1. Living Background */}
-      <AuroraBackground className="fixed inset-0 z-0" />
+      <AuroraBackground className="aurora-fixed-bg" />
 
       {/* Note: BreadcrumbRibbon is now rendered at App level */}
 
-      <main className="relative z-10 container mx-auto px-4 py-8">
+      <main className="main-content-above">
 
         {/* 3. Hero Section - Cinematic Typography */}
-        <div className="text-center mb-12 mt-8">
+        <div className="text-center mb-12" style={{ marginTop: '2rem' }}>
           <motion.h1
             variants={heroContainerVariants}
             initial="hidden"
@@ -156,7 +156,7 @@ const HomePage = () => {
               icon={<Mic size={32} />}
               onClick={() => navigate('/lsi')}
               header={
-                <div className="flex items-center justify-center h-full">
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
                   <motion.div
                     animate={prefersReducedMotion ? {} : { scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
                     transition={prefersReducedMotion ? {} : { duration: 3, repeat: Infinity }}
