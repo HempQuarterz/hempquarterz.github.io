@@ -16,6 +16,9 @@
 /* Biblical Serif for English */
 @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
 
+/* Ge'ez/Ethiopic Font - Noto Serif Ethiopic */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Ethiopic:wght@400;700&display=swap');
+
 /* ============================================================================
    TEXT CLASSES
    ============================================================================ */
@@ -45,6 +48,16 @@
 .english-text {
   font-family: 'Cardo', 'Libre Baskerville', 'Georgia', serif;
   font-size: 1.2rem;
+  line-height: 1.8;
+  direction: ltr;
+  text-align: left;
+}
+
+/* Ge'ez/Ethiopic Text - Left-to-Right (abugida script) */
+.geez-text,
+.manuscript-ethiopic {
+  font-family: 'Noto Serif Ethiopic', serif;
+  font-size: 1.3rem;
   line-height: 1.8;
   direction: ltr;
   text-align: left;
