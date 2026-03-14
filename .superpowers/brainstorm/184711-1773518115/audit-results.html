@@ -1,0 +1,81 @@
+<h2>All4Yah Component Audit — EOTC/Ge'ez Gaps</h2>
+<p class="subtitle">Core reading components analyzed. Click items that should be highest priority.</p>
+
+<div class="options" data-multiselect>
+
+  <div class="option" data-choice="manuscripts" onclick="toggleSelect(this)" style="border-left: 4px solid #ef4444;">
+    <div class="letter" style="background:#ef4444;">!</div>
+    <div class="content">
+      <h3>ManuscriptViewer — Hardcoded 12 manuscripts</h3>
+      <p><strong>CRITICAL:</strong> Lines 86-99 hardcode only 12 manuscripts. Missing: CHARLES, WIKISOURCE, BUDGE, GEEZ (4 new manuscripts). Also missing book codes: ENO, JUB, ASI, 1MQ, 2MQ, 3MQ, KNG. Language mapping (lines 169-173) has no Ge'ez case — defaults to .english-text instead of .geez-text.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="bookselector" onclick="toggleSelect(this)" style="border-left: 4px solid #ef4444;">
+    <div class="letter" style="background:#ef4444;">!</div>
+    <div class="content">
+      <h3>BookSelector — Only 3 testament groups</h3>
+      <p><strong>CRITICAL:</strong> Groups books into OT, NT, Deuterocanon only. EOTC books use "Pseudepigrapha / Ethiopian Canon" and "Ethiopian Canon" and "Ethiopian Heritage" testament values — these don't appear in the UI. Users can't navigate to 1 Enoch, Jubilees, etc.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="language-css" onclick="toggleSelect(this)" style="border-left: 4px solid #f59e0b;">
+    <div class="letter" style="background:#f59e0b;">2</div>
+    <div class="content">
+      <h3>Language CSS — No .geez-text mapping</h3>
+      <p><strong>HIGH:</strong> Language class helper maps hebrew/aramaic → .hebrew-text, greek → .greek-text, else → .english-text. Ge'ez text would render with English font (Cardo) instead of Noto Serif Ethiopic. Need to add 'geez' → .geez-text case.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="restoration" onclick="toggleSelect(this)" style="border-left: 4px solid #f59e0b;">
+    <div class="letter" style="background:#f59e0b;">2</div>
+    <div class="content">
+      <h3>Restoration API — No Ge'ez language entry</h3>
+      <p><strong>HIGH:</strong> restoration.js (lines 249-260) has no Ge'ez case. Divine name restoration won't work for EOTC texts. Need to decide: should restoration apply to Ge'ez manuscripts? (Ge'ez already preserves divine names in original form.)</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="crossref-books" onclick="toggleSelect(this)" style="border-left: 4px solid #f59e0b;">
+    <div class="letter" style="background:#f59e0b;">2</div>
+    <div class="content">
+      <h3>Cross-References — Hardcoded OT/NT book lists</h3>
+      <p><strong>HIGH:</strong> crossReferences.js (lines 300-316) has hardcoded OT and NT book arrays for quotation detection. Missing all EOTC book codes. Cross-reference links TO these books won't be detected as valid.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="carousel-titles" onclick="toggleSelect(this)" style="border-left: 4px solid #3b82f6;">
+    <div class="letter" style="background:#3b82f6;">3</div>
+    <div class="content">
+      <h3>ManuscriptCarousel — English-only book title detection</h3>
+      <p><strong>MEDIUM:</strong> Book title verse filtering (lines 38-92) assumes English title patterns. Ge'ez manuscripts would either not filter correctly or strip actual verse 1 content. Language display labels also missing Ge'ez.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="interlinear" onclick="toggleSelect(this)" style="border-left: 4px solid #3b82f6;">
+    <div class="letter" style="background:#3b82f6;">3</div>
+    <div class="content">
+      <h3>InterlinearViewer — No word alignment data for EOTC</h3>
+      <p><strong>MEDIUM:</strong> Defaults to WLC→WEB pair. No word alignment data exists for Ge'ez manuscripts. Component won't crash but will show "no alignments" for EOTC texts. Low priority until alignment data is created.</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="crossref-panel" onclick="toggleSelect(this)" style="border-left: 4px solid #22c55e;">
+    <div class="letter" style="background:#22c55e;">OK</div>
+    <div class="content">
+      <h3>CrossReferencePanel — Database-driven, mostly fine</h3>
+      <p><strong>OK:</strong> No hardcoded lists. Pulls from cross_references table dynamically. Will work for EOTC books IF cross-reference data exists. Empty state message could be more helpful for EOTC books.</p>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+  <h3 style="margin-bottom: 0.5rem;">Impact Summary</h3>
+  <p style="opacity: 0.8; font-size: 0.9rem;">
+    <strong style="color: #ef4444;">2 CRITICAL</strong> — Users can't see or navigate to EOTC texts at all<br>
+    <strong style="color: #f59e0b;">3 HIGH</strong> — Ge'ez renders wrong, cross-refs broken for EOTC<br>
+    <strong style="color: #3b82f6;">2 MEDIUM</strong> — Cosmetic/future issues<br>
+    <strong style="color: #22c55e;">1 OK</strong> — Works as-is
+  </p>
+  <p style="opacity: 0.6; font-size: 0.85rem; margin-top: 0.5rem;">Discovery/visualization agent still running — will add NetworkGraph, Timeline, ThematicDiscovery results next.</p>
+</div>
