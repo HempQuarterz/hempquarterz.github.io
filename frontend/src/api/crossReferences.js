@@ -313,7 +313,11 @@ export async function getOTQuotations(book, chapter, verse, verseText) {
                      'SA1', 'SA2', 'KI1', 'KI2', 'CH1', 'CH2', 'EZR', 'NEH',
                      'EST', 'JOB', 'PSA', 'PRO', 'ECC', 'SNG', 'ISA', 'JER',
                      'LAM', 'EZK', 'DAN', 'HOS', 'JOL', 'AMO', 'OBA', 'JON',
-                     'MIC', 'NAH', 'HAB', 'ZEP', 'HAG', 'ZEC', 'MAL'];
+                     'MIC', 'NAH', 'HAB', 'ZEP', 'HAG', 'ZEC', 'MAL',
+                     // Deuterocanonical & Ethiopian
+                     'TOB', 'JDT', 'WIS', 'SIR', 'BAR', '1MA', '2MA', '3MA', '4MA',
+                     '1ES', '2ES', 'MAN', 'PS2', 'LJE', 'S3Y', 'SUS', 'BEL', 'ESG',
+                     'ENO', 'JUB', 'ASI', '1MQ', '2MQ', '3MQ', 'KNG'];
 
     const otReferences = references.filter(ref => otBooks.includes(ref.target_book));
 

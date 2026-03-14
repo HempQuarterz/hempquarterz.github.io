@@ -129,7 +129,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
   if (loading) {
     return (
       <div style={{
-        background: '#fff',
+        background: 'rgba(30, 41, 59, 0.6)',
         borderRadius: '8px',
         boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         padding: '2rem',
@@ -149,7 +149,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
 
   return (
     <div style={{
-      background: '#fff',
+      background: 'rgba(30, 41, 59, 0.6)',
       borderRadius: '8px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
       overflow: 'hidden',
@@ -255,7 +255,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
               padding: '1rem',
               border: '2px solid #2E7D32',
               borderRadius: '8px',
-              background: '#f1f8f4'
+              background: 'rgba(46, 125, 50, 0.15)'
             }}>
               <h4 style={{ margin: '0 0 0.75rem 0', color: '#2E7D32', fontSize: '1rem' }}>
                 {book} {chapter}:{verse}
@@ -266,7 +266,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
                     style={{
                       fontSize: '1rem',
                       lineHeight: '1.8',
-                      color: '#333',
+                      color: '#e2e8f0',
                       fontFamily: "'Cardo', serif"
                     }}
                     dangerouslySetInnerHTML={{
@@ -296,7 +296,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
                     padding: '1rem',
                     border: '2px solid #1976D2',
                     borderRadius: '8px',
-                    background: '#e3f2fd'
+                    background: 'rgba(59, 130, 246, 0.15)'
                   }}
                 >
                   <h4 style={{ margin: '0 0 0.75rem 0', color: '#1976D2', fontSize: '1rem' }}>
@@ -327,7 +327,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
                         style={{
                           fontSize: '1rem',
                           lineHeight: '1.8',
-                          color: '#333',
+                          color: '#e2e8f0',
                           fontFamily: "'Cardo', serif"
                         }}
                         dangerouslySetInnerHTML={{

@@ -186,7 +186,8 @@ const ManuscriptCarousel = ({
               {ms.lang === 'hebrew' ? 'Hebrew' :
                 ms.lang === 'greek' ? 'Greek' :
                   ms.lang === 'aramaic' ? 'Aramaic' :
-                    ms.lang === 'latin' ? 'Latin' : 'English'}
+                    ms.lang === 'latin' ? 'Latin' :
+                      ms.lang === 'geez' ? "Ge'ez" : 'English'}
             </span>
           </button>
         ))}
@@ -240,7 +241,7 @@ const ManuscriptCarousel = ({
                 <div className="manuscript-header-carousel">
                   <h3>{ms.name}</h3>
                   <div className="manuscript-meta">
-                    {ms.manuscript} • {ms.lang === 'hebrew' ? 'Hebrew' : ms.lang === 'greek' ? 'Greek' : ms.lang === 'aramaic' ? 'Aramaic' : ms.lang === 'latin' ? 'Latin' : 'English'}
+                    {ms.manuscript} • {ms.lang === 'hebrew' ? 'Hebrew' : ms.lang === 'greek' ? 'Greek' : ms.lang === 'aramaic' ? 'Aramaic' : ms.lang === 'latin' ? 'Latin' : ms.lang === 'geez' ? "Ge'ez" : 'English'}
                   </div>
                 </div>
 

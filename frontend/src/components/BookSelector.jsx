@@ -64,6 +64,16 @@ const BookSelector = ({ selectedBook, onBookSelect, selectedTiers = [1, 2] }) =>
     [filteredBooks]
   );
 
+  const ethiopian = useMemo(() =>
+    filteredBooks.filter(book =>
+      book.testament === 'Ethiopian Canon' ||
+      book.testament === 'Pseudepigrapha / Ethiopian Canon' ||
+      book.testament === 'Ethiopian Heritage' ||
+      book.testament === 'Apocrypha'
+    ),
+    [filteredBooks]
+  );
+
   const handleBookClick = (bookCode) => {
     onBookSelect(bookCode);
   };
@@ -135,6 +145,7 @@ const BookSelector = ({ selectedBook, onBookSelect, selectedTiers = [1, 2] }) =>
       {oldTestament.length > 0 && renderBookGroup(oldTestament, 'Old Testament')}
       {newTestament.length > 0 && renderBookGroup(newTestament, 'New Testament')}
       {deuterocanonical.length > 0 && renderBookGroup(deuterocanonical, 'Deuterocanonical & Apocrypha')}
+      {ethiopian.length > 0 && renderBookGroup(ethiopian, 'Ethiopian Canon & Pseudepigrapha')}
     </div>
   );
 };

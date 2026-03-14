@@ -81,10 +81,11 @@ const CrossReferenceBadge = ({ count, references, onBadgeClick }) => {
             transform: 'translateX(-50%)',
             marginBottom: '0.5rem',
             padding: '0.75rem',
-            background: '#fff',
-            border: '1px solid #ddd',
+            background: 'rgba(14, 35, 59, 0.95)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
             borderRadius: '6px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+            color: '#e2e8f0',
             minWidth: '200px',
             maxWidth: '300px',
             zIndex: 1000,
@@ -102,15 +103,15 @@ const CrossReferenceBadge = ({ count, references, onBadgeClick }) => {
               height: 0,
               borderLeft: '6px solid transparent',
               borderRight: '6px solid transparent',
-              borderTop: '6px solid #fff'
+              borderTop: '6px solid rgba(14, 35, 59, 0.95)'
             }}
           />
 
-          <div style={{ fontSize: '0.85rem', color: '#333' }}>
-            <div style={{ fontWeight: '600', marginBottom: '0.5rem', color: '#2E7D32' }}>
+          <div style={{ fontSize: '0.85rem', color: '#e2e8f0' }}>
+            <div style={{ fontWeight: '600', marginBottom: '0.5rem', color: 'var(--brand-gold, #F9E4A4)' }}>
               {count} Cross-Reference{count !== 1 ? 's' : ''}
             </div>
-            <div style={{ fontSize: '0.8rem', color: '#666' }}>
+            <div style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.7)' }}>
               {topReferences.map((ref, index) => (
                 <div key={index} style={{ marginBottom: '0.25rem' }}>
                   • {formatCrossReference(ref)}

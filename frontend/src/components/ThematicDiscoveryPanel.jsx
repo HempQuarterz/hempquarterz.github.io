@@ -80,8 +80,8 @@ const ThematicDiscoveryPanel = ({ book, chapter, verse, currentVerseText, onNavi
 
       // For demo: Load a sample of verses from various books
       // In production: Load from pre-computed embedding database
-      const sampleBooks = ['GEN', 'PSA', 'ISA', 'MAT', 'JHN', 'ROM', 'REV'];
-      const sampleChapters = [1, 1, 53, 5, 3, 8, 21]; // Notable chapters
+      const sampleBooks = ['GEN', 'PSA', 'ISA', 'MAT', 'JHN', 'ROM', 'REV', 'ENO', 'JUB', 'ASI'];
+      const sampleChapters = [1, 1, 53, 5, 3, 8, 21, 1, 1, 6]; // Notable chapters
 
       const versePromises = sampleBooks.map(async (bookCode, idx) => {
         try {

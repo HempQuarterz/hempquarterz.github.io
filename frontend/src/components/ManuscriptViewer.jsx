@@ -95,7 +95,11 @@ const ManuscriptViewer = ({
           { code: 'SIN', name: 'Codex Sinaiticus', lang: 'greek' },
           { code: 'VUL', name: 'Vulgate', lang: 'latin' },
           { code: 'ONKELOS', name: 'Targum Onkelos', lang: 'aramaic' },
-          { code: 'PESHITTA', name: 'Peshitta (Syriac)', lang: 'aramaic' }
+          { code: 'PESHITTA', name: 'Peshitta (Syriac)', lang: 'aramaic' },
+          { code: 'CHARLES', name: 'R.H. Charles Translations', lang: 'english' },
+          { code: 'WIKISOURCE', name: 'Wikisource Translations', lang: 'english' },
+          { code: 'BUDGE', name: 'E.A.W. Budge Translations', lang: 'english' },
+          { code: 'GEEZ', name: "Ge'ez (Ethiopic)", lang: 'geez' }
         ];
 
         const manuscriptPromises = allManuscripts.map(async (ms) => {
@@ -169,6 +173,7 @@ const ManuscriptViewer = ({
   const getLanguageClass = (lang) => {
     if (lang === 'hebrew' || lang === 'aramaic') return 'hebrew-text';
     if (lang === 'greek') return 'greek-text';
+    if (lang === 'geez') return 'geez-text';
     return 'english-text';
   };
 

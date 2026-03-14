@@ -255,6 +255,9 @@ export async function restoreVerse(verse) {
       language = 'greek';
     } else if (verse.manuscript === 'PESHITTA' || verse.manuscript === 'ONKELOS') {
       language = 'aramaic';
+    } else if (verse.manuscript === 'GEEZ') {
+      // Ge'ez manuscripts preserve divine names in original form — no restoration needed
+      return { ...verse, restored_text: verse.text, restorations: [] };
     } else {
       language = 'english';
     }

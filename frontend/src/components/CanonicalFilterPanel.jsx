@@ -23,7 +23,7 @@ const TIER_OPTIONS = [
   {
     tier: 2,
     label: 'Deuterocanonical',
-    description: '21 Catholic/Orthodox books (Tobit, Wisdom, Maccabees, etc.)',
+    description: '24 books including 1 Enoch, Jubilees, Ascension of Isaiah, Meqabyan 1-3',
     defaultChecked: true
   },
   {
@@ -35,7 +35,7 @@ const TIER_OPTIONS = [
   {
     tier: 4,
     label: 'Ethiopian Heritage',
-    description: '1 Ethiopian Orthodox text (Kebra Nagast)',
+    description: 'Ethiopian Orthodox heritage texts (Kebra Nagast)',
     defaultChecked: false
   }
 ];
@@ -44,7 +44,7 @@ const CanonicalFilterPanel = ({
   selectedTiers = [1, 2],
   onTiersChange,
   showCounts = true,
-  tierCounts = { 1: 66, 2: 21, 3: 2, 4: 1 },
+  tierCounts = { 1: 66, 2: 24, 3: 2, 4: 2 },
   compact = false
 }) => {
   const handleTierToggle = (tier) => {

@@ -121,6 +121,24 @@ const TimelineViewer = ({ book, chapter, verse, onNavigate }) => {
       '2TI': 7500, 'TIT': 7600, 'PHM': 7700, 'HEB': 7800, 'JAS': 7900,
       '1PE': 8000, '2PE': 8100, '1JN': 8200, '2JN': 8300, '3JN': 8400,
       'JUD': 8500, 'REV': 8600,
+
+      // Deuterocanonical
+      'TOB': 3550, 'JDT': 3560, 'WIS': 3570, 'SIR': 3580, 'BAR': 4250,
+      '1MA': 5800, '2MA': 5810, '3MA': 5820, '4MA': 5830,
+      '1ES': 3350, '2ES': 3360, 'MAN': 3380, 'PS2': 3710,
+      'LJE': 4210, 'S3Y': 4510, 'SUS': 4520, 'BEL': 4530, 'ESG': 3510,
+
+      // Ethiopian Canon / Pseudepigrapha
+      'ENO': 500,   // 1 Enoch - antediluvian setting
+      'JUB': 900,   // Jubilees - retelling Genesis-Exodus
+      'ASI': 4150,  // Ascension of Isaiah - prophetic era
+      '1MQ': 5850,  // Meqabyan 1 - post-Maccabean
+      '2MQ': 5860,  // Meqabyan 2
+      '3MQ': 5870,  // Meqabyan 3
+      'KNG': 2950,  // Kebra Nagast - Solomon era setting
+      'TGO': 6350,  // Gospel of Thomas
+      'GMA': 6360,  // Gospel of Mary
+      'MEQ': 5855,  // Meqabyan (if using original code)
     };
 
     const baseTimestamp = bookOrder[book] || 5000;
@@ -143,6 +161,9 @@ const TimelineViewer = ({ book, chapter, verse, onNavigate }) => {
     const epistles = ['ROM', '1CO', '2CO', 'GAL', 'EPH', 'PHP', 'COL', '1TH', '2TH', '1TI', '2TI', 'TIT', 'PHM', 'HEB', 'JAS', '1PE', '2PE', '1JN', '2JN', '3JN', 'JUD'];
     const revelation = ['REV'];
 
+    const deuterocanon = ['TOB', 'JDT', 'WIS', 'SIR', 'BAR', '1MA', '2MA', '3MA', '4MA', '1ES', '2ES', 'MAN', 'PS2', 'LJE', 'S3Y', 'SUS', 'BEL', 'ESG'];
+    const ethiopian = ['ENO', 'JUB', 'ASI', '1MQ', '2MQ', '3MQ', 'MEQ', 'KNG', 'TGO', 'GMA'];
+
     if (pentateuch.includes(book)) return 'pentateuch';
     if (history.includes(book)) return 'history';
     if (wisdom.includes(book)) return 'wisdom';
@@ -151,6 +172,8 @@ const TimelineViewer = ({ book, chapter, verse, onNavigate }) => {
     if (acts.includes(book)) return 'acts';
     if (epistles.includes(book)) return 'epistles';
     if (revelation.includes(book)) return 'revelation';
+    if (deuterocanon.includes(book)) return 'deuterocanon';
+    if (ethiopian.includes(book)) return 'ethiopian';
     return 'other';
   }
 
@@ -167,6 +190,8 @@ const TimelineViewer = ({ book, chapter, verse, onNavigate }) => {
       acts: 'Early Church',
       epistles: 'Epistles',
       revelation: 'Apocalyptic',
+      deuterocanon: 'Deuterocanonical',
+      ethiopian: 'Ethiopian Canon',
       other: 'Other',
     };
     return eraNames[era] || era;
@@ -185,6 +210,8 @@ const TimelineViewer = ({ book, chapter, verse, onNavigate }) => {
       acts: '#FF8C00',        // Dark Orange - Church birth
       epistles: '#2E8B57',    // Sea Green - Teaching
       revelation: '#8B0000',  // Dark Red - Apocalyptic
+      deuterocanon: '#FF6347', // Tomato - Deuterocanonical
+      ethiopian: '#D4AF37',   // Gold - Ethiopian Canon
       other: '#696969',       // Dim Gray
     };
     return eraColors[era] || '#696969';
@@ -313,7 +340,7 @@ const TimelineViewer = ({ book, chapter, verse, onNavigate }) => {
       <div className="timeline-legend">
         <h4>Biblical Eras</h4>
         <div className="legend-items">
-          {['pentateuch', 'history', 'wisdom', 'prophets', 'gospels', 'acts', 'epistles', 'revelation'].map(era => (
+          {['pentateuch', 'history', 'wisdom', 'prophets', 'gospels', 'acts', 'epistles', 'revelation', 'deuterocanon', 'ethiopian'].map(era => (
             <div key={era} className="legend-item">
               <div className="legend-color" style={{ background: getEraColor(era) }}></div>
               <span>{getEraDisplayName(era)}</span>
