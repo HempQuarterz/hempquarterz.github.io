@@ -84,6 +84,11 @@ generate-icons.js
 .claude-flow/sessions/
 .claude-flow/daemon.log
 .claude-flow/daemon.pid
+.claude-flow/daemon-state.json
+.claude-flow/metrics/
+.claude-flow/security/
+.claude-flow/.gitignore
+.claude-flow/CAPABILITIES.md
 
 # Playwright MCP console logs
 .playwright-mcp/console-*.log
