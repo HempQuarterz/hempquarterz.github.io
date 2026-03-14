@@ -95,3 +95,4 @@ generate-icons.js
 
 # Screenshots (development artifacts)
 *.png
+database/.claude-flow/
