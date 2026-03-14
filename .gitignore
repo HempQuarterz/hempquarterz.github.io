@@ -75,3 +75,18 @@ generate-icons.js
 
 # Genkit runtime data
 .genkit/
+
+# Ruflo / claude-flow runtime data
+.swarm/
+.claude/memory.db
+.claude-flow/data/
+.claude-flow/logs/
+.claude-flow/sessions/
+.claude-flow/daemon.log
+.claude-flow/daemon.pid
+
+# Playwright MCP console logs
+.playwright-mcp/console-*.log
+
+# Screenshots (development artifacts)
+*.png

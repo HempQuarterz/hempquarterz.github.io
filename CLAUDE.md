@@ -319,3 +319,14 @@ node database/test-greek-restoration.js
 - **Morphology data is critical**: Required for divine name restoration matching
 - **Cross-references are bidirectional**: Both directions stored for navigation
 
+## MCP Tool Usage
+
+### jDocMunch (Documentation Navigation)
+Use `jdocmunch` MCP tools for all documentation lookups. This retrieves docs by section instead of reading entire files, saving significant tokens.
+
+- Call `list_repos` first to check if the project/repo is already indexed.
+- Use `index_local` to index local documentation folders, or `index_repo` for GitHub repos.
+- Use `search_sections` and `get_section` instead of reading full documentation files.
+- Use `get_toc` or `get_toc_tree` to browse documentation structure.
+- Prefer section-level retrieval over reading entire files for any documentation task.
+
