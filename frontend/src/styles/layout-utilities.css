@@ -362,7 +362,7 @@
 @media (max-width: 768px) {
   .floating-actions {
     top: auto;
-    bottom: calc(6rem + env(safe-area-inset-bottom)); /* Above the mobile dock */
+    bottom: calc(5.5rem + env(safe-area-inset-bottom)); /* Above the mobile dock */
     right: 0.75rem;
     flex-direction: column;
   }
@@ -397,5 +397,13 @@
 }
 
 .content-section--lg {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
+}
+
+/* Extra bottom space on mobile so content doesn't hide behind the dock */
+@media (max-width: 768px) {
+  .content-section--lg:last-child,
+  .consolidated-panel-wrapper {
+    margin-bottom: 1rem;
+  }
 }

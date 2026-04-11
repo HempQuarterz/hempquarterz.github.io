@@ -127,7 +127,7 @@
 
 /* Add padding to pages to prevent dock overlap */
 .page-with-dock {
-  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
 }
 
 @media (min-width: 768px) {
