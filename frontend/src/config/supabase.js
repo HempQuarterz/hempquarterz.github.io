@@ -2,9 +2,9 @@ import { createClient } from '@supabase/supabase-js';
 
 // Supabase configuration
 // These values are pulled from environment variables (.env file)
-// Build timestamp: 2026-03-15 cache-bust
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
-const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+// .trim() guards against whitespace accidentally pasted in Netlify dashboard
+const supabaseUrl = (process.env.REACT_APP_SUPABASE_URL || '').trim();
+const supabaseAnonKey = (process.env.REACT_APP_SUPABASE_ANON_KEY || '').replace(/\s/g, '');
 
 // Validate environment variables
 if (!supabaseUrl || !supabaseAnonKey) {
