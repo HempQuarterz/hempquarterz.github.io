@@ -145,7 +145,7 @@ const ThematicDiscoveryPanel = ({ book, chapter, verse, currentVerseText, onNavi
       const queryEmbedding = await generateEmbedding(currentVerseText);
 
       // Find similar verses
-      const similar = findSimilarVerses(
+      const similar = await findSimilarVerses(
         queryEmbedding,
         versePool,
         maxResults,

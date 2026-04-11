@@ -2,9 +2,21 @@
  * Verse Embedding Service - Tier 6
  * Generates semantic embeddings for Bible verses using Transformers.js
  * Enables thematic discovery through AI-powered similarity search
+ *
+ * NOTE: @huggingface/transformers is loaded dynamically to avoid bundling
+ * the 21MB ONNX WASM runtime in the main bundle. It only loads when
+ * the user activates the thematic discovery feature.
  */
 
-import { pipeline, cos_sim } from '@huggingface/transformers';
+// Lazy-loaded module reference
+let transformersModule = null;
+
+async function loadTransformers() {
+  if (!transformersModule) {
+    transformersModule = await import('@huggingface/transformers');
+  }
+  return transformersModule;
+}
 
 /**
  * Singleton class for managing the embedding pipeline
@@ -30,6 +42,7 @@ class EmbeddingPipeline {
       }
 
       this.isLoading = true;
+      const { pipeline } = await loadTransformers();
       this.loadPromise = pipeline(this.task, this.model, {
         progress_callback,
         dtype: 'q8', // Quantized for faster loading and smaller size
@@ -37,9 +50,8 @@ class EmbeddingPipeline {
 
       try {
         this.instance = await this.loadPromise;
-        console.log('✅ Embedding model loaded successfully');
       } catch (error) {
-        console.error('❌ Failed to load embedding model:', error);
+        console.error('Failed to load embedding model:', error);
         this.isLoading = false;
         throw error;
       }
@@ -57,7 +69,6 @@ class EmbeddingPipeline {
     if (this.instance !== null) {
       await this.instance.dispose?.();
       this.instance = null;
-      console.log('🗑️ Embedding model unloaded');
     }
   }
 }
@@ -126,11 +137,12 @@ export async function generateBatchEmbeddings(verseTexts, onProgress = null) {
  * @param {Float32Array} embedding2 - Second embedding vector
  * @returns {number} Similarity score between -1 and 1 (higher = more similar)
  */
-export function calculateSimilarity(embedding1, embedding2) {
+export async function calculateSimilarity(embedding1, embedding2) {
   if (!embedding1 || !embedding2) {
     throw new Error('Invalid embeddings for similarity calculation');
   }
 
+  const { cos_sim } = await loadTransformers();
   return cos_sim(embedding1, embedding2);
 }
 
@@ -142,15 +154,17 @@ export function calculateSimilarity(embedding1, embedding2) {
  * @param {number} minSimilarity - Minimum similarity threshold (0-1)
  * @returns {Array<Object>} Top K similar verses with similarity scores
  */
-export function findSimilarVerses(queryEmbedding, versePool, topK = 10, minSimilarity = 0.5) {
+export async function findSimilarVerses(queryEmbedding, versePool, topK = 10, minSimilarity = 0.5) {
   if (!queryEmbedding || !Array.isArray(versePool)) {
     throw new Error('Invalid parameters for similarity search');
   }
 
+  const { cos_sim } = await loadTransformers();
+
   // Calculate similarity scores for all verses
   const scoredVerses = versePool.map(verse => ({
     ...verse,
-    similarity: calculateSimilarity(queryEmbedding, verse.embedding),
+    similarity: cos_sim(queryEmbedding, verse.embedding),
   }));
 
   // Filter by minimum similarity and sort by score (descending)
@@ -215,11 +229,12 @@ export function generateThematicTags(verseText) {
  * @param {number} threshold - Similarity threshold for clustering (0-1)
  * @returns {Array<Array<Object>>} Array of verse clusters
  */
-export function clusterVersesByTheme(verses, threshold = 0.7) {
+export async function clusterVersesByTheme(verses, threshold = 0.7) {
   if (!Array.isArray(verses) || verses.length === 0) {
     return [];
   }
 
+  const { cos_sim } = await loadTransformers();
   const clusters = [];
   const visited = new Set();
 
@@ -233,7 +248,7 @@ export function clusterVersesByTheme(verses, threshold = 0.7) {
     verses.forEach((otherVerse, otherIdx) => {
       if (visited.has(otherIdx)) return;
 
-      const similarity = calculateSimilarity(verse.embedding, otherVerse.embedding);
+      const similarity = cos_sim(verse.embedding, otherVerse.embedding);
       if (similarity >= threshold) {
         cluster.push(otherVerse);
         visited.add(otherIdx);
@@ -253,11 +268,9 @@ export function clusterVersesByTheme(verses, threshold = 0.7) {
  */
 export async function preloadModel(onProgress = null) {
   try {
-    console.log('⏳ Preloading embedding model...');
     await EmbeddingPipeline.getInstance(onProgress);
-    console.log('✅ Model preloaded successfully');
   } catch (error) {
-    console.error('❌ Failed to preload model:', error);
+    console.error('Failed to preload model:', error);
     throw error;
   }
 }
