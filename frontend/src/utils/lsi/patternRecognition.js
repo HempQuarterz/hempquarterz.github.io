@@ -300,7 +300,7 @@ export class AcousticAnalyzer {
  */
 export class PhonemeDetector {
   constructor(apiKey = null) {
-    this.apiKey = apiKey || process.env.REACT_APP_DEEPGRAM_API_KEY;
+    this.apiKey = apiKey || import.meta.env.REACT_APP_DEEPGRAM_API_KEY;
     this.useProxy = !this.apiKey; // Use backend proxy if no API key
 
     // Phoneme patterns for pattern matching

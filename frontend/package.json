@@ -33,11 +33,11 @@
     "xml2js": "^0.6.2"
   },
   "scripts": {
-    "start": "BROWSER=none HOST=0.0.0.0 react-scripts start",
-    "build": "react-scripts build",
-    "build:production": "GENERATE_SOURCEMAP=false react-scripts build",
+    "start": "vite",
+    "build": "vite build",
+    "build:production": "vite build",
+    "preview": "vite preview",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "update-browserslist": "npx update-browserslist-db@latest"
   },
   "eslintConfig": {
@@ -58,5 +58,9 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://api.scripture.api.bible"
+  "proxy": "https://api.scripture.api.bible",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.8"
+  }
 }

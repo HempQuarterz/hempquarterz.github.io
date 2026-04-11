@@ -229,7 +229,7 @@ Generate a spiritual reflection insight (200-300 words) that:
    * @returns {Promise<String>} LLM response
    */
   async callLLMViaProxy(prompt) {
-    const proxyUrl = process.env.REACT_APP_PROXY_URL || 'http://localhost:3001';
+    const proxyUrl = import.meta.env.REACT_APP_PROXY_URL || 'http://localhost:3001';
     const response = await fetch(`${proxyUrl}/api/lsi/generate-insights`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
