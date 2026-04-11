@@ -41,6 +41,20 @@
   overflow: auto;
 }
 
+@media (max-width: 480px) {
+  .search-modal-overlay {
+    padding: 0.5rem;
+    align-items: flex-start;
+    padding-top: 3.5rem; /* Below breadcrumb */
+  }
+
+  .search-modal-container {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    max-height: calc(100vh - 5rem);
+  }
+}
+
 .search-modal-close {
   position: absolute;
   top: 1rem;

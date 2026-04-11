@@ -35,15 +35,15 @@
 
 /* Mobile: Bottom horizontal dock */
 .covenant-dock.mobile {
-  bottom: 1.5rem;
-  left: 1.5rem;
-  right: 1.5rem;
-  height: 4.5rem;
-  border-radius: 2rem;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  height: 4rem;
+  border-radius: 1.5rem;
   justify-content: space-around;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.75rem;
   /* Safe area for notched phones */
-  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(0.35rem + env(safe-area-inset-bottom));
 }
 
 /* ============================================================================
@@ -127,12 +127,12 @@
 
 /* Add padding to pages to prevent dock overlap */
 .page-with-dock {
-  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
 }
 
 @media (min-width: 768px) {
   .page-with-dock {
-    padding-left: 5.5rem;
+    padding-left: 6rem;
     padding-bottom: 0;
   }
 }

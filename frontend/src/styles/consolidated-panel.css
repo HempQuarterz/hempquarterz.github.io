@@ -158,42 +158,69 @@
    ============================================================================ */
 
 @media (max-width: 768px) {
-  /* Mobile: Convert horizontal scroll to 2-row grid */
+  .consolidated-panel {
+    border-radius: 16px;
+    margin-top: 1rem;
+  }
+
+  /* Mobile: Horizontal scrollable tabs */
   .tab-navigation {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.25rem;
-    padding: 0.5rem;
-    overflow-x: visible;
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0;
+    padding: 0;
+  }
+
+  .tab-navigation::-webkit-scrollbar {
+    display: none;
   }
 
   .tab-button {
-    padding: 0.75rem 0.5rem;
-    min-width: unset;
-    border-bottom: none;
-    border-radius: 12px;
-    /* Larger touch target for mobile */
-    min-height: 64px;
+    padding: 0.6rem 0.75rem;
+    min-width: 72px;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    /* Minimum touch target */
+    min-height: 52px;
+    flex-shrink: 0;
   }
 
   .tab-button.active {
-    background: rgba(212, 175, 55, 0.15);
-    border-bottom: none;
-    box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+    background: rgba(212, 175, 55, 0.1);
+    border-bottom: 2px solid #D4AF37;
+    box-shadow: none;
   }
 
   .tab-icon {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .tab-label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     text-align: center;
     line-height: 1.2;
   }
 
+  .tab-content {
+    min-height: 250px;
+  }
+
   .tab-content-wrapper {
-    padding: 1rem;
+    padding: 0.75rem;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 375px) {
+  .tab-button {
+    min-width: 60px;
+    padding: 0.5rem;
+  }
+
+  .tab-label {
+    font-size: 0.55rem;
   }
 }
 
