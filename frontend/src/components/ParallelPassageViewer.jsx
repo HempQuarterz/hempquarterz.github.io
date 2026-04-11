@@ -5,10 +5,13 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import DOMPurify from 'dompurify';
 import { getVerse } from '../api/verses';
 import { restoreVerse } from '../api/restoration';
 import { getParallelPassages, formatCrossReference, getParallelTypeDisplayName } from '../api/crossReferences';
 import Loading from './Loading';
+
+const sanitize = (html) => DOMPurify.sanitize(html, { ALLOWED_TAGS: ['span', 'em', 'strong', 'mark'], ALLOWED_ATTR: ['class', 'title'] });
 
 const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
   const [parallelPassages, setParallelPassages] = useState([]);
@@ -199,7 +202,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
 
               return (
                 <button
-                  key={index}
+                  key={`${parallel.target_book}_${parallel.target_chapter}_${parallel.target_verse}`}
                   onClick={() => handleSelectParallel(parallel)}
                   style={{
                     padding: '0.5rem 1rem',
@@ -270,9 +273,9 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
                       fontFamily: "'Cardo', serif"
                     }}
                     dangerouslySetInnerHTML={{
-                      __html: showRestored && sourceVerse.restorations
+                      __html: sanitize(showRestored && sourceVerse.restorations
                         ? highlightRestoredNames(sourceVerse.text, sourceVerse.restorations)
-                        : sourceVerse.text
+                        : sourceVerse.text)
                     }}
                   />
                   <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: '#666', fontStyle: 'italic' }}>
@@ -291,7 +294,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
 
               return (
                 <div
-                  key={index}
+                  key={key}
                   style={{
                     padding: '1rem',
                     border: '2px solid #1976D2',
@@ -331,9 +334,9 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
                           fontFamily: "'Cardo', serif"
                         }}
                         dangerouslySetInnerHTML={{
-                          __html: showRestored && parallelVerse.restorations
+                          __html: sanitize(showRestored && parallelVerse.restorations
                             ? highlightRestoredNames(parallelVerse.text, parallelVerse.restorations)
-                            : parallelVerse.text
+                            : parallelVerse.text)
                         }}
                       />
                       <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: '#666', fontStyle: 'italic' }}>

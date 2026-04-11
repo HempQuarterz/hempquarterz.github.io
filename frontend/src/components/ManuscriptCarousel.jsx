@@ -6,8 +6,11 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useAnimation } from 'framer-motion';
+import DOMPurify from 'dompurify';
 import CrossReferenceBadge from './CrossReferenceBadge';
 import '../styles/manuscript-carousel.css';
+
+const sanitize = (html) => DOMPurify.sanitize(html, { ALLOWED_TAGS: ['span', 'em', 'strong', 'mark'], ALLOWED_ATTR: ['class', 'title'] });
 
 const ManuscriptCarousel = ({
   manuscripts,
@@ -175,7 +178,7 @@ const ManuscriptCarousel = ({
       <div className="manuscript-selector">
         {manuscripts.map((ms, index) => (
           <button
-            key={index}
+            key={ms.manuscript || index}
             className={`manuscript-pill ${index === activeIndex ? 'active' : ''}`}
             onClick={() => goToIndex(index)}
             aria-label={`View ${ms.name}`}
@@ -230,7 +233,7 @@ const ManuscriptCarousel = ({
           >
             {manuscripts.map((ms, index) => (
               <div
-                key={index}
+                key={ms.manuscript || index}
                 className="manuscript-slide"
                 style={{
                   position: 'absolute',
@@ -251,16 +254,16 @@ const ManuscriptCarousel = ({
                     {ms.verses && (() => {
                       const filtered = ms.verses.filter(v => !isBookTitleVerse(v.text, v.verse));
                       const verseOffset = filtered.length < ms.verses.length ? 1 : 0;
-                      return filtered.map((verseData, vIndex) => (
-                        <div key={vIndex} className="verse-row">
+                      return filtered.map((verseData) => (
+                        <div key={verseData.verse} className="verse-row">
                           <span className="verse-number">{verseData.verse - verseOffset}</span>
                           <div
                             className={getLanguageClass(ms.lang)}
                             style={{ flex: 1 }}
                             dangerouslySetInnerHTML={{
-                              __html: showRestored && verseData.restorations
+                              __html: sanitize(showRestored && verseData.restorations
                                 ? highlightRestoredNames(cleanVerseText(verseData.text, verseData.verse), verseData.restorations, ms.manuscript)
-                                : cleanVerseText(verseData.text, verseData.verse)
+                                : cleanVerseText(verseData.text, verseData.verse))
                             }}
                           />
                         </div>
@@ -275,9 +278,9 @@ const ManuscriptCarousel = ({
                         className={getLanguageClass(ms.lang)}
                         style={{ flex: 1 }}
                         dangerouslySetInnerHTML={{
-                          __html: showRestored && ms.restorations
+                          __html: sanitize(showRestored && ms.restorations
                             ? highlightRestoredNames(cleanVerseText(ms.text, ms.verse) || ms.text, ms.restorations, ms.manuscript)
-                            : highlightQuotations(cleanVerseText(ms.text, ms.verse) || ms.text, ms.manuscript === 'WEB' ? quotations : [])
+                            : highlightQuotations(cleanVerseText(ms.text, ms.verse) || ms.text, ms.manuscript === 'WEB' ? quotations : []))
                         }}
                       />
                       <CrossReferenceBadge

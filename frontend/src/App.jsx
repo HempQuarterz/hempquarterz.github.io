@@ -1,14 +1,9 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ManuscriptsPage from './pages/ManuscriptsPage';
-import AboutPage from './pages/AboutPage';
-import LSIPage from './pages/LSIPage';
-import BookPage from './components/BookPage';
-import ChapterPage from './components/ChapterPage';
-import VersePage from './components/VersePage';
-import ScripturePage from './components/ScripturePage';
-import AudioCaptureDemo from './components/lsi/AudioCaptureDemo';
+import ErrorBoundary from './components/ErrorBoundary';
+import Loading from './components/Loading';
 import { store } from './store';
 import { Provider } from 'react-redux';
 
@@ -22,6 +17,15 @@ import './styles/scholarly-theme.css';
 
 // Covenant Navigation System
 import { BreadcrumbRibbon, GlobalDockProvider } from './components/navigation';
+
+// Lazy-loaded routes (reduces initial bundle)
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const LSIPage = lazy(() => import('./pages/LSIPage'));
+const BookPage = lazy(() => import('./components/BookPage'));
+const ChapterPage = lazy(() => import('./components/ChapterPage'));
+const VersePage = lazy(() => import('./components/VersePage'));
+const ScripturePage = lazy(() => import('./components/ScripturePage'));
+const AudioCaptureDemo = lazy(() => import('./components/lsi/AudioCaptureDemo'));
 
 const App = () => {
   return (
@@ -54,20 +58,24 @@ const App = () => {
 
           <PageTurnTransition>
             <div id="main-content" className="page-with-dock">
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/manuscripts" element={<ManuscriptsPage />} />
-                <Route path="/manuscript" element={<ManuscriptsPage />} />
-                <Route path="/manuscripts/:book/:chapter/:verse" element={<ManuscriptsPage />} />
-                <Route path="/manuscript/:book/:chapter/:verse" element={<ManuscriptsPage />} />
-                <Route path="/book" element={<BookPage />} />
-                <Route path="/chapter/:version/:abbr/:book" element={<ChapterPage />} />
-                <Route path="/verse/:version/:abbr/:book/:chapter" element={<VersePage />} />
-                <Route path="/scripture/:bibleId/:version/:abbr/:book/:chapter/:verseId" element={<ScripturePage />} />
-                <Route path="/lsi" element={<LSIPage />} />
-                <Route path="/lsi/demo" element={<AudioCaptureDemo />} />
-              </Routes>
+              <ErrorBoundary>
+                <Suspense fallback={<Loading />}>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/manuscripts" element={<ManuscriptsPage />} />
+                    <Route path="/manuscript" element={<ManuscriptsPage />} />
+                    <Route path="/manuscripts/:book/:chapter/:verse" element={<ManuscriptsPage />} />
+                    <Route path="/manuscript/:book/:chapter/:verse" element={<ManuscriptsPage />} />
+                    <Route path="/book" element={<BookPage />} />
+                    <Route path="/chapter/:version/:abbr/:book" element={<ChapterPage />} />
+                    <Route path="/verse/:version/:abbr/:book/:chapter" element={<VersePage />} />
+                    <Route path="/scripture/:bibleId/:version/:abbr/:book/:chapter/:verseId" element={<ScripturePage />} />
+                    <Route path="/lsi" element={<LSIPage />} />
+                    <Route path="/lsi/demo" element={<AudioCaptureDemo />} />
+                  </Routes>
+                </Suspense>
+              </ErrorBoundary>
             </div>
           </PageTurnTransition>
         </GlobalDockProvider>

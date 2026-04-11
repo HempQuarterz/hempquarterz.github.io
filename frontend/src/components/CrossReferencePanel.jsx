@@ -135,9 +135,9 @@ const CrossReferencePanel = ({ book, chapter, verse, onReferenceClick }) => {
                   )}
 
                   <div className="cross-ref-list">
-                    {refs.map((ref, index) => (
+                    {refs.map((ref) => (
                       <button
-                        key={index}
+                        key={`${ref.target_book}_${ref.target_chapter}_${ref.target_verse}`}
                         onClick={() => handleReferenceClick(ref)}
                         className="cross-ref-card"
                         style={{
