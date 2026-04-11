@@ -362,7 +362,7 @@
 @media (max-width: 768px) {
   .floating-actions {
     top: auto;
-    bottom: calc(5.5rem + env(safe-area-inset-bottom)); /* Above the mobile dock */
+    bottom: calc(4.5rem + env(safe-area-inset-bottom)); /* Above the mobile dock */
     right: 0.75rem;
     flex-direction: column;
   }

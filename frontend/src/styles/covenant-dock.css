@@ -12,7 +12,7 @@
   z-index: 50;
   display: flex;
   align-items: center;
-  background: rgba(14, 35, 59, 0.85);
+  background: rgba(14, 35, 59, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -35,15 +35,16 @@
 
 /* Mobile: Bottom horizontal dock */
 .covenant-dock.mobile {
-  bottom: 0.75rem;
-  left: 0.75rem;
-  right: 0.75rem;
-  height: 4rem;
-  border-radius: 1.5rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 0;
   justify-content: space-around;
-  padding: 0.35rem 0.75rem;
-  /* Safe area for notched phones */
-  padding-bottom: calc(0.35rem + env(safe-area-inset-bottom));
+  padding: 0.5rem 0.5rem;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
 }
 
 /* ============================================================================
@@ -59,16 +60,27 @@
 
 .dock-item {
   position: relative;
-  width: 3.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.15rem;
-  border-radius: 1rem;
+  gap: 0.2rem;
+  border-radius: 0.75rem;
   cursor: pointer;
-  padding: 0.35rem 0;
   transition: background-color 0.2s ease;
+  /* Desktop sizing */
+  width: 3.5rem;
+  padding: 0.35rem 0;
+}
+
+/* Mobile: Ensure 44px minimum touch target */
+@media (max-width: 767px) {
+  .dock-item {
+    width: auto;
+    min-width: 3rem;
+    min-height: 44px;
+    padding: 0.4rem 0.5rem;
+  }
 }
 
 .dock-item:hover {
@@ -84,7 +96,7 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   border: 1px solid rgba(212, 175, 55, 0.3);
   box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
 }
@@ -105,7 +117,7 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* Label under icon (desktop and mobile) */
+/* Label under icon */
 .dock-item-label {
   position: relative;
   z-index: 1;
@@ -115,6 +127,13 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   line-height: 1;
+}
+
+@media (max-width: 767px) {
+  .dock-item-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.02em;
+  }
 }
 
 .dock-item-label.active {
@@ -127,7 +146,8 @@
 
 /* Add padding to pages to prevent dock overlap */
 .page-with-dock {
-  padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+  /* Dock is ~56px + safe area, add breathing room */
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
 }
 
 @media (min-width: 768px) {
