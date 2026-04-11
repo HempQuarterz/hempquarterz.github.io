@@ -5,9 +5,29 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin: 0.75rem 0;
-  position: relative;
-  z-index: 20;
+  padding: 0.6rem 0;
+  margin: 0 0 0.5rem 0;
+  position: sticky;
+  top: 48px; /* Stick below the 48px breadcrumb ribbon */
+  z-index: 30; /* Above carousel (10) but below breadcrumb (40) */
+  background: rgba(14, 35, 59, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-left: -0.75rem; /* Bleed to edges of content area */
+  margin-right: -0.75rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .scripture-toolbar {
+    margin-left: -2rem;
+    margin-right: -2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border-radius: 0;
+  }
 }
 
 /* Navigation arrows */
@@ -267,34 +287,69 @@
   }
 }
 
-/* Mobile responsive */
-@media (max-width: 480px) {
+/* Tablet and below */
+@media (max-width: 768px) {
   .scripture-toolbar {
-    gap: 0.3rem;
+    gap: 0.35rem;
+    top: 48px; /* Match breadcrumb height */
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 
   .st-nav-label {
     display: none;
   }
 
+  .st-nav-btn {
+    padding: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+  }
+
   .st-selector {
-    padding: 0.45rem 0.7rem;
-    font-size: 0.82rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    min-height: 44px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .scripture-toolbar {
+    gap: 0.25rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .st-selector {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.8rem;
   }
 
   .st-nav-btn {
-    padding: 0.45rem 0.5rem;
+    padding: 0.45rem;
   }
 
   .st-popover {
-    left: 0;
+    position: fixed;
+    left: 0.5rem;
+    right: 0.5rem;
+    top: auto;
+    bottom: auto;
     transform: none;
-    right: 0;
     width: auto;
-    max-width: calc(100vw - 2rem);
+    max-width: none;
+    max-height: 60vh;
   }
 
   .st-book-popover {
+    width: auto;
+  }
+
+  .st-chapter-popover {
     width: auto;
   }
 }
