@@ -1,0 +1,394 @@
+/**
+ * ScriptureReader & StudyReader Styles
+ * E-Ink/Paper inspired reading interface
+ * Optimized for immersive, distraction-free scripture reading
+ */
+
+/* ============================================================================
+   SHARED READER CONTAINER
+   ============================================================================ */
+
+.scripture-reader {
+  max-width: 42rem; /* ~65-75 chars at 1.15rem — optimal reading width */
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ============================================================================
+   MANUSCRIPT SELECTOR PILLS (Shared)
+   ============================================================================ */
+
+.reader-manuscripts {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0.25rem 0;
+  margin-bottom: 0.5rem;
+}
+
+.reader-manuscripts::-webkit-scrollbar {
+  display: none;
+}
+
+.reader-ms-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.35rem 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  min-width: 52px;
+  min-height: 40px;
+}
+
+.reader-ms-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.reader-ms-pill.active {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.4);
+  color: #F9E4A4;
+}
+
+.reader-ms-code {
+  font-weight: 700;
+  font-size: 0.75rem;
+  font-family: 'Cinzel', serif;
+  letter-spacing: 0.03em;
+}
+
+.reader-ms-lang {
+  font-size: 0.55rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ============================================================================
+   MANUSCRIPT ATTRIBUTION
+   ============================================================================ */
+
+.reader-attribution {
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ============================================================================
+   FLOWING PROSE (Option A)
+   ============================================================================ */
+
+.reader-prose {
+  line-height: 2;
+  color: #e8e0d4; /* Warm parchment white — softer than pure white */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+  hyphens: auto;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Superscript verse numbers */
+.verse-sup {
+  color: rgba(212, 175, 55, 0.6);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.65em;
+  vertical-align: super;
+  line-height: 0;
+  margin-right: 0.15em;
+  margin-left: 0.25em;
+  user-select: none;
+}
+
+/* First verse number doesn't need left margin */
+.reader-prose .verse-sup:first-child {
+  margin-left: 0;
+}
+
+/* Restored divine names in flowing text */
+.reader-prose .restored-name {
+  color: #F9E4A4;
+  font-weight: 700;
+  border-bottom: 1px dotted rgba(212, 175, 55, 0.3);
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.15);
+}
+
+/* Language-specific typography */
+.reader-english {
+  font-family: 'Cormorant Garamond', 'Cardo', 'Georgia', serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.01em;
+}
+
+.reader-hebrew {
+  font-family: 'Noto Serif Hebrew', serif;
+  font-size: 1.4rem;
+  line-height: 2.4;
+  direction: rtl;
+  text-align: right;
+}
+
+.reader-greek {
+  font-family: 'Noto Serif', 'Palatino', serif;
+  font-size: 1.15rem;
+  line-height: 2.2;
+}
+
+.reader-latin {
+  font-family: 'Cormorant Garamond', 'Cardo', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+}
+
+.reader-geez {
+  font-family: 'Noto Serif Ethiopic', serif;
+  font-size: 1.2rem;
+  line-height: 2.2;
+}
+
+/* ============================================================================
+   STUDY VIEW (Option C)
+   ============================================================================ */
+
+.study-reader {
+  max-width: 48rem; /* Slightly wider for dual-language layout */
+}
+
+.study-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.study-header-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  color: rgba(212, 175, 55, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.study-header-sources {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.study-verses {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.study-verse-block {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.study-verse-block:last-child {
+  border-bottom: none;
+}
+
+/* Original language inset card */
+.study-original {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid rgba(212, 175, 55, 0.3);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  font-size: 1.2rem;
+  line-height: 2;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.study-original.reader-hebrew {
+  font-family: 'Noto Serif Hebrew', serif;
+  font-size: 1.3rem;
+  direction: rtl;
+  text-align: right;
+  border-left: none;
+  border-right: 3px solid rgba(212, 175, 55, 0.3);
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.study-original.reader-greek {
+  font-family: 'Noto Serif', serif;
+  font-size: 1.1rem;
+}
+
+.study-original.reader-geez {
+  font-family: 'Noto Serif Ethiopic', serif;
+  font-size: 1.15rem;
+}
+
+.study-original-label {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.study-original.reader-hebrew .study-original-label {
+  right: auto;
+  left: 0.5rem;
+}
+
+/* English translation below */
+.study-english {
+  font-family: 'Cormorant Garamond', 'Cardo', 'Georgia', serif;
+  font-size: 1.1rem;
+  line-height: 1.9;
+  color: #e2e8f0;
+  margin: 0;
+  padding-left: 0.25rem;
+}
+
+.study-english .verse-sup {
+  color: rgba(212, 175, 55, 0.5);
+}
+
+.study-english .restored-name {
+  color: #F9E4A4;
+  font-weight: 700;
+}
+
+/* ============================================================================
+   VIEW MODE TOGGLE (Read / Study / Compare)
+   ============================================================================ */
+
+.reader-mode-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reader-mode-btn {
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-height: 36px;
+}
+
+.reader-mode-btn:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.reader-mode-btn.active {
+  background: rgba(212, 175, 55, 0.15);
+  color: #F9E4A4;
+  font-weight: 600;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .scripture-reader {
+    padding: 0 0.5rem;
+  }
+
+  .reader-english {
+    font-size: 1.05rem;
+  }
+
+  .reader-hebrew {
+    font-size: 1.2rem;
+    line-height: 2.2;
+  }
+
+  .reader-greek {
+    font-size: 1rem;
+  }
+
+  .reader-prose {
+    text-align: left; /* No justify on mobile — uneven word spacing */
+    hyphens: none;
+  }
+
+  .study-original {
+    padding: 0.5rem 0.7rem;
+    font-size: 1.1rem;
+  }
+
+  .study-original.reader-hebrew {
+    font-size: 1.15rem;
+  }
+
+  .study-english {
+    font-size: 1rem;
+  }
+
+  .reader-mode-btn {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .reader-english {
+    font-size: 1.3rem;
+  }
+
+  .reader-prose {
+    line-height: 2.1;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+.reader-ms-pill:focus-visible,
+.reader-mode-btn:focus-visible {
+  outline: 2px solid var(--brand-gold, #F9E4A4);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reader-ms-pill,
+  .reader-mode-btn {
+    transition: none;
+  }
+}

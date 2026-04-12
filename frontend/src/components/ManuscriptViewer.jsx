@@ -12,6 +12,8 @@ import { getCrossReferences, getOTQuotations, highlightQuotations } from '../api
 import { BIBLE_BOOKS } from '../utils/bibleStructure';
 import ManuscriptSkeleton from './ManuscriptSkeleton';
 import ManuscriptCarousel from './ManuscriptCarousel';
+import ScriptureReader from './ScriptureReader';
+import StudyReader from './StudyReader';
 import ScriptureToolbar from './ScriptureToolbar';
 import InterlinearViewer from './InterlinearViewer';
 import { useDockContext } from './navigation/GlobalDockProvider';
@@ -51,11 +53,14 @@ const ManuscriptViewer = ({
   const [crossRefCount, setCrossRefCount] = useState(0);
   const [quotations, setQuotations] = useState([]);
   const [bookName, setBookName] = useState('');
+  const [readingMode, setReadingMode] = useState('read'); // 'read' | 'study' | 'compare'
+  const [activeManuscript, setActiveManuscript] = useState('WEB');
 
   // Get settings from dock context (provided by GlobalDockProvider)
   const dockContext = useDockContext();
   const showRestored = dockContext?.showRestored ?? true;
-  const viewMode = dockContext?.viewMode ?? 'chapter';
+  // Always load chapter data for the new reading views
+  const viewMode = 'chapter';
 
   // Preload name mappings on component mount
   useEffect(() => {
@@ -209,25 +214,14 @@ const ManuscriptViewer = ({
       <div className="manuscript-content-area">
         <div className="manuscript-inner">
 
-          {/* Header Info - Simplified */}
+          {/* Header Info */}
           <div className="manuscript-page-header">
             <h1 className="manuscript-page-title">
               {bookName} {chapter}
             </h1>
             <p className="manuscript-page-subtitle">
-              {viewMode === 'chapter' ? 'Full Chapter' : `Verse ${verse}`} &bull; {manuscripts.length} Manuscripts Loaded
+              {manuscripts.length} Manuscripts Available
             </p>
-            {/* Interlinear Toggle - only shows in verse mode */}
-            {viewMode === 'verse' && (
-              <button
-                onClick={() => setShowInterlinear(!showInterlinear)}
-                className={`interlinear-toggle ${
-                  showInterlinear ? 'interlinear-toggle--active' : 'interlinear-toggle--inactive'
-                }`}
-              >
-                {showInterlinear ? 'Hide Interlinear' : 'Show Interlinear'}
-              </button>
-            )}
           </div>
 
           {/* Inline Navigation Toolbar */}
@@ -239,10 +233,29 @@ const ManuscriptViewer = ({
             onChapterChange={onChapterChange}
           />
 
+          {/* Reading Mode Toggle: Read | Study | Compare */}
+          <div className="reader-mode-toggle" role="radiogroup" aria-label="Reading mode">
+            {[
+              { key: 'read', label: 'Read' },
+              { key: 'study', label: 'Study' },
+              { key: 'compare', label: 'Compare' },
+            ].map(mode => (
+              <button
+                key={mode.key}
+                className={`reader-mode-btn ${readingMode === mode.key ? 'active' : ''}`}
+                onClick={() => setReadingMode(mode.key)}
+                role="radio"
+                aria-checked={readingMode === mode.key}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+
           {/* Error Display */}
           {error && <div className="error-banner">{error}</div>}
 
-          {/* Empty State / Deuterocanonical Notice */}
+          {/* Empty State */}
           {!loading && !error && manuscripts.length === 0 && (
             <div className="glass-panel empty-state-panel">
               <h3 className="text-brand-gold" style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>No Manuscripts Available</h3>
@@ -250,45 +263,56 @@ const ManuscriptViewer = ({
             </div>
           )}
 
-          {/* The Reader (Carousel) - with verse transition animations */}
+          {/* Content — switches by reading mode */}
           <AnimatePresence mode="wait">
             {!loading && !error && manuscripts.length > 0 && (
               <motion.div
-                key={`${book}-${chapter}-${verse}-${viewMode}`}
+                key={`${book}-${chapter}-${readingMode}`}
                 variants={contentVariants}
                 initial="initial"
                 animate="animate"
                 exit="exit"
                 style={{ position: 'relative', zIndex: 10 }}
               >
-                <ManuscriptCarousel
-                  manuscripts={manuscripts}
-                  viewMode={viewMode}
-                  showRestored={showRestored}
-                  crossRefCount={crossRefCount}
-                  crossReferences={crossReferences}
-                  quotations={quotations}
-                  highlightRestoredNames={highlightRestoredNames}
-                  highlightQuotations={highlightQuotations}
-                  getLanguageClass={getLanguageClass}
-                  bookName={bookName}
-                />
+                {readingMode === 'read' && (
+                  <ScriptureReader
+                    manuscripts={manuscripts}
+                    activeManuscript={activeManuscript}
+                    onManuscriptChange={setActiveManuscript}
+                    showRestored={showRestored}
+                    highlightRestoredNames={highlightRestoredNames}
+                    bookName={bookName}
+                    chapter={chapter}
+                  />
+                )}
+
+                {readingMode === 'study' && (
+                  <StudyReader
+                    manuscripts={manuscripts}
+                    showRestored={showRestored}
+                    highlightRestoredNames={highlightRestoredNames}
+                    bookName={bookName}
+                    chapter={chapter}
+                  />
+                )}
+
+                {readingMode === 'compare' && (
+                  <ManuscriptCarousel
+                    manuscripts={manuscripts}
+                    viewMode="chapter"
+                    showRestored={showRestored}
+                    crossRefCount={crossRefCount}
+                    crossReferences={crossReferences}
+                    quotations={quotations}
+                    highlightRestoredNames={highlightRestoredNames}
+                    highlightQuotations={highlightQuotations}
+                    getLanguageClass={getLanguageClass}
+                    bookName={bookName}
+                  />
+                )}
               </motion.div>
             )}
           </AnimatePresence>
-
-          {/* Interlinear Word-by-Word View */}
-          {showInterlinear && viewMode === 'verse' && (
-            <div className="content-section" style={{ position: 'relative', zIndex: 10 }}>
-              <InterlinearViewer
-                sourceManuscript="WLC"
-                targetManuscript="WEB"
-                book={book}
-                chapter={chapter}
-                verse={verse}
-              />
-            </div>
-          )}
 
           {/* Render children (like Consolidated Panel) */}
           {children && (
