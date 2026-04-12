@@ -100,18 +100,8 @@ const GlobalDockProvider = ({ children }) => {
 
   return (
     <DockContext.Provider value={contextValue}>
-      {/* Render the CovenantDock with context */}
-      <CovenantDock
-        currentBook={selectedVerse.book}
-        currentChapter={selectedVerse.chapter}
-        currentVerse={selectedVerse.verse}
-        onBookChange={handleBookChange}
-        onChapterChange={handleChapterChange}
-        showRestored={showRestored}
-        toggleRestoration={toggleRestoration}
-        viewMode={viewMode}
-        setViewMode={setViewMode}
-      />
+      {/* Render the CovenantDock */}
+      <CovenantDock />
 
       {/* Render children (routes) */}
       {children}

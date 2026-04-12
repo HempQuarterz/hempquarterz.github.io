@@ -6,6 +6,7 @@ import ConsolidatedPanel from '../components/ConsolidatedPanel';
 import GematriaPanel from '../components/GematriaPanel';
 import SearchBar from '../components/SearchBar';
 import SearchResults from '../components/SearchResults';
+import { BibleNavigator } from '../components/Navigation';
 import { searchAll, searchVerses } from '../api/search';
 import { setSelectedVerse } from '../manuscriptsSlice';
 import { getAdjacentChapter } from '../utils/bibleStructure';
@@ -24,6 +25,7 @@ const ManuscriptsPage = () => {
   const [searchFilters, setSearchFilters] = useState({});
   const [searchOffset, setSearchOffset] = useState(0);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [showNavigator, setShowNavigator] = useState(false);
 
   // Sync URL params with Redux state
   useEffect(() => {
@@ -198,8 +200,16 @@ const ManuscriptsPage = () => {
         )}
       </ManuscriptViewer>
 
-      {/* Search & Gematria Overlays */}
+      {/* Floating Action Buttons */}
       <div className="floating-actions">
+        {/* Browse Books Button */}
+        <button
+          onClick={() => setShowNavigator(true)}
+          className="floating-action-btn"
+          aria-label="Browse books"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+        </button>
         {/* Search Button */}
         <button
           onClick={toggleSearch}
@@ -217,6 +227,17 @@ const ManuscriptsPage = () => {
           <span style={{ fontWeight: 'bold' }}>G</span>
         </button>
       </div>
+
+      {/* Bible Navigator - Full-screen book/chapter/verse browser */}
+      <BibleNavigator
+        isOpen={showNavigator}
+        onClose={() => setShowNavigator(false)}
+        currentSelection={selectedVerse}
+        onSelectionChange={(selection) => {
+          handleVerseChange(selection);
+          setShowNavigator(false);
+        }}
+      />
 
       {showSearch && (
         <div className="search-modal-overlay" role="dialog" aria-modal="true" aria-label="Search manuscripts" onClick={(e) => { if (e.target === e.currentTarget) toggleSearch(); }}>

@@ -21,10 +21,6 @@ import { BreadcrumbRibbon, GlobalDockProvider } from './components/navigation';
 // Lazy-loaded routes (reduces initial bundle)
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const LSIPage = lazy(() => import('./pages/LSIPage'));
-const BookPage = lazy(() => import('./components/BookPage'));
-const ChapterPage = lazy(() => import('./components/ChapterPage'));
-const VersePage = lazy(() => import('./components/VersePage'));
-const ScripturePage = lazy(() => import('./components/ScripturePage'));
 const AudioCaptureDemo = lazy(() => import('./components/lsi/AudioCaptureDemo'));
 
 const App = () => {
@@ -67,10 +63,11 @@ const App = () => {
                     <Route path="/manuscript" element={<ManuscriptsPage />} />
                     <Route path="/manuscripts/:book/:chapter/:verse" element={<ManuscriptsPage />} />
                     <Route path="/manuscript/:book/:chapter/:verse" element={<ManuscriptsPage />} />
-                    <Route path="/book" element={<BookPage />} />
-                    <Route path="/chapter/:version/:abbr/:book" element={<ChapterPage />} />
-                    <Route path="/verse/:version/:abbr/:book/:chapter" element={<VersePage />} />
-                    <Route path="/scripture/:bibleId/:version/:abbr/:book/:chapter/:verseId" element={<ScripturePage />} />
+                    {/* Legacy routes redirect to manuscripts */}
+                    <Route path="/book" element={<ManuscriptsPage />} />
+                    <Route path="/scripture/*" element={<ManuscriptsPage />} />
+                    <Route path="/chapter/*" element={<ManuscriptsPage />} />
+                    <Route path="/verse/*" element={<ManuscriptsPage />} />
                     <Route path="/lsi" element={<LSIPage />} />
                     <Route path="/lsi/demo" element={<AudioCaptureDemo />} />
                   </Routes>
