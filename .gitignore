@@ -96,3 +96,10 @@ generate-icons.js
 # Screenshots (development artifacts)
 *.png
 database/.claude-flow/
+
+# Local Netlify folder
+.netlify
+
+# Tooling ephemera
+.superpowers/
+frontend/.claude-flow/
