@@ -1,0 +1,80 @@
+.error-boundary {
+  min-height: 60dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+}
+
+.error-boundary-title {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  margin: 0 0 1rem;
+  color: var(--brand-gold);
+}
+
+[data-theme="light"] .error-boundary-title {
+  color: var(--brand-gold-dark);
+}
+
+.error-boundary-body {
+  max-width: 32rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+  color: var(--text-secondary);
+}
+
+.error-boundary-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.error-boundary-btn {
+  padding: 0.65rem 1.25rem;
+  border: 1px solid var(--brand-gold);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--brand-gold);
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  transition: background var(--transition-fast);
+}
+
+.error-boundary-btn:hover,
+.error-boundary-btn:focus-visible {
+  background: rgba(249, 228, 164, 0.1);
+}
+
+.error-boundary-btn--primary {
+  background: var(--brand-gold);
+  color: var(--brand-midnight);
+}
+
+.error-boundary-btn--primary:hover,
+.error-boundary-btn--primary:focus-visible {
+  background: var(--brand-gold-dark);
+  color: var(--brand-parchment);
+}
+
+[data-theme="light"] .error-boundary-btn {
+  border-color: var(--brand-gold-dark);
+  color: var(--brand-gold-dark);
+}
+
+[data-theme="light"] .error-boundary-btn--primary {
+  background: var(--brand-midnight);
+  color: var(--brand-parchment);
+  border-color: var(--brand-midnight);
+}
+
+[data-theme="light"] .error-boundary-btn--primary:hover {
+  background: var(--brand-gold-dark);
+}

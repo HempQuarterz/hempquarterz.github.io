@@ -10,6 +10,7 @@ import { getVerse } from '../api/verses';
 import { restoreVerse } from '../api/restoration';
 import { getParallelPassages, formatCrossReference, getParallelTypeDisplayName } from '../api/crossReferences';
 import Loading from './Loading';
+import '../styles/parallel-passage.css';
 
 const sanitize = (html) => DOMPurify.sanitize(html, { ALLOWED_TAGS: ['span', 'em', 'strong', 'mark'], ALLOWED_ATTR: ['class', 'title'] });
 
@@ -131,13 +132,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
 
   if (loading) {
     return (
-      <div style={{
-        background: 'rgba(30, 41, 59, 0.6)',
-        borderRadius: '8px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        padding: '2rem',
-        marginTop: '2rem'
-      }}>
+      <div className="pp-loading">
         <Loading type="parallel passages" />
       </div>
     );
@@ -151,49 +146,23 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
   const sourceVerse = verses[sourceKey];
 
   return (
-    <div style={{
-      background: 'rgba(30, 41, 59, 0.6)',
-      borderRadius: '8px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-      overflow: 'hidden',
-      marginTop: '2rem'
-    }}>
-      {/* Header */}
-      <div style={{
-        padding: '1rem',
-        background: 'linear-gradient(135deg, #1976D2 0%, #2196F3 100%)',
-        color: '#fff'
-      }}>
-        <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: '600' }}>
-          📖 Parallel Passages
-        </h3>
-        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', opacity: 0.9 }}>
-          {parallelPassages.length} parallel passage{parallelPassages.length !== 1 ? 's' : ''} found
-        </p>
+    <div className="pp-viewer">
+      <div className="pp-header">
+        <h3>Parallel Passages</h3>
+        <p>{parallelPassages.length} parallel passage{parallelPassages.length !== 1 ? 's' : ''} found</p>
       </div>
 
-      {/* Content */}
-      <div style={{ padding: '1rem' }}>
+      <div className="pp-content">
         {error && (
-          <div style={{
-            padding: '1rem',
-            background: '#ffebee',
-            border: '1px solid #ef5350',
-            borderRadius: '4px',
-            color: '#c62828',
-            marginBottom: '1rem'
-          }}>
+          <div className="pp-error">
             <strong>Error:</strong> {error}
           </div>
         )}
 
-        {/* Parallel Passage Selector */}
-        <div style={{ marginBottom: '1rem' }}>
-          <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem', color: '#666' }}>
-            Select passages to compare (max 2):
-          </h4>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-            {parallelPassages.map((parallel, index) => {
+        <div>
+          <h4 className="pp-section-title">Select passages to compare (max 2):</h4>
+          <div className="pp-selector-list">
+            {parallelPassages.map((parallel) => {
               const isSelected = selectedParallels.some(p =>
                 p.target_book === parallel.target_book &&
                 p.target_chapter === parallel.target_chapter &&
@@ -203,21 +172,12 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
               return (
                 <button
                   key={`${parallel.target_book}_${parallel.target_chapter}_${parallel.target_verse}`}
+                  type="button"
                   onClick={() => handleSelectParallel(parallel)}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    border: `2px solid ${isSelected ? '#1976D2' : '#ddd'}`,
-                    borderRadius: '20px',
-                    background: isSelected ? '#e3f2fd' : '#fff',
-                    color: isSelected ? '#1976D2' : '#666',
-                    cursor: 'pointer',
-                    fontSize: '0.85rem',
-                    fontWeight: isSelected ? '600' : '400',
-                    transition: 'all 0.2s ease'
-                  }}
+                  className={`pp-selector-btn${isSelected ? ' active' : ''}`}
                 >
                   {formatCrossReference(parallel)}
-                  <span style={{ fontSize: '0.75rem', marginLeft: '0.5rem', opacity: 0.7 }}>
+                  <span className="pp-selector-type">
                     ({getParallelTypeDisplayName(parallel.parallelType)})
                   </span>
                 </button>
@@ -226,100 +186,57 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
           </div>
         </div>
 
-        {/* Restoration Toggle */}
-        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+        <div className="pp-toggle-row">
           <button
+            type="button"
             onClick={() => setShowRestored(!showRestored)}
-            style={{
-              padding: '0.5rem 1rem',
-              fontSize: '0.85rem',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              background: showRestored ? '#2E7D32' : '#fff',
-              color: showRestored ? '#fff' : '#666',
-              cursor: 'pointer',
-              fontWeight: showRestored ? '600' : '400'
-            }}
+            className={`pp-toggle-btn${showRestored ? ' active' : ''}`}
           >
             {showRestored ? '✦ Names Restored' : 'Show Restored Names'}
           </button>
         </div>
 
-        {/* Side-by-Side Comparison */}
         {selectedParallels.length > 0 && (
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${selectedParallels.length + 1}, 1fr)`,
-            gap: '1rem',
-            marginTop: '1rem'
-          }}>
-            {/* Source Verse */}
-            <div style={{
-              padding: '1rem',
-              border: '2px solid #2E7D32',
-              borderRadius: '8px',
-              background: 'rgba(46, 125, 50, 0.15)'
-            }}>
-              <h4 style={{ margin: '0 0 0.75rem 0', color: '#2E7D32', fontSize: '1rem' }}>
-                {book} {chapter}:{verse}
-              </h4>
+          <div
+            className="pp-grid"
+            style={{ gridTemplateColumns: `repeat(${selectedParallels.length + 1}, 1fr)` }}
+          >
+            <div className="pp-source">
+              <h4 className="pp-card-title">{book} {chapter}:{verse}</h4>
               {sourceVerse ? (
                 <>
                   <div
-                    style={{
-                      fontSize: '1rem',
-                      lineHeight: '1.8',
-                      color: '#e2e8f0',
-                      fontFamily: "'Cardo', serif"
-                    }}
+                    className="pp-verse-text"
                     dangerouslySetInnerHTML={{
                       __html: sanitize(showRestored && sourceVerse.restorations
                         ? highlightRestoredNames(sourceVerse.text, sourceVerse.restorations)
                         : sourceVerse.text)
                     }}
                   />
-                  <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: '#666', fontStyle: 'italic' }}>
-                    World English Bible
-                  </div>
+                  <div className="pp-citation">World English Bible</div>
                 </>
               ) : (
-                <p style={{ color: '#999', fontStyle: 'italic' }}>Loading...</p>
+                <p className="pp-loading-text">Loading...</p>
               )}
             </div>
 
-            {/* Parallel Verses */}
-            {selectedParallels.map((parallel, index) => {
+            {selectedParallels.map((parallel) => {
               const key = `${parallel.target_book}_${parallel.target_chapter}_${parallel.target_verse}`;
               const parallelVerse = verses[key];
 
               return (
-                <div
-                  key={key}
-                  style={{
-                    padding: '1rem',
-                    border: '2px solid #1976D2',
-                    borderRadius: '8px',
-                    background: 'rgba(59, 130, 246, 0.15)'
-                  }}
-                >
-                  <h4 style={{ margin: '0 0 0.75rem 0', color: '#1976D2', fontSize: '1rem' }}>
+                <div key={key} className="pp-parallel">
+                  <h4 className="pp-card-title">
                     {formatCrossReference(parallel)}
                     <button
+                      type="button"
+                      className="pp-jump-btn"
+                      aria-label={`Jump to ${formatCrossReference(parallel)}`}
                       onClick={() => onNavigate({
                         book: parallel.target_book,
                         chapter: parallel.target_chapter,
                         verse: parallel.target_verse
                       })}
-                      style={{
-                        marginLeft: '0.5rem',
-                        padding: '0.25rem 0.5rem',
-                        fontSize: '0.7rem',
-                        border: 'none',
-                        borderRadius: '4px',
-                        background: '#1976D2',
-                        color: '#fff',
-                        cursor: 'pointer'
-                      }}
                     >
                       →
                     </button>
@@ -327,24 +244,17 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
                   {parallelVerse ? (
                     <>
                       <div
-                        style={{
-                          fontSize: '1rem',
-                          lineHeight: '1.8',
-                          color: '#e2e8f0',
-                          fontFamily: "'Cardo', serif"
-                        }}
+                        className="pp-verse-text"
                         dangerouslySetInnerHTML={{
                           __html: sanitize(showRestored && parallelVerse.restorations
                             ? highlightRestoredNames(parallelVerse.text, parallelVerse.restorations)
                             : parallelVerse.text)
                         }}
                       />
-                      <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: '#666', fontStyle: 'italic' }}>
-                        World English Bible
-                      </div>
+                      <div className="pp-citation">World English Bible</div>
                     </>
                   ) : (
-                    <p style={{ color: '#999', fontStyle: 'italic' }}>Loading...</p>
+                    <p className="pp-loading-text">Loading...</p>
                   )}
                 </div>
               );
@@ -353,9 +263,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
         )}
 
         {selectedParallels.length === 0 && (
-          <p style={{ textAlign: 'center', color: '#999', fontStyle: 'italic', padding: '2rem' }}>
-            Select a parallel passage above to compare
-          </p>
+          <p className="pp-empty">Select a parallel passage above to compare</p>
         )}
       </div>
     </div>

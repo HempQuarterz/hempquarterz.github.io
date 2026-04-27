@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/error-boundary.css';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -21,49 +22,24 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{
-          minHeight: '60vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '2rem',
-          textAlign: 'center',
-          color: '#e2e8f0'
-        }}>
-          <h1 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: '#F9E4A4' }}>
-            Something went wrong
-          </h1>
-          <p style={{ marginBottom: '1.5rem', maxWidth: '500px', lineHeight: 1.6 }}>
+        <div className="error-boundary">
+          <h1 className="error-boundary-title">Something went wrong</h1>
+          <p className="error-boundary-body">
             An unexpected error occurred while loading this page.
             Please try refreshing or navigate back to the home page.
           </p>
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div className="error-boundary-actions">
             <button
+              type="button"
               onClick={this.handleReset}
-              style={{
-                padding: '0.75rem 1.5rem',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '6px',
-                background: 'rgba(255,255,255,0.1)',
-                color: '#e2e8f0',
-                cursor: 'pointer',
-                fontSize: '0.9rem'
-              }}
+              className="error-boundary-btn"
             >
               Try Again
             </button>
             <button
+              type="button"
               onClick={() => { window.location.href = '/'; }}
-              style={{
-                padding: '0.75rem 1.5rem',
-                border: 'none',
-                borderRadius: '6px',
-                background: '#2E7D32',
-                color: '#fff',
-                cursor: 'pointer',
-                fontSize: '0.9rem'
-              }}
+              className="error-boundary-btn error-boundary-btn--primary"
             >
               Go Home
             </button>
