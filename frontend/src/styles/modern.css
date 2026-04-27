@@ -1,4 +1,5 @@
 @import './variables.css';
+@import './view-transitions.css';
 /* Font imports live in index.html — preconnected, single source */
 
 /* Reset and Base Styles */

@@ -1,0 +1,150 @@
+.xref-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-left: 0.25rem;
+}
+
+.xref-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.45rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--success) 0%, #388E3C 100%);
+  color: var(--brand-parchment);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  font-family: var(--font-body);
+  border: none;
+  /* CSS anchor positioning name (Chrome 125+) */
+  anchor-name: --xref-anchor;
+}
+
+.xref-badge:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.xref-badge:focus-visible {
+  outline: 2px solid var(--brand-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xref-badge {
+    transition: none;
+  }
+  .xref-badge:hover {
+    transform: none;
+  }
+}
+
+/* Tooltip — anchor-positioned where supported, falls back to centered above */
+.xref-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(14, 35, 59, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  color: var(--text-primary);
+  min-width: 200px;
+  max-width: 300px;
+  z-index: var(--z-dropdown);
+  pointer-events: none;
+  font-family: var(--font-body);
+}
+
+[data-theme="light"] .xref-tooltip {
+  background: rgba(251, 245, 219, 0.97);
+  border-color: rgba(62, 39, 35, 0.15);
+  color: var(--ink-dark);
+  box-shadow: 0 4px 12px rgba(62, 39, 35, 0.2);
+}
+
+/* Tooltip arrow */
+.xref-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(14, 35, 59, 0.97);
+}
+
+[data-theme="light"] .xref-tooltip::after {
+  border-top-color: rgba(251, 245, 219, 0.97);
+}
+
+.xref-tooltip-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--brand-gold);
+}
+
+[data-theme="light"] .xref-tooltip-title {
+  color: var(--brand-gold-dark);
+}
+
+.xref-tooltip-list {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .xref-tooltip-list {
+  color: var(--ink-medium);
+}
+
+.xref-tooltip-item {
+  margin-bottom: 0.25rem;
+}
+
+.xref-tooltip-more {
+  margin-top: 0.5rem;
+  font-style: italic;
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+}
+
+.xref-tooltip-cta {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.75rem;
+  color: var(--brand-gold);
+  font-weight: 500;
+}
+
+[data-theme="light"] .xref-tooltip-cta {
+  border-top-color: rgba(62, 39, 35, 0.1);
+  color: var(--brand-gold-dark);
+}
+
+/* Native CSS anchor positioning for browsers that support it (Chrome 125+).
+   Replaces the position/transform fallback above with a viewport-aware anchor. */
+@supports (anchor-name: --xref-anchor) {
+  .xref-tooltip {
+    position-anchor: --xref-anchor;
+    position-area: top;
+    position-try-fallbacks: bottom, top span-right, top span-left;
+    /* Reset the fallback transform/positioning */
+    bottom: auto;
+    left: auto;
+    transform: none;
+    margin-bottom: 0;
+    margin-block-end: 0.5rem;
+  }
+}

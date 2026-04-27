@@ -1,0 +1,38 @@
+/**
+ * Native View Transitions API styling.
+ * Triggered by document.startViewTransition() in handleVerseChange.
+ * Browsers without support (Safari < 18, older Firefox) get instant nav.
+ */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: parchment-fade-out 180ms ease-out forwards;
+}
+
+::view-transition-new(root) {
+  animation: parchment-fade-in 220ms ease-in forwards;
+}
+
+@keyframes parchment-fade-out {
+  to {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes parchment-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

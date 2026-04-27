@@ -56,12 +56,19 @@ const ManuscriptsPage = () => {
   }, [searchParams.get('search')]);
 
   const handleVerseChange = useCallback((newVerse) => {
-    dispatch(setSelectedVerse(newVerse));
-    setSearchParams({
-      book: newVerse.book,
-      chapter: newVerse.chapter,
-      verse: newVerse.verse
-    });
+    const update = () => {
+      dispatch(setSelectedVerse(newVerse));
+      setSearchParams({
+        book: newVerse.book,
+        chapter: newVerse.chapter,
+        verse: newVerse.verse
+      });
+    };
+    if (typeof document !== 'undefined' && document.startViewTransition) {
+      document.startViewTransition(update);
+    } else {
+      update();
+    }
   }, [dispatch, setSearchParams]);
 
   const toggleSearch = () => {
