@@ -410,6 +410,28 @@
   opacity: 1;
 }
 
+[data-theme="light"] .reader-ms-pill {
+  background: rgba(62, 39, 35, 0.04);
+  border-color: rgba(62, 39, 35, 0.12);
+  color: var(--ink-medium);
+}
+
+[data-theme="light"] .reader-ms-pill:hover {
+  background: rgba(62, 39, 35, 0.08);
+  color: var(--ink-dark);
+}
+
+[data-theme="light"] .reader-ms-pill.active {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: var(--brand-gold-dark);
+  color: var(--brand-gold-dark);
+}
+
+[data-theme="light"] .reader-attribution {
+  color: var(--ink-light);
+  border-bottom-color: rgba(62, 39, 35, 0.1);
+}
+
 [data-theme="light"] .reader-prose .restored-name,
 [data-theme="light"] .study-english .restored-name {
   color: var(--brand-gold-dark);
