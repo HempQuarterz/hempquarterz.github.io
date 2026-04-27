@@ -1,0 +1,43 @@
+.bento-content {
+  position: relative;
+  z-index: 2;
+}
+
+.bento-icon {
+  margin-bottom: 0.75rem;
+  color: var(--brand-teal);
+}
+
+.bento-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--brand-gold);
+  font-family: var(--font-heading);
+}
+
+[data-theme="light"] .bento-title {
+  color: var(--brand-midnight);
+}
+
+.bento-description {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  line-height: 1.6;
+}
+
+[data-theme="light"] .bento-description {
+  color: var(--ink-medium);
+}
+
+/* Cards in dark mode use parchment overlay (Floating Scrolls) — text inside reads dark */
+[data-theme="dark"] .bento-content {
+  /* When a parent .card applies the parchment overlay, override these */
+}
+[data-theme="dark"] .card .bento-title {
+  color: var(--brand-midnight);
+}
+[data-theme="dark"] .card .bento-description {
+  color: var(--ink-medium);
+}

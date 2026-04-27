@@ -394,3 +394,63 @@
     transition: none;
   }
 }
+
+/* ============================================================================
+   LIGHT-MODE OVERRIDES
+   The base rules above assume dark mode (rgba(255,255,255,...) for text).
+   These overrides invert the most-visible text colors for light theme.
+   ============================================================================ */
+
+[data-theme="light"] .reader-prose {
+  color: var(--ink-dark);
+}
+
+[data-theme="light"] .reader-ms-lang {
+  color: var(--ink-medium);
+  opacity: 1;
+}
+
+[data-theme="light"] .reader-prose .restored-name,
+[data-theme="light"] .study-english .restored-name {
+  color: var(--brand-gold-dark);
+  text-shadow: none;
+}
+
+[data-theme="light"] .verse-sup,
+[data-theme="light"] .study-english .verse-sup {
+  color: var(--brand-gold-dark);
+}
+
+[data-theme="light"] .study-header {
+  border-bottom-color: rgba(62, 39, 35, 0.15);
+}
+
+[data-theme="light"] .study-header-label {
+  color: var(--brand-gold-dark);
+}
+
+[data-theme="light"] .study-header-sources {
+  color: var(--ink-light);
+}
+
+[data-theme="light"] .study-verse-block {
+  border-bottom-color: rgba(62, 39, 35, 0.08);
+}
+
+[data-theme="light"] .study-original {
+  background: rgba(62, 39, 35, 0.03);
+  border-left-color: var(--brand-gold-dark);
+  color: var(--ink-dark);
+}
+
+[data-theme="light"] .study-original.reader-hebrew {
+  border-right-color: var(--brand-gold-dark);
+}
+
+[data-theme="light"] .study-original-label {
+  color: var(--ink-light);
+}
+
+[data-theme="light"] .study-english {
+  color: var(--ink-dark);
+}

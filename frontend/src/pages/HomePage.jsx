@@ -112,7 +112,7 @@ const HomePage = () => {
             transition={{ delay: 0.8, duration: 1 }}
             style={{
               fontSize: '1.25rem',
-              color: 'rgba(251, 245, 219, 0.8)',
+              color: 'var(--text-secondary)',
               fontFamily: "'Inter', sans-serif",
               maxWidth: '600px',
               margin: '1rem auto'

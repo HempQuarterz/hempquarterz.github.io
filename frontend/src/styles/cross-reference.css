@@ -169,3 +169,42 @@
     transition: none;
   }
 }
+
+/* ============================================================================
+   LIGHT-MODE OVERRIDES
+   ============================================================================ */
+
+[data-theme="light"] .cross-ref-panel {
+  background: rgba(251, 245, 219, 0.6);
+}
+
+[data-theme="light"] .cross-ref-header,
+[data-theme="light"] .cross-ref-card {
+  background: linear-gradient(135deg, rgba(96, 156, 180, 0.18), rgba(96, 156, 180, 0.08));
+  color: var(--ink-dark);
+}
+
+[data-theme="light"] .cross-ref-card:hover,
+[data-theme="light"] .cross-ref-header:hover {
+  background: linear-gradient(135deg, rgba(96, 156, 180, 0.28), rgba(96, 156, 180, 0.15));
+}
+
+[data-theme="light"] .cross-ref-subtitle,
+[data-theme="light"] .cross-ref-empty,
+[data-theme="light"] .cross-ref-error {
+  color: var(--ink-medium);
+}
+
+[data-theme="light"] .cross-ref-reference {
+  color: var(--brand-gold-dark);
+}
+
+[data-theme="light"] .cross-ref-tab {
+  background: rgba(62, 39, 35, 0.05);
+  color: var(--ink-medium);
+}
+
+[data-theme="light"] .cross-ref-tab.active {
+  background: rgba(96, 156, 180, 0.2);
+  color: var(--ink-dark);
+}

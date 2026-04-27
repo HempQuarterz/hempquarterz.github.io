@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
+import '../../styles/bento-grid.css';
 
 /**
  * BentoGrid - A modular, auto-responsive grid layout.
@@ -115,26 +116,11 @@ export const BentoItem = ({
             )}
 
             {/* Content Area */}
-            <div style={{ zIndex: 2 }}>
-                {icon && <div style={{ marginBottom: '0.75rem', color: '#609CB4' }}>{icon}</div>}
-                <h2 style={{
-                    fontSize: '1.25rem',
-                    fontWeight: '700',
-                    marginBottom: '0.5rem',
-                    color: '#F9E4A4', // Brand Gold
-                    fontFamily: "'Cinzel', serif"
-                }}>
-                    {title}
-                </h2>
+            <div className="bento-content">
+                {icon && <div className="bento-icon">{icon}</div>}
+                <h2 className="bento-title">{title}</h2>
                 {description && (
-                    <p style={{
-                        fontSize: '0.9rem',
-                        color: 'rgba(142, 147, 143, 0.9)', // Brand Grey
-                        margin: 0,
-                        lineHeight: '1.6'
-                    }}>
-                        {description}
-                    </p>
+                    <p className="bento-description">{description}</p>
                 )}
             </div>
 
