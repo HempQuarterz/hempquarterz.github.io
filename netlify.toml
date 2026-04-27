@@ -21,3 +21,18 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Lighthouse CI — runs after each deploy; reports go to deploy summary.
+# Thresholds protect a11y/perf floor without failing the build.
+[[plugins]]
+  package = "@netlify/plugin-lighthouse"
+
+  [plugins.inputs]
+    output_path = "reports/lighthouse.html"
+
+  [plugins.inputs.thresholds]
+    performance = 0.7
+    accessibility = 0.95
+    best-practices = 0.85
+    seo = 0.9
+    pwa = 0.5
