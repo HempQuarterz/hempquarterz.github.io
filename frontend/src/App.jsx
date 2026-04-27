@@ -23,6 +23,7 @@ import SiteFooter from './components/SiteFooter';
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const LSIPage = lazy(() => import('./pages/LSIPage'));
 const AudioCaptureDemo = lazy(() => import('./components/lsi/AudioCaptureDemo'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 const App = () => {
   return (
@@ -71,6 +72,7 @@ const App = () => {
                     <Route path="/verse/*" element={<ManuscriptsPage />} />
                     <Route path="/lsi" element={<LSIPage />} />
                     <Route path="/lsi/demo" element={<AudioCaptureDemo />} />
+                    <Route path="*" element={<NotFoundPage />} />
                   </Routes>
                 </Suspense>
               </ErrorBoundary>

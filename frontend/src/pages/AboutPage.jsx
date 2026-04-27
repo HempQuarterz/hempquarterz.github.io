@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import '../styles/about-page.css';
 
 const AboutPage = () => {
+  useDocumentTitle('About');
+
   return (
     <div className="about-page fade-in">
-      <main className="about-container">
+      <div className="about-container">
 
         {/* Intro */}
         <div className="about-intro">
@@ -123,7 +126,7 @@ const AboutPage = () => {
           </Link>
         </div>
 
-      </main>
+      </div>
     </div>
   );
 };

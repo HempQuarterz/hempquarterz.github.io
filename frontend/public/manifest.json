@@ -41,10 +41,10 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#2E7D32",
-  "background_color": "#F5F1E8",
+  "theme_color": "#0E233B",
+  "background_color": "#0E233B",
   "categories": ["books", "education", "religion"],
   "orientation": "any"
 }

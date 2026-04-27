@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BookOpen, Mic, Feather, Info } from 'lucide-react';
 import { AuroraBackground } from '../components/ui/AuroraBackground';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { BentoGrid, BentoItem } from '../components/ui/BentoGrid';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import '../styles/modern.css'; // Ensure base styles are loaded
@@ -59,6 +60,8 @@ const HomePage = () => {
       }
     }
   };
+
+  useDocumentTitle('Restoring the Word, verse by verse', { full: true });
 
   const heroTitle = "ALL4YAH";
 

@@ -11,9 +11,11 @@
 import React, { useState } from 'react';
 import AudioCaptureDemo from '../components/lsi/AudioCaptureDemo';
 import SpiritualJournal from '../components/lsi/SpiritualJournal';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import '../styles/lsi/lsi-page.css';
 
 const LSIPage = () => {
+  useDocumentTitle('Spirit AI');
   const [activeTab, setActiveTab] = useState('demo'); // 'demo' or 'journal'
 
   return (

@@ -10,12 +10,14 @@ import { BibleNavigator } from '../components/Navigation';
 import { searchAll, searchVerses } from '../api/search';
 import { setSelectedVerse } from '../manuscriptsSlice';
 import { getAdjacentChapter } from '../utils/bibleStructure';
+import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import '../styles/manuscripts.css';
 
 const ManuscriptsPage = () => {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedVerse = useSelector(state => state.manuscripts.selectedVerse);
+  useDocumentTitle(selectedVerse?.book ? `${selectedVerse.book} ${selectedVerse.chapter}` : 'Scripture');
   const [isReaderMode, setIsReaderMode] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showGematria, setShowGematria] = useState(false);
