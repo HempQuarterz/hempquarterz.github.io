@@ -1,5 +1,5 @@
 @import './variables.css';
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Noto+Serif+Hebrew:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Noto+Serif+Ethiopic:wght@400;700&family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
+/* Font imports live in index.html — preconnected, single source */
 
 /* Reset and Base Styles */
 * {
@@ -21,7 +21,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   transition: background-color var(--transition-base), color var(--transition-base);
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
   /* Prevent text size adjust on orientation change (iOS) */
   -webkit-text-size-adjust: 100%;
@@ -512,7 +512,7 @@ a:hover {
   top: -100%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 9999;
+  z-index: var(--z-skip-link);
   padding: 0.75rem 1.5rem;
   background: var(--primary);
   color: #fff;

@@ -130,7 +130,7 @@ const ScriptureToolbar = ({ book, chapter, bookName, onBookChange, onChapterChan
 
           {showBookSelector && (
             <>
-              <div className="st-popover-backdrop" onClick={() => setShowBookSelector(false)} />
+              <div className="st-popover-backdrop" aria-hidden="true" onClick={() => setShowBookSelector(false)} />
               <div className="st-popover st-book-popover" role="listbox" aria-label="Select book">
                 <div className="st-popover-tabs" role="tablist">
                   {[['all', 'All'], ['old', 'OT'], ['new', 'NT'], ['dc', 'DC']].map(([key, label]) => (
@@ -191,7 +191,7 @@ const ScriptureToolbar = ({ book, chapter, bookName, onBookChange, onChapterChan
 
           {showChapterSelector && (
             <>
-              <div className="st-popover-backdrop" onClick={() => setShowChapterSelector(false)} />
+              <div className="st-popover-backdrop" aria-hidden="true" onClick={() => setShowChapterSelector(false)} />
               <div className="st-popover st-chapter-popover" role="listbox" aria-label="Select chapter">
                 <div className="st-chapter-grid">
                   {Array.from({ length: maxChapters }, (_, i) => i + 1).map(n => (

@@ -17,6 +17,7 @@ import './styles/scholarly-theme.css';
 
 // Covenant Navigation System
 import { BreadcrumbRibbon, GlobalDockProvider } from './components/navigation';
+import SiteFooter from './components/SiteFooter';
 
 // Lazy-loaded routes (reduces initial bundle)
 const AboutPage = lazy(() => import('./pages/AboutPage'));
@@ -53,7 +54,7 @@ const App = () => {
           <BreadcrumbRibbon />
 
           <PageTurnTransition>
-            <div id="main-content" className="page-with-dock">
+            <main id="main-content" className="page-with-dock">
               <ErrorBoundary>
                 <Suspense fallback={<Loading />}>
                   <Routes>
@@ -73,8 +74,9 @@ const App = () => {
                   </Routes>
                 </Suspense>
               </ErrorBoundary>
-            </div>
+            </main>
           </PageTurnTransition>
+          <SiteFooter />
         </GlobalDockProvider>
       </Router>
     </Provider>

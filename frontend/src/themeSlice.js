@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Check for saved theme preference or default to 'light'
+// Default to 'dark' — aligns with the dark-glass design language.
+// User's saved preference (if any) overrides.
 const getInitialTheme = () => {
   if (typeof window !== 'undefined') {
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
     return savedTheme;
   }
-  return 'light';
+  return 'dark';
 };
 
 const themeSlice = createSlice({

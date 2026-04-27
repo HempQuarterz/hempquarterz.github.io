@@ -52,7 +52,7 @@
 
 @media (min-width: 768px) {
   .bible-navigator-container {
-    height: min(650px, calc(100vh - 8rem));
+    height: min(650px, calc(100dvh - 8rem));
     top: 5rem;
     left: 0;
     right: 0;

@@ -78,9 +78,9 @@ const CrossReferencePanel = ({ book, chapter, verse, onReferenceClick }) => {
         className="cross-ref-header"
       >
         <div>
-          <h3 className="cross-ref-title">
+          <h2 className="cross-ref-title">
             Cross-References
-          </h3>
+          </h2>
           <p className="cross-ref-subtitle">
             {loading ? 'Loading...' : `${references.length} related passages`}
           </p>

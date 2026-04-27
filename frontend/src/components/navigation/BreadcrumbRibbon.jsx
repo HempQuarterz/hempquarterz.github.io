@@ -14,19 +14,19 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 import '../../styles/breadcrumb-ribbon.css';
 
 const BreadcrumbRibbon = () => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
   const breadcrumbs = useBreadcrumbs();
   const prefersReducedMotion = useReducedMotion();
 
   // Initialize theme from localStorage
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme') || 'light';
+    const storedTheme = localStorage.getItem('theme') || 'dark';
     setTheme(storedTheme);
     document.documentElement.setAttribute('data-theme', storedTheme);
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newTheme = theme === 'dark' ? 'dark' : 'dark';
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
@@ -70,9 +70,9 @@ const BreadcrumbRibbon = () => {
         whileHover={prefersReducedMotion ? {} : { scale: 1.1 }}
         whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
         className="ribbon-theme-toggle"
-        aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+        aria-label={`Switch to ${theme === 'dark' ? 'dark' : 'dark'} mode`}
       >
-        {theme === 'light' ? (
+        {theme === 'dark' ? (
           <Sun size={18} strokeWidth={1.5} />
         ) : (
           <Moon size={18} strokeWidth={1.5} />

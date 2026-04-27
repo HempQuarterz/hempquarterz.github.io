@@ -69,7 +69,7 @@ const HomePage = () => {
 
       {/* Note: BreadcrumbRibbon is now rendered at App level */}
 
-      <main className="main-content-above">
+      <div className="main-content-above">
 
         {/* 3. Hero Section - Cinematic Typography */}
         <div className="text-center mb-12" style={{ marginTop: '2rem' }}>
@@ -77,6 +77,7 @@ const HomePage = () => {
             variants={heroContainerVariants}
             initial="hidden"
             animate="visible"
+            aria-label="All4Yah"
             style={{
               fontFamily: "'Cinzel', serif",
               fontSize: 'clamp(3rem, 8vw, 6rem)',
@@ -92,6 +93,7 @@ const HomePage = () => {
                 key={i}
                 custom={i}
                 variants={letterVariants}
+                aria-hidden="true"
                 style={{
                   display: 'inline-block',
                   background: 'linear-gradient(to bottom, #F9E4A4, #9C6F03)',
@@ -200,7 +202,7 @@ const HomePage = () => {
           </BentoGrid>
         </motion.div>
 
-      </main>
+      </div>
     </div>
   );
 };

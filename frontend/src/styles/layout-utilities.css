@@ -35,7 +35,7 @@
 
 .w-full { width: 100%; }
 .h-full { height: 100%; }
-.min-h-screen { min-height: 100vh; }
+.min-h-screen { min-height: 100dvh; }
 .max-w-4xl { max-width: 56rem; }
 .max-w-7xl { max-width: 80rem; }
 .max-w-xl { max-width: 36rem; }
@@ -145,7 +145,7 @@
 /* HomePage hero wrapper */
 .hero-page {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   font-family: 'Inter', sans-serif;
   color: var(--brand-gold, #F9E4A4);
 }
@@ -188,7 +188,7 @@
 /* Manuscript viewer wrapper */
 .manuscript-page-wrapper {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   color: #f1f5f9;
 }
 

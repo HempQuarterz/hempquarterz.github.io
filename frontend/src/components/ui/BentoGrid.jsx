@@ -117,7 +117,7 @@ export const BentoItem = ({
             {/* Content Area */}
             <div style={{ zIndex: 2 }}>
                 {icon && <div style={{ marginBottom: '0.75rem', color: '#609CB4' }}>{icon}</div>}
-                <h3 style={{
+                <h2 style={{
                     fontSize: '1.25rem',
                     fontWeight: '700',
                     marginBottom: '0.5rem',
@@ -125,7 +125,7 @@ export const BentoItem = ({
                     fontFamily: "'Cinzel', serif"
                 }}>
                     {title}
-                </h3>
+                </h2>
                 {description && (
                     <p style={{
                         fontSize: '0.9rem',

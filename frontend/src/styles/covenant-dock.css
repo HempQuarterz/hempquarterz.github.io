@@ -121,17 +121,16 @@
 .dock-item-label {
   position: relative;
   z-index: 1;
-  font-size: 0.6rem;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.85);
   white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   line-height: 1;
 }
 
 @media (max-width: 767px) {
   .dock-item-label {
-    font-size: 0.55rem;
+    font-size: 0.7rem;
     letter-spacing: 0.02em;
   }
 }
