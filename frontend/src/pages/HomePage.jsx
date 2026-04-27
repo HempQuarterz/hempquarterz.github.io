@@ -139,7 +139,7 @@ const HomePage = () => {
                 <div style={{
                   width: '100%',
                   height: '100%',
-                  background: 'url(/textures/parchment.png)',
+                  background: 'url(/textures/parchment.webp)',
                   backgroundSize: 'cover',
                   opacity: 0.6,
                   maskImage: 'linear-gradient(to bottom, black, transparent)'

@@ -1,25 +1,19 @@
 {
-  "name": "himquarterz-bible-app",
-  "version": "0.1.0",
+  "name": "all4yah",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@huggingface/transformers": "^3.8.1",
     "@reduxjs/toolkit": "^2.11.2",
     "@supabase/supabase-js": "^2.103.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
     "@xmldom/xmldom": "^0.9.9",
     "@xyflow/react": "^12.10.2",
     "ajv": "^8.18.0",
-    "cors": "^2.8.6",
     "dompurify": "^3.3.3",
     "framer-motion": "^12.38.0",
     "lucide-react": "^0.577.0",
-    "pg": "^8.20.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -33,14 +27,9 @@
     "build": "vite build",
     "build:production": "vite build",
     "preview": "vite preview",
-    "test": "react-scripts test",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "update-browserslist": "npx update-browserslist-db@latest"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -54,9 +43,13 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://api.scripture.api.bible",
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@vitejs/plugin-react": "^6.0.1",
-    "vite": "^8.0.8"
+    "jsdom": "^26.0.0",
+    "vite": "^8.0.8",
+    "vitest": "^3.0.0"
   }
 }

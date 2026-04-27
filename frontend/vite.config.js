@@ -1,9 +1,8 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  // Accept REACT_APP_ prefix so existing Netlify env vars work without changes
   envPrefix: 'REACT_APP_',
   server: {
     port: 3000,
@@ -31,5 +30,12 @@ export default defineConfig({
         },
       },
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    css: false,
+    include: ['src/**/*.{test,spec}.{js,jsx}'],
   },
 });

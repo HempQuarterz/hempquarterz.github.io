@@ -260,7 +260,7 @@ textarea,
 .scripture-content,
 .bible-text,
 .manuscript-viewer {
-  background-image: url('../assets/textures/parchment.png'), linear-gradient(to bottom right, var(--bg-secondary), var(--bg-primary));
+  background-image: url('../assets/textures/parchment.webp'), linear-gradient(to bottom right, var(--bg-secondary), var(--bg-primary));
   background-blend-mode: multiply;
   background-size: cover;
   border: 1px solid rgba(139, 69, 19, 0.2);
@@ -280,7 +280,7 @@ textarea,
 [data-theme="dark"] .hebrew-text,
 [data-theme="dark"] .greek-text {
   /* CRITICAL FIX: Glass Parchment for Cards */
-  background-image: url('../assets/textures/parchment.png');
+  background-image: url('../assets/textures/parchment.webp');
   background-blend-mode: overlay;
   /* Use overlay for glass texture */
 
