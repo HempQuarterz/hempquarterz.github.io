@@ -1,13 +1,11 @@
 # Frontend Visual Upgrades — Design Spec
 
 **Date:** 2026-04-27
-**Status:** Partially shipped, in stabilization. Section **D** (D.1, D.2, D.4) and the
-base of **B.2c** (root-level View Transitions + anchor positioning) shipped via commits
-`005ae28` and `431234a`. Verified 2026-04-27: **B.1** typography polish is **not shipped**;
-**B.2c** persistent dock/header VT names are **not shipped** (base VT works). Sections
-**A.1, A.2, B.1, B.2c persistence, B.3, D.3, Phase B Subgrid, Phase G Capacitor, NEW
-Phase H IIIF** all remain pending; B.1 + B.2c persistence are the cheapest two and queued
-first per §12.
+**Status:** Partially shipped, in stabilization. Sections **D** (D.1, D.2, D.4), **B.1**
+(typography polish), and full **B.2c** (root-level View Transitions + persistent dock/header
++ anchor positioning) are now shipped via commits `005ae28`, `431234a`, and `35f69b0`.
+Sections **A.1, A.2, B.3, D.3, Phase B Subgrid, Phase G Capacitor, NEW Phase H IIIF** remain
+pending; **A.2 SBL Hebrew variable font** is now the next cheapest ship per §12.
 **Live URL:** https://all4yah.com (Phase F shipped)
 **Scope:** Three linked axes — manuscript authenticity (A), reading experience (B),
 offline-first architecture (D) — unified under a single architectural through-line.
@@ -32,12 +30,12 @@ explicit "✅ shipped" / "⏳ pending" / "❓ verify" markers.
 | Phase A — `vite-plugin-pwa` scaffold | ❌ rejected | replaced by hand-rolled `frontend/public/sw.js` |
 | Inline-style cleanup (audit P1-8) | ✅ shipped (partial) | `b7cae90` (ParallelPassageViewer + ErrorBoundary) |
 | Section B.2c — View Transitions (root-level) | ✅ shipped | `005ae28` — `useViewTransition.js`, `view-transitions.css`, `cross-reference-badge.css` |
-| Section B.2c — persistent dock/header VT names | ⚠️ pending | verified absent on 2026-04-27; `view-transition-name: dock` / `: header` not yet applied |
+| Section B.2c — persistent dock/header VT names | ✅ shipped | `35f69b0` — `view-transition-name: dock` on `.covenant-dock`, `: header` on `.breadcrumb-ribbon`, plus `::view-transition-group/old/new(dock)/(header) { animation: none }` opt-outs in `view-transitions.css` |
 | Section D.1 — three-tier offline (auto / read-as-you-go / opt-in download) | ✅ shipped | `431234a` |
 | Section D.2 — Dexie storage + custom SW | ✅ shipped | `431234a` — `services/offlineDb.js`, `services/offlineCache.js`, `services/registerSW.js`, `public/sw.js` |
 | Section D.4 — `DATA_VERSION` cache invalidation | ✅ shipped | `431234a` (in-code constant; SQL table-based mechanism deferred) |
 | Phase F — DNS migration to all4yah.com | ✅ live | dashboard action |
-| Section B.1 — typography polish (`text-wrap: pretty`, `hanging-punctuation`, etc.) | ❌ pending | verified absent on 2026-04-27 via grep; only `hyphens: auto` shipped |
+| Section B.1 — typography polish (`text-wrap: pretty`, `hanging-punctuation`, etc.) | ✅ shipped | `35f69b0` — applied to `.reader-prose, .scripture-text, .verse-text` in `scripture-reader.css` |
 | Section B.3 — native CSS scroll-driven reveals | ⏳ pending | not shipped |
 | Section A.2 — SBL Hebrew variable font swap | ⏳ pending | "font cleanup" in Step 1 was generic, not the niqqud upgrade |
 | Section A.1 — IIIF + OpenSeadragon (manuscript page imagery) | ⏳ pending | NEW Phase H |
@@ -180,37 +178,37 @@ audit Batch 1's already-shipped duplicate-import deletion.
 
 ## 4. Section B — Reading Experience
 
-### B.1 Typography polish (CSS-only) ❌ NOT SHIPPED — verified 2026-04-27
-
-**Verification:** `grep -rnE 'text-wrap:\s*pretty|hanging-punctuation|text-box-trim|text-spacing-trim' frontend/src/` returned zero results. Only `hyphens: auto` at `scripture-reader.css:104` ships today. The four core B.1 properties are absent.
+### B.1 Typography polish (CSS-only) ✅ SHIPPED in commit `35f69b0`
 
 **Decision:** apply scoped to scripture/manuscript content only — never globally
 (could break dock/UI labels).
 
-**Exact fix queued for next session** — append to `frontend/src/styles/scripture-reader.css`
-(and `manuscripts.css` / `reader-mode.css` if their selectors differ):
+**Shipped artifacts:** `frontend/src/styles/scripture-reader.css` block beginning at line ~109,
+applied to `.reader-prose`, `.scripture-text`, `.verse-text`:
 
 ```css
+.reader-prose,
 .scripture-text,
-.verse-text,
-.manuscript-page-content,
-.reader-verse-text {
+.verse-text {
   text-wrap: pretty;                            /* eliminate orphans */
   hanging-punctuation: first allow-end last;    /* hanging quotes */
   text-box-trim: trim-both;                     /* optical metric trim */
   text-spacing-trim: trim-start;                /* CJK/Hebrew quote trim */
-  hyphens: auto;                                /* already set on line 104 — keep */
 }
 ```
+
+(`hyphens: auto` was pre-existing in the `.reader-prose` rule and remains untouched.)
 
 **Browser fallback:** all four properties degrade gracefully — non-supporting browsers
 (Safari < 17.5) get the current rendering. No JS feature detection needed.
 
-**Cost:** ~10 lines CSS. Cheapest win on the pending list.
+**Verification still owed:** Playwright snapshot tests on long-form scripture pages
+(Genesis 1, Psalm 119) at desktop + mobile widths to confirm no single-word orphans render.
+Tracked in §7 success criterion 2.1.
 
-### B.2c Hybrid transitions — base ✅ shipped in `005ae28`; persistent elements ⚠️ pending (verified 2026-04-27)
+### B.2c Hybrid transitions ✅ fully shipped (base in `005ae28`, persistence in `35f69b0`)
 
-**Shipped (base View Transitions):**
+**Shipped (base View Transitions, `005ae28`):**
 - `frontend/src/hooks/useViewTransition.js` — capability-detecting hook that wraps
   `useNavigate` in `document.startViewTransition` when supported.
 - `frontend/src/styles/view-transitions.css` — `@view-transition { navigation: auto; }`
@@ -219,36 +217,24 @@ audit Batch 1's already-shipped duplicate-import deletion.
 - `frontend/src/styles/cross-reference-badge.css` — anchor-positioning rules for
   cross-reference popovers (auto-flip on viewport edges, no JS).
 
-**Pending — persistent-element refinement (verified absent 2026-04-27):**
-`grep -rnE 'view-transition-name'` returned zero hits. Today the dock and breadcrumb
-cross-fade with the rest of the page on every route change. The original B.2c design
-intent was for them to remain visually still as anchors while only the content area
-fades. Functional vs polished — this is the polish.
+**Shipped (persistent-element refinement, `35f69b0`):**
+- `.covenant-dock { view-transition-name: dock; }` in `covenant-dock.css`
+- `.breadcrumb-ribbon { view-transition-name: header; }` in `breadcrumb-ribbon.css`
+- Opt-out rules in `view-transitions.css`:
+  ```css
+  ::view-transition-group(dock),
+  ::view-transition-group(header) { animation: none; }
 
-**Exact fix queued for next session:**
+  ::view-transition-old(dock),
+  ::view-transition-new(dock),
+  ::view-transition-old(header),
+  ::view-transition-new(header) { animation: none; }
+  ```
 
-```css
-/* frontend/src/styles/covenant-dock.css */
-.covenant-dock {
-  view-transition-name: dock;
-}
-
-/* frontend/src/styles/breadcrumb-ribbon.css */
-.breadcrumb-ribbon {
-  view-transition-name: header;
-}
-
-/* frontend/src/styles/view-transitions.css — opt these out of the root fade */
-::view-transition-group(dock),
-::view-transition-group(header) {
-  animation: none;
-}
-```
-
-After applying, browser-test on Chrome 124+ / Safari 18+: the dock and header should
-visibly stay still during a verse-next / chapter-next transition while the content area
-parchment-fades. If a flash still occurs, also set `::view-transition-old(dock)` /
-`::view-transition-new(dock)` to `animation: none` (and same for `header`).
+The dock and breadcrumb now stay still during route changes while only the content
+area parchment-fades. Browser-side verification (Chrome 124+ / Safari 18+) recommended
+during the next stabilization pass; reduced-motion users get the existing instant-nav
+fallback automatically.
 
 **framer-motion retained for** (already correct):
 - ConsolidatedPanel tab switches
@@ -430,12 +416,13 @@ The design is successful when, after all phases land:
 
 2. **Reading experience (B):**
    - [ ] No orphaned single words on any rendered verse line at default desktop and mobile
-         widths (verified via Playwright snapshot tests).
+         widths (verified via Playwright snapshot tests). *(B.1 rules shipped in `35f69b0`;
+         Playwright verification still owed)*
    - [x] Verse-prev / verse-next navigation visibly cross-fades parchment when VT is
-         supported; instant swap when not. *(shipped in `005ae28`; verify persistent
-         dock/header names during stabilization)*
-   - [ ] CovenantDock and BreadcrumbRibbon do NOT animate during route transitions
-         (persistent VT names hold them in place). *(shipped — verify in stabilization)*
+         supported; instant swap when not. *(shipped in `005ae28`)*
+   - [x] CovenantDock and BreadcrumbRibbon do NOT animate during route transitions
+         (persistent VT names hold them in place). *(shipped in `35f69b0` — recommend
+         browser-side smoke test in stabilization)*
    - [x] Lighthouse a11y score ≥0.95 on `/`, `/manuscripts/genesis/1/1`, `/about`. *(audit
          batches 1+2 shipped; re-run Lighthouse against production all4yah.com)*
 
@@ -544,16 +531,13 @@ The following checks are the entry criteria for resuming the pending phases.
 
 1. **Lighthouse production run** against https://all4yah.com on `/`, `/manuscripts/genesis/1/1`,
    `/about`. Confirm a11y ≥0.95 floor holds in production (not just dev preview).
-2. ~~Verify B.1 typography polish.~~ ✅ verified 2026-04-27 — **NOT SHIPPED**. Apply
-   the 10-line CSS addition documented in §4.B.1 (`text-wrap: pretty`,
-   `hanging-punctuation`, `text-box-trim`, `text-spacing-trim`) at the start of the
-   next session. Cheapest win on the pending list.
-3. ~~Verify B.2c persistent VT elements.~~ ✅ verified 2026-04-27 — **PARTIALLY SHIPPED**.
-   Base view transitions work; the persistent dock/header refinement is missing.
-   Apply the additions documented in §4.B.2c (`view-transition-name: dock` on
-   `.covenant-dock`, `view-transition-name: header` on `.breadcrumb-ribbon`, plus
-   `::view-transition-group(dock)/(header) { animation: none }`) at the start of the
-   next session.
+2. ~~Verify B.1 typography polish.~~ ~~Apply the 10-line CSS addition.~~ ✅ shipped in
+   commit `35f69b0`. Playwright snapshot test on long-form scripture (Genesis 1, Psalm
+   119) at desktop + mobile widths still owed — confirms no single-word orphans render.
+3. ~~Verify B.2c persistent VT elements.~~ ~~Apply the persistent dock/header rules.~~
+   ✅ shipped in commit `35f69b0`. Browser-side smoke test still owed: open
+   https://all4yah.com once redeployed, navigate verse-next on Chrome 124+ / Safari 18+,
+   confirm dock and breadcrumb visibly do not animate while content cross-fades.
 4. **PWA smoke test on production.**
    - Visit a chapter while online, then go offline (DevTools → Network → Offline), reload.
    - Confirm OfflineBadge appears and the chapter still renders.
@@ -568,9 +552,13 @@ The following checks are the entry criteria for resuming the pending phases.
    visual upgrades can be compared against the post-stabilization floor.
 
 Once stabilization exits cleanly, the recommended next ship order is:
-- **B.1 typography polish** (verified missing — first ship, ~10 min) → **B.2c persistent
-  VT names** (verified missing — second ship, ~10 min) → A.2 SBL Hebrew → B.3
-  scroll-driven → Phase B Subgrid → Phase H IIIF/D.3 → Phase G Capacitor.
+- **A.2 SBL Hebrew variable font** (~½ day — single-file font swap, drops ~12 Noto
+  variants from the loaded font count) → **B.3 native CSS scroll-driven reveals**
+  (~½ day) → **Phase B Subgrid for parallel manuscript viewer** (~½ day) → **Phase H
+  IIIF + OpenSeadragon + D.3 IIIF tile cache** (~3–4 days) → **Phase G Capacitor mobile
+  wrap** (~3–4 days).
+
+(B.1 + B.2c persistence shipped in `35f69b0` and are no longer in the queue.)
 
 The `superpowers:writing-plans` skill should be invoked **after stabilization passes** to
 break the remaining phases into a concrete, verifiable implementation plan.
