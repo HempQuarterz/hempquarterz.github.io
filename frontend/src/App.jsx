@@ -14,6 +14,7 @@ import InkRipple from './components/InkRipple';
 import PageTurnTransition from './components/PageTurnTransition';
 
 import './styles/scholarly-theme.css';
+import './styles/scroll-effects.css';
 
 // Covenant Navigation System
 import { BreadcrumbRibbon, GlobalDockProvider } from './components/navigation';

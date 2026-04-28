@@ -1,0 +1,81 @@
+/**
+ * B.3 Native CSS scroll-driven reveals.
+ *
+ * Uses `animation-timeline: view()` and `animation-timeline: scroll()` so the
+ * browser drives effects directly off scroll position with no JS overhead.
+ *
+ * Browser support (as of 2026): Chrome 115+, Edge 115+, Opera 101+,
+ * Safari 26 / 18.0+ (partial), Firefox behind a flag. Older browsers see no
+ * effect — pure progressive enhancement.
+ *
+ * Two layered gates ensure tasteful failure:
+ *   1. @media (prefers-reduced-motion: no-preference) — skips animation for
+ *      users who prefer reduced motion.
+ *   2. @supports (animation-timeline: view()) — skips animation on browsers
+ *      without scroll-driven animation support.
+ *
+ * Effects are scoped to scripture content + the global parchment background
+ * only; the dock, breadcrumb, and other persistent UI are unaffected.
+ *
+ * Spec ref:
+ *   docs/superpowers/specs/2026-04-27-frontend-visual-upgrades-design.md §4.B.3
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+
+    /* ============================================================================
+       INK-SPREAD VERSE ENTRY
+       Verse cards and verse rows fade + lift slightly as they scroll into the
+       viewport. Animation completes once the element is 30% into view, so the
+       motion is over before the reader starts to read it.
+
+       Selectors:
+         .verse-card    — chapter-view card wrapper (modern.css)
+         .verse-row     — parallel-manuscript and carousel verse rows
+                          (manuscripts.css, manuscript-carousel.css)
+       ============================================================================ */
+
+    .verse-card,
+    .verse-row {
+      animation: ink-spread-entry linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    @keyframes ink-spread-entry {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ============================================================================
+       PARCHMENT AGING DEEPEN
+       The age-spots layer of the parchment background grows slightly more
+       opaque as the reader scrolls down a chapter — a subtle "patina"
+       suggesting time-with-the-text. Driven by scroll(root) so it tracks
+       overall page progress, not viewport-relative entry.
+
+       Selector:
+         .parchment-background::after  (existing layer in scholarly-theme.css)
+
+       Range: opacity 0.5 → 0.85 across the full document scroll.
+       ============================================================================ */
+
+    .parchment-background::after {
+      animation: parchment-aging-deepen linear forwards;
+      animation-timeline: scroll(root);
+      animation-range: 0% 100%;
+    }
+
+    @keyframes parchment-aging-deepen {
+      from { opacity: 0.5; }
+      to   { opacity: 0.85; }
+    }
+  }
+}
