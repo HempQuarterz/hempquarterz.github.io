@@ -105,24 +105,10 @@
   font-style: italic;
 }
 
-/* Parallel View Layout */
-.parallel-view {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-}
-
-@media (min-width: 768px) {
-  .parallel-view {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .parallel-view {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+/* (Removed: .parallel-view rule — orphaned dead code from a pre-unification
+   architecture. The current ManuscriptCarousel uses one-at-a-time-with-swipe,
+   and parallel-passage comparison lives in ParallelPassageViewer with its own
+   pp-grid using CSS subgrid. See parallel-passage.css.) */
 
 /* ============================================================================
    RESTORATION FEATURES - Divine Name Glow

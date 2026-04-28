@@ -150,16 +150,53 @@
   color: var(--brand-parchment);
 }
 
+/* ============================================================================
+   PARALLEL CARD GRID — CSS SUBGRID for cross-card baseline alignment.
+
+   Without subgrid, each card is its own block; when the source verse and the
+   parallel verse wrap to different line counts, the citation rows land at
+   different Y positions across cards. Subgrid pulls the title / verse-text /
+   citation rows up to the parent grid so all three rows share tracks across
+   every card — titles align, citation row aligns, verse-text rows expand to
+   the tallest content.
+
+   Spec ref: docs/superpowers/specs/2026-04-27-frontend-visual-upgrades-design.md §4 (Phase B re-scope)
+   ============================================================================ */
+
 .pp-grid {
   display: grid;
-  gap: 1rem;
+  /* Columns come from the inline `gridTemplateColumns: repeat(N+1, 1fr)` in
+     ParallelPassageViewer.jsx (number of cards is dynamic). Rows are explicit
+     here so subgrid children inherit them. */
+  grid-template-rows: auto 1fr auto;
+  column-gap: 1rem;
+  row-gap: 0;
   margin-top: 1rem;
 }
 
 .pp-source,
 .pp-parallel {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
   padding: 1rem;
   border-radius: 8px;
+}
+
+/* Fallback: pre-subgrid browsers (Chrome < 117, Safari < 16, older Firefox)
+   get the previous block-level layout. No misalignment, just the original
+   per-card flow. */
+@supports not (grid-template-rows: subgrid) {
+  .pp-grid {
+    grid-template-rows: none;
+    row-gap: 1rem;
+  }
+
+  .pp-source,
+  .pp-parallel {
+    display: block;
+    grid-row: auto;
+  }
 }
 
 .pp-source {
