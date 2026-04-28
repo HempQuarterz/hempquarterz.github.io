@@ -3,10 +3,12 @@
 **Date:** 2026-04-27
 **Status:** Partially shipped, in stabilization. Sections **D** (D.1, D.2, D.4), **A.2**
 (Hebrew biblical font swap — Ezra SIL chosen over SBL Hebrew, see §3.A.2), **B.1**
-(typography polish), and full **B.2c** (root-level View Transitions + persistent dock/header
-+ anchor positioning) are now shipped via commits `005ae28`, `431234a`, `35f69b0`, and
-`441fa52`. Sections **A.1, B.3, D.3, Phase B Subgrid, Phase G Capacitor, NEW Phase H IIIF**
-remain pending; **B.3 native CSS scroll-driven reveals** is the next cheapest ship.
+(typography polish), full **B.2c** (root-level View Transitions + persistent dock/header
++ anchor positioning), and **B.3** (native CSS scroll-driven reveals) are now shipped via
+commits `005ae28`, `431234a`, `35f69b0`, `441fa52`, and `a2e527b`. **All Section B (reading
+experience) work is complete.** Sections **A.1, D.3, Phase B Subgrid, Phase G Capacitor,
+NEW Phase H IIIF** remain pending; **Phase B Subgrid for parallel manuscript viewer** is
+the next cheapest ship (~½ day).
 **Live URL:** https://all4yah.com (Phase F shipped)
 **Scope:** Three linked axes — manuscript authenticity (A), reading experience (B),
 offline-first architecture (D) — unified under a single architectural through-line.
@@ -37,6 +39,7 @@ explicit "✅ shipped" / "⏳ pending" / "❓ verify" markers.
 | Section D.4 — `DATA_VERSION` cache invalidation | ✅ shipped | `431234a` (in-code constant; SQL table-based mechanism deferred) |
 | Phase F — DNS migration to all4yah.com | ✅ live | dashboard action |
 | Section B.1 — typography polish (`text-wrap: pretty`, `hanging-punctuation`, etc.) | ✅ shipped | `35f69b0` — applied to `.reader-prose, .scripture-text, .verse-text` in `scripture-reader.css` |
+| Section B.3 — native CSS scroll-driven reveals | ✅ shipped | `a2e527b` — `scroll-effects.css` adds `view()`-driven verse entry fade + `scroll(root)`-driven parchment aging deepen, gated by `@supports` + `prefers-reduced-motion: no-preference` |
 | Section B.3 — native CSS scroll-driven reveals | ⏳ pending | not shipped |
 | Section A.2 — biblical Hebrew font swap | ✅ shipped | `441fa52` — chose **Ezra SIL** (OFL, Google Fonts) over SBL Hebrew per §11 open question 2; cleaner path, no self-hosting, no click-through license. SBL Hebrew documented as future upgrade candidate in `docs/FONT_LICENSES.md`. |
 | Section A.1 — IIIF + OpenSeadragon (manuscript page imagery) | ⏳ pending | NEW Phase H |
@@ -270,27 +273,39 @@ fallback automatically.
 - HomePage hero entrance
 - All `AnimatePresence` micro-interactions
 
-### B.3 Scroll-driven reveals ⏳ pending
+### B.3 Scroll-driven reveals ✅ SHIPPED in commit `a2e527b`
 
-**Decision:** native CSS `animation-timeline: view()` for atomic effects; reserve GSAP
-ScrollTrigger for any future multi-stage narrative section.
+**Shipped artifacts:**
+- `frontend/src/styles/scroll-effects.css` (new) — two atomic scroll-driven effects.
+- `frontend/src/App.jsx` — single-line import after `scholarly-theme.css`.
 
-**Initial CSS effects:**
-- Parchment darken-on-scroll (background opacity ramps with viewport-progress)
-- Ink-spread on verse focus when scrolled into view
-- FloatingLetters parallax intensity tied to scroll velocity
+**Effects shipped:**
 
-**File:** `frontend/src/styles/scroll-effects.css` (new)
-```css
-.verse-card {
-  animation: ink-spread linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 50%;
-}
-```
+1. **Ink-spread verse entry** (`animation-timeline: view()`) — `.verse-card` and
+   `.verse-row` fade + lift slightly as they scroll into the viewport.
+   `animation-range: entry 0% cover 30%` so the motion completes before the reader
+   begins reading the element.
 
-**GSAP** is *not* added now. Only added if AboutPage or a future "history of manuscripts"
-narrative scroll page is built.
+2. **Parchment aging deepen** (`animation-timeline: scroll(root)`) —
+   `.parchment-background::after` (the age-spots layer in `scholarly-theme.css`)
+   ramps opacity from 0.5 → 0.85 across full document scroll. Subtle "patina"
+   suggesting time-with-the-text.
+
+**Tasteful failure modes:** two layered gates ensure no jank on unsupported browsers
+or for users who prefer reduced motion:
+- `@media (prefers-reduced-motion: no-preference)` — entirely skipped on reduce-motion.
+- `@supports (animation-timeline: view())` — entirely skipped on Firefox without the
+  flag, Safari < 18, etc. Pure progressive enhancement; the existing static rendering
+  remains.
+
+**Originally-listed effect not shipped:** FloatingLetters parallax was removed from
+scope. The component already has its own animation system using inline-style CSS
+variables and per-letter transforms; layering scroll-driven on top risked visual
+noise and CPU cost. Can revisit if the AboutPage narrative scroll demands it.
+
+**GSAP** is *not* added — explicitly reserved for any future multi-stage narrative
+scroll page (e.g., a "history of the manuscripts" feature on AboutPage). framer-motion
+remains the answer for state-bound animation.
 
 ---
 
@@ -516,12 +531,11 @@ narrative scroll work demands it.
 
 - `frontend/src/api/iiif.js` — IIIF manifest resolver, fallback chain (Phase H)
 - `frontend/src/components/ManuscriptImageViewer.jsx` — OpenSeadragon wrapper (Phase H)
-- `frontend/src/styles/scroll-effects.css` — CSS scroll-driven animations (B.3)
 - `frontend/public/iiif/` — mirrored Tier-0 critical pages (Phase H)
 
-(The originally-listed `frontend/public/fonts/SBLHebrew.woff2` is no longer pending —
-A.2 shipped via Google Fonts CDN, not self-hosted. `docs/FONT_LICENSES.md` shipped in
-`441fa52`.)
+(The originally-listed `frontend/src/styles/scroll-effects.css` shipped in `a2e527b`.
+`frontend/public/fonts/SBLHebrew.woff2` is no longer pending — A.2 shipped via Google
+Fonts CDN, not self-hosted. `docs/FONT_LICENSES.md` shipped in `441fa52`.)
 
 ### Pending — modified files
 
@@ -576,13 +590,12 @@ The following checks are the entry criteria for resuming the pending phases.
    visual upgrades can be compared against the post-stabilization floor.
 
 Once stabilization exits cleanly, the recommended next ship order is:
-- **B.3 native CSS scroll-driven reveals** (~½ day) → **Phase B Subgrid for parallel
-  manuscript viewer** (~½ day) → **Phase H IIIF + OpenSeadragon + D.3 IIIF tile cache**
-  (~3–4 days, the biggest "feels different" lever) → **Phase G Capacitor mobile wrap**
-  (~3–4 days).
+- **Phase B Subgrid for parallel manuscript viewer** (~½ day) → **Phase H IIIF +
+  OpenSeadragon + D.3 IIIF tile cache** (~3–4 days, the biggest "feels different" lever)
+  → **Phase G Capacitor mobile wrap** (~3–4 days).
 
-(B.1, B.2c persistence, and A.2 shipped in `35f69b0` and `441fa52` and are no longer in
-the queue.)
+(B.1, B.2c persistence, A.2, and B.3 shipped in `35f69b0`, `441fa52`, and `a2e527b` —
+**all Section B reading-experience work is complete**.)
 
 The `superpowers:writing-plans` skill should be invoked **after stabilization passes** to
 break the remaining phases into a concrete, verifiable implementation plan.
