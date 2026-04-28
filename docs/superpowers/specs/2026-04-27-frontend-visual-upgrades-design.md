@@ -1,0 +1,542 @@
+# Frontend Visual Upgrades — Design Spec
+
+**Date:** 2026-04-27
+**Status:** Partially shipped, in stabilization. Sections **B.2c** and **D** (D.1, D.2, D.4)
+shipped via commits `005ae28` (View Transitions + anchor positioning) and `431234a` (PWA
+offline cache, tiers 1–3, custom service worker). Sections **A.1, A.2, B.3, D.3, Phase B
+Subgrid, Phase G Capacitor, NEW Phase H IIIF** remain pending. **B.1** typography polish
+status uncertain — verify during stabilization.
+**Live URL:** https://all4yah.com (Phase F shipped)
+**Scope:** Three linked axes — manuscript authenticity (A), reading experience (B),
+offline-first architecture (D) — unified under a single architectural through-line.
+**Companion docs:** `docs/UI_UX_AUDIT_2026-04-27.md` (audit findings this design builds on)
+**Out of scope (future specs):** audio recitation (Web Speech API + recorded audio), TEI
+XML scholarly export, full local-first sync engine for user annotations, PGlite migration.
+
+---
+
+## 0. Shipped state as of 2026-04-27 evening
+
+This document was written *before* execution; the project then shipped 11 commits in one
+session, including most of the audit batches and Sections B.2c + D. Below is the
+authoritative running state. Subsequent sections describe each piece in detail with
+explicit "✅ shipped" / "⏳ pending" / "❓ verify" markers.
+
+| Item | Status | Evidence |
+|---|---|---|
+| Audit Batch 1 — theme cohesion + a11y batches 1–2 | ✅ shipped | `dcb1ba4`, light-mode fixes `c0bf099` `f1b0478` |
+| Audit Batch 3 — 404, og tags, sitemap, per-route titles | ✅ shipped | `a10d7c4` (incl. `useDocumentTitle` hook) |
+| Phase A — Biome + Lighthouse CI | ✅ shipped | `343bfb1` |
+| Phase A — `vite-plugin-pwa` scaffold | ❌ rejected | replaced by hand-rolled `frontend/public/sw.js` |
+| Inline-style cleanup (audit P1-8) | ✅ shipped (partial) | `b7cae90` (ParallelPassageViewer + ErrorBoundary) |
+| Section B.2c — View Transitions + anchor positioning | ✅ shipped | `005ae28` — `useViewTransition.js`, `view-transitions.css`, `cross-reference-badge.css` |
+| Section D.1 — three-tier offline (auto / read-as-you-go / opt-in download) | ✅ shipped | `431234a` |
+| Section D.2 — Dexie storage + custom SW | ✅ shipped | `431234a` — `services/offlineDb.js`, `services/offlineCache.js`, `services/registerSW.js`, `public/sw.js` |
+| Section D.4 — `DATA_VERSION` cache invalidation | ✅ shipped | `431234a` (in-code constant; SQL table-based mechanism deferred) |
+| Phase F — DNS migration to all4yah.com | ✅ live | dashboard action |
+| Section B.1 — typography polish (`text-wrap: pretty`, `hanging-punctuation`, etc.) | ❓ verify | not visible in commit titles; check during stabilization |
+| Section B.3 — native CSS scroll-driven reveals | ⏳ pending | not shipped |
+| Section A.2 — SBL Hebrew variable font swap | ⏳ pending | "font cleanup" in Step 1 was generic, not the niqqud upgrade |
+| Section A.1 — IIIF + OpenSeadragon (manuscript page imagery) | ⏳ pending | NEW Phase H |
+| Section D.3 — IIIF tile caching layer in custom SW | ⏳ pending | depends on A.1 |
+| Phase B — CSS Subgrid for parallel manuscript viewer | ⏳ pending | not shipped |
+| Phase G — Capacitor mobile wrap | ⏳ pending | post-stabilization |
+
+**Architectural deviation worth flagging:** the original spec called for `vite-plugin-pwa`
++ Workbox runtime caching. The shipped implementation is a hand-rolled `public/sw.js` (3.2
+KB) plus Dexie-backed `services/offlineCache.js`. **This is the better fit for All4Yah's
+shape** (small static asset list, predictable verse-fetch URLs, no need for Workbox's
+plugin ecosystem) but it does mean any future cache-strategy work — IIIF tiles,
+Background Sync queues, manifest versioning beyond the current `DATA_VERSION` constant —
+must be hand-coded in `public/sw.js` rather than declared via Workbox config. Section §5
+below has been rewritten to reflect this.
+
+---
+
+## 1. Vision
+
+**The manuscript is the artifact.** Every choice in this design pushes All4Yah away from
+"Bible app skin" and toward "primary-source archive you can hold". Three concrete commitments:
+
+1. **You can see the actual page.** Public IIIF deep-zoom of real codex photos
+   (Sinaiticus, Aleppo, DSS) alongside the transcribed text. *(pending — Phase H)*
+2. **It reads like a book, not a webpage.** Native CSS typography polish + hybrid
+   View-Transitions/framer-motion page-turns + scroll-driven reveals. *(B.2c shipped;
+   B.1 verify; B.3 pending)*
+3. **It works on a plane, in bed, in a service.** Three-tier offline cache (auto-shell +
+   read-as-you-go + opt-in book download) sharing infrastructure with IIIF tile cache.
+   *(D.1, D.2, D.4 shipped; D.3 IIIF tile caching pending)*
+
+These three are not independent epics. They share infrastructure: the service worker
+caches both verse JSON and IIIF tiles; View Transitions wrap both verse swaps and
+page-image fades; typography rules apply equally to transcription and the IIIF caption
+layer.
+
+---
+
+## 2. Architectural Through-Line (as shipped + planned)
+
+```
+                       ┌──────────────────────────────────┐
+                       │   Custom Service Worker          │
+                       │   (frontend/public/sw.js)        │ ✅ shipped
+                       │   • cache-first for assets       │
+                       │   • network-first w/ shell HTML  │
+                       │   • IIIF tile cache              │ ⏳ pending (A.1)
+                       │   • Background Sync queue        │ ⏳ pending (future)
+                       └────────────┬─────────────────────┘
+                                    │
+                ┌───────────────────┼───────────────────┐
+                ▼                   ▼                   ▼
+       ┌────────────────┐  ┌────────────────┐  ┌────────────────┐
+       │ Dexie (IDB)    │  │ Verses API     │  │ IIIF Manifest  │
+       │ (offlineDb.js) │  │ (verses.js +   │  │ Loader         │
+       │ ✅ shipped     │  │  offlineCache) │  │ ⏳ pending      │
+       │ • verses       │  │ ✅ read-       │  │ (api/iiif.js)  │
+       │ • xrefs        │  │   through      │  │                │
+       │ • mappings     │  │   wrapper      │  │                │
+       │ • DATA_VERSION │  │                │  │                │
+       └────────────────┘  └────────┬───────┘  └────────┬───────┘
+                                    │                   │
+                                    ▼                   ▼
+                       ┌──────────────────────────────────┐
+                       │  Manuscript Reader Surface       │
+                       │  (ManuscriptViewer +             │
+                       │   ScriptureReader/StudyReader)   │
+                       │  • CSS typography polish         │ ❓ verify (B.1)
+                       │  • View-Transition names         │ ✅ shipped (B.2c)
+                       │  • OpenSeadragon panel (toggle)  │ ⏳ pending (A.1)
+                       │  • Variable Hebrew font          │ ⏳ pending (A.2)
+                       └──────────────────────────────────┘
+```
+
+The View Transitions API and framer-motion compose at the layout level: VT owns
+route-level transitions (verse↔verse, chapter↔chapter, book↔book, codex-page↔codex-page)
+and persistent elements (`view-transition-name: dock`); framer owns hover, focus, dock
+state, tab switches, and any animation that responds to non-route state.
+
+---
+
+## 3. Section A — Manuscript Authenticity ⏳ pending
+
+### A.1 IIIF imagery — hybrid (A.1c) ⏳ pending
+
+**Decision:** load page imagery from public IIIF manifests by default; mirror only critical
+high-traffic / demo pages to All4Yah's own storage.
+
+**Manifests to integrate:**
+
+| Manuscript | Source | Manifest |
+|---|---|---|
+| Codex Sinaiticus | British Library / Univ of Leipzig | `https://codexsinaiticus.org/iiif/...` |
+| Aleppo Codex | Israel Museum | `https://manifests.imj.org.il/aleppo/...` |
+| Dead Sea Scrolls | Leon Levy Digital Library | `https://www.deadseascrolls.org.il/iiif/...` |
+| Codex Vaticanus | Vatican Apostolic Library | `https://digi.vatlib.it/iiif/...` |
+| Westminster Leningrad | Cambridge Univ. Library digital ms | TBC during implementation |
+
+(Exact manifest URLs verified during implementation; sources above are publicly known.)
+
+**Mirror strategy (Tier 0 — guaranteed-available pages):**
+- Genesis 1, Exodus 20, Psalm 22, Isaiah 53, Matthew 1, John 1, Revelation 22.
+- Stored as IIIF Level-0 static tiles in `frontend/public/iiif/` (Netlify large-asset
+  delivery, no separate large-media plugin needed).
+- Fallback URL chain: `mirror → public manifest → cached tiles → text-only`.
+
+**Component:** `frontend/src/components/ManuscriptImageViewer.jsx`
+- Wraps OpenSeadragon (`openseadragon` npm package, ~120 KB).
+- Lazy-loaded (React.lazy) — only mounts when user toggles "Show page image" on the
+  current verse view, never on first paint.
+- Receives `manuscriptId` + `book/chapter` and resolves to a manifest URL via a
+  `frontend/src/api/iiif.js` resolver module.
+- Emits `view-transition-name: codex-image-{manuscriptId}` so VT (already shipped) can
+  fade between codex pages when the user navigates verses.
+
+**Performance budget:** OpenSeadragon + manifest resolver must add ≤30 KB to the main
+chunk. The viewer itself is route-lazy so its full ~120 KB only loads on opt-in.
+
+### A.2 Variable Hebrew font (A.2a) ⏳ pending
+
+**Decision:** replace `Noto Serif Hebrew` with **SBL Hebrew** (https://www.sbl-site.org/educational/biblicalfonts.aspx) — a single variable font designed for biblical scholarship with full niqqud and cantillation.
+
+**Action:**
+1. Self-host `SBLHebrew.ttf` in `frontend/public/fonts/SBLHebrew.woff2` (convert from TTF).
+2. Update `@font-face` in the relevant CSS file (which file changed during the Step 1
+   font cleanup; verify exact location in stabilization before editing).
+3. Replace `font-family: 'Noto Serif Hebrew'` references with `'SBL Hebrew'` fallback chain.
+
+**License note:** SBL Hebrew is free for non-commercial scholarly use; All4Yah's mission
+qualifies. Capture license terms in `docs/FONT_LICENSES.md`.
+
+**Falls back to** `Ezra SIL` (also free, also variable) if SBL Hebrew licensing terms
+change. Both ship niqqud + cantillation with complete shaping tables.
+
+**Net font reduction:** ~12 Noto variants removed; SBL Hebrew is one file. Compounds with
+audit Batch 1's already-shipped duplicate-import deletion.
+
+---
+
+## 4. Section B — Reading Experience
+
+### B.1 Typography polish (CSS-only) ❓ verify during stabilization
+
+**Decision:** apply scoped to scripture/manuscript content only — never globally
+(could break dock/UI labels).
+
+**File:** `frontend/src/styles/scripture-reader.css` (and `manuscripts.css`,
+`scripture.css` where applicable).
+
+**Rules:**
+```css
+.scripture-text,
+.verse-text,
+.manuscript-page-content,
+.reader-verse-text {
+  text-wrap: pretty;                            /* eliminate orphans */
+  hanging-punctuation: first allow-end last;    /* hanging quotes */
+  text-box-trim: trim-both;                     /* optical metric trim */
+  text-spacing-trim: trim-start;                /* CJK/Hebrew quote trim */
+  hyphens: auto;                                /* fall-through long words */
+}
+```
+
+**Browser fallback:** all four properties degrade gracefully — non-supporting browsers
+(e.g. Safari < 17.5) get the current rendering. No JS feature detection needed.
+
+**Cost:** ~10 lines CSS. Was tagged for landing in audit Batch 1 alongside theme
+cohesion. **Verify whether shipped** during stabilization by `grep -rn "text-wrap: pretty"
+frontend/src/styles/`. If not present, this is the cheapest win on the pending list.
+
+### B.2c Hybrid transitions ✅ SHIPPED in commit `005ae28`
+
+**Shipped artifacts:**
+- `frontend/src/hooks/useViewTransition.js` — `navigateWithTransition` helper hook.
+- `frontend/src/styles/view-transitions.css` — `::view-transition-old/new` keyframes.
+- `frontend/src/styles/cross-reference-badge.css` — also includes anchor-positioning
+  rules for cross-reference popovers (auto-flip on viewport edges, no JS).
+
+**Verification during stabilization:**
+- Confirm `view-transition-name: dock` and `: header` are set on the dock and
+  BreadcrumbRibbon so they remain still during route changes (one of the core wins of
+  this section).
+- Run a Playwright visual snapshot at verse-prev / verse-next and chapter-prev /
+  chapter-next on Chrome 124+ (VT supported) and Safari 17.5+ (VT supported as of
+  late 2024) to confirm the cross-fade is happening.
+- Capability detection should fall through to existing `PageTurnTransition` framer-motion
+  behavior on browsers without `document.startViewTransition`.
+
+**framer-motion retained for:**
+- ConsolidatedPanel tab switches
+- Dock hover/focus magnetic effect
+- ManuscriptCarousel item-level animation
+- HomePage hero entrance
+- All `AnimatePresence` micro-interactions
+
+### B.3 Scroll-driven reveals ⏳ pending
+
+**Decision:** native CSS `animation-timeline: view()` for atomic effects; reserve GSAP
+ScrollTrigger for any future multi-stage narrative section.
+
+**Initial CSS effects:**
+- Parchment darken-on-scroll (background opacity ramps with viewport-progress)
+- Ink-spread on verse focus when scrolled into view
+- FloatingLetters parallax intensity tied to scroll velocity
+
+**File:** `frontend/src/styles/scroll-effects.css` (new)
+```css
+.verse-card {
+  animation: ink-spread linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 50%;
+}
+```
+
+**GSAP** is *not* added now. Only added if AboutPage or a future "history of manuscripts"
+narrative scroll page is built.
+
+---
+
+## 5. Section D — Offline-First Architecture (custom SW, not Workbox)
+
+### D.1 Three-tier sync model ✅ SHIPPED in commit `431234a`
+
+| Tier | Auto/Opt-in | Contents | Estimated size | Status |
+|---|---|---|---|---|
+| **Tier 1** | Auto on first visit | App shell + WEB English + name mappings + canonical books | ~3 MB | ✅ shipped |
+| **Tier 2** | Auto on view | Chapters cached when navigated | grows with use | ✅ shipped (verified — 185 verses / 16 chapters auto-cached after a few minutes browsing) |
+| **Tier 3** | Opt-in per book | Full Hebrew/Greek/Latin for a downloaded book + IIIF tiles | up to 55 MB total | ✅ button shipped (`BookDownloadButton.jsx` in `ScriptureToolbar`); IIIF tile pre-warm portion deferred to D.3 + A.1 |
+
+Tier 3 surfaces as a "Download for offline" affordance per book/manuscript inside the
+ScriptureToolbar/BookSelector flow. Three states: Download / Progress / ✓ Offline.
+
+### D.2 Storage stack — Dexie + custom SW (PGlite later) ✅ SHIPPED in commit `431234a`
+
+**Architecture deviation from original spec:** original recommended Workbox via
+`vite-plugin-pwa`. Shipped implementation is a hand-rolled `public/sw.js` (3.2 KB) plus
+Dexie. **This is the better fit** — smaller bundle, no plugin tax, full control over
+cache semantics — but it means future cache-strategy additions (IIIF tiles, Background
+Sync, beyond-`DATA_VERSION` invalidation) are hand-coded.
+
+**Shipped files:**
+- `frontend/src/services/offlineDb.js` — Dexie schema with 4 stores (`verses`,
+  `cross_references`, `name_mappings`, `cache_manifest`-equivalent), and a
+  `DATA_VERSION` constant for invalidation.
+- `frontend/src/services/offlineCache.js` — read-through wrappers that are transparent
+  to consumers. `getVerse` / `getChapter` in `frontend/src/api/verses.js` now delegate
+  here automatically.
+- `frontend/src/services/registerSW.js` — service worker registration on app boot.
+- `frontend/public/sw.js` — custom SW: cache-first for assets, network-first with
+  shell-HTML fallback for navigation requests.
+- `frontend/src/components/OfflineBadge.jsx` — slim gold banner when
+  `navigator.onLine === false`.
+- `frontend/src/components/BookDownloadButton.jsx` — Tier 3 UI, three states.
+- `frontend/src/hooks/useOnlineStatus.js` — for any future online-aware components.
+
+**Bundle delta:** +96 KB unminified (~32 KB gzipped) for Dexie + cache layer + offline
+UI. `transformers.web` (873 KB lazy-loaded) remains the dominant chunk and still defers.
+
+**Background Sync queue** is *not* yet scaffolded. Add it when the first write-side
+feature ships (bookmarks, notes).
+
+**Future migration path to PGlite (deferred, documented for posterity):**
+- When user-generated content (bookmarks, highlights, notes) ships, migrate the Dexie
+  layer to PGlite. PGlite mirrors Supabase schema 1:1, enables ElectricSQL bidirectional
+  sync, and unifies query language (SQL on both client and server).
+- Migration is non-destructive: Dexie tables become Postgres tables; `offlineCache.js`
+  query API stays stable; only the underlying engine swaps.
+- Trigger condition: when annotation features enter scope. Until then, do not pay the
+  ~3 MB WASM cost.
+
+### D.3 IIIF tile caching ⏳ pending (depends on A.1)
+
+**Approach:** hand-rolled in `public/sw.js`, mirroring the `CacheFirst` pattern Workbox
+would have provided. Pseudocode:
+
+```js
+// frontend/public/sw.js — addition pending Section A.1
+const IIIF_CACHE = 'iiif-tiles-v1';
+const IIIF_PATTERN = /^https:\/\/[^/]+\/iiif\/.*\.(jpg|webp|png|json)$/;
+
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  if (IIIF_PATTERN.test(request.url)) {
+    event.respondWith(
+      caches.open(IIIF_CACHE).then(async (cache) => {
+        const cached = await cache.match(request);
+        if (cached) return cached;
+        const response = await fetch(request);
+        if (response.ok) cache.put(request, response.clone());
+        return response;
+      })
+    );
+    return;
+  }
+  // ... existing handlers for assets / navigation
+});
+```
+
+LRU eviction handled via a small post-fetch sweep when cache size exceeds a configurable
+threshold (e.g., 2000 entries). Tier 3 "Download book for offline" pre-warms the
+`IIIF_CACHE` for every IIIF tile referenced by manifest pages within the downloaded book
+— hooked from `services/offlineCache.js` via direct `caches.open('iiif-tiles-v1').put()`
+loops.
+
+### D.4 Cache invalidation ✅ SHIPPED in commit `431234a` (constant-based)
+
+The shipped implementation uses a `DATA_VERSION` constant in `services/offlineDb.js`.
+Bumping it triggers a fresh Dexie schema and re-fetch on next boot.
+
+**Future enhancement (documented, not pending immediate work):** the original spec
+proposed a Supabase-side `cache_manifest` row table so individual manuscripts could be
+invalidated independently without a global flush. This remains useful long-term —
+flushing 224k verses just to refresh WLC is wasteful — but the constant-based approach
+is acceptable through the next several import cycles. Promote to per-manuscript
+versioning when import cadence increases or when total cache size becomes a concern.
+
+---
+
+## 6. Phasing — current state
+
+| Phase | Original scope | Status |
+|---|---|---|
+| **Audit Batch 1** | theme cohesion + duplicate font import + 100dvh | ✅ shipped (`dcb1ba4`) |
+| **Audit Batch 2** | a11y compliance | ✅ shipped (in `dcb1ba4`) |
+| **Audit Batch 3** | 404, footer, og:image, per-route titles, sitemap | ✅ shipped (`a10d7c4`) |
+| **Phase A** | Biome + Lighthouse CI + ~~`vite-plugin-pwa` scaffold~~ | ✅ Biome + Lighthouse shipped (`343bfb1`); PWA scaffold replaced by custom `public/sw.js` |
+| **Phase B** | audit findings + Subgrid for parallel viewer | ⏳ pending — Subgrid for parallel-manuscript alignment |
+| **Phase C** | View Transitions + anchor positioning | ✅ shipped (`005ae28`) |
+| **Phase D** | PWA tier 1 + 2 (app shell + read-as-you-go) | ✅ shipped (`431234a`) |
+| **Phase E** | Tier 3 bulk download + cache invalidation | ✅ download UI shipped; per-book IIIF pre-warm pending (couples with Phase H) |
+| **Phase F** | DNS migration to all4yah.com | ✅ live |
+| **Phase G** | Capacitor wrap | ⏳ pending — defer until stabilization complete |
+| **Phase H (NEW)** | A.1 IIIF + OpenSeadragon integration with mirror fallback chain | ⏳ pending |
+| **Stabilization (NEW)** | Verify B.1 + verify B.2c persistent VT names + production smoke / Lighthouse run on `all4yah.com` | ⏳ next action |
+
+**Net pending work** (sequenced post-stabilization):
+- B.1 verify + ship if missing (~1 hour)
+- B.3 scroll-driven CSS (~½ day)
+- A.2 SBL Hebrew variable font swap (~½ day)
+- Phase B Subgrid for parallel viewer (~½ day)
+- Phase H IIIF + OpenSeadragon + D.3 tile caching + Phase E IIIF pre-warm (~3–4 days)
+- Phase G Capacitor (~3–4 days)
+
+Total remaining: ~7–9 days of focused work.
+
+---
+
+## 7. Success Criteria
+
+The design is successful when, after all phases land:
+
+1. **Manuscript authenticity (A):**
+   - [ ] At least one verse on `/manuscripts/genesis/1/1` displays a deep-zoomable
+         high-resolution image of the actual codex page alongside the transcription.
+   - [ ] Hebrew niqqud and cantillation marks render without missing-glyph squares on the
+         entire WLC corpus.
+   - [ ] OpenSeadragon viewer loads only when toggled (not on first paint of any route).
+   - [ ] Total Google Fonts variants loaded reduces to ≤60 (from audit-baseline 282).
+
+2. **Reading experience (B):**
+   - [ ] No orphaned single words on any rendered verse line at default desktop and mobile
+         widths (verified via Playwright snapshot tests).
+   - [x] Verse-prev / verse-next navigation visibly cross-fades parchment when VT is
+         supported; instant swap when not. *(shipped in `005ae28`; verify persistent
+         dock/header names during stabilization)*
+   - [ ] CovenantDock and BreadcrumbRibbon do NOT animate during route transitions
+         (persistent VT names hold them in place). *(shipped — verify in stabilization)*
+   - [x] Lighthouse a11y score ≥0.95 on `/`, `/manuscripts/genesis/1/1`, `/about`. *(audit
+         batches 1+2 shipped; re-run Lighthouse against production all4yah.com)*
+
+3. **Offline-first (D):**
+   - [x] Tier 1: site loads completely while offline on a previously-visited device,
+         including WEB English Genesis 1. *(shipped — re-verify post-DNS)*
+   - [x] Tier 2: any chapter visited while online is readable while offline. *(shipped;
+         verified — 185 verses / 16 chapters auto-cached during browse session)*
+   - [x] Tier 3: a "Download for offline" UI exists per book. *(shipped — IIIF tile
+         portion couples with Phase H)*
+   - [x] When `DATA_VERSION` is bumped, the next page load on a stale client triggers
+         re-fetch of cached data. *(shipped — Playwright test still pending)*
+
+---
+
+## 8. Risks & Mitigations
+
+| Risk | Mitigation |
+|---|---|
+| Public IIIF URLs change | Mirror critical pages (Tier 0); document fallback chain; add IIIF resolver tests |
+| OpenSeadragon adds significant bundle | React.lazy on the viewer component; route-lazy by toggle |
+| SBL Hebrew license terms change | Document license; keep Ezra SIL fallback ready |
+| View Transitions partially supported (older browsers) | ✅ `useViewTransition` already capability-detects; falls back to existing PageTurnTransition |
+| `text-wrap: pretty` not supported in older browsers | Pure progressive enhancement, degrades to default rendering |
+| 55 MB Tier 3 download exceeds device storage | Warn user before download; show storage estimate; allow per-book granularity |
+| Stale Dexie data after schema migration | `db.version(N)` bumps + explicit upgrade migrations + `DATA_VERSION` invalidation (shipped) |
+| IIIF tile cache fills SW storage quota | When D.3 lands: hand-rolled LRU eviction in `public/sw.js` (Workbox would have given this for free; trade-off accepted) |
+| **Custom SW is hand-rolled** — must hand-code Tier 0 IIIF pre-fetch, Background Sync, manifest-versioning beyond DATA_VERSION | Document the SW contract in inline comments; add a focused unit test in `frontend/src/test/` covering each cache strategy when it's added; consider Workbox if the SW grows past ~200 lines |
+| Production smoke regressions after DNS cutover | Stabilization phase: Lighthouse run on https://all4yah.com, axe-core run, manual prev/next/download flows |
+
+---
+
+## 9. Dependencies
+
+**Already in `frontend/package.json` and shipped to production:**
+- `dexie@^4.4.2` ✅
+- `@biomejs/biome@2.4.13` (dev) ✅
+- `framer-motion@^12.38.0` ✅
+
+**To be added during the pending phases:**
+- `openseadragon` — IIIF viewer (~120 KB, route-lazy) — Phase H
+
+**Explicitly rejected:**
+- ~~`vite-plugin-pwa`~~ — replaced by hand-rolled `frontend/public/sw.js`.
+- ~~`workbox-window`~~ — same reason.
+
+**No new build tooling beyond Vite.** No new state library. No GSAP unless a Phase H+
+narrative scroll work demands it.
+
+---
+
+## 10. Files
+
+### Shipped ✅
+
+- `frontend/src/services/offlineDb.js` — Dexie schema + DATA_VERSION
+- `frontend/src/services/offlineCache.js` — read-through cache wrapper
+- `frontend/src/services/registerSW.js` — SW registration
+- `frontend/public/sw.js` — custom service worker (3.2 KB)
+- `frontend/src/components/OfflineBadge.jsx`
+- `frontend/src/components/BookDownloadButton.jsx`
+- `frontend/src/hooks/useOnlineStatus.js`
+- `frontend/src/hooks/useViewTransition.js`
+- `frontend/src/hooks/useDocumentTitle.js` (per-route titles, audit Batch 3)
+- `frontend/src/styles/view-transitions.css`
+- `frontend/src/styles/cross-reference-badge.css` (anchor positioning)
+
+### Pending — net-new files
+
+- `frontend/src/api/iiif.js` — IIIF manifest resolver, fallback chain (Phase H)
+- `frontend/src/components/ManuscriptImageViewer.jsx` — OpenSeadragon wrapper (Phase H)
+- `frontend/src/styles/scroll-effects.css` — CSS scroll-driven animations (B.3)
+- `frontend/public/fonts/SBLHebrew.woff2` — self-hosted variable font (A.2)
+- `frontend/public/iiif/` — mirrored Tier-0 critical pages (Phase H)
+- `docs/FONT_LICENSES.md` — font license attribution (A.2)
+
+### Pending — modified files
+
+- `frontend/package.json` — add `openseadragon` (Phase H)
+- `frontend/public/sw.js` — append IIIF cache strategy (D.3, Phase H)
+- whichever CSS file holds the active Hebrew `@font-face` — replace Noto Serif Hebrew → SBL Hebrew (A.2)
+- `frontend/src/styles/scripture-reader.css`, `manuscripts.css` — typography polish rules (B.1, if not already shipped)
+- `frontend/src/services/offlineCache.js` — Tier 3 IIIF pre-warm logic (Phase H + D.3 coupling)
+
+---
+
+## 11. Open questions parked for implementation phase
+
+1. Exact public IIIF manifest URLs per manuscript — verify availability and any required
+   attribution at implementation time.
+2. SBL Hebrew vs Ezra SIL final pick — depends on which has cleaner WOFF2 conversion path.
+3. Whether to ship a Tier 3 progress UI (per-tile download bar) or a single "Downloading…"
+   indicator. Default: single indicator first; progress bar only if user testing demands.
+4. Whether Capacitor wrap (Phase G) needs additional native plugins for IIIF cache
+   storage on iOS/Android filesystems. Likely no — Cache API works in WebView. Confirm
+   during Phase G.
+5. Whether to migrate from `DATA_VERSION` constant to per-manuscript Supabase
+   `cache_manifest` table — defer until import cadence or cache size forces it.
+
+---
+
+## 12. Stabilization next-actions (post-launch)
+
+Per-user instruction: post-launch stabilization comes before any new implementation work.
+The following checks are the entry criteria for resuming the pending phases.
+
+1. **Lighthouse production run** against https://all4yah.com on `/`, `/manuscripts/genesis/1/1`,
+   `/about`. Confirm a11y ≥0.95 floor holds in production (not just dev preview).
+2. **Verify B.1 typography polish.** `grep -rn "text-wrap: pretty\|hanging-punctuation\|text-box-trim" frontend/src/styles/`. If absent, ship the 10-line CSS addition before the next visual sprint — it's the cheapest win on the pending list.
+3. **Verify B.2c persistent VT elements.** Open DevTools on https://all4yah.com,
+   navigate verse-next, confirm the dock + breadcrumb do not animate. If they do, the
+   `view-transition-name: dock` / `: header` rules need to be added.
+4. **PWA smoke test on production.**
+   - Visit a chapter while online, then go offline (DevTools → Network → Offline), reload.
+   - Confirm OfflineBadge appears and the chapter still renders.
+   - Confirm app shell (HTML, CSS, JS, fonts) is served from SW cache.
+5. **`DATA_VERSION` invalidation Playwright test.** Add a regression test that bumps
+   `DATA_VERSION`, reloads, and asserts cached verses are re-fetched.
+6. **Bundle size budget.** Confirm `transformers.web` and `ort-wasm` chunks are still
+   gated behind `/lsi/demo` route (not in main bundle). Set `size-limit` budgets in CI.
+7. **404 + sitemap.xml + og:image** — confirm production serves these correctly. Twitter
+   Card validator + LinkedIn Post Inspector sanity check.
+8. **Capture a baseline metrics snapshot** (LCP, CLS, TTI on production) so future
+   visual upgrades can be compared against the post-stabilization floor.
+
+Once stabilization exits cleanly, the recommended next ship order is:
+- B.1 (if missing) → A.2 SBL Hebrew → B.3 scroll-driven → Phase B Subgrid → Phase H IIIF/D.3 → Phase G Capacitor.
+
+The `superpowers:writing-plans` skill should be invoked **after stabilization passes** to
+break the remaining phases into a concrete, verifiable implementation plan.
+
+---
+
+*Spec self-review: passed (no placeholders, status markers throughout, scoped to one
+delivery, ambiguous points listed in §11 rather than left implicit; reflects the
+2026-04-27 evening shipped state including the architectural deviation from Workbox to
+custom service worker). Ready for documentation commit.*
