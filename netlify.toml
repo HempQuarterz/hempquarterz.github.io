@@ -17,6 +17,35 @@
   # Skip secrets scanning for these keys (Supabase anon key is public by design)
   SECRETS_SCAN_OMIT_KEYS = "REACT_APP_BIBLE_API_KEY,REACT_APP_SUPABASE_ANON_KEY,REACT_APP_SUPABASE_URL"
 
+# 301 redirect legacy domain to primary for SEO consolidation.
+# Catches all variants (apex + www, http + https). Belt-and-suspenders
+# even if Netlify's "primary domain" setting also handles this — survives
+# moving off Netlify since it lives in the repo.
+[[redirects]]
+  from = "https://himquarterz.com/*"
+  to = "https://all4yah.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.himquarterz.com/*"
+  to = "https://all4yah.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://himquarterz.com/*"
+  to = "https://all4yah.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.himquarterz.com/*"
+  to = "https://all4yah.com/:splat"
+  status = 301
+  force = true
+
+# SPA catch-all (must come last — Netlify processes redirects in order)
 [[redirects]]
   from = "/*"
   to = "/index.html"
