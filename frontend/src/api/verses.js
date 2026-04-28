@@ -1,6 +1,7 @@
 /**
  * All4Yah Verses API
- * Provides functions for retrieving Bible verses from Supabase
+ * Provides functions for retrieving Bible verses from Supabase.
+ * getVerse / getChapter route through the offline cache (IDB read-through).
  */
 
 import { supabase } from '../config/supabase';
@@ -9,6 +10,7 @@ import {
   restoreParallelVerse,
   restoreChapter
 } from './restoration';
+import { cachedGetVerse, cachedGetChapter } from '../services/offlineCache';
 
 /**
  * Get manuscript ID by code
@@ -37,30 +39,7 @@ async function getManuscriptId(code) {
  */
 export async function getVerse(manuscript, book, chapter, verse) {
   try {
-    const manuscriptId = await getManuscriptId(manuscript);
-
-    const { data, error } = await supabase
-      .from('verses')
-      .select('book, chapter, verse, text, strong_numbers')
-      .eq('manuscript_id', manuscriptId)
-      .eq('book', book)
-      .eq('chapter', chapter)
-      .eq('verse', verse)
-      .maybeSingle();
-
-    if (error) {
-      throw new Error(`Failed to get verse: ${error.message}`);
-    }
-
-    // Return null if verse doesn't exist for this manuscript
-    if (!data) {
-      return null;
-    }
-
-    return {
-      manuscript,
-      ...data
-    };
+    return await cachedGetVerse(manuscript, book, chapter, verse);
   } catch (err) {
     console.error('getVerse error:', err);
     throw err;
@@ -124,25 +103,7 @@ export async function getVerses(book, chapter, manuscript = 'WEB') {
  */
 export async function getChapter(manuscript, book, chapter) {
   try {
-    const manuscriptId = await getManuscriptId(manuscript);
-
-    const { data, error } = await supabase
-      .from('verses')
-      .select('book, chapter, verse, text, strong_numbers')
-      .eq('manuscript_id', manuscriptId)
-      .eq('book', book)
-      .eq('chapter', chapter)
-      .order('verse')
-      .limit(200); // Ensure we get all verses (max 176 verses in Psalm 119)
-
-    if (error) {
-      throw new Error(`Failed to get chapter: ${error.message}`);
-    }
-
-    return data.map(v => ({
-      manuscript,
-      ...v
-    }));
+    return await cachedGetChapter(manuscript, book, chapter);
   } catch (err) {
     console.error('getChapter error:', err);
     throw err;

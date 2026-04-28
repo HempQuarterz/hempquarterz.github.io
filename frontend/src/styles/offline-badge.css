@@ -1,0 +1,27 @@
+.offline-badge {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-notification);
+  padding: 0.4rem 1rem;
+  background: var(--brand-gold);
+  color: var(--brand-midnight);
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .offline-badge {
+    animation: offline-slide-down 200ms ease-out;
+  }
+}
+
+@keyframes offline-slide-down {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}

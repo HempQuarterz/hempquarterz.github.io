@@ -11,6 +11,7 @@
     "@xmldom/xmldom": "^0.9.9",
     "@xyflow/react": "^12.10.2",
     "ajv": "^8.18.0",
+    "dexie": "^4.4.2",
     "dompurify": "^3.3.3",
     "framer-motion": "^12.38.0",
     "lucide-react": "^0.577.0",

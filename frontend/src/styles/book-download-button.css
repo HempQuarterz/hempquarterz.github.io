@@ -1,0 +1,98 @@
+.bdl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.bdl-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--brand-gold);
+  color: var(--brand-gold);
+}
+
+.bdl-btn--downloaded {
+  background: rgba(46, 125, 50, 0.18);
+  border-color: var(--success);
+  color: #a5d6a7;
+}
+
+.bdl-btn--downloaded:hover {
+  background: rgba(46, 125, 50, 0.28);
+}
+
+[data-theme="light"] .bdl-btn {
+  background: rgba(62, 39, 35, 0.04);
+  border-color: rgba(62, 39, 35, 0.12);
+  color: var(--ink-medium);
+}
+
+[data-theme="light"] .bdl-btn:hover {
+  background: rgba(62, 39, 35, 0.08);
+  border-color: var(--brand-gold-dark);
+  color: var(--brand-gold-dark);
+}
+
+[data-theme="light"] .bdl-btn--downloaded {
+  background: rgba(46, 125, 50, 0.1);
+  border-color: var(--success);
+  color: #2E7D32;
+}
+
+.bdl-progress {
+  position: relative;
+  display: inline-block;
+  min-width: 220px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+  font-family: var(--font-body);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.bdl-progress-bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, rgba(249, 228, 164, 0.25), rgba(249, 228, 164, 0.15));
+  transition: width 0.3s ease;
+}
+
+.bdl-progress-label {
+  position: relative;
+  z-index: 1;
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .bdl-progress {
+  background: rgba(62, 39, 35, 0.04);
+  border-color: rgba(62, 39, 35, 0.15);
+}
+
+[data-theme="light"] .bdl-progress-label {
+  color: var(--ink-dark);
+}
+
+.bdl-error {
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--error);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bdl-btn,
+  .bdl-progress-bar {
+    transition: none;
+  }
+}

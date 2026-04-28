@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { BIBLE_BOOKS, getAdjacentChapter } from '../utils/bibleStructure';
+import BookDownloadButton from './BookDownloadButton';
 import '../styles/scripture-toolbar.css';
 
 const ChevronLeft = () => (
@@ -222,6 +223,14 @@ const ScriptureToolbar = ({ book, chapter, bookName, onBookChange, onChapterChan
         <span className="st-nav-label">Next</span>
         <ChevronRight />
       </button>
+
+      {/* Tier 3 offline cache: download whole book */}
+      <BookDownloadButton
+        manuscript="WEB"
+        book={book}
+        bookName={bookName}
+        totalChapters={maxChapters}
+      />
     </div>
   );
 };

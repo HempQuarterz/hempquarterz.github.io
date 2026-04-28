@@ -18,6 +18,7 @@ import './styles/scholarly-theme.css';
 // Covenant Navigation System
 import { BreadcrumbRibbon, GlobalDockProvider } from './components/navigation';
 import SiteFooter from './components/SiteFooter';
+import OfflineBadge from './components/OfflineBadge';
 
 // Lazy-loaded routes (reduces initial bundle)
 const AboutPage = lazy(() => import('./pages/AboutPage'));
@@ -28,6 +29,9 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const App = () => {
   return (
     <Provider store={store}>
+      {/* Offline status banner (renders only when offline) */}
+      <OfflineBadge />
+
       {/* Skip Navigation Link */}
       <a href="#main-content" className="skip-to-content">
         Skip to content
