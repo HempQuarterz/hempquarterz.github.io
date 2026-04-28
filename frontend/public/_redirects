@@ -1,1 +1,12 @@
-/* /index.html 200
+# Cross-domain 301: legacy himquarterz.com → primary all4yah.com.
+# Must come BEFORE the SPA catch-all so the host match wins.
+# `301!` = 301 status with force flag — overrides static-file matching.
+# This duplicates the [[redirects]] in netlify.toml because the TOML
+# absolute-URL `from` matching only caught www, not the apex.
+https://himquarterz.com/*       https://all4yah.com/:splat   301!
+https://www.himquarterz.com/*   https://all4yah.com/:splat   301!
+http://himquarterz.com/*        https://all4yah.com/:splat   301!
+http://www.himquarterz.com/*    https://all4yah.com/:splat   301!
+
+# SPA catch-all — preserves React Router behavior for /, /manuscripts, /about, etc.
+/*  /index.html  200
