@@ -4,11 +4,12 @@
 **Status:** Partially shipped, in stabilization. Sections **D** (D.1, D.2, D.4), **A.2**
 (Hebrew biblical font swap — Ezra SIL chosen over SBL Hebrew, see §3.A.2), **B.1**
 (typography polish), full **B.2c** (root-level View Transitions + persistent dock/header
-+ anchor positioning), and **B.3** (native CSS scroll-driven reveals) are now shipped via
-commits `005ae28`, `431234a`, `35f69b0`, `441fa52`, and `a2e527b`. **All Section B (reading
-experience) work is complete.** Sections **A.1, D.3, Phase B Subgrid, Phase G Capacitor,
-NEW Phase H IIIF** remain pending; **Phase B Subgrid for parallel manuscript viewer** is
-the next cheapest ship (~½ day).
++ anchor positioning), **B.3** (native CSS scroll-driven reveals), and **Phase B Subgrid**
+(re-scoped to ParallelPassageViewer — see §6 phasing notes) are now shipped via commits
+`005ae28`, `431234a`, `35f69b0`, `441fa52`, `a2e527b`, and `e7fbf85`. **All Section B
+work and the local-feel batches are complete.** Sections **A.1, D.3, Phase G Capacitor,
+NEW Phase H IIIF** remain pending; **Phase H IIIF + OpenSeadragon (manuscript imagery)**
+is the next ship — it's the biggest "feels different" lever on the roadmap (~3–4 days).
 **Live URL:** https://all4yah.com (Phase F shipped)
 **Scope:** Three linked axes — manuscript authenticity (A), reading experience (B),
 offline-first architecture (D) — unified under a single architectural through-line.
@@ -40,6 +41,7 @@ explicit "✅ shipped" / "⏳ pending" / "❓ verify" markers.
 | Phase F — DNS migration to all4yah.com | ✅ live | dashboard action |
 | Section B.1 — typography polish (`text-wrap: pretty`, `hanging-punctuation`, etc.) | ✅ shipped | `35f69b0` — applied to `.reader-prose, .scripture-text, .verse-text` in `scripture-reader.css` |
 | Section B.3 — native CSS scroll-driven reveals | ✅ shipped | `a2e527b` — `scroll-effects.css` adds `view()`-driven verse entry fade + `scroll(root)`-driven parchment aging deepen, gated by `@supports` + `prefers-reduced-motion: no-preference` |
+| Phase B Subgrid (re-scoped) | ✅ shipped | `e7fbf85` — original premise was obsolete (no shipped side-by-side multi-language view). Re-scoped to `ParallelPassageViewer.pp-grid` for cross-card baseline alignment of titles + citations; orphaned `.parallel-view` CSS in `manuscripts.css` deleted. |
 | Section B.3 — native CSS scroll-driven reveals | ⏳ pending | not shipped |
 | Section A.2 — biblical Hebrew font swap | ✅ shipped | `441fa52` — chose **Ezra SIL** (OFL, Google Fonts) over SBL Hebrew per §11 open question 2; cleaner path, no self-hosting, no click-through license. SBL Hebrew documented as future upgrade candidate in `docs/FONT_LICENSES.md`. |
 | Section A.1 — IIIF + OpenSeadragon (manuscript page imagery) | ⏳ pending | NEW Phase H |
@@ -416,7 +418,7 @@ versioning when import cadence increases or when total cache size becomes a conc
 | **Audit Batch 2** | a11y compliance | ✅ shipped (in `dcb1ba4`) |
 | **Audit Batch 3** | 404, footer, og:image, per-route titles, sitemap | ✅ shipped (`a10d7c4`) |
 | **Phase A** | Biome + Lighthouse CI + ~~`vite-plugin-pwa` scaffold~~ | ✅ Biome + Lighthouse shipped (`343bfb1`); PWA scaffold replaced by custom `public/sw.js` |
-| **Phase B** | audit findings + Subgrid for parallel viewer | ⏳ pending — Subgrid for parallel-manuscript alignment |
+| **Phase B** | audit findings + Subgrid for parallel viewer | ✅ shipped (re-scoped) `e7fbf85` — original premise (Hebrew \| Greek \| English columns) was obsolete by the time the spec was written; the unified-navigation refactor reshaped `ManuscriptCarousel` to one-at-a-time-with-swipe and `StudyReader` to stacked original-then-English. Subgrid was instead applied to `ParallelPassageViewer.pp-grid` (the actual side-by-side comparison view, used for cross-reference passages); orphaned `.parallel-view` CSS deleted. |
 | **Phase C** | View Transitions + anchor positioning | ✅ shipped (`005ae28`) |
 | **Phase D** | PWA tier 1 + 2 (app shell + read-as-you-go) | ✅ shipped (`431234a`) |
 | **Phase E** | Tier 3 bulk download + cache invalidation | ✅ download UI shipped; per-book IIIF pre-warm pending (couples with Phase H) |
@@ -590,12 +592,13 @@ The following checks are the entry criteria for resuming the pending phases.
    visual upgrades can be compared against the post-stabilization floor.
 
 Once stabilization exits cleanly, the recommended next ship order is:
-- **Phase B Subgrid for parallel manuscript viewer** (~½ day) → **Phase H IIIF +
-  OpenSeadragon + D.3 IIIF tile cache** (~3–4 days, the biggest "feels different" lever)
-  → **Phase G Capacitor mobile wrap** (~3–4 days).
+- **Phase H IIIF + OpenSeadragon + D.3 IIIF tile cache** (~3–4 days, the biggest "feels
+  different" lever — primary-source manuscript imagery alongside transcription) →
+  **Phase G Capacitor mobile wrap** (~3–4 days).
 
-(B.1, B.2c persistence, A.2, and B.3 shipped in `35f69b0`, `441fa52`, and `a2e527b` —
-**all Section B reading-experience work is complete**.)
+(B.1, B.2c persistence, A.2, B.3, and Phase B Subgrid shipped in `35f69b0`, `441fa52`,
+`a2e527b`, and `e7fbf85` — **all Section B reading-experience work AND the parallel-
+display alignment polish are complete**.)
 
 The `superpowers:writing-plans` skill should be invoked **after stabilization passes** to
 break the remaining phases into a concrete, verifiable implementation plan.
