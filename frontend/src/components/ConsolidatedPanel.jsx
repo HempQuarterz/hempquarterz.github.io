@@ -4,15 +4,26 @@
  * Reduces vertical scrolling with modern tab navigation
  */
 
-import React, { useState } from 'react';
-import CrossReferencePanel from './CrossReferencePanel';
-import ParallelPassageViewer from './ParallelPassageViewer';
-import NetworkGraphViewer from './NetworkGraphViewer';
-import ThematicDiscoveryPanel from './ThematicDiscoveryPanel';
-import TimelineViewer from './TimelineViewer';
-import AudioPlayer from './AudioPlayer';
+import React, { useState, Suspense, lazy } from 'react';
 import ManuscriptIcon from './icons/ManuscriptIcon';
 import '../styles/consolidated-panel.css';
+
+// Lazy-load each tab so the heavy deps (@xyflow/react in NetworkGraphViewer,
+// embedding model loader in ThematicDiscoveryPanel) only ship when the user
+// actually opens the tab. Cross-Refs is the default tab, so it streams in
+// immediately under Suspense.
+const CrossReferencePanel = lazy(() => import('./CrossReferencePanel'));
+const ParallelPassageViewer = lazy(() => import('./ParallelPassageViewer'));
+const NetworkGraphViewer = lazy(() => import('./NetworkGraphViewer'));
+const ThematicDiscoveryPanel = lazy(() => import('./ThematicDiscoveryPanel'));
+const TimelineViewer = lazy(() => import('./TimelineViewer'));
+const AudioPlayer = lazy(() => import('./AudioPlayer'));
+
+const TabFallback = () => (
+  <div className="tab-loading" role="status" aria-live="polite">
+    Loading…
+  </div>
+);
 
 const ConsolidatedPanel = ({
   book,
@@ -214,7 +225,9 @@ const ConsolidatedPanel = ({
         id={`consolidated-tabpanel-${activeTab}`}
         aria-labelledby={`consolidated-tab-${activeTab}`}
       >
-        {renderTabContent()}
+        <Suspense fallback={<TabFallback />}>
+          {renderTabContent()}
+        </Suspense>
       </div>
     </div>
   );

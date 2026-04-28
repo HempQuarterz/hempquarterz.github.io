@@ -27,6 +27,14 @@ export default defineConfig({
           if (id.includes('node_modules/framer-motion')) {
             return 'vendor-motion';
           }
+          // @xyflow/react is heavy (~100KB) and only used by NetworkGraphViewer
+          // tab — kept out of vendor-react so it ships with the lazy chunk.
+          if (id.includes('node_modules/@xyflow')) {
+            return 'vendor-xyflow';
+          }
+          if (id.includes('node_modules/dexie')) {
+            return 'vendor-dexie';
+          }
         },
       },
     },

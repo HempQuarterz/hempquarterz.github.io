@@ -12,6 +12,11 @@
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
+    <!-- LCP optimization: parchment.webp is the largest contentful paint
+         element on home + manuscripts (used as card background).
+         Preload with high priority so it starts fetching before CSS parses. -->
+    <link rel="preload" as="image" href="/textures/parchment.webp" fetchpriority="high" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0E233B" />
     <meta

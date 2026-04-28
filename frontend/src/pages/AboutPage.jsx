@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import CacheSettings from '../components/CacheSettings';
 import '../styles/about-page.css';
 
 const AboutPage = () => {
@@ -125,6 +126,9 @@ const AboutPage = () => {
             Explore the Manuscripts
           </Link>
         </div>
+
+        {/* Offline cache settings */}
+        <CacheSettings />
 
       </div>
     </div>

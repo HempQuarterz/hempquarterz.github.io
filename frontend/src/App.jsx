@@ -19,12 +19,20 @@ import './styles/scholarly-theme.css';
 import { BreadcrumbRibbon, GlobalDockProvider } from './components/navigation';
 import SiteFooter from './components/SiteFooter';
 import OfflineBadge from './components/OfflineBadge';
+import { useCanonicalUrl } from './hooks/useDocumentTitle';
 
 // Lazy-loaded routes (reduces initial bundle)
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const LSIPage = lazy(() => import('./pages/LSIPage'));
 const AudioCaptureDemo = lazy(() => import('./components/lsi/AudioCaptureDemo'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
+// Render-less helper: keeps <link rel="canonical"> in sync with the current
+// pathname. Must live inside <Router> to read location.
+const CanonicalLink = () => {
+  useCanonicalUrl();
+  return null;
+};
 
 const App = () => {
   return (
@@ -53,6 +61,7 @@ const App = () => {
       <InkRipple />
 
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <CanonicalLink />
         {/* Global Dock State Provider (includes CovenantDock) */}
         <GlobalDockProvider>
           {/* Breadcrumb Header */}
