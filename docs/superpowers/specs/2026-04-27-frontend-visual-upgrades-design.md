@@ -1,11 +1,12 @@
 # Frontend Visual Upgrades — Design Spec
 
 **Date:** 2026-04-27
-**Status:** Partially shipped, in stabilization. Sections **D** (D.1, D.2, D.4), **B.1**
+**Status:** Partially shipped, in stabilization. Sections **D** (D.1, D.2, D.4), **A.2**
+(Hebrew biblical font swap — Ezra SIL chosen over SBL Hebrew, see §3.A.2), **B.1**
 (typography polish), and full **B.2c** (root-level View Transitions + persistent dock/header
-+ anchor positioning) are now shipped via commits `005ae28`, `431234a`, and `35f69b0`.
-Sections **A.1, A.2, B.3, D.3, Phase B Subgrid, Phase G Capacitor, NEW Phase H IIIF** remain
-pending; **A.2 SBL Hebrew variable font** is now the next cheapest ship per §12.
++ anchor positioning) are now shipped via commits `005ae28`, `431234a`, `35f69b0`, and
+`441fa52`. Sections **A.1, B.3, D.3, Phase B Subgrid, Phase G Capacitor, NEW Phase H IIIF**
+remain pending; **B.3 native CSS scroll-driven reveals** is the next cheapest ship.
 **Live URL:** https://all4yah.com (Phase F shipped)
 **Scope:** Three linked axes — manuscript authenticity (A), reading experience (B),
 offline-first architecture (D) — unified under a single architectural through-line.
@@ -37,7 +38,7 @@ explicit "✅ shipped" / "⏳ pending" / "❓ verify" markers.
 | Phase F — DNS migration to all4yah.com | ✅ live | dashboard action |
 | Section B.1 — typography polish (`text-wrap: pretty`, `hanging-punctuation`, etc.) | ✅ shipped | `35f69b0` — applied to `.reader-prose, .scripture-text, .verse-text` in `scripture-reader.css` |
 | Section B.3 — native CSS scroll-driven reveals | ⏳ pending | not shipped |
-| Section A.2 — SBL Hebrew variable font swap | ⏳ pending | "font cleanup" in Step 1 was generic, not the niqqud upgrade |
+| Section A.2 — biblical Hebrew font swap | ✅ shipped | `441fa52` — chose **Ezra SIL** (OFL, Google Fonts) over SBL Hebrew per §11 open question 2; cleaner path, no self-hosting, no click-through license. SBL Hebrew documented as future upgrade candidate in `docs/FONT_LICENSES.md`. |
 | Section A.1 — IIIF + OpenSeadragon (manuscript page imagery) | ⏳ pending | NEW Phase H |
 | Section D.3 — IIIF tile caching layer in custom SW | ⏳ pending | depends on A.1 |
 | Phase B — CSS Subgrid for parallel manuscript viewer | ⏳ pending | not shipped |
@@ -155,24 +156,43 @@ high-traffic / demo pages to All4Yah's own storage.
 **Performance budget:** OpenSeadragon + manifest resolver must add ≤30 KB to the main
 chunk. The viewer itself is route-lazy so its full ~120 KB only loads on opt-in.
 
-### A.2 Variable Hebrew font (A.2a) ⏳ pending
+### A.2 Biblical Hebrew font ✅ SHIPPED in commit `441fa52` — Ezra SIL chosen
 
-**Decision:** replace `Noto Serif Hebrew` with **SBL Hebrew** (https://www.sbl-site.org/educational/biblicalfonts.aspx) — a single variable font designed for biblical scholarship with full niqqud and cantillation.
+**Decision (resolved §11 open question 2):** the spec originally proposed SBL Hebrew with
+Ezra SIL as a documented fallback. After evaluating both, **Ezra SIL was adopted** as
+primary because:
 
-**Action:**
-1. Self-host `SBLHebrew.ttf` in `frontend/public/fonts/SBLHebrew.woff2` (convert from TTF).
-2. Update `@font-face` in the relevant CSS file (which file changed during the Step 1
-   font cleanup; verify exact location in stabilization before editing).
-3. Replace `font-family: 'Noto Serif Hebrew'` references with `'SBL Hebrew'` fallback chain.
+- It's on Google Fonts CDN (zero hosting overhead, no manual WOFF2 conversion).
+- It's licensed under SIL Open Font License (OFL) 1.1, the most permissive scholarly
+  font license — no click-through agreement required, clear redistribution terms.
+- It was designed by SIL specifically for biblical Hebrew with full niqqud and
+  cantillation; quality delta from SBL Hebrew is small for the All4Yah use case.
+- The spec explicitly anticipated this trade-off ("depends on which has cleaner WOFF2
+  conversion path" — Ezra SIL on Google Fonts has the cleanest path of any candidate).
 
-**License note:** SBL Hebrew is free for non-commercial scholarly use; All4Yah's mission
-qualifies. Capture license terms in `docs/FONT_LICENSES.md`.
+SBL Hebrew remains documented as a future upgrade candidate in `docs/FONT_LICENSES.md`
+should specific cantillation-rendering issues surface that Ezra SIL cannot handle.
+Taamey D Variable CLM (true variable font, GPL3, Aleppo Codex aesthetic) is also
+documented for a possible future "scholarly edition" mode.
 
-**Falls back to** `Ezra SIL` (also free, also variable) if SBL Hebrew licensing terms
-change. Both ship niqqud + cantillation with complete shaping tables.
+**Shipped artifacts:**
+- `frontend/index.html` — Google Fonts URL swapped: `Noto+Serif+Hebrew:wght@400;700` →
+  `Ezra+SIL:wght@400;700`.
+- 8 CSS files + `FloatingLetters.jsx` — every `font-family: 'Noto Serif Hebrew', …`
+  chain rewritten to lead with `'Ezra SIL'`. Where present, `'SBL Hebrew'` retained as
+  deeper fallback for users with it installed locally.
+- `frontend/src/styles/manuscripts.css` — duplicate `@import` for Noto+Serif+Hebrew
+  removed (was redundant with the index.html load).
+- `docs/FONT_LICENSES.md` (NEW) — per-font attribution table covering all 10 OFL fonts
+  in production, plus documented future upgrade candidates.
 
-**Net font reduction:** ~12 Noto variants removed; SBL Hebrew is one file. Compounds with
-audit Batch 1's already-shipped duplicate-import deletion.
+**Net font-variant reduction:** ~12 Noto Serif Hebrew variants removed, ~2 Ezra SIL
+variants added — net drop of ~10 from the post-Batch-1 baseline. Compounds with the
+duplicate-import deletion already shipped in audit Batch 1.
+
+**Verification still owed:** browser-side niqqud + cantillation render check on
+representative WLC verses (e.g., Gen 1:1 with niqqud, Ps 1:1 with full cantillation
+marks) on Chrome + Safari. Tracked in §7 success criterion 1.2.
 
 ---
 
@@ -410,9 +430,11 @@ The design is successful when, after all phases land:
    - [ ] At least one verse on `/manuscripts/genesis/1/1` displays a deep-zoomable
          high-resolution image of the actual codex page alongside the transcription.
    - [ ] Hebrew niqqud and cantillation marks render without missing-glyph squares on the
-         entire WLC corpus.
+         entire WLC corpus. *(A.2 Ezra SIL shipped in `441fa52`; browser-side render check
+         on representative niqqud + cantillation verses still owed)*
    - [ ] OpenSeadragon viewer loads only when toggled (not on first paint of any route).
    - [ ] Total Google Fonts variants loaded reduces to ≤60 (from audit-baseline 282).
+         *(A.2 dropped ~10 variants; re-measure on production to confirm trajectory)*
 
 2. **Reading experience (B):**
    - [ ] No orphaned single words on any rendered verse line at default desktop and mobile
@@ -495,15 +517,17 @@ narrative scroll work demands it.
 - `frontend/src/api/iiif.js` — IIIF manifest resolver, fallback chain (Phase H)
 - `frontend/src/components/ManuscriptImageViewer.jsx` — OpenSeadragon wrapper (Phase H)
 - `frontend/src/styles/scroll-effects.css` — CSS scroll-driven animations (B.3)
-- `frontend/public/fonts/SBLHebrew.woff2` — self-hosted variable font (A.2)
 - `frontend/public/iiif/` — mirrored Tier-0 critical pages (Phase H)
-- `docs/FONT_LICENSES.md` — font license attribution (A.2)
+
+(The originally-listed `frontend/public/fonts/SBLHebrew.woff2` is no longer pending —
+A.2 shipped via Google Fonts CDN, not self-hosted. `docs/FONT_LICENSES.md` shipped in
+`441fa52`.)
 
 ### Pending — modified files
 
 - `frontend/package.json` — add `openseadragon` (Phase H)
 - `frontend/public/sw.js` — append IIIF cache strategy (D.3, Phase H)
-- whichever CSS file holds the active Hebrew `@font-face` — replace Noto Serif Hebrew → SBL Hebrew (A.2)
+- ~~whichever CSS file holds the active Hebrew `@font-face` — replace Noto Serif Hebrew → SBL Hebrew (A.2)~~ ✅ shipped in `441fa52` (Ezra SIL chosen)
 - `frontend/src/styles/scripture-reader.css`, `manuscripts.css` — typography polish rules (B.1, if not already shipped)
 - `frontend/src/services/offlineCache.js` — Tier 3 IIIF pre-warm logic (Phase H + D.3 coupling)
 
@@ -513,7 +537,7 @@ narrative scroll work demands it.
 
 1. Exact public IIIF manifest URLs per manuscript — verify availability and any required
    attribution at implementation time.
-2. SBL Hebrew vs Ezra SIL final pick — depends on which has cleaner WOFF2 conversion path.
+2. ~~SBL Hebrew vs Ezra SIL final pick — depends on which has cleaner WOFF2 conversion path.~~ ✅ resolved 2026-04-28: **Ezra SIL** chosen and shipped in `441fa52`. SBL Hebrew documented as future upgrade option in `docs/FONT_LICENSES.md`.
 3. Whether to ship a Tier 3 progress UI (per-tile download bar) or a single "Downloading…"
    indicator. Default: single indicator first; progress bar only if user testing demands.
 4. Whether Capacitor wrap (Phase G) needs additional native plugins for IIIF cache
@@ -552,13 +576,13 @@ The following checks are the entry criteria for resuming the pending phases.
    visual upgrades can be compared against the post-stabilization floor.
 
 Once stabilization exits cleanly, the recommended next ship order is:
-- **A.2 SBL Hebrew variable font** (~½ day — single-file font swap, drops ~12 Noto
-  variants from the loaded font count) → **B.3 native CSS scroll-driven reveals**
-  (~½ day) → **Phase B Subgrid for parallel manuscript viewer** (~½ day) → **Phase H
-  IIIF + OpenSeadragon + D.3 IIIF tile cache** (~3–4 days) → **Phase G Capacitor mobile
-  wrap** (~3–4 days).
+- **B.3 native CSS scroll-driven reveals** (~½ day) → **Phase B Subgrid for parallel
+  manuscript viewer** (~½ day) → **Phase H IIIF + OpenSeadragon + D.3 IIIF tile cache**
+  (~3–4 days, the biggest "feels different" lever) → **Phase G Capacitor mobile wrap**
+  (~3–4 days).
 
-(B.1 + B.2c persistence shipped in `35f69b0` and are no longer in the queue.)
+(B.1, B.2c persistence, and A.2 shipped in `35f69b0` and `441fa52` and are no longer in
+the queue.)
 
 The `superpowers:writing-plans` skill should be invoked **after stabilization passes** to
 break the remaining phases into a concrete, verifiable implementation plan.
