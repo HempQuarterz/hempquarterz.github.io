@@ -8,6 +8,11 @@
    ============================================================================ */
 
 .covenant-dock {
+  /* B.2c persistent VT name — dock stays still during route transitions
+     while the content area parchment-fades. Paired with the
+     ::view-transition-group(dock) rule in view-transitions.css.
+     Spec ref: §4.B.2c */
+  view-transition-name: dock;
   position: fixed;
   z-index: 50;
   display: flex;

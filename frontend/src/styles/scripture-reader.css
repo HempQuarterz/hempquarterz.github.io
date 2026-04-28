@@ -106,6 +106,22 @@
   text-justify: inter-word;
 }
 
+/* ============================================================================
+   B.1 TYPOGRAPHY POLISH (native CSS)
+   Modern text-rendering primitives applied to scripture/manuscript content only.
+   Each property degrades gracefully on non-supporting browsers (Safari < 17.5).
+   Spec ref: docs/superpowers/specs/2026-04-27-frontend-visual-upgrades-design.md §4.B.1
+   ============================================================================ */
+
+.reader-prose,
+.scripture-text,
+.verse-text {
+  text-wrap: pretty;                            /* eliminate single-word orphans */
+  hanging-punctuation: first allow-end last;    /* hanging quotes / brackets */
+  text-box-trim: trim-both;                     /* optical metric trim */
+  text-spacing-trim: trim-start;                /* CJK/Hebrew quote trim */
+}
+
 /* Superscript verse numbers */
 .verse-sup {
   color: rgba(212, 175, 55, 0.6);

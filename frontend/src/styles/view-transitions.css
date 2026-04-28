@@ -36,3 +36,24 @@
     animation: none;
   }
 }
+
+/* ============================================================================
+   B.2c PERSISTENT ELEMENTS
+   The dock (.covenant-dock) and breadcrumb (.breadcrumb-ribbon) set their own
+   view-transition-name in their respective CSS files. These rules opt them out
+   of the root parchment cross-fade so they remain still visual anchors during
+   route changes — only the content area fades.
+   Spec ref: §4.B.2c
+   ============================================================================ */
+
+::view-transition-group(dock),
+::view-transition-group(header) {
+  animation: none;
+}
+
+::view-transition-old(dock),
+::view-transition-new(dock),
+::view-transition-old(header),
+::view-transition-new(header) {
+  animation: none;
+}

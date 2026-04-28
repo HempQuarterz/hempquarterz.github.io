@@ -4,6 +4,11 @@
  */
 
 .breadcrumb-ribbon {
+  /* B.2c persistent VT name — breadcrumb stays still during route transitions
+     while the content area parchment-fades. Paired with the
+     ::view-transition-group(header) rule in view-transitions.css.
+     Spec ref: §4.B.2c */
+  view-transition-name: header;
   position: sticky;
   top: 0;
   z-index: 40;
