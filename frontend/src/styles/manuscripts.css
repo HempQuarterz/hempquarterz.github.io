@@ -7,8 +7,7 @@
    FONTS: Hebrew and Greek
    ============================================================================ */
 
-/* Hebrew Font - Ezra SIL (open source biblical Hebrew font) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@400;700&display=swap');
+/* Hebrew Font: Ezra SIL — loaded via index.html Google Fonts import (no duplicate). */
 
 /* Greek Font - Noto Serif (supports polytonic Greek) */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap');
@@ -25,7 +24,7 @@
 
 /* Hebrew Text - Right-to-Left */
 .hebrew-text {
-  font-family: 'Noto Serif Hebrew', 'Ezra SIL', 'Times New Roman', serif;
+  font-family: 'Ezra SIL', 'Times New Roman', serif;
   font-size: 1.5rem;
   line-height: 2.2;
   direction: rtl;

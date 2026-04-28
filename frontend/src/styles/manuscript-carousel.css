@@ -252,7 +252,7 @@
 
 /* Typography Overrides for Glass Reader */
 .hebrew-text {
-  font-family: 'Noto Serif Hebrew', serif;
+  font-family: 'Ezra SIL', serif;
   font-size: 1.6rem;
   line-height: 2.4;
   color: #fff;

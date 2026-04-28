@@ -122,7 +122,7 @@ const FloatingLetters = ({
             '--letter-scale': item.scale,
             '--letter-opacity': item.opacity,
             '--letter-font': item.isHebrew
-              ? "'Noto Serif Hebrew', 'SBL Hebrew', serif"
+              ? "'Ezra SIL', 'SBL Hebrew', serif"
               : "'Noto Serif', 'GFS Didot', serif",
             '--letter-color': item.isHebrew
               ? 'var(--ink-medium)'

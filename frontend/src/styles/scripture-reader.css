@@ -156,7 +156,7 @@
 }
 
 .reader-hebrew {
-  font-family: 'Noto Serif Hebrew', serif;
+  font-family: 'Ezra SIL', serif;
   font-size: 1.4rem;
   line-height: 2.4;
   direction: rtl;
@@ -241,7 +241,7 @@
 }
 
 .study-original.reader-hebrew {
-  font-family: 'Noto Serif Hebrew', serif;
+  font-family: 'Ezra SIL', serif;
   font-size: 1.3rem;
   direction: rtl;
   text-align: right;
