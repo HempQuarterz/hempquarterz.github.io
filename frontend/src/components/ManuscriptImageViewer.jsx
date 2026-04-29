@@ -9,9 +9,42 @@
  * Spec ref: docs/superpowers/specs/2026-04-27-frontend-visual-upgrades-design.md §3.A.1
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import OpenSeadragon from 'openseadragon';
 import { resolveManifest } from '../api/iiif';
+
+/**
+ * Extract IIIF Image API tile-source URLs from a IIIF Presentation v2/v3
+ * manifest. OpenSeadragon's `tileSources` arg cannot parse a Presentation
+ * manifest directly — it needs per-canvas Image API `info.json` URLs.
+ */
+const extractTileSources = (manifest) => {
+  if (!manifest) return [];
+
+  // IIIF Presentation v2 — sequences[0].canvases[].images[0].resource.service
+  const v2Canvases = manifest.sequences?.[0]?.canvases;
+  if (Array.isArray(v2Canvases) && v2Canvases.length) {
+    return v2Canvases
+      .map((c) => c.images?.[0]?.resource?.service?.['@id'])
+      .filter(Boolean)
+      .map((id) => `${id.replace(/\/+$/, '')}/info.json`);
+  }
+
+  // IIIF Presentation v3 — items[].items[0].items[0].body.service[0].id
+  const v3Canvases = manifest.items;
+  if (Array.isArray(v3Canvases) && v3Canvases.length) {
+    return v3Canvases
+      .map((c) => {
+        const body = c.items?.[0]?.items?.[0]?.body;
+        const svc = (body?.service && (Array.isArray(body.service) ? body.service[0] : body.service)) || null;
+        return svc?.id || svc?.['@id'] || null;
+      })
+      .filter(Boolean)
+      .map((id) => `${id.replace(/\/+$/, '')}/info.json`);
+  }
+
+  return [];
+};
 
 const ManuscriptImageViewer = ({
   manifestUrl: manifestUrlProp,
@@ -23,17 +56,57 @@ const ManuscriptImageViewer = ({
 }) => {
   const containerRef = useRef(null);
   const viewerRef = useRef(null);
+  const [error, setError] = useState(null);
+  const [tileSources, setTileSources] = useState(null);
 
   // Direct prop wins, otherwise resolve via the registry.
   const manifestUrl =
     manifestUrlProp ?? resolveManifest({ manuscriptId, book, chapter });
 
+  // Step 1 — fetch the IIIF Presentation manifest, derive Image API URLs.
   useEffect(() => {
-    if (!manifestUrl || !containerRef.current) return undefined;
+    if (!manifestUrl) {
+      setTileSources(null);
+      setError(null);
+      return undefined;
+    }
+    let cancelled = false;
+    setError(null);
+    setTileSources(null);
+
+    fetch(manifestUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((manifest) => {
+        if (cancelled) return;
+        const sources = extractTileSources(manifest);
+        if (!sources.length) {
+          setError('Manifest contained no resolvable Image API services');
+          return;
+        }
+        setTileSources(sources);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setError(err?.message || 'Failed to load manifest');
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [manifestUrl]);
+
+  // Step 2 — once tileSources is populated, mount OpenSeadragon.
+  useEffect(() => {
+    if (!tileSources || !containerRef.current) return undefined;
 
     const viewer = OpenSeadragon({
       element: containerRef.current,
-      tileSources: manifestUrl,
+      tileSources,
+      sequenceMode: tileSources.length > 1,
+      showReferenceStrip: false,
       prefixUrl: 'https://cdn.jsdelivr.net/npm/openseadragon@6/build/openseadragon/images/',
       showNavigator: true,
       navigatorPosition: 'BOTTOM_RIGHT',
@@ -49,7 +122,7 @@ const ManuscriptImageViewer = ({
       viewer.destroy();
       viewerRef.current = null;
     };
-  }, [manifestUrl]);
+  }, [tileSources]);
 
   if (!manifestUrl) {
     return (
@@ -66,6 +139,42 @@ const ManuscriptImageViewer = ({
         }}
       >
         No verified manuscript image is available for this passage yet.
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div
+        className="manuscript-image-error"
+        role="alert"
+        style={{
+          padding: '2rem',
+          textAlign: 'center',
+          color: '#ef9a9a',
+          border: '1px solid rgba(198, 40, 40, 0.4)',
+          background: 'rgba(198, 40, 40, 0.1)',
+          borderRadius: 8,
+        }}
+      >
+        Could not load manuscript imagery: {error}
+      </div>
+    );
+  }
+
+  if (!tileSources) {
+    return (
+      <div
+        className="manuscript-image-loading"
+        role="status"
+        aria-live="polite"
+        style={{
+          padding: '2rem',
+          textAlign: 'center',
+          color: 'rgba(255,255,255,0.6)',
+        }}
+      >
+        Loading manifest…
       </div>
     );
   }
