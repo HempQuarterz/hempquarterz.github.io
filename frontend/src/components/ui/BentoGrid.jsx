@@ -4,15 +4,12 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 import '../../styles/bento-grid.css';
 
 /**
- * BentoGrid - A modular, auto-responsive grid layout.
- * Best used for dashboards and modern landing pages.
- *
- * Respects prefers-reduced-motion for accessibility.
+ * BentoGrid — modular auto-responsive grid layout. Visual styling lives in
+ * bento-grid.css so themes/tokens drive appearance.
  */
 export const BentoGrid = ({ className, children }) => {
     const prefersReducedMotion = useReducedMotion();
 
-    // Stagger animation variants for the grid container
     const gridVariants = prefersReducedMotion ? {
         hidden: { opacity: 1 },
         visible: { opacity: 1 }
@@ -29,18 +26,10 @@ export const BentoGrid = ({ className, children }) => {
 
     return (
         <motion.div
-            className={className || ''}
+            className={`bento-grid ${className || ''}`.trim()}
             variants={gridVariants}
             initial="hidden"
             animate="visible"
-            style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: '1.5rem',
-                maxWidth: '1200px',
-                margin: '0 auto',
-                padding: '2rem'
-            }}
         >
             {children}
         </motion.div>
@@ -48,10 +37,8 @@ export const BentoGrid = ({ className, children }) => {
 };
 
 /**
- * BentoItem - A single cell in the Bento Grid.
- * Supports row/col spanning and built-in hover effects.
- *
- * Respects prefers-reduced-motion for accessibility.
+ * BentoItem — single cell. Span/click are still props; visuals come from
+ * .bento-item in bento-grid.css.
  */
 export const BentoItem = ({
     className,
@@ -65,7 +52,6 @@ export const BentoItem = ({
 }) => {
     const prefersReducedMotion = useReducedMotion();
 
-    // Individual item entrance animation
     const itemVariants = prefersReducedMotion ? {
         hidden: { opacity: 1, y: 0, scale: 1 },
         visible: { opacity: 1, y: 0, scale: 1 }
@@ -83,39 +69,25 @@ export const BentoItem = ({
         }
     };
 
+    const classes = ['bento-item', onClick ? 'is-clickable' : '', className]
+        .filter(Boolean)
+        .join(' ');
+
     return (
         <motion.div
             variants={itemVariants}
             whileHover={prefersReducedMotion ? {} : { y: -5, scale: 1.02 }}
             whileTap={prefersReducedMotion ? {} : { scale: 0.98 }}
             transition={prefersReducedMotion ? {} : { type: "spring", stiffness: 300, damping: 20 }}
-            className={className}
+            className={classes}
             onClick={onClick}
             style={{
                 gridColumn: `span ${colSpan}`,
-                gridRow: `span ${rowSpan}`,
-                background: 'rgba(14, 35, 59, 0.6)', // Glass Midnight Base
-                backdropFilter: 'blur(12px)',
-                borderRadius: '24px',
-                padding: '1.5rem',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                cursor: onClick ? 'pointer' : 'default',
-                overflow: 'hidden',
-                position: 'relative'
+                gridRow: `span ${rowSpan}`
             }}
         >
-            {/* Header / Graphic Area */}
-            {header && (
-                <div style={{ flex: 1, minHeight: '6rem', borderRadius: '12px', overflow: 'hidden', marginBottom: '1rem' }}>
-                    {header}
-                </div>
-            )}
+            {header && <div className="bento-item-header">{header}</div>}
 
-            {/* Content Area */}
             <div className="bento-content">
                 {icon && <div className="bento-icon">{icon}</div>}
                 <h2 className="bento-title">{title}</h2>
@@ -124,17 +96,7 @@ export const BentoItem = ({
                 )}
             </div>
 
-            {/* Glossy Gradient Overlay */}
-            <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%)',
-                zIndex: 1,
-                pointerEvents: 'none'
-            }} />
+            <div className="bento-item-glaze" aria-hidden="true" />
         </motion.div>
     );
 };

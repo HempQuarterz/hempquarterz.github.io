@@ -50,6 +50,12 @@
   --accent-secondary: var(--brand-teal);
   --button-text: var(--brand-midnight);
 
+  /* Legacy aliases — maintain backward compat with --primary / --secondary
+     references in modern.css and elsewhere. Theme-aware via the tokens above. */
+  --primary: var(--accent-primary);
+  --primary-dark: var(--brand-gold-dark);
+  --secondary: var(--accent-secondary);
+
   --border-color: rgba(212, 175, 55, 0.2);
   --candle-glow: var(--brand-gold);
 
@@ -124,6 +130,11 @@
   --accent-primary: var(--brand-midnight);
   --accent-secondary: var(--brand-teal);
   --button-text: var(--brand-parchment);
+
+  /* Light-theme legacy aliases (--primary / --primary-dark / --secondary). */
+  --primary: var(--accent-primary);
+  --primary-dark: #061425;
+  --secondary: var(--accent-secondary);
 
   --border-color: rgba(139, 69, 19, 0.2);
   --candle-glow: transparent;

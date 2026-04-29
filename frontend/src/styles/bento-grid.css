@@ -1,3 +1,54 @@
+/* Layout primitives — extracted from BentoGrid.jsx inline styles so the grid
+   is themable via tokens and easier to override at the page level. */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+}
+
+.bento-item {
+  background: rgba(14, 35, 59, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+}
+
+.bento-item.is-clickable {
+  cursor: pointer;
+}
+
+[data-theme="light"] .bento-item {
+  background: rgba(251, 245, 219, 0.7);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+.bento-item-header {
+  flex: 1;
+  min-height: 6rem;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: var(--space-md);
+}
+
+.bento-item-glaze {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
 .bento-content {
   position: relative;
   z-index: 2;

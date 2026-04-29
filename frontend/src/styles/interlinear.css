@@ -264,12 +264,41 @@
 /* Error state */
 .interlinear-error {
   padding: 1rem;
-  background: #fff3cd;
-  border: 1px solid #ffc107;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid var(--warning);
   border-radius: 6px;
-  color: #856404;
+  color: var(--warning);
   text-align: center;
   margin: 1rem 0;
+}
+
+/* Empty state — manuscript pair has no alignment data (e.g. EOTC). */
+.interlinear-empty {
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.interlinear-empty h3 {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-heading);
+  color: var(--accent-primary);
+  font-size: 1.1rem;
+}
+
+.interlinear-empty p {
+  margin: 0 0 0.5rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.interlinear-empty-hint {
+  font-size: 0.9rem;
+  color: var(--text-tertiary);
+  font-style: italic;
 }
 
 /* Dark mode support */

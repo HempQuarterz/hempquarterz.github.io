@@ -72,43 +72,9 @@
   padding: 2rem;
 }
 
-.manuscript-panel {
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.3s ease;
-}
-
-.manuscript-panel:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.manuscript-panel h3 {
-  font-family: 'Libre Baskerville', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #2E7D32;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  border-bottom: 2px solid #2E7D32;
-  padding-bottom: 0.5rem;
-}
-
-.manuscript-panel .manuscript-meta {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 1rem;
-  font-style: italic;
-}
-
-/* (Removed: .parallel-view rule — orphaned dead code from a pre-unification
-   architecture. The current ManuscriptCarousel uses one-at-a-time-with-swipe,
-   and parallel-passage comparison lives in ParallelPassageViewer with its own
-   pp-grid using CSS subgrid. See parallel-passage.css.) */
+/* (Removed: .manuscript-panel and .parallel-view — orphaned pre-rebrand styling.
+   ManuscriptCarousel uses its own classes; ParallelPassageViewer uses pp-grid
+   in parallel-passage.css.) */
 
 /* ============================================================================
    RESTORATION FEATURES - Divine Name Glow
@@ -216,27 +182,27 @@
   }
 }
 
-/* Restoration Toggle */
+/* Restoration Toggle — All4Yah brand: midnight base, gold-on when active. */
 .restoration-toggle {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
-  color: white;
-  border: none;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   border-radius: 50px;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-body);
   font-weight: 500;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
 }
 
 .restoration-toggle:hover {
-  background: linear-gradient(135deg, #388E3C 0%, #2E7D32 100%);
-  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+  background: var(--bg-tertiary);
+  box-shadow: var(--shadow);
   transform: translateY(-2px);
 }
 
@@ -245,13 +211,15 @@
 }
 
 .restoration-toggle.active {
-  background: linear-gradient(135deg, #D4AF37 0%, #B8941F 100%);
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+  background: linear-gradient(135deg, var(--brand-gold) 0%, var(--brand-gold-dark) 100%);
+  color: var(--brand-midnight);
+  border-color: var(--brand-gold);
+  box-shadow: 0 2px 8px rgba(249, 228, 164, 0.3);
 }
 
 .restoration-toggle.active:hover {
-  background: linear-gradient(135deg, #E5C158 0%, #D4AF37 100%);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, #FBEDB8 0%, var(--brand-gold) 100%);
+  box-shadow: 0 4px 12px rgba(249, 228, 164, 0.4);
 }
 
 /* ============================================================================
@@ -269,44 +237,17 @@
 
 .verse-number {
   display: inline-block;
-  background: #2E7D32;
-  color: white;
+  background: var(--accent-primary);
+  color: var(--button-text);
   padding: 0.2rem 0.6rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   font-size: 0.75rem;
   margin-right: 0.5rem;
   vertical-align: middle;
 }
 
-/* ============================================================================
-   DARK MODE SUPPORT
-   ============================================================================ */
-
-@media (prefers-color-scheme: dark) {
-  .manuscript-panel {
-    background: #2E3440;
-    border-color: #4C566A;
-    color: #ECEFF4;
-  }
-
-  .manuscript-panel h3 {
-    color: #88C0D0;
-    border-bottom-color: #88C0D0;
-  }
-
-  .manuscript-panel .manuscript-meta {
-    color: #D8DEE9;
-  }
-
-  .verse-reference {
-    color: #ECEFF4;
-  }
-
-  .verse-number {
-    background: #88C0D0;
-    color: #2E3440;
-  }
-}
+/* (Removed: prefers-color-scheme dark overrides — variables.css handles theme
+   via [data-theme="..."] now.) */
 
 /* ============================================================================
    LOADING & STATES
@@ -343,7 +284,7 @@
 
 .strongs-number:hover {
   opacity: 1;
-  color: #2E7D32;
+  color: var(--accent-primary);
 }
 
 /* ============================================================================
@@ -360,7 +301,7 @@
 .manuscript-header h1 {
   font-family: 'Libre Baskerville', serif;
   font-size: 2.5rem;
-  color: #2E7D32;
+  color: var(--accent-primary);
   margin-bottom: 0.5rem;
 }
 
@@ -390,10 +331,6 @@
 
   .manuscript-viewer {
     padding: 1rem;
-  }
-
-  .manuscript-panel {
-    padding: 1.5rem;
   }
 }
 
@@ -455,44 +392,12 @@
    CHAPTER VIEW MODE (TIER 10)
    ============================================================================ */
 
-/* View Mode Toggle Buttons */
+/* View Mode Toggle (used by ManuscriptSkeleton as a layout wrapper). */
 .view-mode-toggle {
   display: flex;
   gap: 1rem;
   justify-content: center;
   align-items: center;
-}
-
-.view-toggle-btn {
-  padding: 0.75rem 1.5rem;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  background: #fff;
-  color: #666;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.view-toggle-btn:hover {
-  border-color: #2E7D32;
-  background: #f5f5f5;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.view-toggle-btn.active {
-  background: #2E7D32;
-  color: white;
-  border-color: #2E7D32;
-  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
-}
-
-.view-toggle-btn:focus {
-  outline: 3px solid rgba(46, 125, 50, 0.3);
-  outline-offset: 2px;
 }
 
 /* Chapter View Content */
@@ -516,19 +421,19 @@
 }
 
 .verse-row:hover {
-  background: rgba(46, 125, 50, 0.05);
+  background: rgba(249, 228, 164, 0.06);
 }
 
 /* Verse Number in Chapter View */
 .verse-row .verse-number {
   flex-shrink: 0;
   font-weight: 700;
-  color: #2E7D32;
+  color: var(--accent-primary);
   min-width: 3rem;
   text-align: right;
   font-size: 0.95rem;
   padding-top: 0.25rem;
-  font-family: 'Libre Baskerville', serif;
+  font-family: var(--font-heading);
 }
 
 /* Ensure text within verse row respects language classes */
@@ -545,12 +450,6 @@
     gap: 0.5rem;
   }
 
-  .view-toggle-btn {
-    width: 100%;
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
-  }
-
   .verse-row {
     gap: 0.5rem;
   }
@@ -561,146 +460,9 @@
   }
 }
 
-/* Dark mode support for chapter view */
-@media (prefers-color-scheme: dark) {
-  .view-toggle-btn {
-    background: #2a2a2a;
-    border-color: #444;
-    color: #ccc;
-  }
-
-  .view-toggle-btn:hover {
-    background: #333;
-    border-color: #2E7D32;
-  }
-
-  .view-toggle-btn.active {
-    background: #2E7D32;
-    color: white;
-  }
-
-  .verse-row:hover {
-    background: rgba(46, 125, 50, 0.15);
-  }
-}
-
-/* ============================================================================
-   ENHANCED HERO SECTION
-   ============================================================================ */
-
-.hero-section {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.hero-section h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: #1B5E20;
-}
-
-.tagline {
-  font-size: 1.2rem;
-  color: #666;
-  font-style: italic;
-  margin-bottom: 2rem;
-  font-family: 'Cardo', serif;
-}
-
-.mission-banner {
-  background: linear-gradient(135deg, #f5f9f5 0%, #e8f5e9 100%);
-  border: 2px solid #2E7D32;
-  border-radius: 12px;
-  padding: 2rem;
-  margin: 2rem auto;
-  max-width: 900px;
-  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.1);
-}
-
-.mission-content h2 {
-  font-size: 1.8rem;
-  color: #1B5E20;
-  margin-bottom: 1rem;
-  font-family: 'Cardo', serif;
-}
-
-.mission-text {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: #333;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.restored-name-example {
-  color: #D4AF37;
-  font-weight: 700;
-  font-size: 1.15em;
-}
-
-.mission-stats {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  font-size: 0.95rem;
-  color: #555;
-}
-
-.stat {
-  padding: 0.5rem 1rem;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.stat strong {
-  color: #2E7D32;
-  font-size: 1.1em;
-}
-
-.stat-divider {
-  color: #2E7D32;
-  font-weight: bold;
-}
-
-/* Dark mode adjustments for hero */
-@media (prefers-color-scheme: dark) {
-  .hero-section h1 {
-    color: #81C784;
-  }
-
-  .tagline {
-    color: #aaa;
-  }
-
-  .mission-banner {
-    background: linear-gradient(135deg, #1e2a1e 0%, #2a3a2a 100%);
-    border-color: #4CAF50;
-  }
-
-  .mission-content h2 {
-    color: #81C784;
-  }
-
-  .mission-text {
-    color: #ddd;
-  }
-
-  .stat {
-    background: #2a2a2a;
-    color: #ddd;
-  }
-
-  .stat strong {
-    color: #81C784;
-  }
-
-  .stat-divider {
-    color: #81C784;
-  }
-}
+/* (Removed: pre-rebrand .hero-section / .mission-banner / .stat / .tagline /
+   .view-toggle-btn / prefers-color-scheme dark overrides — orphaned after the
+   home page moved to bento layout and tokens migrated to variables.css.) */
 
 /* Mobile responsiveness for hero */
 @media (max-width: 768px) {

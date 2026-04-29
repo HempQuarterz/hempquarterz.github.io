@@ -1,6 +1,6 @@
 /**
- * LSI Page Styles
- * Main page layout for Linguistic Spirit Interface
+ * LSI Page Styles — All4Yah midnight/parchment/gold/teal brand.
+ * (Re-skinned from previous purple/AI aesthetic to match the manuscript shell.)
  */
 
 /* Page Container */
@@ -8,7 +8,7 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
-  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  background: var(--bg-primary);
   min-height: 100dvh;
 }
 
@@ -17,17 +17,17 @@
   text-align: center;
   margin-bottom: 3rem;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(14, 35, 59, 0.4);
   border-radius: 16px;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
 }
 
 .lsi-page-title {
   margin: 0 0 1rem 0;
   font-size: 2.5rem;
-  font-family: 'Libre Baskerville', serif;
-  background: linear-gradient(135deg, #FFD966 0%, #2dd4bf 100%);
+  font-family: var(--font-heading);
+  background: linear-gradient(135deg, var(--brand-gold) 0%, var(--brand-teal) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -36,7 +36,7 @@
 .lsi-page-subtitle {
   margin: 0;
   font-size: 1.1rem;
-  color: #adb5bd;
+  color: var(--text-tertiary);
   font-style: italic;
 }
 
@@ -54,29 +54,29 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem 2rem;
-  background: rgba(15, 52, 96, 0.6);
-  border: 2px solid rgba(45, 212, 191, 0.2);
+  background: rgba(14, 35, 59, 0.6);
+  border: 2px solid var(--border-color);
   border-radius: 12px;
-  color: #adb5bd;
+  color: var(--text-secondary);
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-base);
   backdrop-filter: blur(5px);
 }
 
 .lsi-tab:hover {
-  border-color: #2dd4bf;
-  background: rgba(45, 212, 191, 0.1);
+  border-color: var(--brand-teal);
+  background: rgba(96, 156, 180, 0.12);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.2);
+  box-shadow: 0 4px 12px rgba(96, 156, 180, 0.2);
 }
 
 .lsi-tab.active {
-  background: linear-gradient(135deg, #2E7D32 0%, #388E3C 100%);
-  border-color: #2dd4bf;
-  color: white;
-  box-shadow: 0 6px 20px rgba(45, 212, 191, 0.4);
+  background: linear-gradient(135deg, var(--brand-gold) 0%, var(--brand-gold-dark) 100%);
+  border-color: var(--brand-gold);
+  color: var(--brand-midnight);
+  box-shadow: 0 6px 20px rgba(249, 228, 164, 0.35);
 }
 
 .tab-icon {
@@ -116,24 +116,24 @@
 }
 
 .info-card {
-  background: rgba(26, 26, 46, 0.8);
+  background: rgba(19, 45, 74, 0.7);
   padding: 1.5rem;
   border-radius: 12px;
-  border: 1px solid rgba(45, 212, 191, 0.2);
+  border: 1px solid var(--border-color);
   backdrop-filter: blur(10px);
 }
 
 .info-card h3 {
   margin: 0 0 1rem 0;
   font-size: 1.2rem;
-  color: #2dd4bf;
+  color: var(--brand-teal);
   font-weight: 600;
 }
 
 .info-card p {
   margin: 0;
   line-height: 1.7;
-  color: #dee2e6;
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
@@ -141,7 +141,7 @@
   margin: 0;
   padding-left: 1.5rem;
   line-height: 1.8;
-  color: #dee2e6;
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .info-card strong {
-  color: #FFD966;
+  color: var(--brand-gold);
 }
 
 /* Responsive Design */
@@ -186,43 +186,14 @@
   }
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: light) {
-  .lsi-page {
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
-  }
-
-  .lsi-page-header {
-    background: rgba(255, 255, 255, 0.7);
-  }
-
-  .lsi-tab {
-    background: rgba(255, 255, 255, 0.8);
-    color: #1a1a2e;
-  }
-
-  .lsi-tab:hover {
-    background: rgba(45, 212, 191, 0.2);
-  }
-
-  .info-card {
-    background: rgba(255, 255, 255, 0.9);
-  }
-
-  .info-card p,
-  .info-card ol {
-    color: #333;
-  }
-}
-
 /* Accessibility */
 .lsi-tab:focus-visible {
-  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: 2px;
 }
 
 .info-card:focus-visible {
-  outline: var(--focus-ring-width, 3px) solid var(--focus-ring-color, #4CAF50);
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: 2px;
 }
 
@@ -230,7 +201,7 @@
 .lsi-loading {
   text-align: center;
   padding: 4rem 2rem;
-  color: #adb5bd;
+  color: var(--text-tertiary);
 }
 
 .lsi-loading-spinner {

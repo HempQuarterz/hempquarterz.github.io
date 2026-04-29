@@ -49,50 +49,55 @@ const TimelineViewer = ({ book, chapter, verse, onNavigate }) => {
    * Build chronological timeline events from verse and its references
    */
   async function buildTimelineEvents(currentBook, currentChapter, currentVerse, references) {
+    // Limit cross-refs to 8 for performance, then load current verse + all
+    // refs concurrently. Previously this was sequential — Promise.all means
+    // 9 fetches happen in one network round-trip rather than 9 in series.
+    const refsToLoad = references.slice(0, 8);
+    const [currentResult, ...refResults] = await Promise.all([
+      getVerse('WEB', currentBook, currentChapter, currentVerse).catch((err) => {
+        console.error('Failed to load current verse:', err);
+        return null;
+      }),
+      ...refsToLoad.map((ref) =>
+        getVerse('WEB', ref.target_book, ref.target_chapter, ref.target_verse).catch((err) => {
+          console.error(`Failed to load reference ${ref.target_book}:`, err);
+          return null;
+        })
+      ),
+    ]);
+
     const events = [];
 
-    // Add current verse as the center event
-    try {
-      const currentVerseData = await getVerse('WEB', currentBook, currentChapter, currentVerse);
-      if (currentVerseData) {
-        events.push({
-          id: `${currentBook}_${currentChapter}_${currentVerse}`,
-          book: currentBook,
-          chapter: currentChapter,
-          verse: currentVerse,
-          text: currentVerseData.text,
-          timestamp: getVerseTimestamp(currentBook, currentChapter, currentVerse),
-          isCurrent: true,
-          type: 'current',
-          era: getEra(currentBook),
-        });
-      }
-    } catch (err) {
-      console.error('Failed to load current verse:', err);
+    if (currentResult) {
+      events.push({
+        id: `${currentBook}_${currentChapter}_${currentVerse}`,
+        book: currentBook,
+        chapter: currentChapter,
+        verse: currentVerse,
+        text: currentResult.text,
+        timestamp: getVerseTimestamp(currentBook, currentChapter, currentVerse),
+        isCurrent: true,
+        type: 'current',
+        era: getEra(currentBook),
+      });
     }
 
-    // Add cross-reference events
-    for (const ref of references.slice(0, 8)) { // Limit to 8 for performance
-      try {
-        const refVerseData = await getVerse('WEB', ref.target_book, ref.target_chapter, ref.target_verse);
-        if (refVerseData) {
-          events.push({
-            id: `${ref.target_book}_${ref.target_chapter}_${ref.target_verse}`,
-            book: ref.target_book,
-            chapter: ref.target_chapter,
-            verse: ref.target_verse,
-            text: refVerseData.text,
-            timestamp: getVerseTimestamp(ref.target_book, ref.target_chapter, ref.target_verse),
-            isCurrent: false,
-            type: ref.link_type || 'related',
-            era: getEra(ref.target_book),
-            relationDescription: ref.description || `Related to ${currentBook} ${currentChapter}:${currentVerse}`,
-          });
-        }
-      } catch (err) {
-        console.error(`Failed to load reference ${ref.target_book}:`, err);
-      }
-    }
+    refsToLoad.forEach((ref, idx) => {
+      const refVerseData = refResults[idx];
+      if (!refVerseData) return;
+      events.push({
+        id: `${ref.target_book}_${ref.target_chapter}_${ref.target_verse}`,
+        book: ref.target_book,
+        chapter: ref.target_chapter,
+        verse: ref.target_verse,
+        text: refVerseData.text,
+        timestamp: getVerseTimestamp(ref.target_book, ref.target_chapter, ref.target_verse),
+        isCurrent: false,
+        type: ref.link_type || 'related',
+        era: getEra(ref.target_book),
+        relationDescription: ref.description || `Related to ${currentBook} ${currentChapter}:${currentVerse}`,
+      });
+    });
 
     // Sort by chronological order (based on biblical book order)
     return events.sort((a, b) => a.timestamp - b.timestamp);

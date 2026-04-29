@@ -98,10 +98,12 @@ const SearchResults = ({ results, query, onNavigate, onLoadMore, loading = false
     }
 
     return (
-      <div
+      <button
+        type="button"
         key={`${verse.manuscript_id}-${verse.book}-${verse.chapter}-${verse.verse}`}
         className="search-result-item verse-result"
         onClick={() => handleVerseClick(verse)}
+        aria-label={`Open ${reference} from ${manuscript.name || manuscript.code || 'manuscript'}`}
       >
         <div className="verse-result-header">
           <span className="verse-reference">{reference}</span>
@@ -122,7 +124,7 @@ const SearchResults = ({ results, query, onNavigate, onLoadMore, loading = false
             )}
           </div>
         )}
-      </div>
+      </button>
     );
   };
 
@@ -130,10 +132,13 @@ const SearchResults = ({ results, query, onNavigate, onLoadMore, loading = false
     const isExpanded = expandedLexicon.has(entry.strong_number);
 
     return (
-      <div
+      <button
+        type="button"
         key={entry.strong_number}
         className="search-result-item lexicon-result"
         onClick={() => toggleLexiconExpansion(entry.strong_number)}
+        aria-expanded={isExpanded}
+        aria-label={`${entry.strong_number} ${entry.transliteration} — ${isExpanded ? 'collapse' : 'expand'} definition`}
       >
         <div className="lexicon-result-header">
           <span className="lexicon-strong">{entry.strong_number}</span>
@@ -147,7 +152,7 @@ const SearchResults = ({ results, query, onNavigate, onLoadMore, loading = false
         {!isExpanded && entry.definition?.length > 150 && (
           <div className="lexicon-expand-hint">Click to read more...</div>
         )}
-      </div>
+      </button>
     );
   };
 

@@ -477,20 +477,29 @@
 /* Verse Result Styles */
 
 .search-result-item {
-  background: white;
-  border: 1px solid #e0e0e0;
+  /* Native <button> reset — these are now semantic buttons. */
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+  display: block;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 1rem;
   transition: all 0.2s;
-}
-
-.verse-result {
+  color: inherit;
   cursor: pointer;
 }
 
+.search-result-item:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 2px;
+}
+
 .verse-result:hover {
-  border-color: #2E7D32;
-  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
+  border-color: var(--accent-primary);
+  box-shadow: 0 2px 8px rgba(249, 228, 164, 0.18);
   transform: translateY(-2px);
 }
 
@@ -547,12 +556,8 @@
 
 /* Lexicon Result Styles */
 
-.lexicon-result {
-  cursor: pointer;
-}
-
 .lexicon-result:hover {
-  border-color: #D4AF37;
+  border-color: var(--brand-gold);
   box-shadow: 0 2px 8px rgba(212, 175, 55, 0.15);
 }
 

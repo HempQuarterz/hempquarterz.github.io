@@ -108,10 +108,6 @@ const InterlinearViewer = ({
           verse
         );
 
-        if (data.length === 0) {
-          setError('No word alignment data available for this verse');
-        }
-
         setAlignments(data);
       } catch (err) {
         console.error('Error loading alignments:', err);
@@ -127,8 +123,29 @@ const InterlinearViewer = ({
   }, [sourceManuscript, targetManuscript, book, chapter, verse]);
 
   if (loading) return <Loading message="Loading interlinear view..." />;
-  if (error) return <div className="interlinear-error">{error}</div>;
-  if (alignments.length === 0) return null;
+  if (error) return <div className="interlinear-error" role="alert">{error}</div>;
+
+  // Empty-state: alignment data doesn't exist yet for this manuscript pair.
+  // Common case: EOTC manuscripts (CHARLES, BUDGE, GEEZ) have no word-level
+  // alignments imported. Show a friendly explanation rather than rendering
+  // nothing (which previously made the panel look broken).
+  if (alignments.length === 0) {
+    return (
+      <div className="interlinear-empty">
+        <h3>Interlinear View</h3>
+        <p>
+          Word-by-word alignment is not yet available for{' '}
+          <strong>{sourceManuscript}</strong> ↔ <strong>{targetManuscript}</strong>{' '}
+          on {book} {chapter}:{verse}.
+        </p>
+        <p className="interlinear-empty-hint">
+          Interlinear data currently exists for the WLC↔WEB Hebrew/English pair.
+          Coverage for additional manuscripts (including the Ethiopian canon)
+          is planned for a future release.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="interlinear-viewer">

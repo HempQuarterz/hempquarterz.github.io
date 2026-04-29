@@ -14,7 +14,17 @@ import '../styles/parallel-passage.css';
 
 const sanitize = (html) => DOMPurify.sanitize(html, { ALLOWED_TAGS: ['span', 'em', 'strong', 'mark'], ALLOWED_ATTR: ['class', 'title'] });
 
-const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
+// Books outside the WEB canon. When the source book is EOTC, fall back to
+// CHARLES (R.H. Charles English translation) so parallel passages from
+// 1 Enoch / Jubilees / Ascension of Isaiah / Meqabyan / Kebra Nagast actually
+// render text instead of an empty card.
+const EOTC_BOOKS = new Set(['ENO', 'JUB', 'ASI', '1MQ', '2MQ', '3MQ', 'MEQ', 'KNG', 'TGO', 'GMA']);
+const resolveManuscript = (manuscript, bookCode) => {
+  if (manuscript) return manuscript;
+  return EOTC_BOOKS.has(bookCode) ? 'CHARLES' : 'WEB';
+};
+
+const ParallelPassageViewer = ({ book, chapter, verse, onNavigate, sourceManuscript }) => {
   const [parallelPassages, setParallelPassages] = useState([]);
   const [selectedParallels, setSelectedParallels] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -57,37 +67,45 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
 
       const newVerses = {};
 
-      // Load source verse
+      // Load source verse — fall back to CHARLES for EOTC books, WEB otherwise.
       const sourceKey = `${book}_${chapter}_${verse}`;
+      const sourceMs = resolveManuscript(sourceManuscript, book);
       try {
-        const sourceVerse = await getVerse('WEB', book, chapter, verse);
+        const sourceVerse = await getVerse(sourceMs, book, chapter, verse);
         if (sourceVerse) {
           const restoredVerse = showRestored ? await restoreVerse(sourceVerse) : sourceVerse;
           newVerses[sourceKey] = restoredVerse;
         }
       } catch (err) {
-        console.error(`Failed to load source verse ${sourceKey}:`, err);
+        console.error(`Failed to load source verse ${sourceKey} from ${sourceMs}:`, err);
       }
 
-      // Load parallel verses
-      for (const parallel of selectedParallels) {
-        const key = `${parallel.target_book}_${parallel.target_chapter}_${parallel.target_verse}`;
-        try {
-          const parallelVerse = await getVerse('WEB', parallel.target_book, parallel.target_chapter, parallel.target_verse);
-          if (parallelVerse) {
+      // Load parallel verses in parallel — each parallel target may resolve to
+      // a different manuscript (EOTC fallback for non-WEB-canon books).
+      const parallelResults = await Promise.all(
+        selectedParallels.map(async (parallel) => {
+          const key = `${parallel.target_book}_${parallel.target_chapter}_${parallel.target_verse}`;
+          const ms = resolveManuscript(sourceManuscript, parallel.target_book);
+          try {
+            const parallelVerse = await getVerse(ms, parallel.target_book, parallel.target_chapter, parallel.target_verse);
+            if (!parallelVerse) return null;
             const restoredVerse = showRestored ? await restoreVerse(parallelVerse) : parallelVerse;
-            newVerses[key] = restoredVerse;
+            return [key, restoredVerse];
+          } catch (err) {
+            console.error(`Failed to load parallel verse ${key} from ${ms}:`, err);
+            return null;
           }
-        } catch (err) {
-          console.error(`Failed to load parallel verse ${key}:`, err);
-        }
+        })
+      );
+      for (const entry of parallelResults) {
+        if (entry) newVerses[entry[0]] = entry[1];
       }
 
       setVerses(newVerses);
     }
 
     loadVerses();
-  }, [selectedParallels, book, chapter, verse, showRestored]);
+  }, [selectedParallels, book, chapter, verse, showRestored, sourceManuscript]);
 
   const handleSelectParallel = (parallel) => {
     // Toggle selection
@@ -213,7 +231,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
                         : sourceVerse.text)
                     }}
                   />
-                  <div className="pp-citation">World English Bible</div>
+                  <div className="pp-citation">{sourceVerse.manuscripts?.name || sourceVerse.manuscript || 'World English Bible'}</div>
                 </>
               ) : (
                 <p className="pp-loading-text">Loading...</p>
@@ -251,7 +269,7 @@ const ParallelPassageViewer = ({ book, chapter, verse, onNavigate }) => {
                             : parallelVerse.text)
                         }}
                       />
-                      <div className="pp-citation">World English Bible</div>
+                      <div className="pp-citation">{parallelVerse.manuscripts?.name || parallelVerse.manuscript || 'World English Bible'}</div>
                     </>
                   ) : (
                     <p className="pp-loading-text">Loading...</p>
