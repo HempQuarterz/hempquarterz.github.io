@@ -83,6 +83,40 @@ export const MANIFEST_REGISTRY = Object.freeze({
     verified: true,
   },
 
+  // Cambridge University Library — MS Nn.2.41. 5th c. bilingual Greek + Latin
+  // codex of the Gospels and Acts; primary witness for the "Western" text-type.
+  // Manifest verified 2026-04-28: IIIF Presentation v2, 856 canvases, Image API
+  // v2 level 1 with 5762×6650 px source images.
+  BEZAE: {
+    manuscript: 'Codex Bezae',
+    source: 'https://cudl.lib.cam.ac.uk/view/MS-NN-00002-00041',
+    manifestRoot: 'https://cudl.lib.cam.ac.uk/iiif/MS-NN-00002-00041',
+    manifests: {},
+    verified: true,
+  },
+
+  // Vatican Apostolic Library — Vat.gr.2125. 6th c. Greek codex of the LXX
+  // prophetic books (Marchalianus). Direct primary-source companion for our
+  // LXX text. Manifest verified 2026-04-28: IIIF Presentation v2, 1718 canvases.
+  MARCHALIANUS: {
+    manuscript: 'Codex Marchalianus',
+    source: 'https://digi.vatlib.it/view/MSS_Vat.gr.2125',
+    manifestRoot: 'https://digi.vatlib.it/iiif/MSS_Vat.gr.2125/manifest.json',
+    manifests: {},
+    verified: true,
+  },
+
+  // Vatican Apostolic Library — Reg.lat.7. ~8th c. Latin Vulgate Gospels;
+  // primary-source companion for our VUL text. Manifest verified 2026-04-28:
+  // IIIF Presentation v2, 294 canvases.
+  REG_LAT_7: {
+    manuscript: 'Reginensis Latinus 7 (Vulgate Gospels)',
+    source: 'https://digi.vatlib.it/view/MSS_Reg.lat.7',
+    manifestRoot: 'https://digi.vatlib.it/iiif/MSS_Reg.lat.7/manifest.json',
+    manifests: {},
+    verified: true,
+  },
+
   // Cambridge University Library digitization
   WLC: {
     manuscript: 'Westminster Leningrad Codex',

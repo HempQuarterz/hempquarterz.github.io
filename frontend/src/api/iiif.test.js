@@ -22,18 +22,23 @@ describe('resolveManifest', () => {
     expect(resolveManifest({ manuscriptId: 'NOPE', book: 'GEN', chapter: 1 })).toBeNull();
   });
 
-  it('returns the manuscript-level manifestRoot when no per-book manifest exists', () => {
-    const url = resolveManifest({ manuscriptId: 'VATICANUS', book: 'MAT', chapter: 1 });
-    expect(url).toBe(MANIFEST_REGISTRY.VATICANUS.manifestRoot);
-    expect(url).toMatch(/^https:\/\/digi\.vatlib\.it\/iiif\/.+\/manifest\.json$/);
+  it.each([
+    ['VATICANUS', /^https:\/\/digi\.vatlib\.it\/iiif\/MSS_Vat\.gr\.1209\/manifest\.json$/],
+    ['BEZAE', /^https:\/\/cudl\.lib\.cam\.ac\.uk\/iiif\/MS-NN-00002-00041$/],
+    ['MARCHALIANUS', /^https:\/\/digi\.vatlib\.it\/iiif\/MSS_Vat\.gr\.2125\/manifest\.json$/],
+    ['REG_LAT_7', /^https:\/\/digi\.vatlib\.it\/iiif\/MSS_Reg\.lat\.7\/manifest\.json$/],
+  ])('returns the verified manifestRoot for %s', (id, urlPattern) => {
+    const url = resolveManifest({ manuscriptId: id, book: 'MAT', chapter: 1 });
+    expect(url).toBe(MANIFEST_REGISTRY[id].manifestRoot);
+    expect(url).toMatch(urlPattern);
   });
 
   it('normalizes input casing for both manuscript and book', () => {
     expect(resolveManifest({ manuscriptId: 'vaticanus', book: 'mat', chapter: 1 })).toBe(
       MANIFEST_REGISTRY.VATICANUS.manifestRoot
     );
-    expect(resolveManifest({ manuscriptId: ' VATICANUS ', book: ' MAT ', chapter: 1 })).toBe(
-      MANIFEST_REGISTRY.VATICANUS.manifestRoot
+    expect(resolveManifest({ manuscriptId: ' bezae ', book: ' jhn ', chapter: 1 })).toBe(
+      MANIFEST_REGISTRY.BEZAE.manifestRoot
     );
   });
 
@@ -45,9 +50,12 @@ describe('resolveManifest', () => {
 });
 
 describe('hasVerifiedManifests', () => {
-  it('returns true for VATICANUS (has verified manifestRoot)', () => {
-    expect(hasVerifiedManifests('VATICANUS')).toBe(true);
-  });
+  it.each(['VATICANUS', 'BEZAE', 'MARCHALIANUS', 'REG_LAT_7'])(
+    'returns true for %s (verified manifestRoot)',
+    (id) => {
+      expect(hasVerifiedManifests(id)).toBe(true);
+    }
+  );
 
   it('returns false for unverified manuscripts', () => {
     expect(hasVerifiedManifests('SIN')).toBe(false);
@@ -62,13 +70,11 @@ describe('hasVerifiedManifests', () => {
 });
 
 describe('listVerifiedManuscripts', () => {
-  it('returns only manuscripts with at least one verified manifest path', () => {
+  it('returns all four verified codices, none of the unverified ones', () => {
     const list = listVerifiedManuscripts();
-    expect(list.length).toBeGreaterThan(0);
+    const ids = list.map((m) => m.id).sort();
+    expect(ids).toEqual(['BEZAE', 'MARCHALIANUS', 'REG_LAT_7', 'VATICANUS']);
     expect(list.every((m) => hasVerifiedManifests(m.id))).toBe(true);
-    const ids = list.map((m) => m.id);
-    expect(ids).toContain('VATICANUS');
-    expect(ids).not.toContain('SIN');
   });
 
   it('shape contract: id, manuscript, source', () => {
