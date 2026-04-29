@@ -35,6 +35,11 @@ export default defineConfig({
           if (id.includes('node_modules/dexie')) {
             return 'vendor-dexie';
           }
+          // OpenSeadragon (~120 KB) only loads when ManuscriptImageViewer
+          // mounts — keep it out of vendor-react so first paint stays lean.
+          if (id.includes('node_modules/openseadragon')) {
+            return 'vendor-openseadragon';
+          }
         },
       },
     },

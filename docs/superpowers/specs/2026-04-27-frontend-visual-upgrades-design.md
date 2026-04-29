@@ -1,15 +1,18 @@
 # Frontend Visual Upgrades — Design Spec
 
 **Date:** 2026-04-27
-**Status:** Partially shipped, in stabilization. Sections **D** (D.1, D.2, D.4), **A.2**
-(Hebrew biblical font swap — Ezra SIL chosen over SBL Hebrew, see §3.A.2), **B.1**
-(typography polish), full **B.2c** (root-level View Transitions + persistent dock/header
-+ anchor positioning), **B.3** (native CSS scroll-driven reveals), and **Phase B Subgrid**
-(re-scoped to ParallelPassageViewer — see §6 phasing notes) are now shipped via commits
-`005ae28`, `431234a`, `35f69b0`, `441fa52`, `a2e527b`, and `e7fbf85`. **All Section B
-work and the local-feel batches are complete.** Sections **A.1, D.3, Phase G Capacitor,
-NEW Phase H IIIF** remain pending; **Phase H IIIF + OpenSeadragon (manuscript imagery)**
-is the next ship — it's the biggest "feels different" lever on the roadmap (~3–4 days).
+**Status:** Partially shipped. Sections **D** (D.1, D.2, D.4), **A.2** (Hebrew biblical
+font swap — Ezra SIL chosen over SBL Hebrew, see §3.A.2), **B.1** (typography polish),
+full **B.2c** (root-level View Transitions + persistent dock/header + anchor positioning),
+**B.3** (native CSS scroll-driven reveals), and **Phase B Subgrid** (re-scoped to
+ParallelPassageViewer — see §6 phasing notes) are now shipped via commits `005ae28`,
+`431234a`, `35f69b0`, `441fa52`, `a2e527b`, and `e7fbf85`. **All Section B work and the
+local-feel batches are complete.** Stabilization pass shipped in `87edd8b` (Lighthouse
+production verified Perf 92 / A11y 100 / BP 100 / SEO 100 + 18 new regression assertions
+guarding the shipped CSS/HTML). **Phase H** in progress: slice 1 (OpenSeadragon dep +
+`api/iiif.js` resolver scaffold + `ManuscriptImageViewer.jsx` lazy component + tests)
+shipped, slice 2 (live UI toggle + verified manifest URLs) pending. Sections **A.1
+(remaining manifests), D.3, Phase G Capacitor** still ahead.
 **Live URL:** https://all4yah.com (Phase F shipped)
 **Scope:** Three linked axes — manuscript authenticity (A), reading experience (B),
 offline-first architecture (D) — unified under a single architectural through-line.
@@ -42,12 +45,12 @@ explicit "✅ shipped" / "⏳ pending" / "❓ verify" markers.
 | Section B.1 — typography polish (`text-wrap: pretty`, `hanging-punctuation`, etc.) | ✅ shipped | `35f69b0` — applied to `.reader-prose, .scripture-text, .verse-text` in `scripture-reader.css` |
 | Section B.3 — native CSS scroll-driven reveals | ✅ shipped | `a2e527b` — `scroll-effects.css` adds `view()`-driven verse entry fade + `scroll(root)`-driven parchment aging deepen, gated by `@supports` + `prefers-reduced-motion: no-preference` |
 | Phase B Subgrid (re-scoped) | ✅ shipped | `e7fbf85` — original premise was obsolete (no shipped side-by-side multi-language view). Re-scoped to `ParallelPassageViewer.pp-grid` for cross-card baseline alignment of titles + citations; orphaned `.parallel-view` CSS in `manuscripts.css` deleted. |
-| Section B.3 — native CSS scroll-driven reveals | ⏳ pending | not shipped |
 | Section A.2 — biblical Hebrew font swap | ✅ shipped | `441fa52` — chose **Ezra SIL** (OFL, Google Fonts) over SBL Hebrew per §11 open question 2; cleaner path, no self-hosting, no click-through license. SBL Hebrew documented as future upgrade candidate in `docs/FONT_LICENSES.md`. |
-| Section A.1 — IIIF + OpenSeadragon (manuscript page imagery) | ⏳ pending | NEW Phase H |
-| Section D.3 — IIIF tile caching layer in custom SW | ⏳ pending | depends on A.1 |
-| Phase B — CSS Subgrid for parallel manuscript viewer | ⏳ pending | not shipped |
-| Phase G — Capacitor mobile wrap | ⏳ pending | post-stabilization |
+| Stabilization pass | ✅ shipped | `87edd8b` — Lighthouse prod verified (Perf 92 / A11y 100 / BP 100 / SEO 100, LCP 1.4s, TBT 0ms, CLS 0.001); 18 new regression assertions in `frontend/src/test/visual-upgrades.regression.test.js` covering B.1, B.2c, A.2, B.3, Phase B Subgrid; `.gitignore` swallows stray Lighthouse Chrome-profile artifacts. |
+| Section A.1 — IIIF resolver + viewer scaffold (Phase H slice 1) | 🚧 slice 1 shipped | OpenSeadragon 6 installed + `vite.config.js` `vendor-openseadragon` chunk rule + `api/iiif.js` registry/resolver (all entries `verified: false`) + `components/ManuscriptImageViewer.jsx` (lazy-loadable, OpenSeadragon-backed, text-only fallback when no manifest resolves) + 8 unit tests. Not yet wired into live UI — slice 2 will add the toggle + first verified manifest URL. |
+| Section A.1 — IIIF live integration (Phase H slice 2) | ⏳ pending | wires viewer into ManuscriptCarousel/ConsolidatedPanel behind a toggle, verifies first public manifest URL (e.g. Vaticanus), confirms tiles load. |
+| Section D.3 — IIIF tile caching layer in custom SW | ⏳ pending | depends on A.1 slice 2; spec text in §5.D.3 already drafted. |
+| Phase G — Capacitor mobile wrap | ⏳ pending | post-Phase H |
 
 **Architectural deviation worth flagging:** the original spec called for `vite-plugin-pwa`
 + Workbox runtime caching. The shipped implementation is a hand-rolled `public/sw.js` (3.2
