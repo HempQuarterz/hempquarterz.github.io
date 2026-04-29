@@ -215,8 +215,9 @@ const ManuscriptsPage = () => {
         )}
       </ManuscriptViewer>
 
-      {/* Floating Action Buttons */}
-      <div className="floating-actions">
+      {/* Floating Action Buttons — hidden in reader mode so the right edge
+          of the reading area isn't covered by the 4-FAB stack on mobile. */}
+      {!isReaderMode && <div className="floating-actions">
         {/* Browse Books Button */}
         <button
           onClick={() => setShowNavigator(true)}
@@ -256,7 +257,7 @@ const ManuscriptsPage = () => {
             </svg>
           </button>
         )}
-      </div>
+      </div>}
 
       {/* Bible Navigator - Full-screen book/chapter/verse browser */}
       <BibleNavigator

@@ -12,9 +12,17 @@ import { listVerifiedManuscripts } from '../api/iiif';
 
 const ManuscriptImageViewer = lazy(() => import('./ManuscriptImageViewer'));
 
+// `inset: 0` defaults to `100vh` for height; on iOS Safari that's the
+// LARGEST viewport (with URL bar hidden), so the bottom of the modal can
+// sit below the visible area when the URL bar is shown — hiding the close
+// button. `100dvh` (dynamic viewport height) tracks the visible viewport
+// and avoids that. iOS Safari 15.4+ / all modern browsers.
 const overlayStyle = {
   position: 'fixed',
-  inset: 0,
+  top: 0,
+  left: 0,
+  right: 0,
+  height: '100dvh',
   background: 'rgba(0, 0, 0, 0.78)',
   backdropFilter: 'blur(8px)',
   zIndex: 1000,

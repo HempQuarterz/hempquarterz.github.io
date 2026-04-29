@@ -335,6 +335,30 @@
   flex-wrap: wrap;
 }
 
+/* On mobile the manuscript-code chips (WLC / SBLGNT / BYZMT / N1904 /
+   ONKELOS / etc.) wrap into 2–3 ragged rows that look broken. Switch to
+   a single-row horizontal scroll strip with momentum scrolling — same
+   pattern as the codex picker tabs in the imagery modal. */
+@media (max-width: 768px) {
+  .search-filters {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 0.25rem;
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+  }
+  .search-filters::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-chip {
+    flex-shrink: 0;
+  }
+}
+
 .filter-chip {
   padding: 0.375rem 0.875rem;
   border-radius: 20px;

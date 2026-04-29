@@ -409,7 +409,14 @@
   }
 }
 
-/* Column Header */
+/* Column Header
+   NOTE: must remain `position: relative`, NOT `sticky`. The previous
+   `sticky` rule caused iOS Safari (and other engines on flex layouts) to
+   take the header out of flex flow — its sibling `.nav-col-content`
+   would then start at the wrapper's top edge (y=0) with the header
+   "floating" on top, occluding the first row of the chapter/verse grid.
+   Don't reintroduce `position: sticky` here without verifying the grid's
+   first row stays visible on mobile. */
 .nav-col-header {
   padding: 1rem;
   border-bottom: 1px solid rgba(51, 65, 85, 0.5);
@@ -417,8 +424,7 @@
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 10;
-  position: sticky;
-  top: 0;
+  position: relative;
   flex-shrink: 0;
 }
 
