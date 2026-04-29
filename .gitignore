@@ -103,3 +103,10 @@ database/.claude-flow/
 # Tooling ephemera
 .superpowers/
 frontend/.claude-flow/
+.codex
+
+# Lighthouse CLI Chrome user-profile dirs (created when running on WSL —
+# the CLI's Windows-style temp path becomes a literal dirname). Match
+# anywhere in the tree.
+**/C:\\Users\\*
+C:\\Users\\*
