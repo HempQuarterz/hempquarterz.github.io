@@ -6,8 +6,10 @@
 import { describe, it, expect } from 'vitest';
 import {
   resolveManifest,
+  resolveCanvasIndex,
   hasVerifiedManifests,
   listVerifiedManuscripts,
+  CANVAS_MAPS,
   MANIFEST_REGISTRY,
   MIRRORED_PAGES,
 } from './iiif';
@@ -84,6 +86,63 @@ describe('listVerifiedManuscripts', () => {
         manuscript: expect.any(String),
         source: expect.stringMatching(/^https:\/\//),
       });
+    }
+  });
+});
+
+describe('resolveCanvasIndex', () => {
+  it('returns the curated entry when (codex, book) is in CANVAS_MAPS', () => {
+    expect(resolveCanvasIndex({ manuscriptId: 'VATICANUS', book: 'GEN' })).toBe(4);
+    expect(resolveCanvasIndex({ manuscriptId: 'BEZAE', book: 'MAT' })).toBe(2);
+    expect(resolveCanvasIndex({ manuscriptId: 'REG_LAT_7', book: 'MAT' })).toBe(2);
+  });
+
+  it('falls back to coverCanvases for unmapped books on a verified codex', () => {
+    expect(resolveCanvasIndex({ manuscriptId: 'VATICANUS', book: 'MAT' })).toBe(
+      MANIFEST_REGISTRY.VATICANUS.coverCanvases
+    );
+    expect(resolveCanvasIndex({ manuscriptId: 'MARCHALIANUS', book: 'ISA' })).toBe(
+      MANIFEST_REGISTRY.MARCHALIANUS.coverCanvases
+    );
+  });
+
+  it('returns 0 for unknown manuscripts (no coverCanvases)', () => {
+    expect(resolveCanvasIndex({ manuscriptId: 'NOPE', book: 'GEN' })).toBe(0);
+  });
+
+  it('normalizes case + whitespace on manuscriptId and book', () => {
+    expect(resolveCanvasIndex({ manuscriptId: 'vaticanus', book: 'gen' })).toBe(4);
+    expect(resolveCanvasIndex({ manuscriptId: ' BEZAE ', book: ' mat ' })).toBe(2);
+  });
+
+  it('handles missing inputs without throwing', () => {
+    expect(() => resolveCanvasIndex({})).not.toThrow();
+    expect(resolveCanvasIndex({})).toBe(0);
+  });
+});
+
+describe('CANVAS_MAPS shape contract', () => {
+  it('every canvas index is a non-negative integer', () => {
+    for (const [codex, book2idx] of Object.entries(CANVAS_MAPS)) {
+      for (const [book, idx] of Object.entries(book2idx)) {
+        expect(Number.isInteger(idx), `${codex}.${book}`).toBe(true);
+        expect(idx, `${codex}.${book}`).toBeGreaterThanOrEqual(0);
+      }
+    }
+  });
+
+  it('CANVAS_MAPS and its child maps are frozen', () => {
+    expect(Object.isFrozen(CANVAS_MAPS)).toBe(true);
+    for (const child of Object.values(CANVAS_MAPS)) {
+      expect(Object.isFrozen(child)).toBe(true);
+    }
+  });
+
+  it('verified codices in MANIFEST_REGISTRY declare numeric coverCanvases', () => {
+    for (const [id, entry] of Object.entries(MANIFEST_REGISTRY)) {
+      if (!entry.verified) continue;
+      expect(Number.isFinite(entry.coverCanvases), `${id}.coverCanvases`).toBe(true);
+      expect(entry.coverCanvases).toBeGreaterThanOrEqual(0);
     }
   });
 });

@@ -301,7 +301,12 @@ const ManuscriptsPage = () => {
 
       {showImagery && (
         <Suspense fallback={null}>
-          <ManuscriptImageModal open onClose={() => setShowImagery(false)} />
+          <ManuscriptImageModal
+            open
+            onClose={() => setShowImagery(false)}
+            book={selectedVerse.book}
+            chapter={selectedVerse.chapter}
+          />
         </Suspense>
       )}
     </div>

@@ -11,7 +11,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import OpenSeadragon from 'openseadragon';
-import { resolveManifest } from '../api/iiif';
+import { resolveManifest, resolveCanvasIndex } from '../api/iiif';
 
 /**
  * Extract IIIF Image API tile-source URLs from a IIIF Presentation v2/v3
@@ -102,10 +102,17 @@ const ManuscriptImageViewer = ({
   useEffect(() => {
     if (!tileSources || !containerRef.current) return undefined;
 
+    // Initial canvas: use the resolver so book/chapter context lands on the
+    // right page. Clamped to the array bounds so out-of-range curated entries
+    // never crash OSD's sequence init.
+    const requested = resolveCanvasIndex({ manuscriptId, book, chapter });
+    const initialPage = Math.min(Math.max(0, requested), tileSources.length - 1);
+
     const viewer = OpenSeadragon({
       element: containerRef.current,
       tileSources,
       sequenceMode: tileSources.length > 1,
+      initialPage,
       showReferenceStrip: false,
       prefixUrl: 'https://cdn.jsdelivr.net/npm/openseadragon@6/build/openseadragon/images/',
       showNavigator: true,
@@ -122,7 +129,7 @@ const ManuscriptImageViewer = ({
       viewer.destroy();
       viewerRef.current = null;
     };
-  }, [tileSources]);
+  }, [tileSources, manuscriptId, book, chapter]);
 
   if (!manifestUrl) {
     return (

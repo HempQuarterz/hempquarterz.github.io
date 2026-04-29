@@ -66,7 +66,7 @@ const pickerBtnStyle = (active) => ({
   fontSize: '0.85rem',
 });
 
-const ManuscriptImageModal = ({ open, onClose, initialManuscriptId }) => {
+const ManuscriptImageModal = ({ open, onClose, initialManuscriptId, book, chapter }) => {
   const verified = listVerifiedManuscripts();
   const [activeId, setActiveId] = useState(initialManuscriptId ?? verified[0]?.id ?? null);
 
@@ -136,8 +136,11 @@ const ManuscriptImageModal = ({ open, onClose, initialManuscriptId }) => {
             }
           >
             <ManuscriptImageViewer
+              key={`${active.id}:${book ?? '_'}:${chapter ?? '_'}`}
               manuscriptId={active.id}
-              ariaLabel={`${active.manuscript} digital facsimile`}
+              book={book}
+              chapter={chapter}
+              ariaLabel={`${active.manuscript} digital facsimile${book ? `, ${book} ${chapter ?? ''}`.trim() : ''}`}
               height="100%"
             />
           </Suspense>
