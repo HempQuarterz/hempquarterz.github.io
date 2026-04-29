@@ -410,20 +410,20 @@
 }
 
 /* Column Header
-   NOTE: must remain `position: relative`, NOT `sticky`. The previous
-   `sticky` rule caused iOS Safari (and other engines on flex layouts) to
-   take the header out of flex flow — its sibling `.nav-col-content`
-   would then start at the wrapper's top edge (y=0) with the header
-   "floating" on top, occluding the first row of the chapter/verse grid.
-   Don't reintroduce `position: sticky` here without verifying the grid's
-   first row stays visible on mobile. */
+   Reported bug (both iOS Safari + Android Chrome): chapter/verse grid
+   row 1 was rendering occluded — visible only as dim "halos" below the
+   header. Diagnosis after multiple fix attempts pointed at the
+   `backdrop-filter: blur(...)` creating a stacking context that
+   visually clipped/blurred the row directly below it on mobile, plus
+   `position: sticky` (since removed) compounding the issue.
+
+   Fix is now belt-and-suspenders: solid background (no backdrop blur),
+   normal flow positioning (no z-index, no sticky). Don't reintroduce
+   `backdrop-filter` here without re-testing on real mobile devices. */
 .nav-col-header {
   padding: 1rem;
   border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-  background: rgba(15, 23, 41, 0.6);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 10;
+  background: rgba(8, 12, 24, 0.95);
   position: relative;
   flex-shrink: 0;
 }
@@ -530,18 +530,19 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0.5rem;
-  /* Belt-and-suspenders: scroll-padding stops the sticky header from
-     occluding the first row when the user momentum-scrolls back to the top
-     on iOS Safari. */
   scroll-padding-top: 0.75rem;
+  /* Clean stacking context — guarantees grid items can never end up
+     visually beneath the header even if a transform/animation creates
+     an unexpected stacking situation. */
+  position: relative;
+  z-index: 0;
 }
 
-/* Extra breathing room above the first grid row on mobile — the sticky
-   header's backdrop-filter blur + flex layout has been observed clipping
-   the first row of chapters/verses on iOS Safari. */
+/* Generous top breathing room on mobile so the first row of chapters /
+   verses is unambiguously below the header. */
 @media (max-width: 767px) {
   .nav-col-content {
-    padding-top: 1rem;
+    padding-top: 1.25rem;
   }
 }
 
@@ -677,6 +678,13 @@
   background: rgba(51, 65, 85, 0.6);
   border-color: #475569;
   color: #e2e8f0;
+}
+
+/* Tap feedback (replacing framer-motion's whileTap which caused mobile
+   sticky-state issues). */
+.nav-grid-item:active {
+  transform: scale(0.96);
+  transition: transform 80ms ease-out;
 }
 
 .nav-grid-item--number {

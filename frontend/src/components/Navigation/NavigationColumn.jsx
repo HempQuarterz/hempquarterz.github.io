@@ -9,10 +9,14 @@ import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 
-// Number grid uses a single container fade — per-item stagger was hiding the
-// first row on mobile (likely iOS Safari interaction with the sticky header
-// + backdrop-filter pattern). With container fade only, all 36 numbers render
-// in their final position immediately and visually fade in together.
+// Number grid uses no framer-motion at all — all variants and `whileHover`/
+// `whileTap` removed because they were the cause of row 1 being hidden on
+// real iOS + Android. Touch devices interpret `whileHover` as sticky-hover
+// and `whileTap` modifies transform during the tap, which compounded with
+// the column header's backdrop-filter to occlude the first row.
+// CSS-only hover/active states are applied via the existing
+// `.nav-grid-item:hover` / `.nav-grid-item:active` rules in
+// bible-navigator.css.
 const gridContainerVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.2 } }
@@ -171,12 +175,11 @@ const NavigationColumn = ({
             ))}
           </motion.div>
         ) : (
-          /* Number Grid for Chapters & Verses */
-          <motion.div
+          /* Number Grid for Chapters & Verses — plain HTML, no framer-motion.
+             Hover/active visuals come from CSS (`.nav-grid-item:hover` /
+             `:active`) so touch devices don't get sticky-hover transforms. */
+          <div
             className="nav-grid nav-grid--numbers"
-            variants={gridContainerVariants}
-            initial="hidden"
-            animate="visible"
             key={`${type}-${filteredData.length}`}
           >
             {filteredData.map((item, idx) => {
@@ -184,11 +187,10 @@ const NavigationColumn = ({
               const label = typeof item === 'object' ? item.name : item;
 
               return (
-                <motion.button
+                <button
                   key={idx}
+                  type="button"
                   onClick={() => onSelect(item)}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
                   className={`nav-grid-item nav-grid-item--number ${
                     isSelected ? 'nav-grid-item--selected nav-item-selected' : ''
                   }`}
@@ -196,10 +198,10 @@ const NavigationColumn = ({
                   <span className="nav-grid-item-label nav-grid-item-label--number">
                     {label}
                   </span>
-                </motion.button>
+                </button>
               );
             })}
-          </motion.div>
+          </div>
         )}
       </div>
     </div>
