@@ -9,26 +9,13 @@ import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 
-// Stagger animation variants for number grids
-const gridVariants = {
+// Number grid uses a single container fade — per-item stagger was hiding the
+// first row on mobile (likely iOS Safari interaction with the sticky header
+// + backdrop-filter pattern). With container fade only, all 36 numbers render
+// in their final position immediately and visually fade in together.
+const gridContainerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.015,
-      delayChildren: 0.1
-    }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.9, y: 10 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 150, damping: 15 }
-  }
+  visible: { opacity: 1, transition: { duration: 0.2 } }
 };
 
 // Book list row animation
@@ -187,7 +174,7 @@ const NavigationColumn = ({
           /* Number Grid for Chapters & Verses */
           <motion.div
             className="nav-grid nav-grid--numbers"
-            variants={gridVariants}
+            variants={gridContainerVariants}
             initial="hidden"
             animate="visible"
             key={`${type}-${filteredData.length}`}
@@ -199,7 +186,6 @@ const NavigationColumn = ({
               return (
                 <motion.button
                   key={idx}
-                  variants={itemVariants}
                   onClick={() => onSelect(item)}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}

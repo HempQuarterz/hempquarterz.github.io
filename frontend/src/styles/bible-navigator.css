@@ -524,6 +524,19 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0.5rem;
+  /* Belt-and-suspenders: scroll-padding stops the sticky header from
+     occluding the first row when the user momentum-scrolls back to the top
+     on iOS Safari. */
+  scroll-padding-top: 0.75rem;
+}
+
+/* Extra breathing room above the first grid row on mobile — the sticky
+   header's backdrop-filter blur + flex layout has been observed clipping
+   the first row of chapters/verses on iOS Safari. */
+@media (max-width: 767px) {
+  .nav-col-content {
+    padding-top: 1rem;
+  }
 }
 
 @media (min-width: 768px) {
