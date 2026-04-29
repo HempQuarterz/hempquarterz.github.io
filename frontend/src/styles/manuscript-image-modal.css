@@ -1,0 +1,77 @@
+/**
+ * ManuscriptImageModal responsive layout.
+ *
+ * Desktop: full-viewport panel (header + viewer fill the screen).
+ * Mobile (<769px): bottom-sheet pattern — sheet slides up from the bottom,
+ * occupies ~85 % of the dynamic viewport, has rounded top corners and a
+ * grab-handle, and the dimmed area above it remains tappable to dismiss.
+ */
+
+.miv-sheet {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  background: rgba(14, 35, 59, 0.96);
+  /* Desktop: take the full overlay; mobile rules override below. */
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .miv-sheet {
+    /* Push to bottom of the dimmed overlay (which is a flex column) so
+       the area above the sheet stays dimmed but clickable to dismiss. */
+    margin-top: auto;
+    flex: 0 0 auto;
+    /* 100dvh tracks the visible viewport, accounting for iOS Safari URL
+       bar. 88% leaves a comfortable dim band at the top. */
+    height: 88dvh;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4);
+    /* Slide up on enter — `prefers-reduced-motion` users skip it. */
+    animation: miv-sheet-rise 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  /* Grab handle visual — non-functional in v1 (no drag-to-dismiss yet);
+     it's a visual affordance that this is a sheet, not a full overlay. */
+  .miv-sheet::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    margin: 8px auto 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .miv-sheet {
+    animation: none;
+  }
+}
+
+@keyframes miv-sheet-rise {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+/* Codex picker pills: on mobile let the row scroll horizontally rather
+   than wrap (codex names like "Reginensis Latinus 7 (Vulgate Gospels)"
+   are too long to fit two abreast in a 390-px-wide sheet). */
+@media (max-width: 768px) {
+  .miv-sheet [role="tablist"] {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .miv-sheet [role="tablist"]::-webkit-scrollbar {
+    display: none;
+  }
+  .miv-sheet [role="tablist"] > button {
+    flex-shrink: 0;
+  }
+}

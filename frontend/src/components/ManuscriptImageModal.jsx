@@ -9,6 +9,7 @@
 
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { listVerifiedManuscripts } from '../api/iiif';
+import '../styles/manuscript-image-modal.css';
 
 const ManuscriptImageViewer = lazy(() => import('./ManuscriptImageViewer'));
 
@@ -96,67 +97,76 @@ const ManuscriptImageModal = ({ open, onClose, initialManuscriptId, book, chapte
 
   const active = verified.find((m) => m.id === activeId) ?? verified[0];
 
+  // Click on the dimmed overlay (above the sheet on mobile) closes the
+  // modal. Stop the event from triggering on clicks inside the sheet.
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) onClose?.();
+  };
+
   return (
     <div
       style={overlayStyle}
       role="dialog"
       aria-modal="true"
       aria-labelledby="manuscript-image-title"
+      onClick={handleOverlayClick}
     >
-      <header style={headerStyle}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <h2 id="manuscript-image-title" style={{ margin: 0, fontSize: '1.15rem' }}>
-            Manuscript page imagery
-          </h2>
-          {verified.length > 1 ? (
-            <div style={pickerStyle} role="tablist" aria-label="Codex picker">
-              {verified.map((m) => (
-                <button
-                  key={m.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={m.id === active?.id}
-                  style={pickerBtnStyle(m.id === active?.id)}
-                  onClick={() => setActiveId(m.id)}
-                >
-                  {m.manuscript}
-                </button>
-              ))}
-            </div>
-          ) : active ? (
-            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }}>
-              {active.manuscript}
-            </span>
-          ) : null}
-        </div>
-        <button type="button" onClick={onClose} style={closeBtnStyle} aria-label="Close manuscript imagery">
-          Close
-        </button>
-      </header>
-
-      <div style={bodyStyle}>
-        {active ? (
-          <Suspense
-            fallback={
-              <div style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', paddingTop: '4rem' }}>
-                Loading deep-zoom viewer…
+      <div className="miv-sheet">
+        <header style={headerStyle}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: 0 }}>
+            <h2 id="manuscript-image-title" style={{ margin: 0, fontSize: '1.15rem' }}>
+              Manuscript page imagery
+            </h2>
+            {verified.length > 1 ? (
+              <div style={pickerStyle} role="tablist" aria-label="Codex picker">
+                {verified.map((m) => (
+                  <button
+                    key={m.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={m.id === active?.id}
+                    style={pickerBtnStyle(m.id === active?.id)}
+                    onClick={() => setActiveId(m.id)}
+                  >
+                    {m.manuscript}
+                  </button>
+                ))}
               </div>
-            }
-          >
-            <ManuscriptImageViewer
-              key={`${active.id}:${book ?? '_'}:${chapter ?? '_'}`}
-              manuscriptId={active.id}
-              book={book}
-              chapter={chapter}
-              ariaLabel={`${active.manuscript} digital facsimile${book ? `, ${book} ${chapter ?? ''}`.trim() : ''}`}
-              height="100%"
-            />
-          </Suspense>
-        ) : (
-          <div style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', paddingTop: '4rem' }}>
-            No verified manuscript imagery is available yet.
+            ) : active ? (
+              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }}>
+                {active.manuscript}
+              </span>
+            ) : null}
           </div>
-        )}
+          <button type="button" onClick={onClose} style={closeBtnStyle} aria-label="Close manuscript imagery">
+            Close
+          </button>
+        </header>
+
+        <div style={bodyStyle}>
+          {active ? (
+            <Suspense
+              fallback={
+                <div style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', paddingTop: '4rem' }}>
+                  Loading deep-zoom viewer…
+                </div>
+              }
+            >
+              <ManuscriptImageViewer
+                key={`${active.id}:${book ?? '_'}:${chapter ?? '_'}`}
+                manuscriptId={active.id}
+                book={book}
+                chapter={chapter}
+                ariaLabel={`${active.manuscript} digital facsimile${book ? `, ${book} ${chapter ?? ''}`.trim() : ''}`}
+                height="100%"
+              />
+            </Suspense>
+          ) : (
+            <div style={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center', paddingTop: '4rem' }}>
+              No verified manuscript imagery is available yet.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
