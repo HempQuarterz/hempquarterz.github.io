@@ -136,7 +136,7 @@ const NavigationColumn = ({
           /* Book List with Testament Sections */
           <motion.div
             className="nav-book-list"
-            variants={gridVariants}
+            variants={gridContainerVariants}
             initial="hidden"
             animate="visible"
             key={`books-${filteredData.length}-${testamentFilter}`}
