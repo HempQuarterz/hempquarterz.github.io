@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import ManuscriptViewer from '../components/ManuscriptViewer';
@@ -11,7 +11,11 @@ import { searchAll, searchVerses } from '../api/search';
 import { setSelectedVerse } from '../manuscriptsSlice';
 import { getAdjacentChapter } from '../utils/bibleStructure';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
+import { listVerifiedManuscripts } from '../api/iiif';
 import '../styles/manuscripts.css';
+
+// Lazy: pulls in OpenSeadragon (~120 KB) only when the user opens the modal.
+const ManuscriptImageModal = lazy(() => import('../components/ManuscriptImageModal'));
 
 const ManuscriptsPage = () => {
   const dispatch = useDispatch();
@@ -28,6 +32,8 @@ const ManuscriptsPage = () => {
   const [searchOffset, setSearchOffset] = useState(0);
   const [loadingMore, setLoadingMore] = useState(false);
   const [showNavigator, setShowNavigator] = useState(false);
+  const [showImagery, setShowImagery] = useState(false);
+  const hasImagery = listVerifiedManuscripts().length > 0;
 
   // Sync URL params with Redux state
   useEffect(() => {
@@ -235,6 +241,21 @@ const ManuscriptsPage = () => {
         >
           <span style={{ fontWeight: 'bold' }}>G</span>
         </button>
+        {/* Manuscript Imagery Button — only shown when at least one IIIF
+            manifest in the registry is flagged verified. */}
+        {hasImagery && (
+          <button
+            onClick={() => setShowImagery(true)}
+            className="floating-action-btn"
+            aria-label="Open manuscript page imagery"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {/* Bible Navigator - Full-screen book/chapter/verse browser */}
@@ -276,6 +297,12 @@ const ManuscriptsPage = () => {
             />
           </div>
         </div>
+      )}
+
+      {showImagery && (
+        <Suspense fallback={null}>
+          <ManuscriptImageModal open onClose={() => setShowImagery(false)} />
+        </Suspense>
       )}
     </div>
   );

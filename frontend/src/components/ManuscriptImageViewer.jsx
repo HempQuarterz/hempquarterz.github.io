@@ -13,11 +13,20 @@ import { useEffect, useRef } from 'react';
 import OpenSeadragon from 'openseadragon';
 import { resolveManifest } from '../api/iiif';
 
-const ManuscriptImageViewer = ({ manuscriptId, book, chapter, height = 480 }) => {
+const ManuscriptImageViewer = ({
+  manifestUrl: manifestUrlProp,
+  manuscriptId,
+  book,
+  chapter,
+  height = 480,
+  ariaLabel,
+}) => {
   const containerRef = useRef(null);
   const viewerRef = useRef(null);
 
-  const manifestUrl = resolveManifest({ manuscriptId, book, chapter });
+  // Direct prop wins, otherwise resolve via the registry.
+  const manifestUrl =
+    manifestUrlProp ?? resolveManifest({ manuscriptId, book, chapter });
 
   useEffect(() => {
     if (!manifestUrl || !containerRef.current) return undefined;
@@ -25,13 +34,14 @@ const ManuscriptImageViewer = ({ manuscriptId, book, chapter, height = 480 }) =>
     const viewer = OpenSeadragon({
       element: containerRef.current,
       tileSources: manifestUrl,
-      prefixUrl: '/openseadragon/images/',
+      prefixUrl: 'https://cdn.jsdelivr.net/npm/openseadragon@6/build/openseadragon/images/',
       showNavigator: true,
       navigatorPosition: 'BOTTOM_RIGHT',
       gestureSettingsTouch: { pinchRotate: false },
       animationTime: 0.6,
       blendTime: 0.2,
       maxZoomPixelRatio: 3,
+      crossOriginPolicy: 'Anonymous',
     });
 
     viewerRef.current = viewer;
@@ -41,8 +51,6 @@ const ManuscriptImageViewer = ({ manuscriptId, book, chapter, height = 480 }) =>
     };
   }, [manifestUrl]);
 
-  // No verified manifest for this view — text-only fallback so the user still
-  // sees the verse content via the surrounding reader components.
   if (!manifestUrl) {
     return (
       <div
@@ -62,6 +70,11 @@ const ManuscriptImageViewer = ({ manuscriptId, book, chapter, height = 480 }) =>
     );
   }
 
+  const computedLabel =
+    ariaLabel ??
+    ([manuscriptId, book, chapter].filter(Boolean).join(' ') ||
+      'Manuscript page imagery');
+
   return (
     <div
       ref={containerRef}
@@ -71,9 +84,11 @@ const ManuscriptImageViewer = ({ manuscriptId, book, chapter, height = 480 }) =>
         height,
         background: 'rgba(0,0,0,0.4)',
         borderRadius: 8,
-        viewTransitionName: `codex-image-${manuscriptId}`,
+        viewTransitionName: manuscriptId
+          ? `codex-image-${String(manuscriptId).toLowerCase()}`
+          : undefined,
       }}
-      aria-label={`${manuscriptId} ${book} ${chapter} manuscript page`}
+      aria-label={computedLabel}
     />
   );
 };

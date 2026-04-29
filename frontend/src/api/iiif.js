@@ -72,12 +72,15 @@ export const MANIFEST_REGISTRY = Object.freeze({
     verified: false,
   },
 
-  // Vatican Apostolic Library
+  // Vatican Apostolic Library — Vat.gr.1209, 4th-century Greek codex (LXX + NT).
+  // Manifest verified 2026-04-28: returns IIIF Presentation v2 with 1555 canvases
+  // and IIIF Image API v2 level 2 tiles; deep-zoom works in OpenSeadragon.
   VATICANUS: {
     manuscript: 'Codex Vaticanus',
     source: 'https://digi.vatlib.it/view/MSS_Vat.gr.1209',
+    manifestRoot: 'https://digi.vatlib.it/iiif/MSS_Vat.gr.1209/manifest.json',
     manifests: {},
-    verified: false,
+    verified: true,
   },
 
   // Cambridge University Library digitization
@@ -98,8 +101,17 @@ const normalizeBook = (book) => String(book ?? '').trim().toUpperCase();
 /**
  * Resolve a manuscript view to an IIIF manifest URL.
  *
+ * Resolution order:
+ *   1. Tier-0 mirrored page (if `MIRRORED_PAGES` has the exact verse coordinate)
+ *   2. Per-book manifest (if `MANIFEST_REGISTRY[id].manifests[book]` exists)
+ *   3. Manuscript-level `manifestRoot` (single manifest covering the whole codex —
+ *      the user navigates pages within OpenSeadragon)
+ *   4. null (caller must fall back to text-only)
+ *
+ * For (2) and (3) the entry must be `verified: true`.
+ *
  * @param {object} args
- * @param {string} args.manuscriptId  Registry key (e.g. 'SIN', 'WLC')
+ * @param {string} args.manuscriptId  Registry key (e.g. 'VATICANUS', 'WLC')
  * @param {string} args.book          Three-letter book code (e.g. 'GEN')
  * @param {number|string} args.chapter Chapter number — used by mirror lookup
  * @returns {string|null} manifest URL, or null if no verified source exists
@@ -108,26 +120,41 @@ export const resolveManifest = ({ manuscriptId, book, chapter }) => {
   const msId = String(manuscriptId ?? '').trim().toUpperCase();
   const bk = normalizeBook(book);
 
-  // Tier 0 — mirrored static IIIF Level-0 tiles
   const mirrorKey = `${msId}:${bk}:${chapter}`;
   if (MIRRORED_PAGES[mirrorKey]) {
     return MIRRORED_PAGES[mirrorKey];
   }
 
-  // Public manifest — only return if explicitly verified
   const entry = MANIFEST_REGISTRY[msId];
   if (!entry || !entry.verified) return null;
 
-  return entry.manifests[bk] ?? null;
+  if (entry.manifests[bk]) return entry.manifests[bk];
+  if (entry.manifestRoot) return entry.manifestRoot;
+  return null;
 };
 
 /**
- * Did a manuscript get registered with at least one verified manifest?
- * Useful for the UI to decide whether to even show an "image view" toggle.
+ * Does a manuscript have any reachable verified manifest?
+ * Used by the UI to decide whether to render the "View page image" toggle.
  */
 export const hasVerifiedManifests = (manuscriptId) => {
   const msId = String(manuscriptId ?? '').trim().toUpperCase();
   const entry = MANIFEST_REGISTRY[msId];
   if (!entry || !entry.verified) return false;
+  if (entry.manifestRoot) return true;
   return Object.keys(entry.manifests).length > 0;
 };
+
+/**
+ * Every registered manuscript that currently has a verified manifest. Returned
+ * as an array of `{ id, manuscript, source }` so the UI can render a picker
+ * (e.g. "Browse digitized codices").
+ */
+export const listVerifiedManuscripts = () =>
+  Object.entries(MANIFEST_REGISTRY)
+    .filter(([id]) => hasVerifiedManifests(id))
+    .map(([id, entry]) => ({
+      id,
+      manuscript: entry.manuscript,
+      source: entry.source,
+    }));
