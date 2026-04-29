@@ -98,6 +98,47 @@ describe('B.3 — native CSS scroll-driven reveals', () => {
   });
 });
 
+describe('Phase H D.3 — IIIF tile caching in custom SW', () => {
+  const sw = read('public/sw.js');
+
+  it('VERSION bumped past v1 (so existing clients clear stale caches on activate)', () => {
+    expect(sw).toMatch(/const\s+VERSION\s*=\s*['"]all4yah-v[2-9]/);
+  });
+
+  it('declares IIIF tile + manifest caches', () => {
+    expect(sw).toMatch(/IIIF_TILE_CACHE\s*=\s*`iiif-tiles-\$\{VERSION\}`/);
+    expect(sw).toMatch(/IIIF_MANIFEST_CACHE\s*=\s*`iiif-manifests-\$\{VERSION\}`/);
+  });
+
+  it('caps the tile cache to a finite number of entries', () => {
+    expect(sw).toMatch(/IIIF_TILE_CACHE_MAX\s*=\s*\d+/);
+    expect(sw).toMatch(/cacheFirstCapped\s*\(\s*request,\s*IIIF_TILE_CACHE,\s*IIIF_TILE_CACHE_MAX\s*\)/);
+  });
+
+  it('uses stale-while-revalidate for IIIF manifest / info.json', () => {
+    expect(sw).toMatch(/staleWhileRevalidate\s*\(/);
+    expect(sw).toMatch(/IIIF_DESCRIPTOR_PATTERN/);
+  });
+
+  it('matches IIIF tile URLs (jpg/png/webp under /iiif or /iiifimage)', () => {
+    expect(sw).toMatch(/IIIF_TILE_PATTERN\s*=\s*\/.*iiif/);
+    // Spot-check the regex catches a real tile URL pattern.
+    const match = sw.match(/const\s+IIIF_TILE_PATTERN\s*=\s*(\/.+?\/[gimsuy]*);/);
+    expect(match).not.toBeNull();
+    const re = new RegExp(match[1].slice(1, match[1].lastIndexOf('/')), match[1].split('/').pop());
+    expect(re.test('/iiifimage/MSS_Vat.gr.1209/Vat.gr.1209_0001.jp2/full/200,/0/default.jpg')).toBe(true);
+    expect(re.test('/iiif/some-codex/canvas/p0001/full/full/0/default.webp')).toBe(true);
+    expect(re.test('/api/users/123')).toBe(false);
+  });
+
+  it('IIIF handler runs BEFORE the same-origin bailout (cross-origin tiles are intercepted)', () => {
+    const idxIIIF = sw.indexOf('IIIF_TILE_PATTERN.test');
+    const idxBailout = sw.indexOf('Other cross-origin');
+    expect(idxIIIF).toBeGreaterThan(-1);
+    expect(idxBailout).toBeGreaterThan(idxIIIF);
+  });
+});
+
 describe('Phase B Subgrid — ParallelPassageViewer cross-card alignment', () => {
   const css = read('src/styles/parallel-passage.css');
 
