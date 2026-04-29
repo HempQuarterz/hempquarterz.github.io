@@ -365,6 +365,21 @@
     bottom: calc(4.5rem + env(safe-area-inset-bottom)); /* Above the mobile dock */
     right: 0.75rem;
     flex-direction: column;
+    /* Reverse so the toggle (DOM-first) sits at the BOTTOM of the visual
+       column, with the action buttons stacking ABOVE it when expanded —
+       matches the iOS speed-dial mental model. */
+    flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+
+  /* Mobile collapse: hide action FABs by default; only the tools toggle
+     shows. Tapping the toggle adds `.tools-open` and reveals the rest.
+     Reclaims ~150 px of right-edge content when the menu is closed. */
+  .floating-actions > .floating-action-btn:not(.floating-action-tools-toggle) {
+    display: none;
+  }
+  .floating-actions.tools-open > .floating-action-btn:not(.floating-action-tools-toggle) {
+    display: flex;
   }
 }
 
@@ -387,6 +402,15 @@
 .floating-action-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Tools toggle is mobile-only — desktop always shows all 4 actions.
+   Source-order MUST follow `.floating-action-btn` so this `display: none`
+   beats the base rule's `display: flex` at equal specificity. */
+@media (min-width: 769px) {
+  .floating-action-tools-toggle {
+    display: none;
+  }
 }
 
 /* Content sections */

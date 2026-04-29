@@ -33,6 +33,7 @@ const ManuscriptsPage = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [showNavigator, setShowNavigator] = useState(false);
   const [showImagery, setShowImagery] = useState(false);
+  const [showToolsMenu, setShowToolsMenu] = useState(false);
   const hasImagery = listVerifiedManuscripts().length > 0;
 
   // Sync URL params with Redux state
@@ -215,12 +216,36 @@ const ManuscriptsPage = () => {
         )}
       </ManuscriptViewer>
 
-      {/* Floating Action Buttons — hidden in reader mode so the right edge
-          of the reading area isn't covered by the 4-FAB stack on mobile. */}
-      {!isReaderMode && <div className="floating-actions">
+      {/* Floating Action Buttons.
+          - Hidden entirely in reader mode (max reading area).
+          - Desktop: all 4 actions show as a column.
+          - Mobile: a single "Tools" toggle FAB stays visible; tapping it
+            reveals the 4 actions stacked above (`tools-open` modifier).
+            CSS in layout-utilities.css handles the show/hide. */}
+      {!isReaderMode && <div className={`floating-actions ${showToolsMenu ? 'tools-open' : ''}`}>
+        {/* Mobile-only Tools toggle — shown only at <769px via CSS. */}
+        <button
+          onClick={() => setShowToolsMenu(prev => !prev)}
+          className="floating-action-btn floating-action-tools-toggle"
+          aria-label={showToolsMenu ? 'Close tools menu' : 'Open tools menu'}
+          aria-expanded={showToolsMenu}
+        >
+          {showToolsMenu ? (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          )}
+        </button>
         {/* Browse Books Button */}
         <button
-          onClick={() => setShowNavigator(true)}
+          onClick={() => { setShowNavigator(true); setShowToolsMenu(false); }}
           className="floating-action-btn"
           aria-label="Browse books"
         >
@@ -228,7 +253,7 @@ const ManuscriptsPage = () => {
         </button>
         {/* Search Button */}
         <button
-          onClick={toggleSearch}
+          onClick={() => { toggleSearch(); setShowToolsMenu(false); }}
           className="floating-action-btn"
           aria-label="Search manuscripts"
         >
@@ -236,7 +261,7 @@ const ManuscriptsPage = () => {
         </button>
         {/* Gematria Button */}
         <button
-          onClick={toggleGematria}
+          onClick={() => { toggleGematria(); setShowToolsMenu(false); }}
           className="floating-action-btn"
           aria-label="Open Gematria calculator"
         >
@@ -246,7 +271,7 @@ const ManuscriptsPage = () => {
             manifest in the registry is flagged verified. */}
         {hasImagery && (
           <button
-            onClick={() => setShowImagery(true)}
+            onClick={() => { setShowImagery(true); setShowToolsMenu(false); }}
             className="floating-action-btn"
             aria-label="Open manuscript page imagery"
           >
